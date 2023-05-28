@@ -1,0 +1,19 @@
+.layout-wrapper {
+  height: 2000px;
+  .app-body {
+    display: flex;
+    .side-banner {
+      position: fixed;
+      display: flex;
+      width: 450px;
+      margin-top: -40px;
+    }
+    .left-side {
+      justify-content: right;
+    }
+
+    .right-side {
+      right: 0;
+    }
+  }
+}
