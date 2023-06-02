@@ -5,13 +5,12 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LayoutDefault } from './layout-default/layout-default.component';
-import { RouterModule } from '@angular/router';
-import { LayoutRoutes } from './p-layout-routing.module';
-import { HeaderComponent } from './components/p-header/header.component';
+import { LayoutRoutingModule } from './p-layout-routing.module';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [LayoutDefault, HeaderComponent],
-  imports: [CommonModule, RouterModule.forChild(LayoutRoutes)],
+  imports: [CommonModule, LayoutRoutingModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   exports: [LayoutDefault, HeaderComponent],
 })

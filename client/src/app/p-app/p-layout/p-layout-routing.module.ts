@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutDefault } from './layout-default/layout-default.component';
-import { HomeComponent } from '../p-home/home.component';
+import { HomeComponent } from '../home/home.component';
 
 export const LayoutRoutes: Routes = [
   {
