@@ -5,11 +5,13 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home.component';
+import { TitleComponent } from '../p-layout/components/p-title/title.component';
+import { HorizontalBannerComponent } from '../p-layout/components/p-banner/banner.component';
 
 @NgModule({
-  declarations: [HomeComponent],
-  imports: [CommonModule],
+  declarations: [HomeComponent,TitleComponent,HorizontalBannerComponent],
+  imports: [CommonModule,],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-  exports: [HomeComponent],
+  exports: [HomeComponent,TitleComponent,HorizontalBannerComponent],
 })
 export class HomeModule {}
