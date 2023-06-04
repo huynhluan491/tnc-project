@@ -9,6 +9,7 @@ import { LayoutRoutingModule } from './p-layout-routing.module';
 import { HeaderComponent } from './components/header/header.component';
 import { HorizontalBannerComponent } from './components/p-banner/banner.component';
 import { TitleComponent } from './components/p-title/title.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { TitleComponent } from './components/p-title/title.component';
     HeaderComponent,
     TitleComponent,
     HorizontalBannerComponent,
+    FooterComponent
   ],
   imports: [CommonModule, LayoutRoutingModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -24,6 +26,7 @@ import { TitleComponent } from './components/p-title/title.component';
     HeaderComponent,
     TitleComponent,
     HorizontalBannerComponent,
+    FooterComponent
   ],
 })
-export class PLayoutModule {}
+export class PLayoutModule { }
