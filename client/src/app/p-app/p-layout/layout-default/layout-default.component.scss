@@ -4,11 +4,13 @@
   width: 100%;
   z-index: 9999;
 }
+
 .layout-wrapper {
-  height: 2000px;
   position: relative;
+
   .app-body {
     display: flex;
+
     .side-banner {
       position: sticky;
       top: 60px;
@@ -19,6 +21,7 @@
         width: 100%;
       }
     }
+
     .left-side {
       justify-content: right;
     }

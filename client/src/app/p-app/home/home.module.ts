@@ -11,6 +11,6 @@ import { PLayoutModule } from '../p-layout/p-layout.module';
   declarations: [HomeComponent],
   imports: [CommonModule, PLayoutModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-  exports: [],
+  exports: [HomeComponent],
 })
-export class HomeModule {}
+export class HomeModule { }
