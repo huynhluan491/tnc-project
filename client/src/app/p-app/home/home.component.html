@@ -1,4 +1,13 @@
 <div class="home-wrapper">
-  <app-slider-container></app-slider-container>
-  <h1>Home content</h1>
+  <div class="main-slider">
+    <app-slider-container></app-slider-container>
+  </div>
+  <div class="sub-slider">
+    <app-slider-container
+      [slidesToShow]="2"
+      [slidesToScroll]="2"
+      [slides]="promoSlides"
+    ></app-slider-container>
+  </div>
+  <nav-title [inputTitle]="'DANH MỤC SẢN PHẨM'"></nav-title>
 </div>

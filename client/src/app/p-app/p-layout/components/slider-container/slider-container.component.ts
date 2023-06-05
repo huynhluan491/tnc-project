@@ -18,17 +18,18 @@ export class SliderContainerComponent {
       img: 'https://www.tncstore.vn/image/catalog/banner/2023/Slide/banner--gaming-gear.jpg',
     },
   ];
-
   @Input() slidesToShow: Number = 1;
   @Input() slidesToSCroll: Number = 1;
   @Input() autoPlay: Boolean = true;
 
-  slideConfig = {
-    slidesToShow: this.slidesToShow,
-    slidesToScroll: this.slidesToSCroll,
-    autoplay: this.autoPlay,
-  };
+  slideConfig = {};
 
   constructor() {}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.slideConfig = {
+      slidesToShow: this.slidesToShow,
+      slidesToScroll: this.slidesToSCroll,
+      autoplay: this.autoPlay,
+    };
+  }
 }

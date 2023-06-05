@@ -1,0 +1,13 @@
+.main-slider {
+  margin-top: 5rem;
+}
+
+.sub-slider {
+  margin: 2rem 0;
+  ::ng-deep .slick-list {
+    margin: 0 -20px;
+  }
+  ::ng-deep .slick-slide {
+    margin: 2rem !important;
+  }
+}
