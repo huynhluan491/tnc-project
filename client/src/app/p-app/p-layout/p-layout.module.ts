@@ -10,23 +10,27 @@ import { HeaderComponent } from './components/header/header.component';
 import { HorizontalBannerComponent } from './components/p-banner/banner.component';
 import { TitleComponent } from './components/p-title/title.component';
 import { FooterComponent } from './components/footer/footer.component';
-
+import { SliderContainerComponent } from './components/slider-container/slider-container.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 @NgModule({
   declarations: [
     LayoutDefault,
     HeaderComponent,
     TitleComponent,
     HorizontalBannerComponent,
-    FooterComponent
+    FooterComponent,
+    SliderContainerComponent,
   ],
-  imports: [CommonModule, LayoutRoutingModule],
+  imports: [CommonModule, LayoutRoutingModule, SlickCarouselModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   exports: [
     LayoutDefault,
     HeaderComponent,
     TitleComponent,
     HorizontalBannerComponent,
-    FooterComponent
+    FooterComponent,
+    SlickCarouselModule,
+    SliderContainerComponent,
   ],
 })
-export class PLayoutModule { }
+export class PLayoutModule {}

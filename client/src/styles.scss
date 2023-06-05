@@ -77,3 +77,34 @@ button {
   width: 1100px;
   margin: 0 auto 0 auto;
 }
+
+//slider
+.slick-slider {
+  width: 100%;
+  margin: auto;
+  background: rgb(14, 13, 13);
+}
+body .slick-prev,
+body .slick-next {
+  height: 5rem;
+  width: 5rem;
+  background: #6868688e !important;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body .slick-prev {
+  left: 0;
+}
+body .slick-next {
+  right: 0;
+}
+body .slick-prev:before {
+  content: "ᐊ";
+  font-size: 30px;
+}
+body .slick-next:before {
+  content: "ᐅ";
+  font-size: 30px;
+}
