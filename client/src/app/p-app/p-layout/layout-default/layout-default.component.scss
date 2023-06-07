@@ -14,11 +14,11 @@
     .side-banner {
       position: sticky;
       top: 60px;
-      display: flex;
       width: 152px;
 
       img {
         width: 100%;
+        object-fit: contain;
       }
     }
 

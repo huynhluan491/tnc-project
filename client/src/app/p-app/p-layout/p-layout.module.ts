@@ -14,6 +14,8 @@ import { SliderContainerComponent } from './components/slider-container/slider-c
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CategoryItemComponent } from './components/category-item/category-item.component';
 
+import { BoxProductComponent } from './components/boxProduct/boxProduct.component';
+import { BoxProductModule } from './components/boxProduct/boxProduct.module';
 @NgModule({
   declarations: [
     LayoutDefault,
@@ -24,7 +26,12 @@ import { CategoryItemComponent } from './components/category-item/category-item.
     SliderContainerComponent,
     CategoryItemComponent,
   ],
-  imports: [CommonModule, LayoutRoutingModule, SlickCarouselModule],
+  imports: [
+    CommonModule,
+    LayoutRoutingModule,
+    SlickCarouselModule,
+    BoxProductModule,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   exports: [
     LayoutDefault,
