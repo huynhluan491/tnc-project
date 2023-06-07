@@ -3,6 +3,7 @@
 @import "normalize.css";
 
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
+
 :root {
   margin: 0;
   padding: 0;
@@ -74,37 +75,6 @@ button {
 
 //Container css canh giữa layout
 .container {
-  width: 1100px;
+  width: 77%;
   margin: 0 auto 0 auto;
-}
-
-//slider
-.slick-slider {
-  width: 100%;
-  margin: auto;
-  background: #ffffff;
-}
-body .slick-prev,
-body .slick-next {
-  height: 4.5rem;
-  width: 4.5rem;
-  background: #68686882 !important;
-  z-index: 100;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-body .slick-prev {
-  left: 0;
-}
-body .slick-next {
-  right: 0;
-}
-body .slick-prev:before {
-  content: "ᐊ";
-  font-size: 30px;
-}
-body .slick-next:before {
-  content: "ᐅ";
-  font-size: 30px;
 }
