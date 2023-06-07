@@ -12,6 +12,8 @@ import { TitleComponent } from './components/title/title.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SliderContainerComponent } from './components/slider-container/slider-container.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { BoxProductComponent } from './components/boxProduct/boxProduct.component';
+import { BoxProductModule } from './components/boxProduct/boxProduct.module';
 @NgModule({
   declarations: [
     LayoutDefault,
@@ -21,7 +23,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     FooterComponent,
     SliderContainerComponent,
   ],
-  imports: [CommonModule, LayoutRoutingModule, SlickCarouselModule],
+  imports: [CommonModule, LayoutRoutingModule, SlickCarouselModule, BoxProductModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   exports: [
     LayoutDefault,
@@ -31,6 +33,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     FooterComponent,
     SlickCarouselModule,
     SliderContainerComponent,
+
   ],
 })
-export class PLayoutModule {}
+export class PLayoutModule { }
