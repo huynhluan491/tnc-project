@@ -11,3 +11,12 @@
     margin: 2rem !important;
   }
 }
+
+.category-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  .category-item {
+    width: 24%;
+  }
+}
