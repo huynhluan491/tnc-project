@@ -18,6 +18,7 @@ export class SliderContainerComponent implements AfterViewInit {
   @Input() slidesToSCroll: Number = 1;
   @Input() autoPlay: Boolean = true;
   @ContentChildren(TemplateRef) templateRefs: QueryList<TemplateRef<any>>;
+  filteredTemplateRefs;
 
   slideConfig = {};
 
@@ -29,6 +30,12 @@ export class SliderContainerComponent implements AfterViewInit {
     };
   }
   ngAfterViewInit(): void {
-    console.log(this.templateRefs);
+    const filteredTemplateRefs = this.templateRefs.filter((templateRef) => {
+      const embeddedView = templateRef.createEmbeddedView(null);
+      return embeddedView.rootNodes.some(
+        (node) => node.nodeName !== '#comment'
+      );
+    });
+    this.filteredTemplateRefs = filteredTemplateRefs;
   }
 }

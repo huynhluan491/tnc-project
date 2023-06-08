@@ -1,81 +1,60 @@
 <div class="home-wrapper">
   <div class="main-slider">
-    <app-slider-container
-      [autoScroll]="false"
-      [slidesToShow]="1"
-      [slidesToScroll]="1"
-    >
-      <ng-template>
-        <img
-          src="https://www.tncstore.vn/image/catalog/banner/2022/Slide/loi-ich-1640x66-banner160520220.png"
-          alt=""
-          width="100%"
-        />
-      </ng-template>
-      <ng-template>
-        <img
-          src="https://www.tncstore.vn/image/catalog/Landing%20Page/Pc%20Gaming%2005.2023/banner-build-pc.jpg"
-          alt=""
-          width="100%"
-        />
-      </ng-template>
-      <ng-template>
-        <img
-          src="https://www.tncstore.vn/image/catalog/banner/2023/Slide/banner--gaming-gear.jpg"
-          alt=""
-          width="100%"
-        />
+    <app-slider-container [slidesToShow]="1" [slidesToScroll]="1">
+      <ng-template *ngFor="let banner of mainBanner">
+        <img [src]="banner" alt="" width="100%" />
       </ng-template>
     </app-slider-container>
   </div>
-  <!-- <div class="sub-slider">
-    <app-slider-container [slidesToShow]="2" [slidesToScroll]="2">
-      <img *ngFor="let banner of mainBanner" src="banner" />
+
+  <div class="sub-slider">
+    <app-slider-container [slidesToShow]="2" [slidesToScroll]="1">
+      <ng-template *ngFor="let banner of subBanner">
+        <img [src]="banner" alt="" width="100%" />
+      </ng-template>
     </app-slider-container>
   </div>
+
   <nav-title [inputTitle]="'DANH MỤC SẢN PHẨM'"></nav-title>
+
   <div class="category-wrapper">
     <app-category-item
+      *ngFor="let category of productCategories"
       class="category-item"
-      [title]="'PC GAMING'"
-      [subTitle]="'CHIẾN MỌI GAME'"
-      [img]="
-        'https://www.tncstore.vn/catalog/view/theme/default/image/cat_maytinh_v2.png'
-      "
-      [color]="'#1A5DC4'"
-    ></app-category-item>
-    <app-category-item
-      class="category-item"
-      [title]="'PC GAMING'"
-      [subTitle]="'CHIẾN MỌI GAME'"
-      [img]="
-        'https://www.tncstore.vn/catalog/view/theme/default/image/cat_maytinh_v2.png'
-      "
-      [color]="'#1A5DC4'"
-    ></app-category-item>
-    <app-category-item
-      class="category-item"
-      [title]="'PC GAMING'"
-      [subTitle]="'CHIẾN MỌI GAME'"
-      [img]="
-        'https://www.tncstore.vn/catalog/view/theme/default/image/cat_maytinh_v2.png'
-      "
-      [color]="'#1A5DC4'"
-    ></app-category-item>
-    <app-category-item
-      class="category-item"
-      [title]="'PC GAMING'"
-      [subTitle]="'CHIẾN MỌI GAME'"
-      [img]="
-        'https://www.tncstore.vn/catalog/view/theme/default/image/cat_maytinh_v2.png'
-      "
-      [color]="'#1A5DC4'"
+      [title]="category.title"
+      [subTitle]="category.subTitle"
+      [img]="category.img"
+      [color]="category.color"
     ></app-category-item>
   </div>
-  <app-slider-container [slidesToShow]="4" [slidesToScroll]="1" [img]="false">
-    <box-product [data]="data"></box-product>
-    <box-product [data]="data"></box-product>
-    <box-product [data]="data"></box-product>
-    <box-product [data]="data"></box-product>
-  </app-slider-container> -->
+
+  <nav-title [inputTitle]="'SẢN PHẨM GIẢM GIÁ'"></nav-title>
+
+  <app-slider-container
+    [autoPlay]="false"
+    [slidesToShow]="4"
+    [slidesToScroll]="1"
+  >
+    <ng-template>
+      <box-product [data]="data"></box-product>
+    </ng-template>
+    <ng-template>
+      <box-product [data]="data"></box-product>
+    </ng-template>
+    <ng-template>
+      <box-product [data]="data"></box-product>
+    </ng-template>
+    <ng-template>
+      <box-product [data]="data"></box-product>
+    </ng-template>
+    <ng-template>
+      <box-product [data]="data"></box-product>
+    </ng-template>
+    <ng-template>
+      <box-product [data]="data"></box-product>
+    </ng-template>
+    <ng-template>
+      <box-product [data]="data"></box-product>
+    </ng-template>
+  </app-slider-container>
 </div>

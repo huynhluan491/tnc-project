@@ -1,6 +1,6 @@
 .category-item-container {
   display: flex;
-  height: 15rem;
+  height: 14rem;
   width: 100%;
   background-color: #f5f5f5;
   overflow: hidden;
@@ -9,6 +9,7 @@
   .category-item-desc-wrapper {
     z-index: 10;
     margin-left: 1rem;
+    width: 60%;
   }
   .category-title {
     font-weight: 700;
@@ -26,7 +27,11 @@
     right: -0.5rem;
     transition: all 0.2s ease-in-out;
     z-index: 10;
-    width: 12.5rem;
+    width: 45%;
+    .img {
+      width: 100%;
+      object-fit: contain;
+    }
   }
   .category-item-background-shape {
     position: absolute;

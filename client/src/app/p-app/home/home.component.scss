@@ -8,15 +8,17 @@
     margin: 0 -20px;
   }
   ::ng-deep .slick-slide {
-    margin: 2rem !important;
+    margin: 0 20px !important;
   }
 }
 
 .category-wrapper {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   .category-item {
-    width: 24%;
+    width: 23%;
+    margin-bottom: 2rem;
   }
 }
