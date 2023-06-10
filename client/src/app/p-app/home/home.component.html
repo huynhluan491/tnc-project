@@ -1,60 +1,8 @@
 <div class="home-wrapper">
   <div class="main-slider">
-    <app-slider-container [slidesToShow]="1" [slidesToScroll]="1">
-      <ng-template *ngFor="let banner of mainBanner">
-        <img [src]="banner" alt="" width="100%" />
-      </ng-template>
-    </app-slider-container>
+    <app-slider-container [autoScroll]="false" [slidesToShow]="1" [slidesToScroll]="1" [imgs]="mainBanner"
+      [isImageSlider]="true"></app-slider-container>
+    <app-slider-container [autoScroll]="false" [slidesToShow]="4" [slidesToScroll]="1" [sliderProducts]="sliderProducts"
+      [isImageSlider]="false"></app-slider-container>
   </div>
-
-  <div class="sub-slider">
-    <app-slider-container [slidesToShow]="2" [slidesToScroll]="1">
-      <ng-template *ngFor="let banner of subBanner">
-        <img [src]="banner" alt="" width="100%" />
-      </ng-template>
-    </app-slider-container>
-  </div>
-
-  <nav-title [inputTitle]="'DANH MỤC SẢN PHẨM'"></nav-title>
-
-  <div class="category-wrapper">
-    <app-category-item
-      *ngFor="let category of productCategories"
-      class="category-item"
-      [title]="category.title"
-      [subTitle]="category.subTitle"
-      [img]="category.img"
-      [color]="category.color"
-    ></app-category-item>
-  </div>
-
-  <nav-title [inputTitle]="'SẢN PHẨM GIẢM GIÁ'"></nav-title>
-
-  <app-slider-container
-    [autoPlay]="false"
-    [slidesToShow]="4"
-    [slidesToScroll]="1"
-  >
-    <ng-template>
-      <box-product [data]="data"></box-product>
-    </ng-template>
-    <ng-template>
-      <box-product [data]="data"></box-product>
-    </ng-template>
-    <ng-template>
-      <box-product [data]="data"></box-product>
-    </ng-template>
-    <ng-template>
-      <box-product [data]="data"></box-product>
-    </ng-template>
-    <ng-template>
-      <box-product [data]="data"></box-product>
-    </ng-template>
-    <ng-template>
-      <box-product [data]="data"></box-product>
-    </ng-template>
-    <ng-template>
-      <box-product [data]="data"></box-product>
-    </ng-template>
-  </app-slider-container>
 </div>

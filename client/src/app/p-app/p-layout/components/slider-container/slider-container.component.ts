@@ -12,11 +12,14 @@ import {
   styleUrls: ['./slider-container.component.scss'],
 })
 export class SliderContainerComponent implements AfterViewInit {
-  constructor() {}
+  constructor() { }
 
   @Input() slidesToShow: Number = 1;
   @Input() slidesToSCroll: Number = 1;
   @Input() autoPlay: Boolean = true;
+  @Input() sliderProducts: any[] = [];
+  @Input() imgs: string[] = [];
+  @Input() isImageSlider: boolean;
   @ContentChildren(TemplateRef) templateRefs: QueryList<TemplateRef<any>>;
   filteredTemplateRefs;
 

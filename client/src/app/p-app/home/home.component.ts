@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { LayoutAPIService } from '../p-layout/shared/services/layout-api.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-p-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   mainBanner: string[] = [
     'https://www.tncstore.vn/image/catalog/banner/2022/Slide/loi-ich-1640x66-banner160520220.png',
     'https://www.tncstore.vn/image/catalog/Landing%20Page/Pc%20Gaming%2005.2023/banner-build-pc.jpg',
@@ -77,5 +79,28 @@ export class HomeComponent implements OnInit {
       color: '#FFCC3A',
     },
   ];
-  ngOnInit() {}
+
+  sliderProducts: any[] = [];
+
+  //Subscriptions
+  getSlidersProduct_sst: Subscription;
+
+  constructor(private layoutAPIService: LayoutAPIService) { }
+
+  ngOnInit() {
+    this.getProducts();
+  }
+
+  getProducts() {
+    this.getSlidersProduct_sst = this.layoutAPIService.GetProducts().subscribe(
+      (res) => {
+        this.sliderProducts = [...res.slice(0, 15)];
+        console.log(this.sliderProducts);
+      }
+    )
+  }
+
+  ngOnDestroy(): void {
+    this.getSlidersProduct_sst?.unsubscribe();
+  }
 }
