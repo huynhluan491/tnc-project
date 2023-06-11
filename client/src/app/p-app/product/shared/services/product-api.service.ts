@@ -9,12 +9,12 @@ import { HttpClient } from "@angular/common/http";
 
 export class ProductAPIService {
     constructor(private http: HttpClient) { }
-    productURL = "http://localhost:3001/api/v1/product";
+    productURL = "http://localhost:3001/api/v1/product/";
 
     GetProducts(queryString: string) {
-        const params = new HttpParams().set('paramName', queryString);
+
         return new Observable<any>((obs) => {
-            this.http.get<any>(this.productURL, { params }).subscribe((res) => {
+            this.http.get<any>(`${this.productURL}${queryString}`).subscribe((res) => {
                 obs.next(res);
                 obs.complete();
             }, (err) => {

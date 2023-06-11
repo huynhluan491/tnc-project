@@ -13,7 +13,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   categoryName: string = '';
   categoryName$: Observable<string>;
 
-  testQueryString = "page=1&pageSize=10&categoryID=3"
+  testQueryString = "?page=1&pageSize=10&categoryID=3"
 
   constructor(private route: ActivatedRoute, private productAPIService: ProductAPIService) { }
 
