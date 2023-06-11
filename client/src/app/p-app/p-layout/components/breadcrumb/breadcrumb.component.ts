@@ -1,30 +1,33 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit } from '@angular/core';
 import { BreadCrumbItem } from "@progress/kendo-angular-navigation";
-import { homeIcon } from "@progress/kendo-svg-icons";
+import { Ps_UtilObjectService } from 'src/app/p-lib/ultilities/ulity.object';
 
 const defaultItems: BreadCrumbItem[] = [
-    {
-        text: "",
-        title: "laptop",
-        icon: "icon_home.svg",
-    },
-    {
-        text: "Trang chủ",
-        title: "laptop",
-        icon: ""
-    },
-    {
-        text: "test",
-    }
+  {
+    text: "",
+    title: "",
+    icon: "icon_home.svg",
+  },
+  {
+    text: "Trang chủ",
+    title: "",
+    icon: ""
+  }
 ];
-
 @Component({
-    selector: "app-breadcrumb",
-    templateUrl: './breadcrumb.component.html',
-    styleUrls: ["./breadcrumb.component.scss"]
+  selector: 'app-breadcrumb',
+  templateUrl: './breadcrumb.component.html',
+  styleUrls: ['./breadcrumb.component.scss']
 })
-export class BreadcrumbComponent {
-    public items: BreadCrumbItem[] = [...defaultItems];
+export class BreadcrumbComponent implements OnInit {
+  items: BreadCrumbItem[] = [...defaultItems];
 
-    // @Input()
+  //truyền param từ url của giao diện 
+  @Input() plusBreadCrumbText: string = '';
+
+  ngOnInit(): void {
+    if (Ps_UtilObjectService.hasValueString(this.plusBreadCrumbText)) {
+      this.items.push({ text: this.plusBreadCrumbText, title: this.plusBreadCrumbText });
+    }
+  }
 }

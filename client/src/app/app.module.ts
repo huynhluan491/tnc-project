@@ -9,12 +9,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsModule } from '@progress/kendo-angular-icons';
+import { ProductModule } from './p-app/product/product.module';
 
 
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, HomeModule, PLayoutModule, HttpClientModule, NgbModule, IconsModule],
+  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, HomeModule, ProductModule, PLayoutModule, HttpClientModule, NgbModule, IconsModule],
   providers: [],
   bootstrap: [AppComponent],
 })
