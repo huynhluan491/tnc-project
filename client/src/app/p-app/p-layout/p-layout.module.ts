@@ -13,9 +13,10 @@ import { FooterComponent } from './components/footer/footer.component';
 import { SliderContainerComponent } from './components/slider-container/slider-container.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CategoryItemComponent } from './components/category-item/category-item.component';
-
-import { BoxProductComponent } from './components/boxProduct/boxProduct.component';
 import { BoxProductModule } from './components/boxProduct/boxProduct.module';
+import { MenusModule } from '@progress/kendo-angular-menu';
+import { BrowserModule } from '@angular/platform-browser';
+import { ProductComponent } from '../product/product.component';
 @NgModule({
   declarations: [
     LayoutDefault,
@@ -31,6 +32,7 @@ import { BoxProductModule } from './components/boxProduct/boxProduct.module';
     LayoutRoutingModule,
     SlickCarouselModule,
     BoxProductModule,
+    MenusModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   exports: [
@@ -44,4 +46,4 @@ import { BoxProductModule } from './components/boxProduct/boxProduct.module';
     CategoryItemComponent,
   ],
 })
-export class PLayoutModule {}
+export class PLayoutModule { }

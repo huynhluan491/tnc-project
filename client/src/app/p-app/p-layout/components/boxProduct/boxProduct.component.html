@@ -5,7 +5,7 @@
     </div>
     <div [class]="inforProduct">
       <div class="title-product">
-        <span>{{ data.nameProduct || data.name }}</span>
+        <span>{{ data?.name }}</span>
       </div>
       <div class="rating">
         <ngb-rating [(rate)]="selected" (hover)="hovered = $event" (leave)="hovered = 0" [readonly]="readonly"
