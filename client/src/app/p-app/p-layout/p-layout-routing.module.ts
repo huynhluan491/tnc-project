@@ -10,14 +10,15 @@ export const LayoutRoutes: Routes = [
     component: LayoutDefault,
     children: [
       { path: '', component: HomeComponent },
-      { path: 'laptop', component: ProductComponent },
-      { path: 'headphone', component: ProductComponent },
-      { path: 'keyboard', component: ProductComponent },
-      { path: 'laptop', component: ProductComponent },
-      { path: 'networkdevice', component: ProductComponent },
-      { path: 'phone', component: ProductComponent },
-      { path: 'tablet', component: ProductComponent },
-      { path: 'watch', component: ProductComponent },
+      { path: ':categoryname', component: ProductComponent }
+      // { path: 'laptop', component: ProductComponent },
+      // { path: 'headphone', component: ProductComponent },
+      // { path: 'keyboard', component: ProductComponent },
+      // { path: 'laptop', component: ProductComponent },
+      // { path: 'networkdevice', component: ProductComponent },
+      // { path: 'phone', component: ProductComponent },
+      // { path: 'tablet', component: ProductComponent },
+      // { path: 'watch', component: ProductComponent },
     ],
   },
 ];

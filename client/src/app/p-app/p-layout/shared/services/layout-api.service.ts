@@ -2,15 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from "@angular/common/http";
-import { DTOBrand } from "../dto/DTOBrand";
-import { DTOCategory } from "../dto/DTOCategories";
 import { DTORespone } from "../dto/DTORespone";
-
-// const httpOptions = {
-//     headers: new HttpHeaders({
-
-//     })
-// }
 
 @Injectable({
     providedIn: 'root'

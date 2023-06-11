@@ -24,6 +24,7 @@
     "@progress/kendo-angular-common": "13.0.2",
     "@progress/kendo-angular-icons": "^13.0.2",
     "@progress/kendo-angular-menu": "^13.0.2",
+    "@progress/kendo-angular-navigation": "^13.0.2",
     "@progress/kendo-licensing": "^1.0.2",
     "@progress/kendo-svg-icons": "^1.0.0",
     "@progress/kendo-theme-default": "^6.4.0",

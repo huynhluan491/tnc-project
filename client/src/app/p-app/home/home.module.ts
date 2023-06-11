@@ -10,8 +10,8 @@ import { BoxProductModule } from '../p-layout/components/boxProduct/boxProduct.m
 
 @NgModule({
   declarations: [HomeComponent],
-  imports: [CommonModule, PLayoutModule,BoxProductModule],
+  imports: [CommonModule, PLayoutModule, BoxProductModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-  exports: [HomeComponent],
+  exports: [],
 })
-export class HomeModule {}
+export class HomeModule { }

@@ -1,0 +1,10 @@
+<kendo-breadcrumb [items]="items">
+    <ng-template kendoBreadCrumbItemTemplate let-item let-index="index">
+        <div class="item" role="button" [routerLink]="item.title">
+            <ng-container *ngIf="item?.icon?.length > 0">
+                <img src="../../../../../assets/icon/{{item.icon}}">
+            </ng-container>
+            <span>{{ item.text }}</span>
+        </div>
+    </ng-template>
+</kendo-breadcrumb>
