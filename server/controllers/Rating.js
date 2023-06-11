@@ -17,10 +17,8 @@ exports.getRatingById = async (req, res) => {
 
     return res.status(200).json({
       code: 200,
-      msg: `Got rating with id ${id} successfully!`,
-      data: {
-        rating,
-      },
+      msg: null,
+      data:rating,
     });
   } catch (e) {
     console.log(e);
@@ -53,12 +51,8 @@ exports.getRatings = async (req, res) => {
     }
     return res.status(200).json({
       code: 200,
-      msg: id
-        ? `Got ratings with productId ${id} successfully!`
-        : `Got ratings successfully!`,
-      data: {
-        rating,
-      },
+      msg: null,
+      data:rating,
     });
   } catch (e) {
     console.log(e);
@@ -75,7 +69,7 @@ exports.createNewRating = async (req, res) => {
     await RatingDAO.createNewRating(newRating);
     return res.status(200).json({
       code: 200,
-      msg: `Created new rating successfully!`,
+      msg: null,
     });
   } catch (e) {
     console.log(e);
@@ -101,7 +95,7 @@ exports.deleteRatingById = async (req, res) => {
     await RatingDAO.deleteRatingById(id);
     return res.status(200).json({
       code: 200,
-      msg: `Deleted rating with id ${id} successfully!`,
+      msg: null,
     });
   } catch (e) {
     console.log(e);
@@ -123,10 +117,8 @@ exports.updateRatingById = async (req, res) => {
     rating = await RatingDAO.getRatingByProductId(productID);
     return res.status(200).json({
       code: 200,
-      msg: `Updated rating with id: ${productID} successfully!`,
-      data: {
-        rating,
-      },
+      msg: null,
+      data:rating,
     });
   } catch (e) {
     console.log(e);

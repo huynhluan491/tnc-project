@@ -5,15 +5,13 @@ exports.getAllBrands = async (req, res) => {
     let brands = await brandDAO.getBrands();
     res.status(200).json({
       code: 200,
-      msg: "OK",
-      data: {
-        brands,
-      },
+      msg: null,
+      data: brands
     });
   } catch (error) {
     res.status(404).json({
       code: 404,
-      msg: "FAIL",
+      msg: error,
     });
   }
 };
@@ -33,13 +31,10 @@ exports.getBrandById = async (req, res) => {
     }
     return res.status(200).json({
       code: 200,
-      msg: `Got brand with id ${id} successfully!`,
-      data: {
-        brand,
-      },
+      msg: null,
+      data: brand
     });
   } catch (e) {
-    console.log(e);
     return res.status(500).json({
       code: 500,
       msg: e,

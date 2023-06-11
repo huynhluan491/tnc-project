@@ -15,9 +15,7 @@ exports.getFeatureById = async (req, res) => {
     return res.status(200).json({
       code: 200,
       msg: `Got features with id ${id} successfully!`,
-      data: {
-        features,
-      },
+      data: features,
     });
   } catch (e) {
     console.log(e);
@@ -52,9 +50,7 @@ exports.getFeatures = async (req, res) => {
       msg: id
         ? `Got features with productId ${id} successfully!`
         : `Got features successfully!`,
-      data: {
-        features,
-      },
+      data: features,
     });
   } catch (e) {
     console.log(e);
@@ -71,7 +67,7 @@ exports.createNewFeature = async (req, res) => {
     // console.log(`Created new product successfully!`);
     return res.status(200).json({
       code: 200,
-      msg: `Created new feature successfully!`,
+      msg: null,
     });
   } catch (e) {
     console.log(e);
@@ -96,7 +92,7 @@ exports.deleteFeatureById = async (req, res) => {
     await FeatureDAO.deleteFeatureById(id);
     return res.status(200).json({
       code: 200,
-      msg: `Deleted feature with id ${id} successfully!`,
+      msg: null,
     });
   } catch (e) {
     console.log(e);
@@ -122,9 +118,7 @@ exports.updateFeatureById = async (req, res) => {
     return res.status(200).json({
       code: 200,
       msg: `Updated feature with id: ${id} successfully!`,
-      data: {
-        feature,
-      },
+      data: feature,
     });
   } catch (e) {
     console.log(e);

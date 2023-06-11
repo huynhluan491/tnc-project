@@ -24,12 +24,8 @@ exports.getSubImages = async (req, res) => {
     }
     return res.status(200).json({
       code: 200,
-      msg: id
-        ? `Got subimgs with productId ${id} successfully!`
-        : `Got subimgs successfully!`,
-      data: {
-        subimgs,
-      },
+      msg: null,
+      data: subimgs,
     });
   } catch (e) {
     console.log(e);
@@ -55,10 +51,8 @@ exports.getSubImgById = async (req, res) => {
     }
     return res.status(200).json({
       code: 200,
-      msg: `Got subImg with id ${id} successfully!`,
-      data: {
-        subImg,
-      },
+      msg: null,
+      data: subImg,
     });
   } catch (e) {
     console.log(e);
@@ -76,7 +70,7 @@ exports.createNewSubImg = async (req, res) => {
     // console.log(`Created new product successfully!`);
     return res.status(200).json({
       code: 200,
-      msg: `Created new subImg successfully!`,
+      msg: null,
     });
   } catch (e) {
     console.log(e);
@@ -103,7 +97,7 @@ exports.deleteSubImgById = async (req, res) => {
     await SubImageDAO.deleteSubImgById(id);
     res.status(200).json({
       code: 200,
-      msg: `Deleted subImg with id ${id} successfully!`,
+      msg: null,
     });
   } catch (e) {
     console.log(e);
@@ -129,10 +123,8 @@ exports.updateSubImgById = async (req, res) => {
     subImg = await SubImageDAO.getSubImgById(id);
     return res.status(200).json({
       code: 200,
-      msg: `Updated subImg with id: ${id} successfully!`,
-      data: {
-        subImg,
-      },
+      msg: null,
+      data: subImg,
     });
   } catch (e) {
     console.log(e);

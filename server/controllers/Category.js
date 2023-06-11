@@ -5,15 +5,13 @@ exports.getAllCategories = async (req, res) => {
     let categories = await CategoryDAO.getCategories();
     res.status(200).json({
       code: 200,
-      msg: "OK",
-      data: {
-        categories,
-      },
+      msg: null,
+      data: categories
     });
   } catch (error) {
     res.status(404).json({
       code: 404,
-      msg: "FAIL",
+      msg: error,
     });
   }
 };
@@ -33,10 +31,8 @@ exports.getCateIdByName = async (req, res) => {
     }
     return res.status(200).json({
       code: 200,
-      msg: `Got categoryID with name ${name} successfully!`,
-      data: {
-        category,
-      },
+      msg: null,
+      data: category,
     });
   } catch (e) {
     console.log(e);

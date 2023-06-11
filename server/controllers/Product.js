@@ -20,10 +20,8 @@ exports.getProducts = async (req, res) => {
     const products = await ProductDAO.getAllProducts(req.query);
     res.status(200).json({
       code: 200,
-      msg: "OK",
-      data: {
-        products,
-      },
+      msg: null,
+      data: products,
     });
   } catch (err) {
     res.status(500).json({
@@ -48,10 +46,8 @@ exports.getProductById = async (req, res) => {
     }
     return res.status(200).json({
       code: 200,
-      msg: `Got product with id ${id} successfully!`,
-      data: {
-        product,
-      },
+      msg: null,
+      data: product,
     });
   } catch (e) {
     console.log(e);
@@ -80,10 +76,8 @@ exports.createNewProduct = async (req, res) => {
     // console.log(`Created new product successfully!`);
     return res.status(200).json({
       code: 200,
-      msg: `Created new product successfully!`,
-      data: {
-        product,
-      },
+      msg: null,
+      data: product,
     });
   } catch (e) {
     console.log(e);
@@ -109,7 +103,7 @@ exports.deleteById = async (req, res) => {
     await ProductDAO.deleteProductById(id);
     return res.status(200).json({
       code: 200,
-      msg: `Deleted product with id ${id} successfully!`,
+      msg: null,
     });
   } catch (e) {
     console.log(e);
@@ -132,7 +126,7 @@ exports.deleteMultipleProductById = async (req, res) => {
     await ProductDAO.deleteMultipleProductById(idList);
     return res.status(200).json({
       code: 200,
-      msg: `Deleted products with id ${idList} successfully!`,
+      msg: null,
     });
   } catch (e) {
     console.log(e);
@@ -156,7 +150,7 @@ exports.getProductNonPaginate = async (req, res) => {
     }
     return res.status(200).json({
       code: 200,
-      msg: `Find products list successfully!`,
+      msg: null,
       data: products,
     });
   } catch (e) {
@@ -184,10 +178,8 @@ exports.updateProductById = async (req, res) => {
     product = await ProductDAO.getProductById(id);
     return res.status(200).json({
       code: 200,
-      msg: `Updated product with id: ${id} successfully!`,
-      data: {
-        product,
-      },
+      msg: null,
+      data: product,
     });
   } catch (e) {
     console.log(e);

@@ -15,10 +15,8 @@ exports.getUserById = async (req, res) => {
     req.user = user;
     return res.status(200).json({
       code: 200,
-      msg: `Got user with id ${id} successfully!`,
-      data: {
-        user,
-      },
+      msg: null,
+      data: user,
     });
   } catch (e) {
     return res.status(500).json({
@@ -72,8 +70,8 @@ exports.getUserByUserName = async (req, res) => {
     }
     res.status(200).json({
       code: 200,
-      msg: `found user with name ${username}`,
-      data: { user },
+      msg: null,
+      data: user ,
     });
   } catch (e) {
     console.error(e);
@@ -110,10 +108,8 @@ exports.addUser = async (req, res) => {
     await CartDAO.createNewCart(u.userID);
     return res.status(200).json({
       code: 200,
-      msg: "Added user successfully!",
-      data: {
-        result,
-      },
+      msg: null,
+      data: result,
     });
   } catch (error) {
     res.status(404).json({
@@ -138,10 +134,8 @@ exports.updateUserById = async (req, res) => {
     user = await UserDAO.getUserById(id);
     return res.status(200).json({
       code: 200,
-      msg: `Updated user with id: ${id} successfully!`,
-      data: {
-        user,
-      },
+      msg: null,
+      data: user,
     });
   } catch (e) {
     console.log(e);
@@ -198,7 +192,7 @@ exports.deleteMultipleUserById = async (req, res) => {
     await UserDAO.deleteMultipleUserById(idList);
     return res.status(200).json({
       code: 200,
-      msg: `Deleted users with id ${idList} successfully!`,
+      msg: null,
     });
   } catch (e) {
     console.log(e);

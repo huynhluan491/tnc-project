@@ -5,15 +5,13 @@ exports.getProductInCartByUSerID = async (req, res) => {
     let result = await CartDAO.getProductInCartByUSerID(req.query.userID);
     res.status(200).json({
       code: 200,
-      msg: "OK",
-      data: {
-        result,
-      },
+      msg: null,
+      data: result
     });
   } catch (error) {
     res.status(404).json({
       code: 404,
-      msg: "FAIL",
+      msg: error,
     });
   }
 };
@@ -42,15 +40,13 @@ exports.insertProductToCart = async (req, res) => {
     let result = await CartDAO.addCart_ProductIfNotExisted(req.body);
     res.status(200).json({
       code: 200,
-      msg: "OK",
-      data: {
-        result,
-      },
+      msg: null,
+      data: result
     });
   } catch (error) {
     res.status(404).json({
       code: 404,
-      msg: "FAIL",
+      msg: error,
     });
   }
 };
@@ -61,15 +57,13 @@ exports.updateProductInCart = async (req, res) => {
     let result = await CartDAO.updateCart(req.body);
     res.status(200).json({
       code: 200,
-      msg: "OK",
-      data: {
-        result,
-      },
+      msg: null,
+      data: result
     });
   } catch (error) {
     res.status(404).json({
       code: 404,
-      msg: "FAIL",
+      msg: error,
     });
   }
 };
@@ -80,15 +74,12 @@ exports.deleteProductInCart = async (req, res) => {
     let result = await CartDAO.deleteItemInCart(q);
     res.status(200).json({
       code: 200,
-      msg: "OK",
-      data: {
-        result,
-      },
+      msg: null,
     });
   } catch (error) {
     res.status(404).json({
       code: 404,
-      msg: "FAIL",
+      msg: error,
     });
   }
 };
