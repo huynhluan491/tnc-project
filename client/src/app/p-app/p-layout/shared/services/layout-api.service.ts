@@ -4,6 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from "@angular/common/http";
 import { DTOBrand } from "../dto/DTOBrand";
 import { DTOCategory } from "../dto/DTOCategories";
+import { DTORespone } from "../dto/DTORespone";
 
 // const httpOptions = {
 //     headers: new HttpHeaders({
@@ -21,6 +22,7 @@ export class LayoutAPIService {
     categoryURL = "https://api.npoint.io/87d82e14eac1dfbd0360";
     productURL = "https://api.npoint.io/9859e399349e166c5721";
 
+    //Chưa chỉnh lại res từ api nên chưa gán DTO được
     GetProducts() {
         return new Observable<any>((obs) => {
             this.http.get<any>(this.productURL).subscribe((res) => {
@@ -34,8 +36,8 @@ export class LayoutAPIService {
     }
 
     GetBrands() {
-        return new Observable<DTOBrand>((obs) => {
-            this.http.get<DTOBrand>(this.brandURL).subscribe((res) => {
+        return new Observable<DTORespone>((obs) => {
+            this.http.get<DTORespone>(this.brandURL).subscribe((res) => {
                 obs.next(res);
                 obs.complete();
             }, (err) => {
@@ -46,8 +48,8 @@ export class LayoutAPIService {
     }
 
     GetCategories() {
-        return new Observable<DTOCategory>((obs) => {
-            this.http.get<DTOCategory>(this.categoryURL).subscribe((res) => {
+        return new Observable<DTORespone>((obs) => {
+            this.http.get<DTORespone>(this.categoryURL).subscribe((res) => {
                 obs.next(res);
                 obs.complete();
             }, (err) => {

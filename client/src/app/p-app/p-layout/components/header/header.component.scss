@@ -5,12 +5,15 @@
     text-align: right;
     align-items: center;
     height: 36px;
+
     .hotline {
       color: white;
     }
   }
+
   .header-main {
     width: 100%;
+
     .header-items {
       display: flex;
       align-items: center;
@@ -30,8 +33,10 @@
         .search-button {
           height: 100%;
           cursor: pointer;
+
           img {
             height: 100%;
+
             &:hover {
               background-color: #005ec4;
               opacity: 50%;
@@ -68,22 +73,54 @@
       .header-nav-list {
         display: flex;
         justify-content: space-between;
+
         .header-nav-items-left {
           display: flex;
           gap: 40px;
+
           .header-item-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 15px 0;
+            position: relative;
             cursor: pointer;
+
+            &:hover>.sub-menu-list {
+              display: block;
+            }
 
             .item-title {
               font-size: 15px;
               font-weight: 600;
+
             }
+
+            .blink {
+              transition: 1s ease-in;
+              animation: blink-animation 1.2s steps(5, start) infinite;
+              -webkit-animation: blink-animation 1.2s steps(5, start) infinite;
+            }
+
             .icon {
               display: flex;
+            }
+
+            .sub-menu-list {
+              position: absolute;
+              top: 100%;
+              z-index: 999999;
+              background-color: white;
+              width: 100%;
+              display: none;
+
+              li {
+                padding: 10px 0;
+                font-size: 16px;
+                border-left: 1px solid #ededed;
+                padding-left: 34px;
+
+                &:hover {
+                  background-color: #005ec4;
+                  color: white;
+                }
+              }
             }
           }
         }
@@ -99,5 +136,16 @@
         }
       }
     }
+  }
+}
+
+//Animation style 
+@keyframes blink-animation {
+  0% {
+    color: white;
+  }
+
+  100% {
+    color: #ff874b;
   }
 }
