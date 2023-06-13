@@ -5,7 +5,7 @@
                 <ng-container *ngIf="item?.icon?.length > 0">
                     <img src="../../../../../assets/icon/{{item.icon}}">
                 </ng-container>
-                <span class="title">{{ item.text }}</span>
+                <span class="title">{{ item.text | titlecase }}</span>
             </div>
         </ng-template>
     </kendo-breadcrumb>
