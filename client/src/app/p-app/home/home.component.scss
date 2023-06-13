@@ -22,3 +22,13 @@
     margin-bottom: 2rem;
   }
 }
+
+.brand-slider {
+  margin: 2rem 0;
+  ::ng-deep .slick-list {
+    margin: 0 -30px;
+  }
+  ::ng-deep .slick-slide {
+    margin: 0 30px !important;
+  }
+}

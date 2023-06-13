@@ -19,7 +19,7 @@ export class SliderContainerComponent implements AfterViewInit {
   @Input() autoPlay: Boolean = true;
   @Input() sliderProducts: any[] = [];
   @Input() imgs: string[] = [];
-  @Input() isImageSlider: boolean;
+  @Input() type: string;
   @ContentChildren(TemplateRef) templateRefs: QueryList<TemplateRef<any>>;
   filteredTemplateRefs;
 
