@@ -80,24 +80,34 @@ export class HomeComponent implements OnInit, OnDestroy {
     },
   ];
 
+  brandSlider = [
+    'https://www.tncstore.vn/image/cache/catalog/logo/akko-logo-228x228.jpg',
+    'https://www.tncstore.vn/image/cache/catalog/vga/AFOX/afox-228x228.jpg',
+    'https://www.tncstore.vn/image/cache/catalog/brands/lrg_aerocool-228x228.png',
+    'https://www.tncstore.vn/image/cache/catalog/brands/ada-228x228.png',
+    'https://www.tncstore.vn/image/cache/catalog/brands/lrg_acer-228x228.png',
+    'https://www.tncstore.vn/image/cache/catalog/logo new/logo-amd-228x228.jpg',
+    'https://www.tncstore.vn/image/cache/catalog/logo new/logo-antec-228x228.jpg',
+  ];
+
   sliderProducts: any[] = [];
 
   //Subscriptions
   getSlidersProduct_sst: Subscription;
 
-  constructor(private layoutAPIService: LayoutAPIService) { }
+  constructor(private layoutAPIService: LayoutAPIService) {}
 
   ngOnInit() {
     this.getProducts();
   }
 
   getProducts() {
-    this.getSlidersProduct_sst = this.layoutAPIService.GetProducts().subscribe(
-      (res) => {
+    this.getSlidersProduct_sst = this.layoutAPIService
+      .GetProducts()
+      .subscribe((res) => {
         this.sliderProducts = [...res.slice(0, 15)];
         console.log(this.sliderProducts);
-      }
-    )
+      });
   }
 
   ngOnDestroy(): void {
