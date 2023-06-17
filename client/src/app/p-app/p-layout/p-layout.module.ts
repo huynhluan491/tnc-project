@@ -17,6 +17,7 @@ import { BoxProductModule } from './components/boxProduct/boxProduct.module';
 import { MenusModule } from '@progress/kendo-angular-menu';
 import { BreadCrumbModule, NavigationModule } from "@progress/kendo-angular-navigation";
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
+import { CartComponent } from './components/cart/cart.component';
 @NgModule({
   declarations: [
     LayoutDefault,
@@ -26,7 +27,8 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
     FooterComponent,
     SliderContainerComponent,
     CategoryItemComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    CartComponent
   ],
   imports: [
     CommonModule,
