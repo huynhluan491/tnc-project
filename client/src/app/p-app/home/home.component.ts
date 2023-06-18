@@ -21,14 +21,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     'https://www.tncstore.vn/image/catalog/banner/2022/Thang5/laptop-gaming.png',
   ];
 
-  data = {
-    srcAvaterProduct:
-      'https://www.tncstore.vn/image/cache/catalog/chu%E1%BB%99t/razer/Viper%20V2%20Pro%20White%20Wireless/Razer%20Viper%20V2%20Pro%20White%20Wireless-500x500.jpg',
-    nameProdcut: 'default',
-    salePercentage: 0.2,
-    basePrice: 22222,
-  };
-
   productCategories = [
     {
       title: 'PC GAMING',

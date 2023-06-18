@@ -30,7 +30,6 @@
 </div>
 <nav-title [inputTitle]="'SẢN PHẨM GIẢM GIÁ'"></nav-title>
 <app-slider-container
-  [autoScroll]="false"
   [slidesToShow]="4"
   [slidesToScroll]="1"
   [sliderProducts]="sliderProducts"
@@ -39,7 +38,7 @@
 <nav-title [inputTitle]="'CÁC THƯƠNG HIỆU'"></nav-title>
 <div class="brand-slider">
   <app-slider-container
-    [autoScroll]="false"
+    [autoPlay]="false"
     [slidesToShow]="6"
     [slidesToScroll]="1"
     [imgs]="brandSlider"
