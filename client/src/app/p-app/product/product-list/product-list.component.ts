@@ -2,6 +2,7 @@ import { LayoutAPIService } from './../../p-layout/shared/services/layout-api.se
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription, pluck, tap } from "rxjs";
+import { DTOProduct } from '../shared/dto/DTOProduct.dto';
 @Component({
   selector: "product-list",
   templateUrl: "./product-list.component.html",
@@ -9,7 +10,7 @@ import { Observable, Subscription, pluck, tap } from "rxjs";
 })
 export class ProductListComponent implements OnInit {
   //Data declarations
-  productList: any[] = []
+  productList: DTOProduct[] = []
   categoryName: string = '';
 
   //Subscription declarations

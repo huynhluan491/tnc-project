@@ -32,7 +32,7 @@
                   align-items: center;
                   gap: 16px;
                   padding: 15px 0;
-                " [routerLink]="item.path.length > 0 ? item.path : ''">
+                " [routerLink]="item.path.length > 0 ? 'product/' + item.path : ''">
                 <img src="../../../../../assets/icon/{{ item.icon }}" />
                 <p class="item-title" [ngClass]="{ blink: item.text === 'XẢ KHO GEAR CỰC CHẤT' }">
                   {{ item.text }}
@@ -41,7 +41,6 @@
               </div>
               <ng-container *ngIf="item.items.length > 0">
                 <ul class="sub-menu-list">
-                  console.log(this.data);
                   <li [routerLink]="'product/' + subMenu.path" *ngFor="let subMenu of item.items">
                     {{ subMenu.text | uppercase }}
                   </li>
