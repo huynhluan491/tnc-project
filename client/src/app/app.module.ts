@@ -10,12 +10,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsModule } from '@progress/kendo-angular-icons';
 import { ProductModule } from './p-app/product/product.module';
+import { GridModule } from '@progress/kendo-angular-grid';
+
 
 
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, PLayoutModule, HttpClientModule, NgbModule, IconsModule],
+  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, PLayoutModule, HttpClientModule, NgbModule, IconsModule, GridModule],
   providers: [],
   bootstrap: [AppComponent],
 })

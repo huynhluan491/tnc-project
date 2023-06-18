@@ -2,15 +2,26 @@
   <box-product [data]="item"></box-product>
 </div> -->
 <app-breadcrumb [plusBreadCrumbText]="[categoryName]"></app-breadcrumb>
-<!-- <kendo-grid [data]="productList" [pageSize]="pageSize" [skip]="skip" [pageable]="true">
-  <kendo-grid-column>
-    <ng-template kendoGridCellTemplate let-dataItem>
-      <ng-container *ngTemplateOutlet="boxProductTemplate; context: { $implicit: dataItem }"></ng-container>
-    </ng-template>
-  </kendo-grid-column>
-</kendo-grid>
-<ng-template #boxProductTemplate let-dataItem>
-  <box-product [data]="dataItem"></box-product>
-</ng-template> -->
+<div class="wrapper-product-list">
+  <div class="product-list">
+    <div
+      *ngFor="
+        let data of productList
+          | paginate
+            : {
+                itemsPerPage: pageSize,
+                currentPage: page,
+                totalItems: totalItems
+              }
+      "
+    >
+      <box-product [data]="data"></box-product>
+    </div>
+  </div>
 
-<div *ngFor="let data of productList">{{ data.name }}</div>
+  <div class="wrapper-pagination">
+    <pagination-controls
+      (pageChange)="handlePageChange($event)"
+    ></pagination-controls>
+  </div>
+</div>
