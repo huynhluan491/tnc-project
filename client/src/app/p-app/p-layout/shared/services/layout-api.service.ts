@@ -13,19 +13,8 @@ export class LayoutAPIService {
     brandURL = "https://api.npoint.io/a988b55c50ff8b1eebd1";
     categoryURL = "https://api.npoint.io/87d82e14eac1dfbd0360";
     productURL = "https://api.npoint.io/9859e399349e166c5721";
-    productURLC =  "https://localhost:44355/api/Product/ProductFilter"
+
     //Chưa chỉnh lại res từ api nên chưa gán DTO được
-    PostProducts(){
-      return new Observable<any>((obs) =>{
-        this.http.post<any>(this.productURLC,{}).subscribe((res) => {
-            obs.next(res);
-            obs.complete();
-        }, (err) => {
-            obs.error(err);
-            obs.complete();
-        })
-    })
-    }
     GetProducts() {
         return new Observable<any>((obs) => {
             this.http.get<any>(this.productURL).subscribe((res) => {

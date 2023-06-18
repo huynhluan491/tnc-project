@@ -23,11 +23,13 @@ export class BreadcrumbComponent implements OnInit {
   items: BreadCrumbItem[] = [...defaultItems];
 
   //truyền param từ url của giao diện 
-  @Input() plusBreadCrumbText: string = '';
+  @Input() plusBreadCrumbText: string[] = [];
 
   ngOnInit(): void {
-    if (Ps_UtilObjectService.hasValueString(this.plusBreadCrumbText)) {
-      this.items.push({ text: this.plusBreadCrumbText, title: this.plusBreadCrumbText });
+    if (Ps_UtilObjectService.hasListValue(this.plusBreadCrumbText)) {
+      this.plusBreadCrumbText.forEach(item => {
+        this.items.push({ text: item, title: item });
+      })
     }
   }
 }
