@@ -21,11 +21,11 @@ export class BoxProductComponent implements OnChanges{
     }
   }
   private calculateSalePrice(): void {
-    this.salePrice = this['data'].basePrice - (this['data'].basePrice * this['data'].salePercentage);
+    this.salePrice =  this['data'].basePrice ? this['data'].basePrice - (this['data'].basePrice * this['data'].salePercentage) : 0;
   }
 
   private convertToPercentage(): string {
-    this.saleConvert = (this['data'].salePercentage * -100 ).toString() + "%"
+    this.saleConvert = this['data'].salePercentage ? (this['data'].salePercentage * -100 ).toString() + "%" : "0"
     return this.saleConvert
   }
 }

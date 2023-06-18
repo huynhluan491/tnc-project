@@ -1,19 +1,25 @@
 <div class="swiper-slide">
   <div class="wrapper">
     <div class="avatar-product">
-      <img [src]="data.srcAvaterProduct" />
+      <img [src]="data?.srcAvatarProduct" />
     </div>
     <div [class]="inforProduct">
       <div class="title-product">
         <span>{{ data?.name }}</span>
       </div>
       <div class="rating">
-        <ngb-rating [(rate)]="selected" (hover)="hovered = $event" (leave)="hovered = 0" [readonly]="readonly"
-          [max]="'5'" [ariaSetSize]="'30px'"></ngb-rating>
+        <ngb-rating
+          [(rate)]="selected"
+          (hover)="hovered = $event"
+          (leave)="hovered = 0"
+          [readonly]="readonly"
+          [max]="'5'"
+          [ariaSetSize]="'30px'"
+        ></ngb-rating>
       </div>
       <div class="price-product">
         <span class="sale-price">{{ salePrice | number : "1.0-0" }} đ</span>
-        <span class="base-price">{{ data.basePrice }} đ</span>
+        <span class="base-price">{{ data?.basePrice }} đ</span>
       </div>
       <div class="buy-now">
         <buy-now></buy-now>
