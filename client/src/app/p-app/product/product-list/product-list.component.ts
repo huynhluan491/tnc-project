@@ -13,32 +13,15 @@ export class ProductListComponent implements OnInit{
   public pageSize = 5;
   public skip = 0;
   ngOnInit(){
-   //this.PostProducts(); -- test api c#
+
    this.getProducts()
   }
-  // -- test api c#
-  // PostProducts() {
-  //   this.getListProduct_sst = this.layoutAPIService
-  //     .PostProducts()
-  //     .subscribe((res) => {
-  //       this.data ={
-
-
-  //         filteredItems : [...res.filteredItems]
-
-
-  //       };
-  //       console.log(this.data);
-  //     });
-
-  //   }
-
 
   getProducts() {
        this.getListProduct_sst = this.layoutAPIService
         .GetProducts()
         .subscribe((res) => {
-          this.data = [...res.filteredItems]
+          this.data = [...res]
           console.log(this.data);
         });
 

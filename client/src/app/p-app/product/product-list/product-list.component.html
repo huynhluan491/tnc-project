@@ -1,15 +1,25 @@
 <!-- <div *ngFor="let item of data">
   <box-product [data]="item"></box-product>
 </div> -->
-<kendo-grid [data]="data" [pageSize]="pageSize" [skip]="skip" [pageable]="true">
-  <kendo-grid-column>
-    <ng-template kendoGridCellTemplate let-dataItem>
-      <ng-container
-        *ngTemplateOutlet="boxProductTemplate; context: { $implicit: dataItem }"
-      ></ng-container>
-    </ng-template>
-  </kendo-grid-column>
-</kendo-grid>
+<div>
+  <kendo-grid
+    [data]="data"
+    [pageSize]="pageSize"
+    [skip]="skip"
+    [pageable]="true"
+  >
+    <kendo-grid-column>
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <ng-container
+          *ngTemplateOutlet="
+            boxProductTemplate;
+            context: { $implicit: dataItem }
+          "
+        ></ng-container>
+      </ng-template>
+    </kendo-grid-column>
+  </kendo-grid>
+</div>
 <ng-template #boxProductTemplate let-dataItem>
   <box-product [data]="dataItem"></box-product>
 </ng-template>
