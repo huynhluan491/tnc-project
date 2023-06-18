@@ -1,8 +1,32 @@
+
+.wrapper{
+  display: flex;
+}
+.wrapper-filter{
+  width: 22%;
+}
+
 .wrapper-product-list{
   display: flex;
   flex-direction: column;
+  width: 77%;
 }
-.product-list{
+.box-products{
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+.product-list ,.title-sort{
   display: flex;
   flex-wrap: wrap;
+  margin-left: 0.7rem;
+}
+.title-sort{
+  flex-wrap: nowrap;
+
+}
+.wrapper-pagination{
+  display: flex;
+  justify-content: flex-end;
+  margin: 2.5rem 1rem;
 }

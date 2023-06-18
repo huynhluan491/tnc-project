@@ -14,6 +14,11 @@ export class BoxProductComponent implements OnChanges{
 	hovered = 0;
 	readonly = true;
   inforProduct = "infor-product"
+  ngOnInit(): void {
+    this.calculateSalePrice();
+    this.convertToPercentage()
+
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data'] && this['data']) {
       this.calculateSalePrice();
@@ -21,11 +26,11 @@ export class BoxProductComponent implements OnChanges{
     }
   }
   private calculateSalePrice(): void {
-    this.salePrice = this['data'].basePrice - (this['data'].basePrice * this['data'].salePercentage);
+    this.salePrice =this['data'].sale ? this['data'].price - (this['data'].price * this['data'].sale) :  this['data'].price;
   }
 
   private convertToPercentage(): string {
-    this.saleConvert = (this['data'].salePercentage * -100 ).toString() + "%"
+    this.saleConvert = (this['data'].sale * -100 ).toString() + "%"
     return this.saleConvert
   }
 }

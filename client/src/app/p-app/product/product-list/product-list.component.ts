@@ -18,7 +18,7 @@ export class ProductListComponent implements OnInit {
 
   //Paginate declarations
   page= 1
-  pageSize = 5
+  pageSize = 10
   totalItems = 0
 
   constructor(private layoutAPIService: LayoutAPIService, private route: ActivatedRoute) { }

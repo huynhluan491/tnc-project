@@ -48,7 +48,7 @@ const ProductSchema = new ModelSchema(
     }),
     sale: new ModelSchemaValidator({
       name: "sale",
-      sqlType: sql.NVarChar,
+      sqlType: sql.Float,
       default: "",
     }),
     description: new ModelSchemaValidator({

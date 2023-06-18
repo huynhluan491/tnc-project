@@ -1,5 +1,5 @@
 -- use master
--- drop database PhoneShop
+-- drop database TNCShop
 
 create database TNCShop
 go
@@ -33,7 +33,7 @@ create table Product
 	price float not null,
 	brandID int constraint FK_Product_brand references Brand(brandID) not null,
 	image nvarchar(max),
-	sale nvarchar(100) ,
+	sale float ,
 	description nvarchar(max),
 	createdAt datetime default CURRENT_TIMESTAMP not null
 )
@@ -101,11 +101,6 @@ create table Feature
 )
 go
 
--- create table Bill (
--- 	billID int identity(1,1) primary key,
--- 	cartID int constraint FK_BIll_Cart_Product references Cart_Product(cartID)
--- )
-
 go
 CREATE TRIGGER tr_product_delete
 ON product
@@ -125,18 +120,6 @@ BEGIN
 END;
 
 go
-
--- CREATE TRIGGER tr_product_create
--- ON product
--- AFTER INSERT
--- AS
--- BEGIN
--- 	INSERT INTO Rating(_5star,_4star,_3star,_2star,_1star,productID)
---   	VALUES (0,0,0,0,0,(SELECT inserted.productID FROM inserted))
--- END;
-
-
--- go
 
 CREATE TRIGGER tr_user_delete
 ON users

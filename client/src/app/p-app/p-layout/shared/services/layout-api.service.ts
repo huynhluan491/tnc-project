@@ -12,7 +12,7 @@ export class LayoutAPIService {
     constructor(private http: HttpClient) { }
     brandURL = "https://api.npoint.io/a988b55c50ff8b1eebd1";
     categoryURL = "https://api.npoint.io/87d82e14eac1dfbd0360";
-    productURL = "https://api.npoint.io/9859e399349e166c5721";
+    productURL = "https://api.npoint.io/20b043a1de7e8325bdd4";
     filterProductURL = "http://localhost:3001/api/v1/product/"
     //Chưa chỉnh lại res từ api nên chưa gán DTO được
     GetProducts() {

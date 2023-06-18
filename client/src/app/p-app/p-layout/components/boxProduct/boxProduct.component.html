@@ -8,18 +8,26 @@
         <span>{{ data?.name }}</span>
       </div>
       <div class="rating">
-        <ngb-rating [(rate)]="selected" (hover)="hovered = $event" (leave)="hovered = 0" [readonly]="readonly"
-          [max]="'5'" [ariaSetSize]="'30px'"></ngb-rating>
+        <ngb-rating
+          [(rate)]="selected"
+          (hover)="hovered = $event"
+          (leave)="hovered = 0"
+          [readonly]="readonly"
+          [max]="'5'"
+          [ariaSetSize]="'30px'"
+        ></ngb-rating>
       </div>
       <div class="price-product">
         <span class="sale-price">{{ salePrice | number : "1.0-0" }} đ</span>
-        <span class="base-price">{{ data.basePrice }} đ</span>
+        <span *ngIf="data.sale" class="base-price"
+          >{{ data.price | number : "1.0-0" }} đ</span
+        >
       </div>
       <div class="buy-now">
         <buy-now></buy-now>
       </div>
     </div>
-    <div class="percentage-sale">
+    <div *ngIf="data.sale" class="percentage-sale">
       <span>{{ saleConvert }}</span>
     </div>
   </div>

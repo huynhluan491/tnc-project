@@ -18,6 +18,7 @@ import { MenusModule } from '@progress/kendo-angular-menu';
 import { BreadCrumbModule, NavigationModule } from "@progress/kendo-angular-navigation";
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { CartComponent } from './components/cart/cart.component';
+import { dropdownFilterComponent } from './components/dropdown-filter/dropdown-filter.component';
 @NgModule({
   declarations: [
     LayoutDefault,
@@ -28,7 +29,8 @@ import { CartComponent } from './components/cart/cart.component';
     SliderContainerComponent,
     CategoryItemComponent,
     BreadcrumbComponent,
-    CartComponent
+    CartComponent,
+    dropdownFilterComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +39,7 @@ import { CartComponent } from './components/cart/cart.component';
     BoxProductModule,
     MenusModule,
     NavigationModule,
+
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   exports: [
@@ -48,7 +51,8 @@ import { CartComponent } from './components/cart/cart.component';
     SlickCarouselModule,
     SliderContainerComponent,
     CategoryItemComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    dropdownFilterComponent
   ],
 })
 export class PLayoutModule { }
