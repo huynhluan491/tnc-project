@@ -1,5 +1,3 @@
-import { ProductAPIService } from './shared/services/product-api.service';
-import { ProductListComponent } from './product-list/product-list.component';
 import {
   NgModule,
   CUSTOM_ELEMENTS_SCHEMA,
@@ -8,12 +6,13 @@ import {
 import { CommonModule } from '@angular/common';
 import { ProductComponent } from './product.component';
 import { PLayoutModule } from '../p-layout/p-layout.module';
-import { BoxProductModule } from '../p-layout/components/boxProduct/boxProduct.module';
-import { GridModule } from '@progress/kendo-angular-grid';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { ProductRoutingModule } from './product-routing.module';
+import { ProductListComponent } from './product-list/product-list.component';
 
 @NgModule({
-  declarations: [ProductComponent,],
-  imports: [CommonModule, PLayoutModule,BoxProductModule,GridModule ],
+  declarations: [ProductComponent, ProductDetailComponent, ProductListComponent],
+  imports: [CommonModule, PLayoutModule, ProductRoutingModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   exports: [],
 })

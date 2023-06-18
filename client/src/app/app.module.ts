@@ -15,7 +15,7 @@ import { ProductModule } from './p-app/product/product.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, HomeModule, ProductModule, PLayoutModule, HttpClientModule, NgbModule, IconsModule],
+  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, PLayoutModule, HttpClientModule, NgbModule, IconsModule],
   providers: [],
   bootstrap: [AppComponent],
 })
