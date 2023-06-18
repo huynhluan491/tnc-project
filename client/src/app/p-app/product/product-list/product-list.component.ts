@@ -16,9 +16,10 @@ export class ProductListComponent implements OnInit {
   //Subscription declarations
   getListProduct_sst: Subscription
 
-  //Grid declarations
-  public pageSize = 5;
-  public skip = 0;
+  //Paginate declarations
+  page= 1
+  pageSize = 5
+  totalItems = 0
 
   constructor(private layoutAPIService: LayoutAPIService, private route: ActivatedRoute) { }
   ngOnInit() {
@@ -28,25 +29,20 @@ export class ProductListComponent implements OnInit {
     )
     this.getProducts()
   }
-  // -- test api c#
-  // PostProducts() {
-  //   this.getListProduct_sst = this.layoutAPIService
-  //     .PostProducts()
-  //     .subscribe((res) => {
-  //       this.data ={
-  //         filteredItems : [...res.filteredItems]
-  //       };
-  //       console.log(this.data);
-  //     });
-  //   }
-
 
   getProducts() {
     this.getListProduct_sst = this.layoutAPIService
       .GetProducts()
       .subscribe((res) => {
         this.productList = [...res]
+        console.log(this.productList);
+
       });
 
   }
+  handlePageChange(event:any){
+    this.page = event
+    this.getProducts()
+  }
+
 }
