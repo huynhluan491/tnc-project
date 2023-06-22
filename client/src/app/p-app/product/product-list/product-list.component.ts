@@ -44,5 +44,7 @@ export class ProductListComponent implements OnInit {
     this.page = event
     this.getProducts()
   }
-
+  handleURL(event:string){
+    console.log('event filter URL',event)
+  }
 }

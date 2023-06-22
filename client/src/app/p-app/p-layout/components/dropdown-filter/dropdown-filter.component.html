@@ -20,8 +20,14 @@
       *ngFor="let item of itemsDropList; index as indexOfelement"
       class="dropdown-item"
     >
-      <input [id]="indexOfelement" [type]="item.type" [value]="item.name" />
-      <label [for]="indexOfelement">{{ item.name }}</label>
+      <input
+        [id]="indexOfelement"
+        [type]="item.type"
+        [value]="item.inputValue"
+        [name]="item.field"
+        (change)="handleCheck($event)"
+      />
+      <label [for]="indexOfelement">{{ item.lableName }}</label>
     </div>
   </div>
 </div>

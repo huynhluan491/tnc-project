@@ -13,17 +13,25 @@
 }
 .box-products{
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
   width: 100%;
+  margin-left: 0.7rem;
+
 }
 .product-list ,.title-sort{
   display: flex;
   flex-wrap: wrap;
-  margin-left: 0.7rem;
 }
 .title-sort{
+  display: flex;
+  flex-direction: column;
   flex-wrap: nowrap;
-
+}
+.box-lable-filter{
+  margin-top: 2rem;
+  padding: 1rem;
+  font-weight: 600;
+  background-color: #F0F3FC;
 }
 .wrapper-pagination{
   display: flex;
