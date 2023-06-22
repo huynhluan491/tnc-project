@@ -11,12 +11,13 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 import { ProductRoutingModule } from './product-routing.module';
 import { ProductListComponent } from './product-list/product-list.component';
 import { BoxProductModule } from '../p-layout/components/boxProduct/boxProduct.module';
-import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
-
+import { StarRatingModule } from 'angular-star-rating';
+import { ButtonModule } from '@progress/kendo-angular-buttons';
+import { LayoutModule } from '@progress/kendo-angular-layout';
 @NgModule({
   declarations: [ProductComponent, ProductDetailComponent, ProductListComponent],
-  imports: [CommonModule, PLayoutModule, ProductRoutingModule,GridModule,BoxProductModule,NgxPaginationModule],
+  imports: [CommonModule, PLayoutModule, ProductRoutingModule, GridModule, BoxProductModule, NgxPaginationModule, StarRatingModule.forRoot(), ButtonModule, LayoutModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   exports: [],
 })

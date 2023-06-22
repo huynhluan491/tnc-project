@@ -5,10 +5,11 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./slider-container.component.scss'],
 })
 export class SliderContainerComponent {
-  constructor() {}
+  constructor() { }
 
   @Input() slidesToShow: Number = 1;
   @Input() slidesToSCroll: Number = 1;
+  @Input() withdSubImg: Number = 384;
   @Input() autoPlay: Boolean = true;
   @Input() sliderProducts: any[] = [];
   @Input() imgs: string[] = [];

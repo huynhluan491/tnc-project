@@ -15,10 +15,12 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CategoryItemComponent } from './components/category-item/category-item.component';
 import { BoxProductModule } from './components/boxProduct/boxProduct.module';
 import { MenusModule } from '@progress/kendo-angular-menu';
-import { BreadCrumbModule, NavigationModule } from "@progress/kendo-angular-navigation";
+import { NavigationModule } from "@progress/kendo-angular-navigation";
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { CartComponent } from './components/cart/cart.component';
 import { dropdownFilterComponent } from './components/dropdown-filter/dropdown-filter.component';
+import { PercentagePipe } from './shared/pipe/percentage.pipe';
+import { LayoutModule } from '@progress/kendo-angular-layout';
 @NgModule({
   declarations: [
     LayoutDefault,
@@ -30,7 +32,8 @@ import { dropdownFilterComponent } from './components/dropdown-filter/dropdown-f
     CategoryItemComponent,
     BreadcrumbComponent,
     CartComponent,
-    dropdownFilterComponent
+    dropdownFilterComponent,
+    PercentagePipe
   ],
   imports: [
     CommonModule,
@@ -39,7 +42,7 @@ import { dropdownFilterComponent } from './components/dropdown-filter/dropdown-f
     BoxProductModule,
     MenusModule,
     NavigationModule,
-
+    LayoutModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   exports: [
@@ -52,7 +55,8 @@ import { dropdownFilterComponent } from './components/dropdown-filter/dropdown-f
     SliderContainerComponent,
     CategoryItemComponent,
     BreadcrumbComponent,
-    dropdownFilterComponent
+    dropdownFilterComponent,
+    PercentagePipe
   ],
 })
 export class PLayoutModule { }

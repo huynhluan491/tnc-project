@@ -87,7 +87,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   //Subscriptions
   getSlidersProduct_sst: Subscription;
 
-  constructor(private layoutAPIService: LayoutAPIService) {}
+  constructor(private layoutAPIService: LayoutAPIService) { }
 
   ngOnInit() {
     this.getProducts();
