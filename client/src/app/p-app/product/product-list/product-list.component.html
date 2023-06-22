@@ -5,10 +5,15 @@
 <div class="wrapper">
   <div class="wrapper-filter">
     <div><span>Filter</span></div>
-    <div class="box-filter">
-      <dropdown-filter (filterURL)="handleURL($event)"> </dropdown-filter>
-      <dropdown-filter filterbyPrice="true"> </dropdown-filter>
-      <dropdown-filter> </dropdown-filter>
+    <div class="box-filter" *ngFor="let item of dataDropdownItems">
+      <dropdown-filter
+        [itemsDropList]="item"
+        (filterURL)="handleURL($event)"
+        (queryFilter)="handleLableFilter($event)"
+      >
+      </dropdown-filter>
+      <!-- <dropdown-filter filterbyPrice="true"> </dropdown-filter> -->
+      <!-- <dropdown-filter> </dropdown-filter> -->
     </div>
   </div>
   <div class="wrapper-product-list">
@@ -16,8 +21,16 @@
       <div>title --- sort</div>
     </div>
     <div class="box-products">
-      <div class="box-lable-filter">
+      <div
+        *ngIf="arrLableFilter && arrLableFilter.length > 0"
+        class="box-lable-filter"
+      >
         <span>Lọc theo:</span>
+        <div *ngFor="let item of arrLableFilter">
+          <ng-container
+            *ngTemplateOutlet="itemBoxLableFilter; context: { $implicit: item }"
+          ></ng-container>
+        </div>
       </div>
       <div class="product-list">
         <div
@@ -46,6 +59,13 @@
   </div>
 </div>
 
-<ng-template #name>
-  <span></span>
+<ng-template #itemBoxLableFilter let-item>
+  <div class="item-lable-filter">
+    <span>{{ item }}</span
+    ><img
+      src="../../../../assets/icon/close.png"
+      alt="close-icon"
+      (click)="handleCloseFilter(item)"
+    />
+  </div>
 </ng-template>

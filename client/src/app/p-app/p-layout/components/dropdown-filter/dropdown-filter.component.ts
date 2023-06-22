@@ -20,26 +20,7 @@ export class dropdownFilterComponent {
   @Input() activeSearch: boolean = false;
   @Input() titleFilter: string = 'default';
   @Input() placeholderSearch: string = `Tìm ${this.titleFilter}`;
-  @Input() itemsDropList: any[] = [
-    {
-      type: 'checkbox',
-      inputValue: 'field value',
-      field: 'query field',
-      lableName: 'lable',
-    },
-    {
-      type: 'checkbox',
-      inputValue: 'field value',
-      field: 'query field',
-      lableName: 'lable',
-    },
-    {
-      type: 'checkbox',
-      inputValue: 'field value',
-      field: 'query field',
-      lableName: 'lable',
-    },
-  ];
+  @Input() itemsDropList: any[] = [];
 
   @Output() filterURL = new EventEmitter<string>();
   @Output() queryFilter = new EventEmitter<any[]>();
