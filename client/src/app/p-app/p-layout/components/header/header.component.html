@@ -11,7 +11,11 @@
           <img src="../../../../../assets/img/tnc-logo.svg" />
         </div>
         <form class="search-box">
-          <input class="search-input" type="text" placeholder="Nhập sản phẩm cần tìm.." />
+          <input
+            class="search-input"
+            type="text"
+            placeholder="Nhập sản phẩm cần tìm.."
+          />
           <div class="search-button">
             <img src="../../../.././../assets/icon/search-icon.svg" />
           </div>
@@ -27,21 +31,35 @@
         <div class="header-nav-list">
           <div class="header-nav-items-left">
             <div class="header-item-left" *ngFor="let item of headerMenuItems">
-              <div style="
+              <div
+                style="
                   display: flex;
                   align-items: center;
                   gap: 16px;
                   padding: 15px 0;
-                " [routerLink]="item.path.length > 0 ? 'product/' + item.path : ''">
+                "
+                [routerLink]="
+                  item.path.length > 0 ? 'product/' + item.path : ''
+                "
+              >
                 <img src="../../../../../assets/icon/{{ item.icon }}" />
-                <p class="item-title" [ngClass]="{ blink: item.text === 'XẢ KHO GEAR CỰC CHẤT' }">
+                <p
+                  class="item-title"
+                  [ngClass]="{ blink: item.text === 'XẢ KHO GEAR CỰC CHẤT' }"
+                >
                   {{ item.text }}
                 </p>
-                <span [hidden]="!(item.items.length > 0)" class="k-icon k-i-arrow-chevron-down"></span>
+                <span
+                  [hidden]="!(item.items.length > 0)"
+                  class="k-icon k-i-arrow-chevron-down"
+                ></span>
               </div>
               <ng-container *ngIf="item.items.length > 0">
                 <ul class="sub-menu-list">
-                  <li [routerLink]="'product/' + subMenu.path" *ngFor="let subMenu of item.items">
+                  <li
+                    [routerLink]="'product/' + subMenu.path"
+                    *ngFor="let subMenu of item.items"
+                  >
                     {{ subMenu.text | uppercase }}
                   </li>
                 </ul>
@@ -50,8 +68,10 @@
           </div>
           <div class="header-navigation-right">
             <img src="../../../../../assets/icon/fb-icon.svg" />
-            <img src="../../../../../assets/icon/instagram-icon.svg
-            " />
+            <img
+              src="../../../../../assets/icon/instagram-icon.svg
+            "
+            />
             <img src="../../../../../assets/icon/yt-icon.svg" />
             <img src="../../../../../assets/icon/png-xanh.png" />
           </div>
@@ -60,6 +80,9 @@
     </div>
   </div>
   <div (click)="toggleCart()" *ngIf="cartShown" class="cart-background">
-    <app-cart (click)="$event.stopPropagation()" class="cart-container"></app-cart>
+    <app-cart
+      (click)="$event.stopPropagation()"
+      class="cart-container"
+    ></app-cart>
   </div>
 </div>

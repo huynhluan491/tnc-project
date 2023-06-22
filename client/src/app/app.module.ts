@@ -12,16 +12,24 @@ import { GridModule } from '@progress/kendo-angular-grid';
 import { HomeModule } from './p-app/home/home.module';
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { LayoutModule } from '@progress/kendo-angular-layout';
-
-
-
-
-
+import { CartCheckoutComponent } from './p-app/cart-checkout/cart-checkout.component';
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, PLayoutModule, HomeModule, HttpClientModule, NgbModule, IconsModule, GridModule, ButtonsModule, LayoutModule],
+  declarations: [AppComponent, CartCheckoutComponent],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    PLayoutModule,
+    HomeModule,
+    HttpClientModule,
+    NgbModule,
+    IconsModule,
+    GridModule,
+    ButtonsModule,
+    LayoutModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

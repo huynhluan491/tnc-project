@@ -1,0 +1,23 @@
+.steps-container {
+  display: flex;
+  width: 60%;
+  padding-left: 3.5rem;
+  justify-content: space-between;
+
+  .step-wrapper {
+    background-color: #135ec4;
+    font-weight: 700;
+    font-size: 18px;
+    padding: 7px 0;
+    width: 32%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .step-title {
+      color: #fff;
+      font-size: 1.5rem;
+      transform: skewX(20deg);
+    }
+  }
+}
