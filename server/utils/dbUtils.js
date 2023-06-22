@@ -219,9 +219,6 @@ exports.getFilterProductsQuery = (
     filterStr = "";
     let i = 0;
 
-    if (filter["brandID"]) {
-      filterStr += "join brand on brand.brandID = product.brandID ";
-    }
     if (filter["categoryID"]) {
       filterStr += "join category on category.categoryID = product.categoryID";
     }
