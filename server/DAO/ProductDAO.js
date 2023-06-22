@@ -1,6 +1,7 @@
 // const products = require("../../client/src/data/products.json");
 const sql = require("mssql");
 const ProductSchema = require("../model/Product");
+const BrandSchema = require("../model/Brand")
 const RatingSchema = require("../model/Rating");
 const dbConfig = require("../database/dbconfig");
 const dbUtils = require("../utils/dbUtils");
@@ -91,7 +92,8 @@ exports.getAllProducts = async (filter) => {
   if (pageSize > StaticData.config.MAX_PAGE_SIZE) {
     pageSize = StaticData.config.MAX_PAGE_SIZE;
   }
-  let selectQuery = `SELECT * FROM ${ProductSchema.schemaName}`;
+  let selectQuery = `SELECT ${ProductSchema.schemaName}.*, ${BrandSchema.schemaName}.brandName FROM ${ProductSchema.schemaName}
+  join ${BrandSchema.schemaName} on ${BrandSchema.schemaName}.brandID = ${ProductSchema.schemaName}.brandID `;
   let countQuery = `SELECT COUNT(DISTINCT ${ProductSchema.schema.productID.name}) as totalItem from ${ProductSchema.schemaName}`;
 
   const { filterStr, paginationStr } = dbUtils.getFilterProductsQuery(
@@ -113,11 +115,10 @@ exports.getAllProducts = async (filter) => {
     selectQuery += " " + paginationStr;
   }
 
-  // console.log(selectQuery);
+  console.log("selectQuery filter product",selectQuery);
 
   const result = await dbConfig.db.pool.request().query(selectQuery);
   let countResult = await dbConfig.db.pool.request().query(countQuery);
-  console.log(selectQuery);
   let totalProduct = 0;
   if (countResult.recordsets[0].length > 0) {
     totalProduct = countResult.recordsets[0][0].totalItem;

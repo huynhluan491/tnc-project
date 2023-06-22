@@ -29,10 +29,35 @@
 }
 .box-lable-filter{
   margin-top: 2rem;
-  padding: 1rem;
+  padding: 0.5rem;
   font-weight: 600;
   background-color: #F0F3FC;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
+
+.item-lable-filter{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.7rem 1rem;
+  padding: 1rem;
+  font-size: 1.2rem;
+  min-width: 100px;
+  background-color: #fff;
+  border: 1px solid #929292;
+  img{
+    object-fit: cover;
+    height: 11px;
+    width: 11px;
+    margin-left: 0.7rem;
+    cursor: pointer;
+  }
+}
+
+
+
 .wrapper-pagination{
   display: flex;
   justify-content: flex-end;
