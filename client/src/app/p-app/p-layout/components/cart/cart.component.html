@@ -1,10 +1,93 @@
 <div class="cart-container">
-  <p class="cart-title">Bạn đang có 0 sản phẩm trong giỏ hàng</p>
+  <div *ngIf="!checkout">
+    <p class="cart-title">Bạn đang có 0 sản phẩm trong giỏ hàng</p>
+  </div>
   <div class="cart-content">
     <div class="cart-item-wrapper">
-      Bạn đang không có sản phẩm nào <br />
-      trong giỏ hàng.
+      <div *ngIf="checkout" class="steps-container">
+        <div class="step-wrapper step1">
+          <p class="step-title">1. Chọn sản phẩm</p>
+        </div>
+        <div class="step-wrapper step2">
+          <p class="step-title">2. Xác nhận đơn hàng</p>
+        </div>
+        <div class="step-wrapper step3">
+          <p class="step-title">3. Thanh toán</p>
+        </div>
+      </div>
+      <p *ngIf="checkout" class="cart-item-title">THÔNG TIN SẢN PHẨM</p>
+      <div *ngIf="productList == 0; else product" class="cart-item-sub-wrapper">
+        <p class="cart-item-placeholder">
+          Bạn đang không có sản phẩm nào <br />
+          trong giỏ hàng.
+        </p>
+      </div>
+      <ng-template #product>
+        <div class="cart-item-sub-wrapper2">
+          <div class="cart-item-img-wrapper">
+            <img
+              src="https://www.tncstore.vn/image/cache/catalog/CPU/12100f/cpu-intel-core-i3-12100f-1-228x228.jpg"
+              class="cart-item-img"
+            />
+          </div>
+          <div class="cart-item-info-wrapper">
+            <p class="cart-item-info-title">
+              CPU Intel Core i3-12100F 4C/8T (3.3 Ghz up to 4.3GHz, 12MB,
+              LGA1700, Alder Lake) Hàng NK
+            </p>
+            <p class="cart-item-info-price">2.290.000 đ</p>
+            <div class="cart-item-sub-info">
+              <div class="cart-item-quantity-wrapper">
+                <p class="cart-item-quantity-title">Số lượng</p>
+                <div class="cart-item-quantity-sub">-</div>
+                <p class="cart-item-quantity-value">1</p>
+                <div class="cart-item-quantity-add">+</div>
+              </div>
+              <div class="cart-item-delete-btn">
+                <svg
+                  width="14"
+                  height="16"
+                  viewBox="0 0 18 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1.5 5H3.16667H16.5"
+                    stroke="#005EC4"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                  <path
+                    d="M5.66602 4.99984V3.33317C5.66602 2.89114 5.84161 2.46722 6.15417 2.15466C6.46673 1.8421 6.89066 1.6665 7.33268 1.6665H10.666C11.108 1.6665 11.532 1.8421 11.8445 2.15466C12.1571 2.46722 12.3327 2.89114 12.3327 3.33317V4.99984M14.8327 4.99984V16.6665C14.8327 17.1085 14.6571 17.5325 14.3445 17.845C14.032 18.1576 13.608 18.3332 13.166 18.3332H4.83268C4.39065 18.3332 3.96673 18.1576 3.65417 17.845C3.34161 17.5325 3.16602 17.1085 3.16602 16.6665V4.99984H14.8327Z"
+                    stroke="#005EC4"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                  <path
+                    d="M7.33398 9.1665V14.1665"
+                    stroke="#005EC4"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                  <path
+                    d="M10.666 9.1665V14.1665"
+                    stroke="#005EC4"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+                <p class="cart-item-delete-title">XÓA</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
     </div>
+
     <div class="cart-info-wrapper">
       <div class="cart-info-sub-wrapper">
         <p class="cart-info-title">Thông tin giỏ hàng</p>
@@ -17,9 +100,18 @@
           <p class="cart-info-total-no">1.234.567 đ</p>
         </div>
         <p class="cart-info-tax">Đã bao gồm VAT (nếu có)</p>
-        <div class="checkout-btn-wrapper">
+        <div
+          [routerLink]="'cart'"
+          *ngIf="!checkout; else elseBlock"
+          class="checkout-btn-wrapper"
+        >
           <p class="checkout-btn-txt">ĐẾN GIỎ HÀNG</p>
         </div>
+        <ng-template #elseBlock>
+          <div class="checkout-btn-wrapper">
+            <p class="checkout-btn-txt">XÁC NHẬN ĐƠN HÀNG</p>
+          </div>
+        </ng-template>
         <div class="delete-btn-wrapper">
           <p class="delete-btn-txt">XÓA GIỎ HÀNG</p>
         </div>
