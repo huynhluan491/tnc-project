@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, SkipSelf } from '@angular/core';
 import { LayoutAPIService } from '../p-layout/shared/services/layout-api.service';
 import { map } from 'rxjs';
 
@@ -9,10 +9,12 @@ import { map } from 'rxjs';
 })
 export class CartCheckoutComponent {
   sliderProducts: any[] = [];
+
+  constructor(@SkipSelf() private layoutAPIService: LayoutAPIService) {}
+
   products$ = this.layoutAPIService.GetProducts().pipe(
     map((products) => {
       return products.slice(0, 15);
     })
   );
-  constructor(private layoutAPIService: LayoutAPIService) {}
 }
