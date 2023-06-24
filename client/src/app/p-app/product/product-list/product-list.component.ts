@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription, pluck, tap } from 'rxjs';
 import { DTOProduct } from '../shared/dto/DTOProduct.dto';
+import { arrayBrand } from './product-list-dataDropdownFilter';
 @Component({
   selector: 'product-list',
   templateUrl: './product-list.component.html',
@@ -13,28 +14,12 @@ export class ProductListComponent implements OnInit {
   productList: DTOProduct[] = [];
   categoryName: string = '';
   arrLableFilter: string[];
-  dataDropdownItems: any[] = [
-    [
-      {
-        type: 'checkbox',
-        inputValue: 'field value',
-        field: 'query field',
-        lableName: 'lable',
-      },
-      {
-        type: 'checkbox',
-        inputValue: 'field value',
-        field: 'query field',
-        lableName: 'lable',
-      },
-      {
-        type: 'checkbox',
-        inputValue: 'field value',
-        field: 'query field',
-        lableName: 'lable',
-      },
-    ],
-  ];
+  listDataASC = ['Giá ( Thấp - Cao )', 'Giá ( Cao - Thấp )'];
+  selectedValue = ' Giá ( Thấp - Cao )';
+  BrandsFilter = {
+    titleFilter: '',
+  };
+  dataDropdownItems: any[] = [this.BrandsFilter];
   //Subscription declarations
   getListProduct_sst: Subscription;
 
@@ -76,6 +61,7 @@ export class ProductListComponent implements OnInit {
   }
   handleCloseFilter(item) {
     this.arrLableFilter = this.arrLableFilter.filter((i) => i !== item);
-    console.log(this.arrLableFilter);
+    item.checked = false;
+    //this.console.log(this.arrLableFilter);
   }
 }

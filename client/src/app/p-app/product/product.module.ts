@@ -15,11 +15,26 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { StarRatingModule } from 'angular-star-rating';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { LayoutModule } from '@progress/kendo-angular-layout';
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 @NgModule({
-  declarations: [ProductComponent, ProductDetailComponent, ProductListComponent],
-  imports: [CommonModule, PLayoutModule, ProductRoutingModule, GridModule, BoxProductModule, NgxPaginationModule, StarRatingModule.forRoot(), ButtonModule, LayoutModule],
+  declarations: [
+    ProductComponent,
+    ProductDetailComponent,
+    ProductListComponent,
+  ],
+  imports: [
+    CommonModule,
+    PLayoutModule,
+    ProductRoutingModule,
+    GridModule,
+    BoxProductModule,
+    NgxPaginationModule,
+    // StarRatingModule.forRoot(),
+    ButtonModule,
+    LayoutModule,
+    DropDownsModule,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   exports: [],
 })
-export class ProductModule { }
-
+export class ProductModule {}

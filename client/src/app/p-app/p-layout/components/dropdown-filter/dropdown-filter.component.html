@@ -25,6 +25,7 @@
         [type]="item.type"
         [value]="item.inputValue"
         [name]="item.field"
+        [checked]="item.checked"
         (change)="handleCheck($event)"
       />
       <label [for]="indexOfelement">{{ item.lableName }}</label>

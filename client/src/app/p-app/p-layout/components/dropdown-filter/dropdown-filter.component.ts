@@ -49,7 +49,8 @@ export class dropdownFilterComponent {
         ));
     this.filterURL.emit(this.query);
     this.lableFilter.push(
-      this.itemsDropList[parseInt(event.target.id)].lableName
+      // this.itemsDropList[parseInt(event.target.id)].lableName
+      this.itemsDropList[parseInt(event.target.id)]
     );
     console.log(this.lableFilter);
 

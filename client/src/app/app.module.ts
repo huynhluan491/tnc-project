@@ -13,6 +13,8 @@ import { HomeModule } from './p-app/home/home.module';
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { LayoutModule } from '@progress/kendo-angular-layout';
 import { CartCheckoutComponent } from './p-app/cart-checkout/cart-checkout.component';
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+
 
 @NgModule({
   declarations: [AppComponent, CartCheckoutComponent],
@@ -28,6 +30,7 @@ import { CartCheckoutComponent } from './p-app/cart-checkout/cart-checkout.compo
     GridModule,
     ButtonsModule,
     LayoutModule,
+    DropDownsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
