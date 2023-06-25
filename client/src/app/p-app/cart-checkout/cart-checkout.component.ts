@@ -1,20 +1,35 @@
-import { Component, SkipSelf } from '@angular/core';
+import { Component, OnDestroy, OnInit, SkipSelf } from '@angular/core';
 import { LayoutAPIService } from '../p-layout/shared/services/layout-api.service';
-import { map } from 'rxjs';
+import { Subject, filter, map, takeUntil } from 'rxjs';
+import { DTOProduct } from '../product/shared/dto/DTOProduct.dto';
 
 @Component({
   selector: 'app-cart-checkout',
   templateUrl: './cart-checkout.component.html',
   styleUrls: ['./cart-checkout.component.scss'],
 })
-export class CartCheckoutComponent {
-  sliderProducts: any[] = [];
+export class CartCheckoutComponent implements OnInit, OnDestroy {
+  sliderProducts: DTOProduct[] = [];
 
-  constructor(@SkipSelf() private layoutAPIService: LayoutAPIService) {}
+  private unsubscription$ = new Subject<void>();
 
-  products$ = this.layoutAPIService.GetProducts().pipe(
-    map((products) => {
-      return products.slice(0, 15);
-    })
-  );
+  constructor(@SkipSelf() private layoutAPIService: LayoutAPIService) { }
+
+  ngOnInit(): void {
+    this.GetListFilteredProduct();
+  }
+
+  GetListFilteredProduct() {
+    this.layoutAPIService.GetProducts().pipe(
+      filter(res => res.length > 0),
+      takeUntil(this.unsubscription$)
+    ).subscribe(
+      res => this.sliderProducts = [...res.slice(0, 15)]
+    )
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscription$.next();
+    this.unsubscription$.complete();
+  }
 }

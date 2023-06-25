@@ -46,7 +46,7 @@ export class ProductListComponent implements OnInit {
   constructor(
     private layoutAPIService: LayoutAPIService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
   ngOnInit() {
     this.route.params.pipe(
       pluck('categoryname'),
@@ -59,7 +59,7 @@ export class ProductListComponent implements OnInit {
     this.getListProduct_sst = this.layoutAPIService
       .GetProducts()
       .subscribe((res) => {
-        this.productList = [...res];
+        this.productList = [...res.data];
         console.log(this.productList);
       });
   }
