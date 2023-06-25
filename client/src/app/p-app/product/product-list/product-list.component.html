@@ -4,7 +4,7 @@
 <app-breadcrumb [plusBreadCrumbText]="[categoryName]"></app-breadcrumb>
 <div class="wrapper">
   <div class="wrapper-filter">
-    <div><span>Filter</span></div>
+    <div class="title-filter"><span>Bộ lọc sản phẩm</span></div>
     <div class="box-filter" *ngFor="let item of dataDropdownItems">
       <dropdown-filter
         [itemsDropList]="item"
@@ -12,13 +12,24 @@
         (queryFilter)="handleLableFilter($event)"
       >
       </dropdown-filter>
-      <!-- <dropdown-filter filterbyPrice="true"> </dropdown-filter> -->
+      <!-- <dropdown-filter activeSearch="true"> </dropdown-filter> -->
       <!-- <dropdown-filter> </dropdown-filter> -->
     </div>
   </div>
   <div class="wrapper-product-list">
     <div class="title-sort">
       <div>title --- sort</div>
+      <div class="orderby">
+        <span>Sắp xếp theo :</span>
+        <div class="box-dropdown-order-by">
+          <kendo-dropdownlist
+            [data]="listDataASC"
+            [value]="selectedValue"
+            class="dropdown-order-by"
+          >
+          </kendo-dropdownlist>
+        </div>
+      </div>
     </div>
     <div class="box-products">
       <div
@@ -27,9 +38,12 @@
       >
         <span>Lọc theo:</span>
         <div *ngFor="let item of arrLableFilter">
-          <ng-container
-            *ngTemplateOutlet="itemBoxLableFilter; context: { $implicit: item }"
-          ></ng-container>
+          <span>{{ item.lableName }}</span
+          ><img
+            src="../../../../assets/icon/close.png"
+            alt="close-icon"
+            (click)="handleCloseFilter(item)"
+          />
         </div>
       </div>
       <div class="product-list">
@@ -58,14 +72,3 @@
     </div>
   </div>
 </div>
-
-<ng-template #itemBoxLableFilter let-item>
-  <div class="item-lable-filter">
-    <span>{{ item }}</span
-    ><img
-      src="../../../../assets/icon/close.png"
-      alt="close-icon"
-      (click)="handleCloseFilter(item)"
-    />
-  </div>
-</ng-template>
