@@ -16,9 +16,15 @@
             <img src="../../../.././../assets/icon/search-icon.svg" />
           </div>
         </form>
-        <div (click)="toggleCart()" class="header-cart">
-          <img src="../../../../../assets/icon/cart-icon.svg" />
-          <span class="cart-quantity">0</span>
+        <div class="group-user-action">
+          <div class="order-management" [routerLink]="'orderCheckout'">
+            <img src="../../../../../assets/icon/icon_shipping.svg" />
+            <span class="text">Tra cứu <br> đơn hàng</span>
+          </div>
+          <div (click)="toggleCart()" class="header-cart">
+            <img src="../../../../../assets/icon/cart-icon.svg" />
+            <span class="cart-quantity">0</span>
+          </div>
         </div>
       </div>
     </div>
