@@ -29,7 +29,7 @@ import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
     GridModule,
     BoxProductModule,
     NgxPaginationModule,
-    // StarRatingModule.forRoot(),
+    StarRatingModule.forRoot(),
     ButtonModule,
     LayoutModule,
     DropDownsModule,
@@ -37,4 +37,4 @@ import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   exports: [],
 })
-export class ProductModule {}
+export class ProductModule { }

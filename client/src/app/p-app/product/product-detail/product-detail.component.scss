@@ -4,8 +4,54 @@
         gap: 20px;
         padding-right: 10px;
 
+        .main-img-slider {
+
+            .slick-slider {
+                height: 100%;
+
+                .slick-list {
+                    height: 348px;
+
+                    .slick-track {
+                        height: 100%;
+
+                        .slide {
+                            height: 100%;
+
+                            img {
+                                height: 100%;
+                                object-fit: contain;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         .subimg-slider {
             margin: 30px 0;
+            height: 110px;
+
+            .slick-slider {
+                height: 100%;
+
+                .slick-list {
+                    height: 100%;
+
+                    .slick-track {
+                        height: 100%;
+
+                        .slide {
+                            height: 100%;
+
+                            img {
+                                height: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+
         }
 
         .product-info-wrapper {
@@ -24,7 +70,7 @@
                 }
 
                 .sale-off {
-                    background-color: red;
+                    background-color: rgb(249, 73, 95);
                     padding: 4px 8px;
                     border-radius: 5px;
                     color: white;
@@ -67,6 +113,8 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+                margin-top: 7rem;
+
 
                 .status-text {
                     color: #27ae60;
@@ -109,13 +157,17 @@
                     display: flex;
 
                     .quantity-text {
-                        padding: 10px 20px;
-                        border: 1px solid #e6f2ff;
-                        font-size: 20px;
+                        padding: 10px 0;
                         display: flex;
                         align-items: center;
+                        justify-content: center;
+                        white-space: nowrap;
+                        border: 1px solid #e6f2ff;
+                        font-size: 20px;
                         color: #005ec4;
                         font-weight: 700;
+                        width: 40px;
+                        user-select: none;
                     }
 
                     .quantity-button {
