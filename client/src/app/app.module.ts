@@ -14,6 +14,7 @@ import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { LayoutModule } from '@progress/kendo-angular-layout';
 import { CartCheckoutComponent } from './p-app/cart-checkout/cart-checkout.component';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+import { OrderCheckoutComponent } from './p-app/order-checkout/order-checkout.component';
 
 
 @NgModule({
@@ -35,4 +36,4 @@ import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

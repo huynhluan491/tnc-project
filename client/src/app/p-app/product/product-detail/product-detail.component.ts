@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, filter, map, of, pluck, switchMap, tap } from 'rxjs';
+import { Subject, Subscription, filter, map, of, pluck, switchMap, takeUntil, tap } from 'rxjs';
 import { ProductAPIService } from '../shared/services/product-api.service';
 import { DTOProduct } from '../shared/dto/DTOProduct.dto';
 
@@ -28,7 +28,7 @@ const PolicyData = [
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss']
 })
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent implements OnInit, OnDestroy {
   productDetail: DTOProduct = new DTOProduct();
   productName: string = '';
   saleprice: number = 0;
@@ -37,7 +37,10 @@ export class ProductDetailComponent implements OnInit {
   policyList: any[] = PolicyData;
 
   //Cart handle declarations
-  cartQuantity: Number = 1;
+  cartQuantity: number = 1;
+
+  //subscription
+  ngUnsubscribe = new Subject<void>();
 
   testSubimg: any[] = [
     'https://www.tncstore.vn/image/cache/catalog/PC%20Dong%20Bo/Dell/Dell%20Precision%203660%20Tower%20(CTO)/pc-dong-bo-dell-precision-3660-tower-2-500x500.jpg',
@@ -64,7 +67,7 @@ export class ProductDetailComponent implements OnInit {
   }
 
   GetTestProductDetail() {
-    this.getProductDetail_sst = this.productAPIService.GetProductDetail().subscribe(
+    this.productAPIService.GetProductDetail().pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       (res) => {
         this.productDetail = { ...res.data };
         this.saleprice = this.productDetail.price - (this.productDetail.price * parseFloat(this.productDetail.sale));
@@ -73,7 +76,22 @@ export class ProductDetailComponent implements OnInit {
     )
   }
 
+  onHandleQuantity(type: string) {
+    if (type === 'increase') {
+      this.cartQuantity += 1;
+    } else {
+      if (this.cartQuantity > 1) {
+        this.cartQuantity -= 1;
+      }
+    }
+  }
+
   onRatingProduct(event: any) {
     console.log(event);
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

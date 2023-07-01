@@ -5,6 +5,7 @@ import { HomeComponent } from '../home/home.component';
 import { ProductComponent } from '../product/product.component';
 import { CartComponent } from './components/cart/cart.component';
 import { CartCheckoutComponent } from '../cart-checkout/cart-checkout.component';
+import { OrderCheckoutComponent } from '../order-checkout/order-checkout.component';
 
 export const LayoutRoutes: Routes = [
   {
@@ -20,13 +21,17 @@ export const LayoutRoutes: Routes = [
       {
         path: 'cart',
         component: CartCheckoutComponent,
-      },
+      }
     ],
   },
+  {
+    path: 'orderCheckout',
+    component: OrderCheckoutComponent
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(LayoutRoutes)],
   exports: [RouterModule],
 })
-export class LayoutRoutingModule {}
+export class LayoutRoutingModule { }

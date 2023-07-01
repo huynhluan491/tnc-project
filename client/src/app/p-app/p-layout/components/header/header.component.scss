@@ -45,25 +45,56 @@
         }
       }
 
-      .header-cart {
-        background-color: #29324e;
-        height: 46px;
-        padding: 10px;
+      .group-user-action {
         display: flex;
-        gap: 2.5rem;
+        gap: 20px;
 
-        .cart-quantity {
+        .order-management {
           display: flex;
-          width: 28px;
-          height: 28px;
+          gap: 5px;
           align-items: center;
-          justify-content: center;
-          font-weight: 700;
-          font-size: 14px;
-          background: #fff200;
-          font-size: 16px;
+          background-color: #005ec4;
+          padding: 4px 5px;
+          height: 46px;
+          cursor: pointer;
+
+          img {
+            height: 24px;
+            width: 40px;
+            background: white;
+            border-radius: 100%;
+          }
+
+          .text {
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+          }
+
+        }
+
+        .header-cart {
+          background-color: #29324e;
+          height: 46px;
+          padding: 10px;
+          display: flex;
+          gap: 2.5rem;
+          cursor: pointer;
+
+          .cart-quantity {
+            display: flex;
+            width: 28px;
+            height: 28px;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            background: #fff200;
+            font-size: 16px;
+          }
         }
       }
+
     }
 
     .header-navigation-container {
@@ -82,7 +113,7 @@
             position: relative;
             cursor: pointer;
 
-            &:hover > .sub-menu-list {
+            &:hover>.sub-menu-list {
               display: block;
             }
 
@@ -134,26 +165,6 @@
           }
         }
       }
-    }
-  }
-
-  .cart-background {
-    background-color: #161616a4;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    right: 0;
-    top: 0;
-    z-index: 1000000;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    font-size: 1.8rem;
-    color: #29324e;
-    font-weight: 800;
-    .cart-container {
-      width: 70%;
-      height: 95%;
     }
   }
 }

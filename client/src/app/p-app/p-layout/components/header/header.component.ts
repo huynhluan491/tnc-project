@@ -5,9 +5,10 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { LayoutAPIService } from '../../shared/services/layout-api.service';
 import { Ps_UtilObjectService } from 'src/app/p-lib/ultilities/ulity.object';
+import { CartService } from '../../shared/services/cart.service';
 
 @Component({
   selector: 'app-p-header',
@@ -43,25 +44,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
     },
   ];
 
-  cartShown: boolean = false;
-  toggleCart = () => {
-    console.log('cc');
-
-    this.cartShown = !this.cartShown;
-  };
-
   //Subscription
-  getCategoryList_sst: Subscription;
+  ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private layoutAPIService: LayoutAPIService) {}
+  constructor(private layoutAPIService: LayoutAPIService, private cartSerivce: CartService) { }
 
   ngOnInit(): void {
     this.getCategoryList();
   }
 
+  toggleCart = () => {
+    this.cartSerivce.onToggleCartPopUpState(true);
+  };
+
+
   getCategoryList() {
-    this.getCategoryList_sst = this.layoutAPIService
-      .GetCategories()
+    this.layoutAPIService.GetCategories()
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
         const categories = res.data.categories;
         if (Ps_UtilObjectService.hasListValue(categories)) {
@@ -78,6 +77,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.getCategoryList_sst?.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
