@@ -1,4 +1,3 @@
-const sql = require("mssql");
 const ModelSchema = require("./ModelSchema");
 const ModelSchemaValidator = require("./ModelSchemaValidator");
 
@@ -18,6 +17,7 @@ const CartSchema = new ModelSchema(
       default: new Date().toISOString(),
       require: true,
     }),
+
   },
   "Cart",
   "cartID"

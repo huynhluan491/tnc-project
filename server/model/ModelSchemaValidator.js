@@ -12,6 +12,7 @@ class ModelSchemaValidator {
                 break;
             case sql.Int:
             case sql.Float:
+            case sql.BigInt:
                 this.type = 'number';
                 break;
             default:
