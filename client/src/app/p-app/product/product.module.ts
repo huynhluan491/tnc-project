@@ -26,7 +26,6 @@ import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
     CommonModule,
     PLayoutModule,
     ProductRoutingModule,
-    GridModule,
     BoxProductModule,
     NgxPaginationModule,
     // StarRatingModule.forRoot(),

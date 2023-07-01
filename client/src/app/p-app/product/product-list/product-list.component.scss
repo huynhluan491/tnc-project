@@ -36,7 +36,7 @@
   flex-wrap: nowrap;
   height: 40px;
 }
-.box-lable-filter{
+.box-label-filter{
   margin-top: 2rem;
   padding: 0.5rem;
   font-weight: 600;
@@ -46,7 +46,7 @@
   flex-wrap: wrap;
 }
 
-.item-lable-filter{
+.item-label-filter{
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -72,7 +72,7 @@
 .test{
   max-width: 33.3333%;
 }
-.orderby{
+.orderby, .title-filter-total{
   display: flex;
   align-items: center;
   span{
@@ -86,4 +86,18 @@
   margin-left: 1rem;
   background-color: rgb(240,243,252);
   border-radius: 0;
+}
+.title-sort{
+margin: 0 0.5rem 0 0.7rem;
+
+}
+.title-filter-total{
+  display: flex;
+}
+.title-filter-total  :nth-child(1){
+  margin-right:5rem ;
+  font-size: 2rem;
+}
+.title-filter-total  :nth-child(2){
+font-weight: normal;
 }

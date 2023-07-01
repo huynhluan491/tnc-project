@@ -17,18 +17,18 @@
       <img src="../../../../../assets/icon/icons8-search-500.png" alt="" />
     </div>
     <div
-      *ngFor="let item of itemsDropList; index as indexOfelement"
+      *ngFor="let item of data.dataItems; index as indexOfelement"
       class="dropdown-item"
     >
       <input
-        [id]="indexOfelement"
+        [id]="item.field + indexOfelement"
         [type]="item.type"
         [value]="item.inputValue"
         [name]="item.field"
-        [checked]="item.checked"
-        (change)="handleCheck($event)"
+        [checked]="checkedItems.includes(item.labelName)"
+        (change)="handleCheck($event, item)"
       />
-      <label [for]="indexOfelement">{{ item.lableName }}</label>
+      <label [for]="item.field + indexOfelement">{{ item.labelName }}</label>
     </div>
   </div>
 </div>

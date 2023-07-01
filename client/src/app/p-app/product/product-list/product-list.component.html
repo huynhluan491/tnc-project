@@ -1,15 +1,12 @@
-<!-- <div *ngFor="let item of data">
-  <box-product [data]="item"></box-product>
-</div> -->
 <app-breadcrumb [plusBreadCrumbText]="[categoryName]"></app-breadcrumb>
 <div class="wrapper">
   <div class="wrapper-filter">
     <div class="title-filter"><span>Bộ lọc sản phẩm</span></div>
-    <div class="box-filter" *ngFor="let item of dataDropdownItems">
+    <div class="box-filter" *ngFor="let item of allDataDropdowns">
       <dropdown-filter
-        [itemsDropList]="item"
+        [titleFilter]="item.titleFilter"
+        [data]="item"
         (filterURL)="handleURL($event)"
-        (queryFilter)="handleLableFilter($event)"
       >
       </dropdown-filter>
       <!-- <dropdown-filter activeSearch="true"> </dropdown-filter> -->
@@ -18,7 +15,10 @@
   </div>
   <div class="wrapper-product-list">
     <div class="title-sort">
-      <div>title --- sort</div>
+      <div class="title-filter-total">
+        <span>{{ keyFilter }}</span
+        ><span>{{ totalProduct }}</span>
+      </div>
       <div class="orderby">
         <span>Sắp xếp theo :</span>
         <div class="box-dropdown-order-by">
@@ -33,17 +33,19 @@
     </div>
     <div class="box-products">
       <div
-        *ngIf="arrLableFilter && arrLableFilter.length > 0"
-        class="box-lable-filter"
+        *ngIf="arrlabelFilter && arrlabelFilter.length > 0"
+        class="box-label-filter"
       >
         <span>Lọc theo:</span>
-        <div *ngFor="let item of arrLableFilter">
-          <span>{{ item.lableName }}</span
-          ><img
-            src="../../../../assets/icon/close.png"
-            alt="close-icon"
-            (click)="handleCloseFilter(item)"
-          />
+        <div *ngFor="let item of arrlabelFilter">
+          <div class="item-label-filter">
+            <span>{{ item.labelName }}</span
+            ><img
+              src="../../../../assets/icon/close.png"
+              alt="close-icon"
+              (click)="handleCloseFilter(item)"
+            />
+          </div>
         </div>
       </div>
       <div class="product-list">

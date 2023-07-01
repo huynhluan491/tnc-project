@@ -4,9 +4,10 @@ import {
   EventEmitter,
   Input,
   Output,
-  Renderer2,
   ViewChild,
 } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { ProductAPIService } from 'src/app/p-app/product/shared/services/product-api.service';
 
 @Component({
   selector: 'dropdown-filter',
@@ -14,33 +15,54 @@ import {
   styleUrls: ['./dropdown-filter.component.scss'],
 })
 export class dropdownFilterComponent {
-  constructor(private renderer: Renderer2) {}
   @ViewChild('myDropdownList') myDropdownList: ElementRef;
+
+  queryFilter: string[] = [];
+  active: boolean = false;
+  query: string = '';
+  labelFilter: any[] = [];
+
+  //Subscription
+  ngUnsubscribe = new Subject<void>();
+
   @Input() filterbyPrice: boolean = false;
   @Input() activeSearch: boolean = false;
   @Input() titleFilter: string = 'default';
   @Input() placeholderSearch: string = `Tìm ${this.titleFilter}`;
-  @Input() itemsDropList: any[] = [];
+  @Input() data: any = [];
+  checkedItems: string[] = [];
 
   @Output() filterURL = new EventEmitter<string>();
-  @Output() queryFilter = new EventEmitter<any[]>();
-  active: boolean = false;
-  query: string = '';
-  lableFilter: any[] = [];
+
+  constructor(private productService: ProductAPIService) {}
+
   ngOnInit(): void {
     if (this.filterbyPrice) {
       this.titleFilter = 'Mức giá';
     }
+    console.log(this.data);
+    this.productService
+      .getArrlabelFilter()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
+        this.labelFilter = [...res];
+      });
+    this.productService
+      .getRemoveItem()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
+        this.checkedItems = this.checkedItems.filter((i) => i != res[0]);
+      });
   }
+
   clickBoxFilter() {
     const element = this.myDropdownList.nativeElement;
     const hasClass = element.classList.contains('active-dropdown-list');
     hasClass ? (this.active = false) : (this.active = true);
-    // console.log("hasClass",hasClass);
-    // console.log("active",this.active);
   }
-  handleCheck(event: any) {
-    console.log(event.target.checked);
+  handleCheck(event: any, item: any) {
+    console.log(event.target.id);
+    var ischecked = event.target.checked;
     event.target.checked
       ? (this.query += `&${event.target.name}=${event.target.value}`)
       : (this.query = this.query.replace(
@@ -48,12 +70,19 @@ export class dropdownFilterComponent {
           ''
         ));
     this.filterURL.emit(this.query);
-    this.lableFilter.push(
-      // this.itemsDropList[parseInt(event.target.id)].lableName
-      this.itemsDropList[parseInt(event.target.id)]
-    );
-    console.log(this.lableFilter);
-
-    this.queryFilter.emit(this.lableFilter);
+    console.log(item.labelName);
+    var lbName = item.labelName;
+    if (ischecked) {
+      this.checkedItems.push(lbName);
+      this.labelFilter.push({
+        title: this.titleFilter,
+        labelName: lbName,
+      });
+      this.productService.setArrlabelFilter(this.labelFilter);
+    } else {
+      this.checkedItems = this.checkedItems.filter((item) => item !== lbName);
+      this.labelFilter = this.labelFilter.filter((i) => i.labelName != lbName);
+      this.productService.setArrlabelFilter(this.labelFilter);
+    }
   }
 }
