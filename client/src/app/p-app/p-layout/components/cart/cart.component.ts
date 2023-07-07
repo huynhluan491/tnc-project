@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CartService } from '../../shared/services/cart.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -11,9 +12,13 @@ export class CartComponent implements OnInit {
 
   @Input() checkout: boolean = false;
 
-  constructor(private cartService: CartService) { }
+  constructor(private router: Router, private cartService: CartService) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
+
+  redirectToCheckout() {
+    this.router.navigateByUrl('/checkout');
+  }
 
   onCloseCartPopUp() {
     this.cartService.onToggleCartPopUpState(false);

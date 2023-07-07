@@ -6,6 +6,7 @@ import { ProductComponent } from '../product/product.component';
 import { CartComponent } from './components/cart/cart.component';
 import { CartCheckoutComponent } from '../cart-checkout/cart-checkout.component';
 import { OrderCheckoutComponent } from '../order-checkout/order-checkout.component';
+import { CartCheckout2Component } from '../cart-checkout2/cart-checkout2.component';
 
 export const LayoutRoutes: Routes = [
   {
@@ -21,17 +22,22 @@ export const LayoutRoutes: Routes = [
       {
         path: 'cart',
         component: CartCheckoutComponent,
-      }
+        // children: [],
+      },
+      {
+        path: 'checkout',
+        component: CartCheckout2Component,
+      },
     ],
   },
   {
     path: 'orderCheckout',
-    component: OrderCheckoutComponent
-  }
+    component: OrderCheckoutComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(LayoutRoutes)],
   exports: [RouterModule],
 })
-export class LayoutRoutingModule { }
+export class LayoutRoutingModule {}

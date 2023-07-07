@@ -15,10 +15,11 @@ import { LayoutModule } from '@progress/kendo-angular-layout';
 import { CartCheckoutComponent } from './p-app/cart-checkout/cart-checkout.component';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { OrderCheckoutComponent } from './p-app/order-checkout/order-checkout.component';
+import { CartCheckout2Component } from './p-app/cart-checkout2/cart-checkout2.component';
 
 
 @NgModule({
-  declarations: [AppComponent, CartCheckoutComponent],
+  declarations: [AppComponent, CartCheckoutComponent, CartCheckout2Component],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
