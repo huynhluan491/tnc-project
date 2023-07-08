@@ -1,26 +1,98 @@
 [
-  { "brandID": 1, "brandName": "acer" },
-  { "brandID": 2, "brandName": "apple" },
-  { "brandID": 3, "brandName": "asus" },
-  { "brandID": 4, "brandName": "ava" },
-  { "brandID": 5, "brandName": "befit" },
-  { "brandID": 6, "brandName": "corsair" },
-  { "brandID": 7, "brandName": "garmin" },
-  { "brandID": 8, "brandName": "honor" },
-  { "brandID": 9, "brandName": "hp" },
-  { "brandID": 10, "brandName": "xiaomi" },
-  { "brandID": 11, "brandName": "huawei" },
-  { "brandID": 12, "brandName": "lenovo" },
-  { "brandID": 13, "brandName": "linksys" },
-  { "brandID": 14, "brandName": "logitech" },
-  { "brandID": 15, "brandName": "mesh" },
-  { "brandID": 16, "brandName": "mozard" },
-  { "brandID": 17, "brandName": "nokia" },
-  { "brandID": 18, "brandName": "oppo" },
-  { "brandID": 19, "brandName": "poco" },
-  { "brandID": 20, "brandName": "rapoo" },
-  { "brandID": 21, "brandName": "realme" },
-  { "brandID": 22, "brandName": "samsung" },
-  { "brandID": 23, "brandName": "tenda" },
-  { "brandID": 24, "brandName": "vivo" }
+  {
+    "BrandID": 1,
+    "BrandName": "acer"
+  },
+  {
+    "BrandID": 2,
+    "BrandName": "apple"
+  },
+  {
+    "BrandID": 3,
+    "BrandName": "asus"
+  },
+  {
+    "BrandID": 4,
+    "BrandName": "ava"
+  },
+  {
+    "BrandID": 5,
+    "BrandName": "befit"
+  },
+  {
+    "BrandID": 6,
+    "BrandName": "corsair"
+  },
+  {
+    "BrandID": 7,
+    "BrandName": "garmin"
+  },
+  {
+    "BrandID": 8,
+    "BrandName": "honor"
+  },
+  {
+    "BrandID": 9,
+    "BrandName": "hp"
+  },
+  {
+    "BrandID": 10,
+    "BrandName": "xiaomi"
+  },
+  {
+    "BrandID": 11,
+    "BrandName": "huawei"
+  },
+  {
+    "BrandID": 12,
+    "BrandName": "lenovo"
+  },
+  {
+    "BrandID": 13,
+    "BrandName": "linksys"
+  },
+  {
+    "BrandID": 14,
+    "BrandName": "logitech"
+  },
+  {
+    "BrandID": 15,
+    "BrandName": "mesh"
+  },
+  {
+    "BrandID": 16,
+    "BrandName": "mozard"
+  },
+  {
+    "BrandID": 17,
+    "BrandName": "nokia"
+  },
+  {
+    "BrandID": 18,
+    "BrandName": "oppo"
+  },
+  {
+    "BrandID": 19,
+    "BrandName": "poco"
+  },
+  {
+    "BrandID": 20,
+    "BrandName": "rapoo"
+  },
+  {
+    "BrandID": 21,
+    "BrandName": "realme"
+  },
+  {
+    "BrandID": 22,
+    "BrandName": "samsung"
+  },
+  {
+    "BrandID": 23,
+    "BrandName": "tenda"
+  },
+  {
+    "BrandID": 24,
+    "BrandName": "vivo"
+  }
 ]

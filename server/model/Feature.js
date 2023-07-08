@@ -4,23 +4,23 @@ const sql = require("mssql");
 
 const FeatureSchema = new ModelSchema(
   {
-    featureID: new ModelSchemaValidator({
-      name: "featureID",
+    FeatureID: new ModelSchemaValidator({
+      name: "FeatureID",
       sqlType: sql.Int,
     }),
-    feature: new ModelSchemaValidator({
-      name: "feature",
+    Feature: new ModelSchemaValidator({
+      name: "Feature",
       sqlType: sql.NVarChar,
       require: true,
       default: "",
     }),
-    productID: new ModelSchemaValidator({
-      name: "productID",
+    ProductID: new ModelSchemaValidator({
+      name: "ProductID",
       sqlType: sql.Int,
       require: true,
     }),
-    createdAt: new ModelSchemaValidator({
-      name: "createdAt",
+    CreatedAt: new ModelSchemaValidator({
+      name: "CreatedAt",
       sqlType: sql.DateTime,
       default: new Date().toISOString(),
       require: true,

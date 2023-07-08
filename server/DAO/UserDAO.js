@@ -11,7 +11,7 @@ exports.addUserIfNotExisted = async (user) => {
   user.createdAt = new Date().toISOString();
 
   let insertData = UserSchema.validateData(user);
-  insertData.password = await bcrypt.hash(insertData.password, 10);
+  insertData.Password = await bcrypt.hash(insertData.Password, 10);
   let query = `SET IDENTITY_INSERT ${UserSchema.schemaName} ON insert into ${UserSchema.schemaName}`;
   // schema, request, insert
   const { request, insertFieldNamesStr, insertValuesStr } =

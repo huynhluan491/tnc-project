@@ -4,8 +4,8 @@ const sql = require("mssql");
 
 const RatingSchema = new ModelSchema(
   {
-    ratingID: new ModelSchemaValidator({
-      name: "ratingID",
+    RatingID: new ModelSchemaValidator({
+      name: "RatingID",
       sqlType: sql.Int,
       default: 0,
     }),
@@ -39,12 +39,12 @@ const RatingSchema = new ModelSchema(
       require: true,
       default: 0,
     }),
-    productID: new ModelSchemaValidator({
+    ProductID: new ModelSchemaValidator({
       name: "productID",
       sqlType: sql.Int,
       require: true,
     }),
-    createdAt: new ModelSchemaValidator({
+    CreatedAt: new ModelSchemaValidator({
       name: "createdAt",
       sqlType: sql.DateTime,
       default: new Date().toISOString(),

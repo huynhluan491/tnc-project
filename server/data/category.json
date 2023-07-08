@@ -1,30 +1,30 @@
 [
   {
-    "categoryID": 1,
-    "categoryName": "headphone"
+    "CategoryID": 1,
+    "CategoryName": "headphone"
   },
   {
-    "categoryID": 2,
-    "categoryName": "keyboard"
+    "CategoryID": 2,
+    "CategoryName": "keyboard"
   },
   {
-    "categoryID": 3,
-    "categoryName": "laptop"
+    "CategoryID": 3,
+    "CategoryName": "laptop"
   },
   {
-    "categoryID": 4,
-    "categoryName": "networkdevice"
+    "CategoryID": 4,
+    "CategoryName": "networkdevice"
   },
   {
-    "categoryID": 5,
-    "categoryName": "phone"
+    "CategoryID": 5,
+    "CategoryName": "phone"
   },
   {
-    "categoryID": 6,
-    "categoryName": "tablet"
+    "CategoryID": 6,
+    "CategoryName": "tablet"
   },
   {
-    "categoryID": 7,
-    "categoryName": "watch"
+    "CategoryID": 7,
+    "CategoryName": "watch"
   }
 ]

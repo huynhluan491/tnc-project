@@ -17,26 +17,45 @@ const CartDAO = require("../DAO/CartDAO");
 const SubImageDAO = require("../DAO/SubImageDAO");
 const CategoryDAO = require("../DAO/CategoryDAO");
 const BrandDAO = require("../DAO/BrandDAO");
-const { log } = require("console");
+const PaymentDAO = require("../DAO/PaymentDAO");
+const StatusDAO = require("../DAO/StatusDAO");
+const AuthDAO = require("../DAO/AuthDAO");
+
+const DTOProduct = require("../DTO/Default/DTOProduct");
+const DTOCategory = require("../DTO/Default/DTOCategory");
+const DTOBrand = require("../DTO/Default/DTOBrand");
+const DTOUser = require("../DTO/Default/DTOUser");
+const DTOFeature = require("../DTO/Default/DTOFeature");
+const DTORating = require("../DTO/Default/DTORating");
+const DTOSubImg = require("../DTO/Default/DTOSubImg");
+const DTOOrder = require("../DTO/Default/DTOOrder");
+const DTOOrderDetails = require("../DTO/Default/DTOOrderDetails");
+const DTOLS_Status = require("../DTO/Default/DTOLS_Status");
+const DTOPayment = require("../DTO/Default/DTOPayment");
 
 async function importDB() {
   const PRODUCT_FILE_PATH = "../data/products.json";
   const USER_FILE_PATH = "../data/users.json";
   const FEATURE_FILE_PATH = "../data/feature.json";
   const RATING_FILE_PATH = "../data/ratings.json";
-  const CART_FILE_PATH = "../data/cart.json";
-  const CARTPRODUCT_FILE_PATH = "../data/cartProduct.json";
   const SUBIMAGE_FILE_PATH = "../data/subImage.json";
   const CATEGORY_FILE_PATH = "../data/category.json";
   const BRAND_FILE_PATH = "../data/brand.json";
+  const ORDERS_FILE_PATH = "../data/orders.json";
+  const ORDER_DETAILS_FILE_PATH = "../data/order_details.json";
+  const PAYMENT_FILE_PATH = "../data/payment.json";
+  const STATUS_FILE_PATH = "../data/status.json";
 
   let products = JSON.parse(fs.readFileSync(PRODUCT_FILE_PATH, "utf-8"));
   let users = JSON.parse(fs.readFileSync(USER_FILE_PATH, "utf-8"));
   let features = JSON.parse(fs.readFileSync(FEATURE_FILE_PATH, "utf-8"));
   let ratings = JSON.parse(fs.readFileSync(RATING_FILE_PATH, "utf-8"));
-  let carts = JSON.parse(fs.readFileSync(CART_FILE_PATH, "utf-8"));
-  let carts_Product = JSON.parse(
-    fs.readFileSync(CARTPRODUCT_FILE_PATH, "utf-8")
+  let orders = JSON.parse(fs.readFileSync(ORDERS_FILE_PATH, "utf-8"));
+  let payments = JSON.parse(fs.readFileSync(PAYMENT_FILE_PATH, "utf-8"));
+  let ls_Status = JSON.parse(fs.readFileSync(STATUS_FILE_PATH, "utf-8"));
+
+  let order_details = JSON.parse(
+    fs.readFileSync(ORDER_DETAILS_FILE_PATH, "utf-8")
   );
   let imgs = JSON.parse(fs.readFileSync(SUBIMAGE_FILE_PATH, "utf-8"));
   let categorys = JSON.parse(fs.readFileSync(CATEGORY_FILE_PATH, "utf-8"));
@@ -44,7 +63,7 @@ async function importDB() {
 
   //import category
   for (let i = 0; i < categorys.length; i++) {
-    let category = categorys[i];
+    let category = new DTOCategory(categorys[i]);
     try {
       await CategoryDAO.addCateIfNotExists(category);
       console.log("import category --- done!");
@@ -54,7 +73,8 @@ async function importDB() {
   }
   //import brand
   for (let i = 0; i < brands.length; i++) {
-    let brand = brands[i];
+    let brand = new DTOBrand(brands[i]);
+
     try {
       await BrandDAO.addBrandIfNotExists(brand);
       console.log("import brand --- done!");
@@ -64,7 +84,7 @@ async function importDB() {
   }
   //import product
   for (let i = 0; i < products.length; i++) {
-    let product = products[i];
+    let product = new DTOProduct(products[i]);
     try {
       await ProductDAO.addProductIfNotExisted(product);
       console.log("import product --- done!");
@@ -74,7 +94,7 @@ async function importDB() {
   }
   //import users
   for (let i = 0; i < users.length; i++) {
-    let user = users[i];
+    let user = new DTOUser(users[i]);
     try {
       await UserDAO.addUserIfNotExisted(user);
       console.log("import user --- done!");
@@ -84,7 +104,7 @@ async function importDB() {
   }
   // import feature
   for (let i = 0; i < features.length; i++) {
-    let feature = features[i];
+    let feature = new DTOFeature(features[i]);
     try {
       await FeatureDAO.addFeatureIfNotExisted(feature);
       console.log("import feature --- done!");
@@ -96,7 +116,7 @@ async function importDB() {
   // import rating
 
   for (let i = 0; i < ratings.length; i++) {
-    let rating = ratings[i];
+    let rating = new DTORating(ratings[i]);
 
     try {
       await RatingDAO.addRatingIfNotExisted(rating);
@@ -105,30 +125,59 @@ async function importDB() {
       throw new Error("errr", rating);
     }
   }
-  //import cart
 
-  for (let i = 0; i < carts.length; i++) {
-    let cart = carts[i];
+  //import payment
+
+  for (let i = 0; i < payments.length; i++) {
+    let payment = new DTOPayment(payments[i]);
+
+    await PaymentDAO.addPaymentIfNotExists(payment);
     try {
-      await CartDAO.addCartIfNotExisted(cart);
-      console.log("import cart --- done!");
+      console.log("import payment --- done!");
     } catch (Error) {
-      throw new Error("errr", cart);
+      throw new Error("errr", payment);
     }
   }
 
-  for (let i = 0; i < carts_Product.length; i++) {
-    let item = carts_Product[i];
+  //import status
+
+  for (let i = 0; i < ls_Status.length; i++) {
+    let status = new DTOLS_Status(ls_Status[i]);
+
+    await StatusDAO.addStatusIfNotExists(status);
     try {
-      await CartDAO.addCart_ProductIfNotExisted(item);
-      console.log("import carts_Product --- done!");
+      console.log("import status --- done!");
+    } catch (Error) {
+      throw new Error("errr", status);
+    }
+  }
+
+  //import orders
+
+  for (let i = 0; i < orders.length; i++) {
+    let order = new DTOOrder(orders[i]);
+    await CartDAO.addOrderIfNotExisted(order);
+    try {
+      console.log("import order --- done!");
+    } catch (Error) {
+      throw new Error("errr", order);
+    }
+  }
+
+  //import order_details
+
+  for (let i = 0; i < order_details.length; i++) {
+    let item = new DTOOrderDetails(order_details[i]);
+    try {
+      await CartDAO.addOrder_DetailsIfNotExisted(item);
+      console.log("import order_details --- done!");
     } catch (Error) {
       throw new Error("errr", item);
     }
   }
-
+  //import subimg
   for (let i = 0; i < imgs.length; i++) {
-    let img = imgs[i];
+    let img = new DTOSubImg(imgs[i]);
     try {
       await SubImageDAO.addSubImageIfNotExisted(img);
       console.log("import subImage --- done!");
@@ -142,12 +191,15 @@ async function dbClean() {
   await FeatureDAO.clearAll();
   await RatingDAO.clearAll();
   await SubImageDAO.clearAll();
-  await CartDAO.clearAllCart_Product();
-  await CartDAO.clearAllCart();
+  await CartDAO.clearAllOrder_Details();
+  await CartDAO.clearAllOrder();
   await UserDAO.clearAll();
+  await PaymentDAO.clearAll();
   await ProductDAO.clearAll();
   await CategoryDAO.clearAll();
   await BrandDAO.clearAll();
+  await StatusDAO.clearAll();
+  await AuthDAO.clearAll();
 }
 
 appPool
@@ -168,5 +220,3 @@ appPool
   .catch(function (err) {
     console.error("Error creating db connection pool", err);
   });
-
-// console.log(process.argv);
