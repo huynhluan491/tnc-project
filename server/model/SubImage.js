@@ -4,30 +4,30 @@ const ModelSchemaValidator = require("./ModelSchemaValidator");
 
 const SubImageSchema = new ModelSchema(
   {
-    subimgID: new ModelSchemaValidator({
-      name: "subimgID",
+    SubimgID: new ModelSchemaValidator({
+      name: "SubimgID",
       sqlType: sql.Int,
     }),
 
-    image: new ModelSchemaValidator({
-      name: "image",
+    Image: new ModelSchemaValidator({
+      name: "Image",
       sqlType: sql.VarChar,
       require: true,
     }),
 
-    alt: new ModelSchemaValidator({
-      name: "alt",
+    Alt: new ModelSchemaValidator({
+      name: "Alt",
       sqlType: sql.VarChar,
       require: true,
     }),
 
-    productID: new ModelSchemaValidator({
-      name: "productID",
+    ProductID: new ModelSchemaValidator({
+      name: "ProductID",
       sqlType: sql.Int,
       require: true,
     }),
-    createdAt: new ModelSchemaValidator({
-      name: "createdAt",
+    CreatedAt: new ModelSchemaValidator({
+      name: "CreatedAt",
       sqlType: sql.DateTime,
       default: new Date().toISOString(),
       require: true,

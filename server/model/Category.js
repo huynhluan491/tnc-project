@@ -3,17 +3,17 @@ const ModelSchemaValidator = require("./ModelSchemaValidator");
 const sql = require("mssql");
 const CategorySchema = new ModelSchema(
   {
-    categoryID: new ModelSchemaValidator({
-      name: "categoryID",
+    CategoryID: new ModelSchemaValidator({
+      name: "CategoryID",
       sqlType: sql.Int,
     }),
-    categoryName: new ModelSchemaValidator({
+    CategoryName: new ModelSchemaValidator({
       name: "categoryName",
       sqlType: sql.NVarChar,
       require: true,
     }),
-    createdAt: new ModelSchemaValidator({
-      name: "createdAt",
+    CreatedAt: new ModelSchemaValidator({
+      name: "CreatedAt",
       sqlType: sql.DateTime,
       default: new Date().toISOString(),
       require: true,

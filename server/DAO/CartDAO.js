@@ -1,18 +1,19 @@
-const { CartSchema, Cart_ProductSchema } = require("../model/Cart");
+const {CartSchema, Cart_ProductSchema} = require("../model/Cart");
 const dbConfig = require("../database/dbconfig");
 const dbUtils = require("../utils/dbUtils");
 const UserSchema = require("../model/User");
-exports.addCartIfNotExisted = async (cart) => {
+const {OrdersSchema, Order_DetailsSchema} = require("../model/Order");
+exports.addOrderIfNotExisted = async (order) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  cart.createdAt = new Date().toISOString();
+  order.createdAt = new Date().toISOString();
 
-  let insertData = CartSchema.validateData(cart);
-  let query = `SET IDENTITY_INSERT ${CartSchema.schemaName} ON insert into ${CartSchema.schemaName}`;
-  const { request, insertFieldNamesStr, insertValuesStr } =
-    dbUtils.getInsertQuery(CartSchema.schema, dbPool.request(), insertData);
+  let insertData = OrdersSchema.validateData(order);
+  let query = `SET IDENTITY_INSERT ${OrdersSchema.schemaName} ON insert into ${OrdersSchema.schemaName}`;
+  const {request, insertFieldNamesStr, insertValuesStr} =
+    dbUtils.getInsertQuery(OrdersSchema.schema, dbPool.request(), insertData);
   if (!insertFieldNamesStr || !insertValuesStr) {
     throw new Error("Invalid insert param");
   }
@@ -22,9 +23,9 @@ exports.addCartIfNotExisted = async (cart) => {
     insertFieldNamesStr +
     ") select  " +
     insertValuesStr +
-    ` WHERE NOT EXISTS(SELECT * FROM ${CartSchema.schemaName} WHERE userID = @userID)` +
-    ` SET IDENTITY_INSERT ${CartSchema.schemaName} OFF`;
-  let result = await request.query(query);
+    ` WHERE NOT EXISTS(SELECT * FROM ${OrdersSchema.schemaName} WHERE UserID = @UserID)` +
+    ` SET IDENTITY_INSERT ${OrdersSchema.schemaName} OFF`;
+  result = await request.query(query);
   return result.recordsets;
 };
 
@@ -38,7 +39,7 @@ exports.createNewCart = async (userID) => {
   };
 
   let insertData = CartSchema.validateData(cart);
-  const { request, insertFieldNamesStr, insertValuesStr } =
+  const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(CartSchema.schema, dbPool.request(), insertData);
   if (!insertFieldNamesStr || !insertValuesStr) {
     throw new Error("Invalid insert param");
@@ -49,16 +50,16 @@ exports.createNewCart = async (userID) => {
   return result;
 };
 
-exports.addCart_ProductIfNotExisted = async (cart_Product) => {
+exports.addOrder_DetailsIfNotExisted = async (order_details) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  let insertData = Cart_ProductSchema.validateData(cart_Product);
-  let query = `insert into ${Cart_ProductSchema.schemaName}`;
-  const { request, insertFieldNamesStr, insertValuesStr } =
+  let insertData = Order_DetailsSchema.validateData(order_details);
+  let query = `insert into ${Order_DetailsSchema.schemaName}`;
+  const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(
-      Cart_ProductSchema.schema,
+      Order_DetailsSchema.schema,
       dbPool.request(),
       insertData
     );
@@ -71,7 +72,7 @@ exports.addCart_ProductIfNotExisted = async (cart_Product) => {
     insertFieldNamesStr +
     ") SELECT  " +
     insertValuesStr +
-    ` WHERE NOT EXISTS(SELECT * FROM ${Cart_ProductSchema.schemaName} WHERE cartID = @cartID and productID = @productID)`; //tam thoi;
+    ` WHERE NOT EXISTS(SELECT * FROM ${Order_DetailsSchema.schemaName} WHERE orderID = @orderID and productID = @productID)`;
   let result = await request.query(query);
   return result.recordsets;
 };
@@ -125,7 +126,7 @@ exports.updateCart = async (cart_Product) => {
   let q = `update ${Cart_ProductSchema.schemaName} set `;
   // console.log(updateData);
 
-  const { request, updateStr } = dbUtils.getUpdateQuery(
+  const {request, updateStr} = dbUtils.getUpdateQuery(
     Cart_ProductSchema.schema,
     dbPool.request(),
     updateData
@@ -146,13 +147,13 @@ exports.deleteItemInCart = async (urlQuery) => {
   let result = await dbPool.request().query(q);
 };
 
-exports.clearAllCart_Product = async () => {
-  query = `delete ${Cart_ProductSchema.schemaName} ;`;
+exports.clearAllOrder_Details = async () => {
+  query = `delete ${Order_DetailsSchema.schemaName} ;`;
   let result = await dbConfig.db.pool.request().query(query);
   return result.recordsets;
 };
-exports.clearAllCart = async () => {
-  query = `delete ${CartSchema.schemaName}  DBCC CHECKIDENT ('[${CartSchema.schemaName} ]', RESEED, 1);`;
+exports.clearAllOrder = async () => {
+  query = `delete ${OrdersSchema.schemaName}  DBCC CHECKIDENT ('[${OrdersSchema.schemaName} ]', RESEED, 1);`;
   let result = await dbConfig.db.pool.request().query(query);
   return result.recordsets;
 };

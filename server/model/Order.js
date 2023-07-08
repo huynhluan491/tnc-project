@@ -12,13 +12,17 @@ const OrdersSchema = new ModelSchema(
       name: "UserID",
       sqlType: sql.Int,
     }),
-    Adress: new ModelSchemaValidator({
+    CustomerName: new ModelSchemaValidator({
+      name: "CustomerName",
+      sqlType: sql.NVarChar,
+    }),
+    Address: new ModelSchemaValidator({
       name: "Address",
       sqlType: sql.NVarChar,
     }),
     Phone: new ModelSchemaValidator({
       name: "Phone",
-      sqlType: sql.BigInt,
+      sqlType: sql.NVarChar,
     }),
     PaymentID: new ModelSchemaValidator({
       name: "PaymentID",
@@ -35,7 +39,7 @@ const OrdersSchema = new ModelSchema(
       require: true,
     }),
   },
-  "Order",
+  "Orders",
   "createAt"
 );
 const Order_DetailsSchema = new ModelSchema(
