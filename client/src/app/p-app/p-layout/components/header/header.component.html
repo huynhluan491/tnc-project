@@ -21,20 +21,18 @@
           </div>
         </form>
         <div class="group-user-action">
-          <div class="order-management" [routerLink]="'orderCheckout'">
+          <div class="order-management button" [routerLink]="'orderCheckout'">
             <img src="../../../../../assets/icon/icon_shipping.svg" />
             <span class="text"
               >Tra cứu <br />
               đơn hàng</span
             >
           </div>
-          <div (click)="toggleCart()" class="header-cart">
+          <div (click)="toggleCart()" class="header-cart button">
             <img src="../../../../../assets/icon/cart-icon.svg" />
             <span class="cart-quantity">0</span>
           </div>
-          <div class="order-management" (click)="toggleCart()">
-            <span class="text">Đăng ký/ đăng nhập</span>
-          </div>
+          <div class="signin button" (click)="toggleRegister()">Đăng nhập</div>
         </div>
       </div>
     </div>

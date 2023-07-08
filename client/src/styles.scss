@@ -3,7 +3,7 @@
 @import "normalize.css";
 // @import "~@progress/kendo-theme-default/dist/all.scss";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
-@import '~css-star-rating/css/star-rating.min.css';
+@import "~css-star-rating/css/star-rating.min.css";
 
 :root {
   margin: 0;
@@ -79,4 +79,13 @@ button {
 .container {
   width: 1110px;
   margin: 0 auto 0 auto;
+}
+
+.button {
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.button:hover {
+  opacity: 0.8;
 }

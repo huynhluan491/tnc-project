@@ -1,7 +1,9 @@
+import { RegisterService } from './../../shared/services/register.service';
 import {
   Component,
   OnDestroy,
   OnInit,
+  SkipSelf,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
@@ -16,6 +18,16 @@ import { CartService } from '../../shared/services/cart.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  constructor(
+    private layoutAPIService: LayoutAPIService,
+    @SkipSelf() private cartSerivce: CartService,
+    @SkipSelf() private registerService: RegisterService
+  ) {}
+
+  ngOnInit(): void {
+    this.getCategoryList();
+  }
+
   //Category list declaration
   headerMenuItems: any[] = [
     {
@@ -47,19 +59,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
   //Subscription
   ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private layoutAPIService: LayoutAPIService, private cartSerivce: CartService) { }
-
-  ngOnInit(): void {
-    this.getCategoryList();
-  }
-
   toggleCart = () => {
-    this.cartSerivce.onToggleCartPopUpState(true);
+    this.cartSerivce;
   };
 
+  toggleRegister(): void {
+    this.registerService.toggleRegisterShown();
+  }
 
   getCategoryList() {
-    this.layoutAPIService.GetCategories()
+    this.layoutAPIService
+      .GetCategories()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
         const categories = res.data.categories;

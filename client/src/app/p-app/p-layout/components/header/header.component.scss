@@ -48,6 +48,7 @@
       .group-user-action {
         display: flex;
         gap: 20px;
+        height: 100%;
 
         .order-management {
           display: flex;
@@ -70,7 +71,19 @@
             font-size: 11px;
             font-weight: 600;
           }
+        }
 
+        .signin,
+        .signup {
+          cursor: pointer;
+          background-color: #005ec4;
+          display: flex;
+          width: 80px;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 11px;
+          font-weight: 600;
         }
 
         .header-cart {
@@ -94,7 +107,6 @@
           }
         }
       }
-
     }
 
     .header-navigation-container {
@@ -113,7 +125,7 @@
             position: relative;
             cursor: pointer;
 
-            &:hover>.sub-menu-list {
+            &:hover > .sub-menu-list {
               display: block;
             }
 
