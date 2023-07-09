@@ -96,17 +96,7 @@
 }
 
 .hidden {
-  animation: slideOut 0.2s ease-in-out forwards !important;
-}
-
-@keyframes slideOut {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(100%);
-    display: none !important;
-  }
+  display: none;
 }
 
 @keyframes slideIn {

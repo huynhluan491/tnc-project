@@ -9,7 +9,7 @@ import { RegisterService } from '../../shared/services/register.service';
 export class RegisterComponent {
   constructor(@SkipSelf() private registerService: RegisterService) {}
 
-  @Input() isRegister: boolean = false;
+  isRegister: boolean = false;
 
   toggleShowRegister(): void {
     this.registerService.toggleRegisterShown();
