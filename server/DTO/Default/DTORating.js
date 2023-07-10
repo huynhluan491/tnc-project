@@ -6,7 +6,7 @@ module.exports = class DTORating {
     this._3star = data._3star;
     this._2star = data._2star;
     this._1star = data._1star;
-    this.ProductID = data.ProductID;
+    this.ProductID = data.ProductID ?? null;
     if (!data.CreatedAt) data.CreatedAt = new Date().toISOString();
     this.CreatedAt = data.CreatedAt;
   }

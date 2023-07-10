@@ -3,6 +3,9 @@ const dbConfig = require("../database/dbconfig");
 const dbUtils = require("../utils/dbUtils");
 const UserSchema = require("../model/User");
 const {OrdersSchema, Order_DetailsSchema} = require("../model/Order");
+const DTOProduct = require("../DTO/Default/DTOProduct");
+const DTOProductCustomize = require("../DTO/Customize/DTOProductCustomize");
+const DTOOrderDetails = require("../DTO/Default/DTOOrderDetails");
 exports.addOrderIfNotExisted = async (order) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
@@ -29,22 +32,22 @@ exports.addOrderIfNotExisted = async (order) => {
   return result.recordsets;
 };
 
-exports.createNewCart = async (userID) => {
+exports.createNewOrder = async (userID) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  let cart = {
-    userID: userID,
+  let order = {
+    UserID: userID,
   };
 
-  let insertData = CartSchema.validateData(cart);
+  let insertData = OrdersSchema.validateData(order);
   const {request, insertFieldNamesStr, insertValuesStr} =
-    dbUtils.getInsertQuery(CartSchema.schema, dbPool.request(), insertData);
+    dbUtils.getInsertQuery(OrdersSchema.schema, dbPool.request(), insertData);
   if (!insertFieldNamesStr || !insertValuesStr) {
     throw new Error("Invalid insert param");
   }
-  const query = `insert into ${CartSchema.schemaName} ( ${insertFieldNamesStr} ) select ${insertValuesStr}`;
+  const query = `insert into ${OrdersSchema.schemaName} ( ${insertFieldNamesStr} ) select ${insertValuesStr}`;
   let result = await request.query(query);
   // console.log(result);
   return result;
@@ -72,12 +75,17 @@ exports.addOrder_DetailsIfNotExisted = async (order_details) => {
     insertFieldNamesStr +
     ") SELECT  " +
     insertValuesStr +
-    ` WHERE NOT EXISTS(SELECT * FROM ${Order_DetailsSchema.schemaName} WHERE orderID = @orderID and productID = @productID)`;
+    ` WHERE NOT EXISTS(SELECT * FROM ${Order_DetailsSchema.schemaName} WHERE OrderID = @orderID and productID = @productID)` +
+    `
+    select * from ${Order_DetailsSchema.schemaName} WHERE OrderID = @orderID
+    `;
+
   let result = await request.query(query);
-  return result.recordsets;
+  var dtos = result.recordsets[0].map((x) => new DTOOrderDetails(x));
+  return dtos;
 };
 
-exports.getProductInCartByUSerID = async (userID) => {
+exports.getProductInOderByUserID = async (userID) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
@@ -87,18 +95,21 @@ exports.getProductInCartByUSerID = async (userID) => {
   let result = await dbPool
     .request()
     .input(
-      CartSchema.schema.userID.name,
-      CartSchema.schema.userID.sqlType,
+      OrdersSchema.schema.UserID.name,
+      OrdersSchema.schema.UserID.sqlType,
       userID
-    ).query(`select p.*,cp.amount,cp.cartID from product p
-  inner join cart_product cp on cp.productID = p.productID
-  inner join cart c on cp.cartID = c.cartID
-  where c.userID =@userID`);
-  // console.log(result.recordsets);
-  return result.recordsets[0];
+    ).query(` select  p.*,od.Amount from Order_Details od
+       inner join Product p on p.ProductID = od.ProductID
+       where od.OrderID in (select OrderID from Orders o where o.UserID = @UserID)
+      `);
+
+  var dto = result.recordsets[0].map(
+    (element) => new DTOProductCustomize(element)
+  );
+  return dto;
 };
 
-exports.getCartIDByUserName = async (username) => {
+exports.getOrderIDByUserName = async (username) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
@@ -112,38 +123,41 @@ exports.getCartIDByUserName = async (username) => {
       username
     )
     .query(
-      `select cartID from ${CartSchema.schemaName} where userID in (select userID from ${UserSchema.schemaName} where userName = @${UserSchema.schema.userName.name}) `
+      `select OrderID from ${OrdersSchema.schemaName} where UserID in (select userID from ${UserSchema.schemaName} where userName = @${UserSchema.schema.userName.name}) `
     );
-  return result.recordsets[0][0];
+  return result.recordsets[0];
 };
 
-exports.updateCart = async (cart_Product) => {
+exports.updateOrder_Details = async (Order_Details) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  let updateData = Cart_ProductSchema.validateData(cart_Product);
-  let q = `update ${Cart_ProductSchema.schemaName} set `;
+  let updateData = Order_DetailsSchema.validateData(Order_Details);
+  let q = `update ${Order_DetailsSchema.schemaName} set `;
   // console.log(updateData);
 
   const {request, updateStr} = dbUtils.getUpdateQuery(
-    Cart_ProductSchema.schema,
+    Order_DetailsSchema.schema,
     dbPool.request(),
     updateData
   );
 
-  q += updateStr + ` where productID =@productID and cartID = @cartID`;
-  let result = await request.query(q);
-  // console.log(q);
-  return result.recordsets;
+  q += updateStr + ` where ProductID =@ProductID and OrderID = @OrderID`;
+  objectReturn =
+    q +
+    ` select * from ${Order_DetailsSchema.schemaName} where ProductID =@ProductID and OrderID = @OrderID`;
+  let result = await request.query(objectReturn);
+  var dto = new DTOOrderDetails(result.recordsets[0][0]);
+  return dto;
 };
 
-exports.deleteItemInCart = async (urlQuery) => {
+exports.deleteItemInOrder = async (urlQuery) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  let q = `delete cart_product where productID = ${urlQuery.productID} and cartID = ${urlQuery.cartID} `;
+  let q = `delete Order_Details where ProductID = ${urlQuery.ProductID} and OrderID = ${urlQuery.OrderID} `;
   let result = await dbPool.request().query(q);
 };
 

@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const json = JSON.parse(fs.readFileSync("./order_details.json", "utf-8"));
+const json = JSON.parse(fs.readFileSync("./products.json", "utf-8"));
 let data = [];
 let index = 1;
 json.forEach((element) => {
@@ -12,6 +12,7 @@ json.forEach((element) => {
       obj[finalConcat] = value;
     }
   });
+  obj["StatusID"] = 1;
   data.push(obj);
   console.log("index : ", index++);
   return;
@@ -34,4 +35,4 @@ function func(word) {
 // }
 
 const jsonData = JSON.stringify(data, null, 2);
-fs.writeFileSync("order_details.json", jsonData, "utf-8");
+fs.writeFileSync("products.json", jsonData, "utf-8");

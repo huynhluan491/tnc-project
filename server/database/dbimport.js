@@ -74,12 +74,11 @@ async function importDB() {
   //import brand
   for (let i = 0; i < brands.length; i++) {
     let brand = new DTOBrand(brands[i]);
-
     try {
       await BrandDAO.addBrandIfNotExists(brand);
       console.log("import brand --- done!");
     } catch (error) {
-      throw new error("errr", brand);
+      throw error;
     }
   }
   //import product
@@ -99,7 +98,7 @@ async function importDB() {
       await UserDAO.addUserIfNotExisted(user);
       console.log("import user --- done!");
     } catch (error) {
-      throw new error("errr", user);
+      throw error;
     }
   }
   // import feature
@@ -135,7 +134,7 @@ async function importDB() {
     try {
       console.log("import payment --- done!");
     } catch (Error) {
-      throw new Error("errr", payment);
+      throw Error;
     }
   }
 
@@ -148,7 +147,7 @@ async function importDB() {
     try {
       console.log("import status --- done!");
     } catch (Error) {
-      throw new Error("errr", status);
+      throw Error;
     }
   }
 
@@ -160,7 +159,7 @@ async function importDB() {
     try {
       console.log("import order --- done!");
     } catch (Error) {
-      throw new Error("errr", order);
+      throw Error;
     }
   }
 
@@ -172,7 +171,7 @@ async function importDB() {
       await CartDAO.addOrder_DetailsIfNotExisted(item);
       console.log("import order_details --- done!");
     } catch (Error) {
-      throw new Error("errr", item);
+      throw Error;
     }
   }
   //import subimg
@@ -182,7 +181,7 @@ async function importDB() {
       await SubImageDAO.addSubImageIfNotExisted(img);
       console.log("import subImage --- done!");
     } catch (Error) {
-      throw new Error("errr", item);
+      throw new Error();
     }
   }
 }
@@ -201,7 +200,6 @@ async function dbClean() {
   await StatusDAO.clearAll();
   await AuthDAO.clearAll();
 }
-
 appPool
   .connect()
   .then(async function (pool) {

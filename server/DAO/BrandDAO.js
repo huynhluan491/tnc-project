@@ -1,6 +1,5 @@
 const dbConfig = require("../database/dbconfig");
 const BrandSchema = require("../model/Brand");
-const BrandShcema = require("../model/Brand");
 const dbUtils = require("../utils/dbUtils");
 
 exports.addBrandIfNotExists = async (brand) => {
@@ -10,10 +9,10 @@ exports.addBrandIfNotExists = async (brand) => {
   }
   brand.createdAt = new Date().toISOString();
 
-  let insertData = BrandShcema.validateData(brand);
-  let query = `SET IDENTITY_INSERT ${BrandShcema.schemaName} ON insert into ${BrandShcema.schemaName}`;
-  const { request, insertFieldNamesStr, insertValuesStr } =
-    dbUtils.getInsertQuery(BrandShcema.schema, dbPool.request(), insertData);
+  let insertData = BrandSchema.validateData(brand);
+  let query = `SET IDENTITY_INSERT ${BrandSchema.schemaName} ON insert into ${BrandSchema.schemaName}`;
+  const {request, insertFieldNamesStr, insertValuesStr} =
+    dbUtils.getInsertQuery(BrandSchema.schema, dbPool.request(), insertData);
   if (!insertFieldNamesStr || !insertValuesStr) {
     throw new Error("Invalid insert param");
   }
@@ -23,14 +22,14 @@ exports.addBrandIfNotExists = async (brand) => {
     insertFieldNamesStr +
     ") select  " +
     insertValuesStr +
-    ` WHERE NOT EXISTS(SELECT * FROM ${BrandShcema.schemaName} WHERE brandName = @brandName)` +
-    ` SET IDENTITY_INSERT ${BrandShcema.schemaName} OFF`;
+    ` WHERE NOT EXISTS(SELECT * FROM ${BrandSchema.schemaName} WHERE brandName = @brandName)` +
+    ` SET IDENTITY_INSERT ${BrandSchema.schemaName} OFF`;
   let result = await request.query(query);
   return result.recordsets;
 };
 
 exports.clearAll = async () => {
-  query = `delete ${BrandShcema.schemaName}  DBCC CHECKIDENT ('[${BrandShcema.schemaName} ]', RESEED, 1);`;
+  query = `delete ${BrandSchema.schemaName}  DBCC CHECKIDENT ('[${BrandSchema.schemaName} ]', RESEED, 1);`;
   let result = await dbConfig.db.pool.request().query(query);
   return result.recordsets;
 };

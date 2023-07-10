@@ -2,16 +2,16 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const UserDAO = require("../DAO/UserDAO");
 const CartDAO = require("../DAO/CartDAO");
-const signToken = (id, username, auth, cartUser) => {
+const signToken = (id, username, auth, OrderID) => {
   return jwt.sign(
     {
       userID: id,
       username: username,
       auth: auth,
-      cartID: cartUser,
+      // cartID: OrderID
     },
     process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRED_IN }
+    {expiresIn: process.env.JWT_EXPIRED_IN}
   );
 };
 exports.login = async (req, res) => {
@@ -21,35 +21,39 @@ exports.login = async (req, res) => {
     if (!form.password || !form.userName) {
       return res
         .status(403) // 403 - Forbidden
-        .json({ code: 403, msg: `Invalid params` });
+        .json({code: 403, msg: `Invalid params`});
     }
     //2. check if user existed
     const user = await UserDAO.getUserByUserName(form.userName);
-    const cartUser = await CartDAO.getCartIDByUserName(form.userName);
+    const OrderID = await CartDAO.getOrderIDByUserName(form.userName);
     let cartID;
-    if (!cartUser) {
+    if (!OrderID) {
       cartID = -1;
     } else {
-      cartID = cartUser.cartID;
+      cartID = OrderID;
     }
     if (!user) {
       return res
         .status(401) // 401 - Unauthorized
-        .json({ code: 401, msg: `Invalid user - ${form.userName}` });
+        .json({code: 401, msg: `Invalid user - ${form.userName}`});
     }
     //3. check if password is valid
     const isValidPassword = await bcrypt.compare(form.password, user.password);
     if (!isValidPassword) {
       return res
         .status(401) // 401 - Unauthorized
-        .json({ code: 401, msg: "Invalid authentication" });
+        .json({code: 401, msg: "Invalid authentication"});
     }
     //4. get JWT & response to use  //https://jwt.io/
     const token = signToken(user.userID, user.userName, user.auth, cartID);
+    //testing
+    res.cookie("user", token, {
+      httpOnly: true,
+    });
     res.status(200).json({
       code: 200,
       msg: "OK",
-      data: { token },
+      data: {token},
     });
   } catch (e) {
     console.error(e);
@@ -85,7 +89,7 @@ exports.signup = async (req, res) => {
     return res.status(200).json({
       code: 200,
       msg: "sign up success",
-      data: { user },
+      data: {user},
     });
   } catch (e) {
     res
@@ -123,7 +127,7 @@ exports.protect = async (req, res, next) => {
     if (!currentUser) {
       return res
         .status(401) // 401 - Unauthorized
-        .json({ code: 401, msg: `Invalid authentication` });
+        .json({code: 401, msg: `Invalid authentication`});
     }
     req.user = currentUser;
   } catch (e) {
@@ -152,4 +156,36 @@ exports.restrictTo = (...roles) => {
     }
     next();
   };
+};
+
+exports.getTokenDev = async (req, res) => {
+  try {
+    // get JWT & response to use  //https://jwt.io/
+    const token = jwt.sign(
+      {
+        UserID: "-1",
+        UserName: "MASTER",
+        Auth: 1,
+      },
+      process.env.JWT_SECRET,
+      {expiresIn: process.env.JWT_EXPIRED_IN}
+    );
+    res.cookie("access_token_dev", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "dev",
+    });
+    res.status(200).json({
+      code: 200,
+      msg: "OK",
+      data: {token},
+    });
+  } catch (e) {
+    console.error(e);
+    res
+      .status(500) // 500 - Internal Error
+      .json({
+        code: 500,
+        msg: e.toString(),
+      });
+  }
 };

@@ -1,12 +1,13 @@
 const CartDAO = require("../DAO/CartDAO");
+const DTOOrderDetails = require("../DTO/Default/DTOOrderDetails");
 
-exports.getProductInCartByUSerID = async (req, res) => {
+exports.getProductInOrderByUSerID = async (req, res) => {
   try {
-    let result = await CartDAO.getProductInCartByUSerID(req.query.userID);
+    let result = await CartDAO.getProductInOderByUserID(req.query.userID);
     res.status(200).json({
       code: 200,
       msg: null,
-      data: result
+      data: result,
     });
   } catch (error) {
     res.status(404).json({
@@ -34,14 +35,15 @@ exports.getProductInCartByUSerID = async (req, res) => {
 //   }
 // }
 
-exports.insertProductToCart = async (req, res) => {
+exports.insertProductToOrder = async (req, res) => {
   // console.log(req.body);
+  const dto = new DTOOrderDetails(req.body);
   try {
-    let result = await CartDAO.addCart_ProductIfNotExisted(req.body);
+    let result = await CartDAO.addOrder_DetailsIfNotExisted(dto);
     res.status(200).json({
       code: 200,
       msg: null,
-      data: result
+      data: result,
     });
   } catch (error) {
     res.status(404).json({
@@ -51,14 +53,16 @@ exports.insertProductToCart = async (req, res) => {
   }
 };
 
-exports.updateProductInCart = async (req, res) => {
-  // console.log(req.body);
+exports.updateProductInOrder = async (req, res) => {
+  const dto = new DTOOrderDetails(req.body);
+  console.log(dto);
+
   try {
-    let result = await CartDAO.updateCart(req.body);
+    let result = await CartDAO.updateOrder_Details(dto);
     res.status(200).json({
       code: 200,
       msg: null,
-      data: result
+      data: result,
     });
   } catch (error) {
     res.status(404).json({
@@ -68,10 +72,10 @@ exports.updateProductInCart = async (req, res) => {
   }
 };
 
-exports.deleteProductInCart = async (req, res) => {
+exports.deleteProductInOrder = async (req, res) => {
   const q = req.query;
   try {
-    let result = await CartDAO.deleteItemInCart(q);
+    let result = await CartDAO.deleteItemInOrder(q);
     res.status(200).json({
       code: 200,
       msg: null,
