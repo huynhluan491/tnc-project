@@ -1,4 +1,3 @@
-const {CartSchema, Cart_ProductSchema} = require("../model/Cart");
 const dbConfig = require("../database/dbconfig");
 const dbUtils = require("../utils/dbUtils");
 const UserSchema = require("../model/User");

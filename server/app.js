@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 
 //method 3: mouting the router on a route
 const productRouter = require("./routes/product");
-const cartRouter = require("./routes/cart");
+const orderRouter = require("./routes/order");
 const ratingRouter = require("./routes/rating");
 const subimgRouter = require("./routes/subimg");
 const featureRouter = require("./routes/feature");
@@ -33,7 +33,7 @@ const categoryRouter = require("./routes/category");
 const userRouter = require("./routes/user");
 const tokenRouter = require("./routes/token");
 app.use("/api/v1/product", productRouter);
-app.use("/api/v1/cart", cartRouter);
+app.use("/api/v1/order", orderRouter);
 app.use("/api/v1/rating", ratingRouter);
 app.use("/api/v1/subimg", subimgRouter);
 app.use("/api/v1/feature", featureRouter);
