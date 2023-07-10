@@ -57,13 +57,17 @@ exports.getProductByName = async (name) => {
   let request = dbConfig.db.pool.request();
   let result = await request
     .input(
-      `${ProductSchema.schema.name.name}`,
-      ProductSchema.schema.name.sqlType,
+      `${ProductSchema.schema.Name.name}`,
+      ProductSchema.schema.Name.sqlType,
       name
     )
     .query(
-      `select * from ${ProductSchema.schemaName} where ${ProductSchema.schema.name.name} = @${ProductSchema.schema.name.name}`
+      `select * from ${ProductSchema.schemaName} where ${ProductSchema.schema.Name.name} = @${ProductSchema.schema.Name.name}`
     );
+  console.log(result);
+  if (result.recordsets[0][0]) {
+    return new DTOProduct(result.recordsets[0][0]);
+  }
   return result.recordsets[0][0];
 };
 
@@ -151,7 +155,7 @@ exports.createNewRating = async (product) => {
   }
   let request = dbConfig.db.pool.request();
   console.log(product);
-  let query = `insert into ${RatingSchema.schemaName}(${ProductSchema.schema.productID.name}) values(${product.productID})`;
+  let query = `insert into ${RatingSchema.schemaName}(${ProductSchema.schema.ProductID.name}) values(${product.ProductID})`;
   console.log(query);
   let result = await request.query(query);
   return result.recordsets;
@@ -185,12 +189,12 @@ exports.deleteProductById = async (id) => {
   let request = dbConfig.db.pool.request();
   let result = await request
     .input(
-      `${ProductSchema.schema.productID.name}`,
-      ProductSchema.schema.productID.sqlType,
+      `${ProductSchema.schema.ProductID.name}`,
+      ProductSchema.schema.ProductID.sqlType,
       id
     )
     .query(
-      `delete ${ProductSchema.schemaName} where ${ProductSchema.schema.productID.name} = @${ProductSchema.schema.productID.name}`
+      `delete ${ProductSchema.schemaName} where ${ProductSchema.schema.ProductID.name} = @${ProductSchema.schema.ProductID.name}`
     );
   return result.recordsets;
 };
@@ -200,12 +204,12 @@ exports.deleteMultipleProductById = async (idList) => {
     throw new Error("Not connected to db");
   }
   for (let i = 0; i < idList.length; i++) {
-    ProductSchema.schema.productID.validate(idList[i]);
+    ProductSchema.schema.ProductID.validate(idList[i]);
   }
   let request = dbConfig.db.pool.request();
   const deleteStr = dbUtils.getDeleteQuery(ProductSchema, idList);
   let result = await request.query(
-    `DELETE FROM ${ProductSchema.schemaName} WHERE ${ProductSchema.schema.productID.name} ${deleteStr}`
+    `DELETE FROM ${ProductSchema.schemaName} WHERE ${ProductSchema.schema.ProductID.name} ${deleteStr}`
   );
   return result.recordsets;
 };
@@ -228,16 +232,17 @@ exports.updateProductById = async (id, updateInfo) => {
     throw new Error("Invalid update param");
   }
   request.input(
-    `${ProductSchema.schema.productID.name}`,
-    ProductSchema.schema.productID.sqlType,
+    `${ProductSchema.schema.ProductID.name}`,
+    ProductSchema.schema.ProductID.sqlType,
     id
   );
   query +=
     " " +
     updateStr +
-    ` where ${ProductSchema.schema.productID.name} = @${ProductSchema.schema.productID.name}`;
+    ` where ${ProductSchema.schema.ProductID.name} = @${ProductSchema.schema.ProductID.name}`;
+  query += ` select * from ${ProductSchema.schemaName} where ${ProductSchema.schema.ProductID.name} = @${ProductSchema.schema.ProductID.name}`;
   let result = await request.query(query);
-  return result.recordsets;
+  return new DTOProduct(result.recordsets[0]);
 };
 
 exports.getProductsNotPagination = async () => {

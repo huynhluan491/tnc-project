@@ -13,7 +13,7 @@ const ProductDAO = require("../DAO/ProductDAO");
 const UserDAO = require("../DAO/UserDAO");
 const FeatureDAO = require("../DAO/FeatureDAO");
 const RatingDAO = require("../DAO/RatingDAO");
-const CartDAO = require("../DAO/CartDAO");
+const OrderDAO = require("../DAO/OrderDAO");
 const SubImageDAO = require("../DAO/SubImageDAO");
 const CategoryDAO = require("../DAO/CategoryDAO");
 const BrandDAO = require("../DAO/BrandDAO");
@@ -32,6 +32,7 @@ const DTOOrder = require("../DTO/Default/DTOOrder");
 const DTOOrderDetails = require("../DTO/Default/DTOOrderDetails");
 const DTOLS_Status = require("../DTO/Default/DTOLS_Status");
 const DTOPayment = require("../DTO/Default/DTOPayment");
+const DTOAuth = require("../DTO/Default/DTOAuth");
 
 async function importDB() {
   const PRODUCT_FILE_PATH = "../data/products.json";
@@ -45,6 +46,7 @@ async function importDB() {
   const ORDER_DETAILS_FILE_PATH = "../data/order_details.json";
   const PAYMENT_FILE_PATH = "../data/payment.json";
   const STATUS_FILE_PATH = "../data/status.json";
+  const AUTH_FILE_PATH = "../data/auth.json";
 
   let products = JSON.parse(fs.readFileSync(PRODUCT_FILE_PATH, "utf-8"));
   let users = JSON.parse(fs.readFileSync(USER_FILE_PATH, "utf-8"));
@@ -53,6 +55,7 @@ async function importDB() {
   let orders = JSON.parse(fs.readFileSync(ORDERS_FILE_PATH, "utf-8"));
   let payments = JSON.parse(fs.readFileSync(PAYMENT_FILE_PATH, "utf-8"));
   let ls_Status = JSON.parse(fs.readFileSync(STATUS_FILE_PATH, "utf-8"));
+  let auths = JSON.parse(fs.readFileSync(AUTH_FILE_PATH, "utf-8"));
 
   let order_details = JSON.parse(
     fs.readFileSync(ORDER_DETAILS_FILE_PATH, "utf-8")
@@ -61,6 +64,17 @@ async function importDB() {
   let categorys = JSON.parse(fs.readFileSync(CATEGORY_FILE_PATH, "utf-8"));
   let brands = JSON.parse(fs.readFileSync(BRAND_FILE_PATH, "utf-8"));
 
+  //import auth
+  for (let i = 0; i < auths.length; i++) {
+    let auth = new DTOAuth(auths[i]);
+    try {
+      await AuthDAO.addAuth(auth);
+      console.log("import auth --- done!");
+    } catch (error) {
+      throw error;
+    }
+  }
+
   //import category
   for (let i = 0; i < categorys.length; i++) {
     let category = new DTOCategory(categorys[i]);
@@ -68,7 +82,7 @@ async function importDB() {
       await CategoryDAO.addCateIfNotExists(category);
       console.log("import category --- done!");
     } catch (error) {
-      throw new error("errr", category);
+      throw error;
     }
   }
   //import brand
@@ -155,7 +169,7 @@ async function importDB() {
 
   for (let i = 0; i < orders.length; i++) {
     let order = new DTOOrder(orders[i]);
-    await CartDAO.addOrderIfNotExisted(order);
+    await OrderDAO.addOrderIfNotExisted(order);
     try {
       console.log("import order --- done!");
     } catch (Error) {
@@ -168,7 +182,7 @@ async function importDB() {
   for (let i = 0; i < order_details.length; i++) {
     let item = new DTOOrderDetails(order_details[i]);
     try {
-      await CartDAO.addOrder_DetailsIfNotExisted(item);
+      await OrderDAO.addOrder_DetailsIfNotExisted(item);
       console.log("import order_details --- done!");
     } catch (Error) {
       throw Error;
@@ -190,8 +204,8 @@ async function dbClean() {
   await FeatureDAO.clearAll();
   await RatingDAO.clearAll();
   await SubImageDAO.clearAll();
-  await CartDAO.clearAllOrder_Details();
-  await CartDAO.clearAllOrder();
+  await OrderDAO.clearAllOrder_Details();
+  await OrderDAO.clearAllOrder();
   await UserDAO.clearAll();
   await PaymentDAO.clearAll();
   await ProductDAO.clearAll();

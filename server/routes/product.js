@@ -9,12 +9,12 @@ router
   .get(productController.getProducts)
   .post(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role.admin),
+    authController.restrictTo(StaticData.AUTH.Role),
     productController.createNewProduct
   )
   .delete(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role.admin),
+    authController.restrictTo(StaticData.AUTH.Role),
     productController.deleteMultipleProductById
   );
 
@@ -27,12 +27,12 @@ router
   .get(productController.getProductById)
   .delete(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role.admin),
+    authController.restrictTo(StaticData.AUTH.Role),
     productController.deleteById
   )
   .patch(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role.admin),
+    authController.restrictTo(StaticData.AUTH.Role),
     productController.updateProductById
   );
 
@@ -40,7 +40,7 @@ router
   .route("/image")
   .post(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role.admin),
+    authController.restrictTo(StaticData.AUTH.Role),
     productController.saveFileProductImage
   );
 router.route("/image/:imageName").get(productController.getFileProductImage);

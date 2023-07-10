@@ -3,7 +3,7 @@ const dbConfig = require("../database/dbconfig");
 const dbUtils = require("../utils/dbUtils");
 const bcrypt = require("bcryptjs");
 const StaticData = require("../utils/StaticData");
-
+const DTOUser = require("../DTO/Default/DTOUser");
 exports.addUserIfNotExisted = async (user) => {
   if (!dbConfig.db.pool) {
     throw new Error("Not connected to db");
@@ -14,7 +14,7 @@ exports.addUserIfNotExisted = async (user) => {
   insertData.Password = await bcrypt.hash(insertData.Password, 10);
   let query = `SET IDENTITY_INSERT ${UserSchema.schemaName} ON insert into ${UserSchema.schemaName}`;
   // schema, request, insert
-  const { request, insertFieldNamesStr, insertValuesStr } =
+  const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(
       UserSchema.schema,
       dbConfig.db.pool.request(),
@@ -45,7 +45,7 @@ exports.insertUser = async (user) => {
 
   let query = `insert into ${UserSchema.schemaName} `;
 
-  const { request, insertFieldNamesStr, insertValuesStr } =
+  const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(
       UserSchema.schema,
       dbConfig.db.pool.request(),
@@ -71,7 +71,7 @@ exports.getAllUsers = async (filter) => {
   let selectQuery = `SELECT * FROM ${UserSchema.schemaName}`;
   let countQuery = `SELECT COUNT(DISTINCT ${UserSchema.schema.userID.name}) as totalItem from ${UserSchema.schemaName}`;
 
-  const { filterStr, paginationStr } = dbUtils.getFilterProductsQuery(
+  const {filterStr, paginationStr} = dbUtils.getFilterProductsQuery(
     UserSchema.schema,
     filter,
     page,
@@ -119,17 +119,16 @@ exports.getUserById = async (id) => {
   }
   let result = await dbConfig.db.pool
     .request()
-    .input(UserSchema.schema.userID.name, UserSchema.schema.userID.sqlType, id)
+    .input(UserSchema.schema.UserID.name, UserSchema.schema.UserID.sqlType, id)
     .query(
-      `SELECT * from ${UserSchema.schemaName} where ${UserSchema.schema.userID.name} = @${UserSchema.schema.userID.name}`
+      `SELECT * from ${UserSchema.schemaName} where ${UserSchema.schema.UserID.name} = @${UserSchema.schema.UserID.name}`
     );
 
   // console.log(result);
 
   if (result.recordsets[0].length > 0) {
-    return result.recordsets[0][0];
+    return new DTOUser(result.recordsets[0][0]);
   }
-
   return null;
 };
 
@@ -140,19 +139,19 @@ exports.getUserByUserName = async (username) => {
   let result = await dbConfig.db.pool
     .request()
     .input(
-      UserSchema.schema.userName.name,
-      UserSchema.schema.userName.sqlType,
+      UserSchema.schema.UserName.name,
+      UserSchema.schema.UserName.sqlType,
       username
     )
     .query(
-      `SELECT * from ${UserSchema.schemaName} where ${UserSchema.schema.userName.name} = @${UserSchema.schema.userName.name}`
+      `SELECT * from ${UserSchema.schemaName} where ${UserSchema.schema.UserName.name} = @${UserSchema.schema.UserName.name}`
     );
   // console.log(
   //   `SELECT * from ${UserSchema.schemaName} where ${UserSchema.schema.userName.name} = @${UserSchema.schema.userName.name}`
   // );
   // console.log("result", result);
   if (result.recordsets[0].length > 0) {
-    return result.recordsets[0][0];
+    return new DTOUser(result.recordsets[0][0]);
   }
 
   return null;
@@ -186,7 +185,7 @@ exports.updateUserById = async (id, updateInfo) => {
   updateInfo.password = await bcrypt.hash(updateInfo.password, 10);
   // console.log(updateInfo);
   let query = `update ${UserSchema.schemaName} set`;
-  const { request, updateStr } = dbUtils.getUpdateQuery(
+  const {request, updateStr} = dbUtils.getUpdateQuery(
     UserSchema.schema,
     dbConfig.db.pool.request(),
     updateInfo

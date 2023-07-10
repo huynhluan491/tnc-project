@@ -1,7 +1,8 @@
 exports.AUTH = {
   Role: {
-    user: 0,
-    admin: 1,
+    user: 3,
+    admin: 2,
+    master: 1,
   },
 };
 

@@ -1,5 +1,15 @@
 [
   {
+    "UserID": -1,
+    "UserName": "master",
+    "Password": "1",
+    "AuthID": 1,
+    "Email": "SYSTEM@example.com",
+    "Point": 0,
+    "Address": "NULL",
+    "Phone": "NULL"
+  },
+  {
     "UserID": 1,
     "UserName": "admin",
     "Password": "123",

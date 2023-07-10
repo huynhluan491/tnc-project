@@ -74,11 +74,11 @@ create table Users
 	UserName varchar(30) not null unique,
 	Password varchar(max) not null,
 	AuthID int constraint FK_Users_Auth references Auth(AuthID),
-	Email varchar(100) unique not null ,
+	Email varchar(100) unique null ,
 	Point float,
-	Address nvarchar(max) not null,
-	Phone nvarchar(11) not null,
-	CreatedAt datetime default CURRENT_TIMESTAMP not null
+	Address nvarchar(max) null,
+	Phone nvarchar(11) null,
+	CreatedAt datetime default CURRENT_TIMESTAMP null
 )
 go
 
@@ -108,6 +108,7 @@ create table Orders
 	Phone nvarchar(11) not null,
 	PaymentID int constraint FK_Order_Payment references Payment(PaymentId),
 	StatusID int constraint FK_Order_LS_Status references LS_Status(StatusID),
+	PayIn datetime default CURRENT_TIMESTAMP null,
 	CreatedAt datetime default CURRENT_TIMESTAMP not null
 )
 go
@@ -133,6 +134,8 @@ create table Feature
 )
 go
 
+
+go
 CREATE TRIGGER tr_product_delete
 ON product
 INSTEAD OF DELETE
@@ -249,5 +252,6 @@ from Auth
 select *
 from LS_Status
 
---DBCC CHECKIDENT ('users', RESEED, 1)
---delete Users
+--DBCC CHECKIDENT ('auth', RESEED, 1)
+--delete auth
+

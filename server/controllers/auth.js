@@ -2,12 +2,13 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const UserDAO = require("../DAO/UserDAO");
 const CartDAO = require("../DAO/OrderDAO");
+
 const signToken = (id, username, auth, OrderID) => {
   return jwt.sign(
     {
-      userID: id,
-      username: username,
-      auth: auth,
+      UserID: id,
+      Username: username,
+      Auth: auth,
       // cartID: OrderID
     },
     process.env.JWT_SECRET,
@@ -26,11 +27,11 @@ exports.login = async (req, res) => {
     //2. check if user existed
     const user = await UserDAO.getUserByUserName(form.userName);
     const OrderID = await CartDAO.getOrderIDByUserName(form.userName);
-    let cartID;
+    let orderID;
     if (!OrderID) {
-      cartID = -1;
+      orderID = -1;
     } else {
-      cartID = OrderID;
+      orderID = OrderID;
     }
     if (!user) {
       return res
@@ -45,7 +46,7 @@ exports.login = async (req, res) => {
         .json({code: 401, msg: "Invalid authentication"});
     }
     //4. get JWT & response to use  //https://jwt.io/
-    const token = signToken(user.userID, user.userName, user.auth, cartID);
+    const token = signToken(user.UserID, user.UserName, user.Auth, cartID);
     //testing
     res.cookie("user", token, {
       httpOnly: true,
@@ -111,6 +112,8 @@ exports.protect = async (req, res, next) => {
     ) {
       //Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjcsInVzZXJuYW1lIjoidGVzdCIsImlhdCI6MTY3OTUzMzEwOSwiZXhwIjoxNjc5NTU0NzA5fQ.HZ7zIGlbU2dQjgCUDbBridcO-CATrGbjthnNH0X2w-M
       token = req.headers.authorization.split(" ")[1];
+    } else {
+      token = req.cookies.access_token_dev;
     }
     if (!token) {
       return res
@@ -123,7 +126,7 @@ exports.protect = async (req, res, next) => {
     // 2) Verification token
     const payload = jwt.verify(token, process.env.JWT_SECRET);
     // 3) Check if user still exists
-    const currentUser = await UserDAO.getUserById(payload.userID);
+    const currentUser = await UserDAO.getUserById(payload.UserID);
     if (!currentUser) {
       return res
         .status(401) // 401 - Unauthorized
@@ -143,18 +146,23 @@ exports.protect = async (req, res, next) => {
   next();
 };
 
-//roles [StaticData.AUTH.Role.admin]
-exports.restrictTo = (...roles) => {
+//roles
+exports.restrictTo = (roles) => {
   return async (req, res, next) => {
-    if (!roles.includes(req.user.auth)) {
-      return res
-        .status(403) // 403 - Forbidden
-        .json({
-          code: 403,
-          msg: "You do not have permission to perform this action",
-        });
+    const roleUser = req.user.AuthID;
+    switch (roleUser) {
+      case roles.admin:
+      case roles.master:
+        next();
+        break;
+      default:
+        return res
+          .status(403) // 403 - Forbidden
+          .json({
+            code: 403,
+            msg: "You do not have permission to perform this action",
+          });
     }
-    next();
   };
 };
 
@@ -165,7 +173,7 @@ exports.getTokenDev = async (req, res) => {
       {
         UserID: "-1",
         UserName: "MASTER",
-        Auth: 1,
+        password: 1,
       },
       process.env.JWT_SECRET,
       {expiresIn: process.env.JWT_EXPIRED_IN}

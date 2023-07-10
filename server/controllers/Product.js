@@ -14,8 +14,6 @@ exports.getProducts = async (req, res) => {
     req.query.categoryID = cateid;
 
     delete req.query.categoryName;
-
-    console.log("cc", req.query);
   }
   try {
     const products = await ProductDAO.getAllProducts(req.query);
