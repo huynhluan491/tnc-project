@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
-import { DTORespone } from '../dto/DTORespone';
+import { DTOResponse } from '../dto/DTOResponse';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LayoutAPIService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
   brandURL = 'https://api.npoint.io/a988b55c50ff8b1eebd1';
   categoryURL = 'https://api.npoint.io/87d82e14eac1dfbd0360';
   productURL = 'https://api.npoint.io/20b043a1de7e8325bdd4';
@@ -24,8 +24,8 @@ export class LayoutAPIService {
         (err) => {
           obs.error(err);
         }
-      )
-    })
+      );
+    });
   }
 
   GetFilterProducts(filterProductURL: string) {
@@ -43,8 +43,8 @@ export class LayoutAPIService {
     });
   }
   GetBrands() {
-    return new Observable<DTORespone>((obs) => {
-      this.http.get<DTORespone>(this.brandURL).subscribe(
+    return new Observable<DTOResponse>((obs) => {
+      this.http.get<DTOResponse>(this.brandURL).subscribe(
         (res) => {
           3;
         },
@@ -57,8 +57,8 @@ export class LayoutAPIService {
   }
 
   GetCategories() {
-    return new Observable<DTORespone>((obs) => {
-      this.http.get<DTORespone>(this.categoryURL).subscribe(
+    return new Observable<DTOResponse>((obs) => {
+      this.http.get<DTOResponse>(this.categoryURL).subscribe(
         (res) => {
           obs.next(res);
           obs.complete();
