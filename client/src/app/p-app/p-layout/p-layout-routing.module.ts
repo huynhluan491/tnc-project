@@ -8,6 +8,7 @@ import { TncProfileComponent } from '../tnc-profile/tnc-profile.component';
 import { OrderHistoryComponent } from '../tnc-profile/order-history/order-history.component';
 import { PersonalInfoComponent } from '../tnc-profile/personal-info/personal-info.component';
 import { ChangePasswordComponent } from '../tnc-profile/change-password/change-password.component';
+import { CartCheckout2Component } from '../cart-checkout2/cart-checkout2.component';
 
 export const LayoutRoutes: Routes = [
   {
@@ -38,8 +39,17 @@ export const LayoutRoutes: Routes = [
       {
         path: 'cart',
         component: CartCheckoutComponent,
-      }
+        // children: [],
+      },
+      {
+        path: 'checkout',
+        component: CartCheckout2Component,
+      },
     ],
+  },
+  {
+    path: 'orderCheckout',
+    component: OrderCheckoutComponent,
   },
 ];
 
@@ -47,4 +57,4 @@ export const LayoutRoutes: Routes = [
   imports: [RouterModule.forChild(LayoutRoutes)],
   exports: [RouterModule],
 })
-export class LayoutRoutingModule { }
+export class LayoutRoutingModule {}

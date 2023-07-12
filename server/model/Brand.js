@@ -3,17 +3,17 @@ const ModelSchemaValidator = require("./ModelSchemaValidator");
 const sql = require("mssql");
 const BrandSchema = new ModelSchema(
   {
-    brandID: new ModelSchemaValidator({
-      name: "brandID",
+    BrandID: new ModelSchemaValidator({
+      name: "BrandID",
       sqlType: sql.Int,
     }),
-    brandName: new ModelSchemaValidator({
-      name: "brandName",
+    BrandName: new ModelSchemaValidator({
+      name: "BrandName",
       sqlType: sql.NVarChar,
       require: true,
     }),
-    createdAt: new ModelSchemaValidator({
-      name: "createdAt",
+    CreatedAt: new ModelSchemaValidator({
+      name: "CreatedAt",
       sqlType: sql.DateTime,
       require: true,
       default: new Date().toISOString(),

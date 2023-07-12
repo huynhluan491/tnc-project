@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
-import { DTORespone } from 'src/app/p-app/p-layout/shared/dto/DTORespone';
+import { DTORespone } from 'src/app/p-app/p-layout/shared/dto/DTOResponse';
 
 @Injectable({
   providedIn: 'root',

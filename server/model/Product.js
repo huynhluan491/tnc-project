@@ -4,63 +4,63 @@ const ModelSchema = require("./ModelSchema");
 
 const ProductSchema = new ModelSchema(
   {
-    productID: new ModelSchemaValidator({
-      name: "productID",
+    ProductID: new ModelSchemaValidator({
+      name: "ProductID",
       sqlType: sql.Int,
     }),
-    stock: new ModelSchemaValidator({
-      name: "stock",
+    Stock: new ModelSchemaValidator({
+      name: "Stock",
       sqlType: sql.Int,
     }),
-    name: new ModelSchemaValidator({
-      name: "name",
+    Name: new ModelSchemaValidator({
+      name: "Name",
       sqlType: sql.NVarChar,
       require: true,
     }),
-    favorite: new ModelSchemaValidator({
-      name: "favorite",
+    Favorite: new ModelSchemaValidator({
+      name: "Favorite",
       sqlType: sql.Int,
       require: true,
       validator: function (val) {
         return 0 || 1;
       },
     }),
-    categoryID: new ModelSchemaValidator({
-      name: "categoryID",
+    CategoryID: new ModelSchemaValidator({
+      name: "CategoryID",
       sqlType: sql.Int,
       require: true,
     }),
-    price: new ModelSchemaValidator({
-      name: "price",
+    Price: new ModelSchemaValidator({
+      name: "Price",
       sqlType: sql.Float,
       require: true,
     }),
 
-    brandID: new ModelSchemaValidator({
-      name: "brandID",
+    BrandID: new ModelSchemaValidator({
+      name: "BrandID",
       sqlType: sql.Int,
       require: true,
     }),
-    image: new ModelSchemaValidator({
-      name: "image",
+    Image: new ModelSchemaValidator({
+      name: "Image",
       sqlType: sql.NVarChar,
       require: true,
     }),
-    sale: new ModelSchemaValidator({
-      name: "sale",
+    Sale: new ModelSchemaValidator({
+      name: "Sale",
       sqlType: sql.Float,
       default: "",
     }),
-    description: new ModelSchemaValidator({
-      name: "description",
+    Description: new ModelSchemaValidator({
+      name: "Description",
       sqlType: sql.NVarChar,
       require: true,
       validator: function (val) {
         return val.length > 0;
       },
     }),
-    createdAt: new ModelSchemaValidator({
-      name: "createdAt",
+    CreatedAt: new ModelSchemaValidator({
+      name: "CreatedAt",
       sqlType: sql.DateTime,
       default: new Date().toISOString(),
       require: true,

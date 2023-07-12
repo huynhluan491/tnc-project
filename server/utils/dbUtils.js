@@ -124,7 +124,7 @@ exports.getInsertQuery = (schema, request, insert) => {
   for (let fieldName in schema) {
     const schemaProp = schema[fieldName];
     let val = insert[fieldName];
-    let { isValid, err } = schemaProp.validate(val);
+    let {isValid, err} = schemaProp.validate(val);
     if (isValid) {
       if (val !== null && val !== undefined) {
         request.input(fieldName, schemaProp.sqlType, val);
@@ -158,7 +158,7 @@ exports.getUpdateQuery = (schema, request, update) => {
     const schemaProp = schema[fieldName];
     if (schemaProp) {
       let val = update[fieldName];
-      let { isValid, err } = schemaProp.validate(val);
+      let {isValid, err} = schemaProp.validate(val);
       if (isValid) {
         if (val !== null && val !== undefined) {
           request.input(fieldName, schemaProp.sqlType, val);
@@ -329,7 +329,7 @@ exports.getFilterProductsQuery = (
   }
   // console.log("filter string", filterStr);
   filterStr = filterStr.replace(/[\n\r]/g, "");
-  return { filterStr, paginationStr };
+  return {filterStr, paginationStr};
 };
 
 exports.getFilterUserQuery = (schema, filter, page, pageSize, defaultSort) => {
@@ -381,5 +381,5 @@ exports.getFilterUserQuery = (schema, filter, page, pageSize, defaultSort) => {
   }
   // console.log("filter string", filterStr);
   filterStr = filterStr.replace(/[\n\r]/g, "");
-  return { filterStr, paginationStr };
+  return {filterStr, paginationStr};
 };

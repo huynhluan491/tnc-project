@@ -3,6 +3,7 @@ const CategoryDAO = require("../DAO/CategoryDAO");
 // const ProductSchema = require("../model/Product");
 const path = require("path");
 const fs = require("fs");
+const DTOProduct = require("../DTO/Default/DTOProduct");
 
 exports.getProducts = async (req, res) => {
   console.log("req.query", req.query);
@@ -13,8 +14,6 @@ exports.getProducts = async (req, res) => {
     req.query.categoryID = cateid;
 
     delete req.query.categoryName;
-
-    // console.log("cc", req.query);
   }
   try {
     const products = await ProductDAO.getAllProducts(req.query);
@@ -60,8 +59,9 @@ exports.getProductById = async (req, res) => {
 
 exports.createNewProduct = async (req, res) => {
   const newProduct = req.body;
+  const dto = new DTOProduct(newProduct);
   try {
-    let product = await ProductDAO.getProductByName(newProduct.name);
+    let product = await ProductDAO.getProductByName(dto.Name);
     if (product) {
       return res
         .status(403) //Forbidden
@@ -70,8 +70,8 @@ exports.createNewProduct = async (req, res) => {
           msg: `Product name duplicate!`,
         });
     }
-    await ProductDAO.createNewProduct(newProduct);
-    product = await ProductDAO.getProductByName(newProduct.name);
+    await ProductDAO.createNewProduct(dto);
+    product = await ProductDAO.getProductByName(dto.Name);
     product && (await ProductDAO.createNewRating(product));
     // console.log(`Created new product successfully!`);
     return res.status(200).json({
@@ -227,10 +227,10 @@ exports.saveFileProductImage = async (req, res) => {
   fs.writeFile(imagePath, buffer, (err) => {
     if (err) {
       // console.error(err);
-      res.status(500).json({ error: "Failed to save the file." });
+      res.status(500).json({error: "Failed to save the file."});
     } else {
       // console.log("File saved successfully.");
-      res.status(200).json({ message: "File saved successfully." });
+      res.status(200).json({message: "File saved successfully."});
     }
   });
   const Name = infor.imageName;

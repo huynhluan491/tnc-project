@@ -1,5 +1,6 @@
--- use master
--- drop database TNCShop
+
+--use master
+--drop database TNCShop
 
 create database TNCShop
 go
@@ -9,97 +10,130 @@ alter database TNCShop set TRUSTWORTHY ON
 go
 create table Category
 (
-	categoryID int identity(1,1) primary key,
-	categoryName nvarchar(30) unique not null,
-	createdAt datetime default CURRENT_TIMESTAMP not null
+	CategoryID int identity(1,1) primary key,
+	CategoryName nvarchar(30) unique not null,
+	CreatedAt datetime default CURRENT_TIMESTAMP not null
 )
 go
 create table Brand
 (
-	brandID int identity(1,1) primary key,
-	brandName nvarchar(30) unique not null,
-	createdAt datetime default CURRENT_TIMESTAMP not null
+	BrandID int identity(1,1) primary key,
+	BrandName nvarchar(30) unique not null,
+	CreatedAt datetime default CURRENT_TIMESTAMP not null
 
 )
-
+go
+create table LS_Status
+(
+	StatusID int identity(1,1) primary key,
+	StatusName nvarchar(100),
+	TypeStatus int,--1 cua product --2 cua don hang ,
+	Mark nvarchar(max),
+	CreatedAt datetime default CURRENT_TIMESTAMP not null
+)
 go
 create table Product
 (
-	productID int identity(1,1) primary key,
-	stock int not null,
-	name nvarchar (200) not null unique,
-	favorite int not null check (favorite in (1,0)),
-	categoryID int constraint FK_Product_cate references Category(categoryID) not null,
-	price float not null,
-	brandID int constraint FK_Product_brand references Brand(brandID) not null,
-	image nvarchar(max),
-	sale float ,
-	description nvarchar(max),
-	createdAt datetime default CURRENT_TIMESTAMP not null
+	ProductID int identity(1,1) primary key,
+	Stock int not null,
+	Name nvarchar (200) not null unique,
+	Favorite int not null check (favorite in (1,0)),
+	CategoryID int constraint FK_Product_cate references Category(categoryID) not null,
+	Price float not null,
+	BrandID int constraint FK_Product_brand references Brand(brandID) not null,
+	Image nvarchar(max),
+	Sale nvarchar(100) ,
+	Description nvarchar(max),
+	StatusID int constraint FK_Product_Status references LS_Status(StatusID),
+	CreatedAt datetime default CURRENT_TIMESTAMP not null
 )
 
 go
 create table Rating
 (
-	ratingID int identity(1,1) primary key,
+	RatingID int identity(1,1) primary key,
 	_5star int default 0,
 	_4star int default 0,
 	_3star int default 0,
 	_2star int default 0,
 	_1star int default 0,
-	productID int constraint FK_Rating references Product(productID),
+	ProductID int constraint FK_Rating references Product(productID),
+	CreatedAt datetime default CURRENT_TIMESTAMP not null
+)
+go
+create table Auth
+(
+	AuthID int identity(1,1) primary key,
+	AuthName nvarchar(100),
 	createdAt datetime default CURRENT_TIMESTAMP not null
 )
 go
 create table Users
 (
-	userID int identity(1,1) primary key,
-	userName varchar(30) not null unique,
-	password varchar(max) not null,
-	auth int not null check (auth in (1,0)),
-	--	1 - admin   0 -	user
-	email varchar(100) unique not null ,
-	createdAt datetime default CURRENT_TIMESTAMP not null
+	UserID int identity(1,1) primary key,
+	UserName varchar(30) not null unique,
+	Password varchar(max) not null,
+	AuthID int constraint FK_Users_Auth references Auth(AuthID),
+	Email varchar(100) unique null ,
+	Point float,
+	Address nvarchar(max) null,
+	Phone nvarchar(11) null,
+	CreatedAt datetime default CURRENT_TIMESTAMP null
 )
 go
 
 create table Subimg
 (
-	subimgID int identity(1,1) primary key,
-	image varchar(max) not null,
-	alt varchar(100) not null,
-	productID int constraint FK_SrcImg references product(productID),
-	createdAt datetime default CURRENT_TIMESTAMP not null
+	SubimgID int identity(1,1) primary key,
+	Image varchar(max) not null,
+	Alt varchar(100) not null,
+	ProductID int constraint FK_SrcImg references product(productID),
+	CreatedAt datetime default CURRENT_TIMESTAMP not null
 )
 go
-
-create table Cart
+create table Payment
 (
-	cartID int identity(1,1) primary key,
-	userID int constraint FK_Cart references Users(userID) unique,
-	createdAt datetime default CURRENT_TIMESTAMP not null
+	PaymentID int identity(1,1) primary key,
+	PaymentName nvarchar(max),
+	PaymentType nvarchar(100),
+	CreatedAt datetime default CURRENT_TIMESTAMP not null
 )
-create table Cart_Product
+go
+create table Orders
 (
-	cartID int ,
-	productID int,
-	amount int,
-	primary key (cartID,productID),
+	OrderID int identity(1,1) primary key,
+	UserID int constraint FK_Cart references Users(userID),
+	CustomerName nvarchar(max) null ,
+	Address nvarchar(max) not null,
+	Phone nvarchar(11) not null,
+	PaymentID int constraint FK_Order_Payment references Payment(PaymentId),
+	StatusID int constraint FK_Order_LS_Status references LS_Status(StatusID),
+	PayIn datetime default CURRENT_TIMESTAMP null,
+	CreatedAt datetime default CURRENT_TIMESTAMP not null
+)
+go
+create table Order_Details
+(
+	OrderID int ,
+	ProductID int,
+	Amount int,
+	primary key (OrderID,ProductID),
 	createdAt datetime default CURRENT_TIMESTAMP not null
 )
 go
-alter table Cart_Product add  constraint FK_Cart_Product_Cart foreign key (cartID)  references Cart(cartID)
+alter table Order_Details add  constraint FK_Order_Details_Orders foreign key (OrderID)  references Orders(OrderID)
 go
-alter table Cart_Product add  constraint FK_Cart_Product_Product foreign key (productID)  references Product(productID)
+alter table Order_Details add  constraint FK_Order_Details_Product foreign key (ProductID)  references Product(ProductID)
 go
 create table Feature
 (
-	featureID int identity (1,1) primary key,
-	feature nvarchar(max) not null,
-	productID int constraint FK_Feature_Product  references Product(productID),
-	createdAt datetime default CURRENT_TIMESTAMP not null
+	FeatureID int identity (1,1) primary key,
+	Feature nvarchar(max) not null,
+	ProductID int constraint FK_Feature_Product  references Product(productID),
+	CreatedAt datetime default CURRENT_TIMESTAMP not null
 )
 go
+
 
 go
 CREATE TRIGGER tr_product_delete
@@ -111,7 +145,7 @@ BEGIN
 	FROM deleted);
 	DELETE FROM feature WHERE productID IN (SELECT deleted.productID
 	FROM deleted);
-	DELETE FROM cart_product WHERE productID IN (SELECT deleted.productID
+	DELETE FROM Order_Details WHERE productID IN (SELECT deleted.productID
 	FROM deleted);
 	DELETE FROM subImg WHERE productID IN (SELECT deleted.productID
 	FROM deleted);
@@ -121,27 +155,39 @@ END;
 
 go
 
-CREATE TRIGGER tr_user_delete
-ON users
-INSTEAD OF DELETE
-AS
-BEGIN
-	DELETE FROM Cart WHERE userID IN (SELECT deleted.userID
-	FROM deleted);
-	DELETE FROM users WHERE userID IN (SELECT deleted.userID
-	FROM deleted);
-END;
+-- CREATE TRIGGER tr_product_create
+-- ON product
+-- AFTER INSERT
+-- AS
+-- BEGIN
+-- 	INSERT INTO Rating(_5star,_4star,_3star,_2star,_1star,productID)
+--   	VALUES (0,0,0,0,0,(SELECT inserted.productID FROM inserted))
+-- END;
 
+
+-- go
 go
+--CREATE TRIGGER tr_user_delete
+--ON users
+--INSTEAD OF DELETE
+--AS
+--BEGIN
+--	DELETE FROM Order WHERE userID IN (SELECT deleted.userID
+--	FROM deleted);
+--	DELETE FROM users WHERE userID IN (SELECT deleted.userID
+--	FROM deleted);
+--END;
 
-CREATE TRIGGER tr_cart_delete
-ON cart
+--go
+
+CREATE TRIGGER tr_Orders_delete
+ON Orders
 INSTEAD OF DELETE
 AS
 BEGIN
-	DELETE FROM Cart_Product WHERE cartID IN (SELECT deleted.cartID
+	DELETE FROM Order_Details WHERE OrderID IN (SELECT deleted.OrderID
 	FROM deleted);
-	DELETE FROM Cart WHERE cartID IN (SELECT deleted.cartID
+	DELETE FROM Orders WHERE OrderID IN (SELECT deleted.OrderID
 	FROM deleted);
 END;
 
@@ -176,7 +222,12 @@ END
 go
 
 -- select * from product where dbo.fuConvertToUnsign1(name)  like  N'%' + dbo.fuConvertToUnsign1(N'đồ') + '%'
-
+go
+insert into Auth
+values('master', GETDATE()),
+	('admin', GETDATE()),
+	('user', GETDATE())
+go
 
 select *
 from Product
@@ -187,12 +238,20 @@ from rating
 select *
 from Subimg
 select *
-from Cart
+from Orders
 select *
 from Users
 select *
-from Cart_Product
+from Order_Details
 select *
 from category
+select *
+from Payment
+select *
+from Auth
+select *
+from LS_Status
 
+--DBCC CHECKIDENT ('auth', RESEED, 1)
+--delete auth
 

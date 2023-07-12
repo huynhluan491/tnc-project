@@ -5,28 +5,28 @@ const StaticData = require("../utils/StaticData");
 
 const UserSchema = new ModelSchema(
   {
-    userID: new ModelSchemaValidator({
-      name: "userID",
+    UserID: new ModelSchemaValidator({
+      name: "UserID",
       sqlType: sql.Int,
     }),
-    userName: new ModelSchemaValidator({
-      name: "userName",
+    UserName: new ModelSchemaValidator({
+      name: "UserName",
       sqlType: sql.VarChar,
       require: true,
     }),
-    password: new ModelSchemaValidator({
-      name: "password",
+    Password: new ModelSchemaValidator({
+      name: "Password",
       sqlType: sql.VarChar,
       require: true,
     }),
-    auth: new ModelSchemaValidator({
-      name: "auth",
+    AuthID: new ModelSchemaValidator({
+      name: "AuthID",
       sqlType: sql.Int,
       require: true,
-      default: StaticData.AUTH.Role.user,
+      //default: StaticData.AUTH.Role.user,
     }),
-    email: new ModelSchemaValidator({
-      name: "email",
+    Email: new ModelSchemaValidator({
+      name: "Email",
       require: true,
       sqlType: sql.VarChar,
       validator: function (val) {
@@ -37,8 +37,23 @@ const UserSchema = new ModelSchema(
           );
       },
     }),
-    createdAt: new ModelSchemaValidator({
-      name: "createdAt",
+    Point: new ModelSchemaValidator({
+      name: "Point",
+      sqlType: sql.Float,
+      default: 0,
+    }),
+    Address: new ModelSchemaValidator({
+      name: "Address",
+      sqlType: sql.VarChar,
+    }),
+    Phone: new ModelSchemaValidator({
+      name: "Phone",
+      sqlType: sql.NVarChar,
+      require: true,
+    }),
+
+    CreatedAt: new ModelSchemaValidator({
+      name: "CreatedAt",
       sqlType: sql.DateTime,
       default: new Date().toISOString(),
       require: true,

@@ -21,6 +21,7 @@ import { CartComponent } from './components/cart/cart.component';
 import { dropdownFilterComponent } from './components/dropdown-filter/dropdown-filter.component';
 import { PercentagePipe } from './shared/pipe/percentage.pipe';
 import { LayoutModule } from '@progress/kendo-angular-layout';
+import { RegisterComponent } from './components/register/register.component';
 @NgModule({
   declarations: [
     LayoutDefault,
@@ -35,6 +36,7 @@ import { LayoutModule } from '@progress/kendo-angular-layout';
     dropdownFilterComponent,
     PercentagePipe,
     CartComponent,
+    RegisterComponent,
   ],
   imports: [
     CommonModule,

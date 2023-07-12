@@ -1,659 +1,659 @@
 [
   {
-    "ratingID": 1,
+    "RatingID": 1,
     "_5star": 1,
     "_4star": 1,
     "_3star": 1,
     "_2star": 3,
     "_1star": 5,
-    "productID": 1
+    "ProductID": 1
   },
   {
-    "ratingID": 2,
+    "RatingID": 2,
     "_5star": 2,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 2
+    "ProductID": 2
   },
   {
-    "ratingID": 3,
+    "RatingID": 3,
     "_5star": 0,
     "_4star": 0,
     "_3star": 0,
     "_2star": 0,
     "_1star": 0,
-    "productID": 3
+    "ProductID": 3
   },
   {
-    "ratingID": 4,
+    "RatingID": 4,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 4
+    "ProductID": 4
   },
   {
-    "ratingID": 5,
+    "RatingID": 5,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 5
+    "ProductID": 5
   },
   {
-    "ratingID": 6,
+    "RatingID": 6,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 6
+    "ProductID": 6
   },
   {
-    "ratingID": 7,
+    "RatingID": 7,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 7
+    "ProductID": 7
   },
   {
-    "ratingID": 8,
+    "RatingID": 8,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 8
+    "ProductID": 8
   },
   {
-    "ratingID": 9,
+    "RatingID": 9,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 9
+    "ProductID": 9
   },
   {
-    "ratingID": 10,
+    "RatingID": 10,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 10
+    "ProductID": 10
   },
   {
-    "ratingID": 11,
+    "RatingID": 11,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 11
+    "ProductID": 11
   },
   {
-    "ratingID": 12,
+    "RatingID": 12,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 12
+    "ProductID": 12
   },
   {
-    "ratingID": 13,
+    "RatingID": 13,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 13
+    "ProductID": 13
   },
   {
-    "ratingID": 14,
+    "RatingID": 14,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 14
+    "ProductID": 14
   },
   {
-    "ratingID": 15,
+    "RatingID": 15,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 15
+    "ProductID": 15
   },
   {
-    "ratingID": 16,
+    "RatingID": 16,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 16
+    "ProductID": 16
   },
   {
-    "ratingID": 17,
+    "RatingID": 17,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 17
+    "ProductID": 17
   },
   {
-    "ratingID": 18,
+    "RatingID": 18,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 18
+    "ProductID": 18
   },
   {
-    "ratingID": 19,
+    "RatingID": 19,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 19
+    "ProductID": 19
   },
   {
-    "ratingID": 20,
+    "RatingID": 20,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 20
+    "ProductID": 20
   },
   {
-    "ratingID": 21,
+    "RatingID": 21,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 21
+    "ProductID": 21
   },
   {
-    "ratingID": 22,
+    "RatingID": 22,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 22
+    "ProductID": 22
   },
   {
-    "ratingID": 23,
+    "RatingID": 23,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 23
+    "ProductID": 23
   },
   {
-    "ratingID": 24,
+    "RatingID": 24,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 24
+    "ProductID": 24
   },
   {
-    "ratingID": 25,
+    "RatingID": 25,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 25
+    "ProductID": 25
   },
   {
-    "ratingID": 26,
+    "RatingID": 26,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 26
+    "ProductID": 26
   },
   {
-    "ratingID": 27,
+    "RatingID": 27,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 27
+    "ProductID": 27
   },
   {
-    "ratingID": 28,
+    "RatingID": 28,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 28
+    "ProductID": 28
   },
   {
-    "ratingID": 29,
+    "RatingID": 29,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 29
+    "ProductID": 29
   },
   {
-    "ratingID": 30,
+    "RatingID": 30,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 30
+    "ProductID": 30
   },
   {
-    "ratingID": 31,
+    "RatingID": 31,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 31
+    "ProductID": 31
   },
   {
-    "ratingID": 32,
+    "RatingID": 32,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 32
+    "ProductID": 32
   },
   {
-    "ratingID": 33,
+    "RatingID": 33,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 33
+    "ProductID": 33
   },
   {
-    "ratingID": 34,
+    "RatingID": 34,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 34
+    "ProductID": 34
   },
   {
-    "ratingID": 35,
+    "RatingID": 35,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 35
+    "ProductID": 35
   },
   {
-    "ratingID": 36,
+    "RatingID": 36,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 36
+    "ProductID": 36
   },
   {
-    "ratingID": 37,
+    "RatingID": 37,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 37
+    "ProductID": 37
   },
   {
-    "ratingID": 38,
+    "RatingID": 38,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 38
+    "ProductID": 38
   },
   {
-    "ratingID": 39,
+    "RatingID": 39,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 39
+    "ProductID": 39
   },
   {
-    "ratingID": 40,
+    "RatingID": 40,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 40
+    "ProductID": 40
   },
   {
-    "ratingID": 41,
+    "RatingID": 41,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 41
+    "ProductID": 41
   },
   {
-    "ratingID": 42,
+    "RatingID": 42,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 42
+    "ProductID": 42
   },
   {
-    "ratingID": 43,
+    "RatingID": 43,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 43
+    "ProductID": 43
   },
   {
-    "ratingID": 44,
+    "RatingID": 44,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 44
+    "ProductID": 44
   },
   {
-    "ratingID": 45,
+    "RatingID": 45,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 45
+    "ProductID": 45
   },
   {
-    "ratingID": 46,
+    "RatingID": 46,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 46
+    "ProductID": 46
   },
   {
-    "ratingID": 47,
+    "RatingID": 47,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 47
+    "ProductID": 47
   },
   {
-    "ratingID": 48,
+    "RatingID": 48,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 48
+    "ProductID": 48
   },
   {
-    "ratingID": 49,
+    "RatingID": 49,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 49
+    "ProductID": 49
   },
   {
-    "ratingID": 50,
+    "RatingID": 50,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 50
+    "ProductID": 50
   },
   {
-    "ratingID": 51,
+    "RatingID": 51,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 51
+    "ProductID": 51
   },
   {
-    "ratingID": 52,
+    "RatingID": 52,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 52
+    "ProductID": 52
   },
   {
-    "ratingID": 53,
+    "RatingID": 53,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 53
+    "ProductID": 53
   },
   {
-    "ratingID": 54,
+    "RatingID": 54,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 54
+    "ProductID": 54
   },
   {
-    "ratingID": 55,
+    "RatingID": 55,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 55
+    "ProductID": 55
   },
   {
-    "ratingID": 56,
+    "RatingID": 56,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 56
+    "ProductID": 56
   },
   {
-    "ratingID": 57,
+    "RatingID": 57,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 57
+    "ProductID": 57
   },
   {
-    "ratingID": 58,
+    "RatingID": 58,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 58
+    "ProductID": 58
   },
   {
-    "ratingID": 59,
+    "RatingID": 59,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 59
+    "ProductID": 59
   },
   {
-    "ratingID": 60,
+    "RatingID": 60,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 60
+    "ProductID": 60
   },
   {
-    "ratingID": 61,
+    "RatingID": 61,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 61
+    "ProductID": 61
   },
   {
-    "ratingID": 62,
+    "RatingID": 62,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 62
+    "ProductID": 62
   },
   {
-    "ratingID": 63,
+    "RatingID": 63,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 63
+    "ProductID": 63
   },
   {
-    "ratingID": 64,
+    "RatingID": 64,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 64
+    "ProductID": 64
   },
   {
-    "ratingID": 65,
+    "RatingID": 65,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 65
+    "ProductID": 65
   },
   {
-    "ratingID": 66,
+    "RatingID": 66,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 66
+    "ProductID": 66
   },
   {
-    "ratingID": 67,
+    "RatingID": 67,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 67
+    "ProductID": 67
   },
   {
-    "ratingID": 68,
+    "RatingID": 68,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 68
+    "ProductID": 68
   },
   {
-    "ratingID": 69,
+    "RatingID": 69,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 69
+    "ProductID": 69
   },
   {
-    "ratingID": 70,
+    "RatingID": 70,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 70
+    "ProductID": 70
   },
   {
-    "ratingID": 71,
+    "RatingID": 71,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 71
+    "ProductID": 71
   },
   {
-    "ratingID": 72,
+    "RatingID": 72,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 72
+    "ProductID": 72
   },
   {
-    "ratingID": 73,
+    "RatingID": 73,
     "_5star": 0,
     "_4star": 1,
     "_3star": 1,
     "_2star": 0,
     "_1star": 0,
-    "productID": 73
+    "ProductID": 73
   }
 ]

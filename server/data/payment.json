@@ -1,0 +1,17 @@
+[
+    {
+        "PaymentID": 1,
+        "PaymentName": "VNPay",
+        "PaymentType": "QR"
+    },
+    {
+        "PaymentID": 2,
+        "PaymentName": "COD",
+        "PaymentType": "Cash"
+    },
+    {
+        "PaymentID": 3,
+        "PaymentName": "Bank",
+        "PaymentType": "Internet Banking"
+    }
+]

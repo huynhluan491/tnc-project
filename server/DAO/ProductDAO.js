@@ -1,12 +1,14 @@
 // const products = require("../../client/src/data/products.json");
 const sql = require("mssql");
 const ProductSchema = require("../model/Product");
-const BrandSchema = require("../model/Brand")
+const BrandSchema = require("../model/Brand");
 const RatingSchema = require("../model/Rating");
 const dbConfig = require("../database/dbconfig");
 const dbUtils = require("../utils/dbUtils");
 const StaticData = require("../utils/StaticData");
 const categoryController = require("../controllers/Category");
+const DTOProductCustomize = require("../DTO/Customize/DTOProductCustomize");
+const DTOProduct = require("../DTO/Default/DTOProduct");
 
 exports.addProductIfNotExisted = async (product) => {
   if (!dbConfig.db.pool) {
@@ -17,7 +19,7 @@ exports.addProductIfNotExisted = async (product) => {
   let insertData = ProductSchema.validateData(product);
 
   let query = `SET IDENTITY_INSERT ${ProductSchema.schemaName} ON insert into ${ProductSchema.schemaName}`;
-  const { request, insertFieldNamesStr, insertValuesStr } =
+  const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(
       ProductSchema.schema,
       dbConfig.db.pool.request(),
@@ -55,13 +57,17 @@ exports.getProductByName = async (name) => {
   let request = dbConfig.db.pool.request();
   let result = await request
     .input(
-      `${ProductSchema.schema.name.name}`,
-      ProductSchema.schema.name.sqlType,
+      `${ProductSchema.schema.Name.name}`,
+      ProductSchema.schema.Name.sqlType,
       name
     )
     .query(
-      `select * from ${ProductSchema.schemaName} where ${ProductSchema.schema.name.name} = @${ProductSchema.schema.name.name}`
+      `select * from ${ProductSchema.schemaName} where ${ProductSchema.schema.Name.name} = @${ProductSchema.schema.Name.name}`
     );
+  console.log(result);
+  if (result.recordsets[0][0]) {
+    return new DTOProduct(result.recordsets[0][0]);
+  }
   return result.recordsets[0][0];
 };
 
@@ -72,14 +78,18 @@ exports.getProductById = async (id) => {
   let request = dbConfig.db.pool.request();
   let result = await request
     .input(
-      `${ProductSchema.schema.productID.name}`,
-      ProductSchema.schema.productID.sqlType,
+      `${ProductSchema.schema.ProductID.name}`,
+      ProductSchema.schema.ProductID.sqlType,
       id
     )
     .query(
-      `select * from ${ProductSchema.schemaName} where ${ProductSchema.schema.productID.name} = @${ProductSchema.schema.productID.name}`
+      `SELECT p.*,b.BrandName FROM ${ProductSchema.schemaName} p
+       join ${BrandSchema.schemaName} b on b.brandID = p.brandID
+        where ${ProductSchema.schema.ProductID.name} = @${ProductSchema.schema.ProductID.name}
+       `
     );
-  return result.recordsets[0][0];
+  console.log(result.recordsets[0][0]);
+  return new DTOProductCustomize(result.recordsets[0][0]);
 };
 
 exports.getAllProducts = async (filter) => {
@@ -92,11 +102,11 @@ exports.getAllProducts = async (filter) => {
   if (pageSize > StaticData.config.MAX_PAGE_SIZE) {
     pageSize = StaticData.config.MAX_PAGE_SIZE;
   }
-  let selectQuery = `SELECT ${ProductSchema.schemaName}.*, ${BrandSchema.schemaName}.brandName FROM ${ProductSchema.schemaName}
-  join ${BrandSchema.schemaName} on ${BrandSchema.schemaName}.brandID = ${ProductSchema.schemaName}.brandID `;
-  let countQuery = `SELECT COUNT(DISTINCT ${ProductSchema.schema.productID.name}) as totalItem from ${ProductSchema.schemaName}`;
+  let selectQuery = `SELECT p.*,b.BrandName FROM ${ProductSchema.schemaName} p
+  join ${BrandSchema.schemaName} b on b.brandID = p.brandID `;
+  let countQuery = `SELECT COUNT(DISTINCT ${ProductSchema.schema.ProductID.name}) as totalItem from ${ProductSchema.schemaName}`;
 
-  const { filterStr, paginationStr } = dbUtils.getFilterProductsQuery(
+  const {filterStr, paginationStr} = dbUtils.getFilterProductsQuery(
     ProductSchema.schema,
     filter,
     page,
@@ -115,7 +125,7 @@ exports.getAllProducts = async (filter) => {
     selectQuery += " " + paginationStr;
   }
 
-  console.log("selectQuery filter product",selectQuery);
+  console.log("selectQuery filter product", selectQuery);
 
   const result = await dbConfig.db.pool.request().query(selectQuery);
   let countResult = await dbConfig.db.pool.request().query(countQuery);
@@ -125,13 +135,15 @@ exports.getAllProducts = async (filter) => {
   }
   let totalPage = Math.ceil(totalProduct / pageSize); //round up
   const products = result.recordsets[0];
-  // console.log("finish log", selectQuery);
+  const productsDTO = products.map(
+    (element) => new DTOProductCustomize(element)
+  );
   return {
     page,
     pageSize,
     totalPage,
     totalProduct,
-    dataProducts: products,
+    dataProducts: productsDTO,
   };
 };
 exports.createNewRating = async (product) => {
@@ -143,7 +155,7 @@ exports.createNewRating = async (product) => {
   }
   let request = dbConfig.db.pool.request();
   console.log(product);
-  let query = `insert into ${RatingSchema.schemaName}(${ProductSchema.schema.productID.name}) values(${product.productID})`;
+  let query = `insert into ${RatingSchema.schemaName}(${ProductSchema.schema.ProductID.name}) values(${product.ProductID})`;
   console.log(query);
   let result = await request.query(query);
   return result.recordsets;
@@ -158,7 +170,7 @@ exports.createNewProduct = async (product) => {
   product.createdAt = new Date().toISOString();
   let insertData = ProductSchema.validateData(product);
   let query = `insert into ${ProductSchema.schemaName}`;
-  const { request, insertFieldNamesStr, insertValuesStr } =
+  const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(
       ProductSchema.schema,
       dbConfig.db.pool.request(),
@@ -177,12 +189,12 @@ exports.deleteProductById = async (id) => {
   let request = dbConfig.db.pool.request();
   let result = await request
     .input(
-      `${ProductSchema.schema.productID.name}`,
-      ProductSchema.schema.productID.sqlType,
+      `${ProductSchema.schema.ProductID.name}`,
+      ProductSchema.schema.ProductID.sqlType,
       id
     )
     .query(
-      `delete ${ProductSchema.schemaName} where ${ProductSchema.schema.productID.name} = @${ProductSchema.schema.productID.name}`
+      `delete ${ProductSchema.schemaName} where ${ProductSchema.schema.ProductID.name} = @${ProductSchema.schema.ProductID.name}`
     );
   return result.recordsets;
 };
@@ -192,12 +204,12 @@ exports.deleteMultipleProductById = async (idList) => {
     throw new Error("Not connected to db");
   }
   for (let i = 0; i < idList.length; i++) {
-    ProductSchema.schema.productID.validate(idList[i]);
+    ProductSchema.schema.ProductID.validate(idList[i]);
   }
   let request = dbConfig.db.pool.request();
   const deleteStr = dbUtils.getDeleteQuery(ProductSchema, idList);
   let result = await request.query(
-    `DELETE FROM ${ProductSchema.schemaName} WHERE ${ProductSchema.schema.productID.name} ${deleteStr}`
+    `DELETE FROM ${ProductSchema.schemaName} WHERE ${ProductSchema.schema.ProductID.name} ${deleteStr}`
   );
   return result.recordsets;
 };
@@ -211,7 +223,7 @@ exports.updateProductById = async (id, updateInfo) => {
   }
   // console.log(updateInfo);
   let query = `update ${ProductSchema.schemaName} set`;
-  const { request, updateStr } = dbUtils.getUpdateQuery(
+  const {request, updateStr} = dbUtils.getUpdateQuery(
     ProductSchema.schema,
     dbConfig.db.pool.request(),
     updateInfo
@@ -220,16 +232,17 @@ exports.updateProductById = async (id, updateInfo) => {
     throw new Error("Invalid update param");
   }
   request.input(
-    `${ProductSchema.schema.productID.name}`,
-    ProductSchema.schema.productID.sqlType,
+    `${ProductSchema.schema.ProductID.name}`,
+    ProductSchema.schema.ProductID.sqlType,
     id
   );
   query +=
     " " +
     updateStr +
-    ` where ${ProductSchema.schema.productID.name} = @${ProductSchema.schema.productID.name}`;
+    ` where ${ProductSchema.schema.ProductID.name} = @${ProductSchema.schema.ProductID.name}`;
+  query += ` select * from ${ProductSchema.schemaName} where ${ProductSchema.schema.ProductID.name} = @${ProductSchema.schema.ProductID.name}`;
   let result = await request.query(query);
-  return result.recordsets;
+  return new DTOProduct(result.recordsets[0]);
 };
 
 exports.getProductsNotPagination = async () => {
@@ -237,6 +250,8 @@ exports.getProductsNotPagination = async () => {
     throw new Error("Not connected to db");
   }
   let request = dbConfig.db.pool.request();
-  let result = await request.query(`select * from product`);
-  return result.recordsets[0];
+  let result = await request.query(`select * from ${ProductSchema.schemaName}`);
+  console.log(result.recordsets[0]);
+  let dtos = result.recordsets[0].map((x) => new DTOProduct(x));
+  return dtos;
 };

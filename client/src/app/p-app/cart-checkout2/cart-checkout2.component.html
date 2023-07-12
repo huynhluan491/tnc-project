@@ -1,0 +1,143 @@
+<div class="cart-background">
+  <div class="cart-container">
+    <div class="cart-content">
+      <div class="cart-item-wrapper">
+        <div class="steps-container">
+          <div class="step-wrapper step1">
+            <p class="step-title">1. Chọn sản phẩm</p>
+          </div>
+          <div class="step-wrapper step2">
+            <p class="step-title">2. Xác nhận đơn hàng</p>
+          </div>
+          <div class="step-wrapper step3">
+            <p class="step-title">3. Thanh toán</p>
+          </div>
+        </div>
+        <div
+          *ngIf="productList == 0; else product"
+          class="cart-item-sub-wrapper"
+        >
+          <p class="cart-item-placeholder">
+            Bạn đang không có sản phẩm nào <br />
+            trong giỏ hàng.
+          </p>
+        </div>
+        <ng-template #product>
+          <div class="cart-item-sub-wrapper2">
+            <form class="cart-item-info">
+              <div class="cart-item-title">THÔNG TIN GIAO HÀNG</div>
+              <div class="cart-item-input">
+                <input class="cart-item-checkbox" type="checkbox" />
+                <label class="cart-item-checkbox-label" for="name"
+                  >Sử dụng thông tin khách hàng để giao hàng</label
+                >
+              </div>
+              <div class="cart-item-input">
+                <label class="cart-item-label" for="name"
+                  >Họ & tên người nhận<span class="asterik">*</span>
+                </label>
+                <input
+                  required
+                  class="cart-item-text"
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Nhập tên khách hàng"
+                />
+              </div>
+              <div class="cart-item-input">
+                <label class="cart-item-label" for="email"
+                  >Địa chỉ email<span class="asterik">*</span></label
+                >
+                <input
+                  required
+                  class="cart-item-text"
+                  type="text"
+                  id="email"
+                  name="email"
+                  placeholder="Nhập email"
+                />
+              </div>
+              <div class="cart-item-input">
+                <label class="cart-item-label" for="phone"
+                  >Số điện thoại<span class="asterik">*</span></label
+                >
+                <input
+                  required
+                  class="cart-item-text"
+                  type="text"
+                  id="phone"
+                  name="phone"
+                  placeholder="Nhập số điện thoại"
+                />
+              </div>
+              <div class="cart-item-input">
+                <label class="cart-item-label" for="address"
+                  >Địa chỉ<span class="asterik">*</span></label
+                >
+                <input
+                  required
+                  class="cart-item-text"
+                  type="text"
+                  id="address"
+                  name="address"
+                  placeholder="Nhập địa chỉ"
+                />
+              </div>
+              <div class="line"></div>
+              <div class="cart-item-title">HÌNH THỨC THANH TOÁN</div>
+              <div class="cart-item-input">
+                <input
+                  class="cart-item-radio"
+                  type="radio"
+                  id="cod"
+                  name="payment-method"
+                />
+                <label class="cart-item-label" for="cod"
+                  >Thanh toán tại nơi giao hàng</label
+                >
+              </div>
+              <div class="cart-item-input">
+                <input
+                  class="cart-item-radio"
+                  type="radio"
+                  id="momo"
+                  name="payment-method"
+                />
+                <label class="cart-item-label" for="momo"
+                  >Thanh toán với ví momo</label
+                >
+              </div>
+            </form>
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="cart-info-wrapper">
+        <div class="cart-info-sub-wrapper">
+          <p class="cart-info-title">Thông tin giỏ hàng</p>
+          <div class="cart-info-quantity">
+            <p class="cart-info-quantity-txt">Số lượng sản phẩm</p>
+            <p class="cart-info-quantity-no">1</p>
+          </div>
+          <div class="cart-info-total">
+            <p class="cart-info-total-txt">Tổng chi phí</p>
+            <p class="cart-info-total-no">1.234.567 đ</p>
+          </div>
+          <p class="cart-info-tax">Đã bao gồm VAT (nếu có)</p>
+          <div class="cart-info-product">
+            <div class="line"></div>
+            <div class="cart-info-product-name">
+              CPU Intel Core i3-12100F 4C/8T (3.3 Ghz up to 4.3GHz, 12MB,
+              LGA1700, Alder Lake) Hàng NK
+            </div>
+            <div class="cart-info-product-price">1.234.567 đ</div>
+          </div>
+          <div class="checkout-btn-wrapper" routerLink="checkout">
+            <p class="checkout-btn-txt">XÁC NHẬN ĐƠN HÀNG</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
