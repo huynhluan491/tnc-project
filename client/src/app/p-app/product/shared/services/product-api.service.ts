@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
-import { DTORespone } from 'src/app/p-app/p-layout/shared/dto/DTOResponse';
+import { DTOResponse } from 'src/app/p-app/p-layout/shared/dto/DTOResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -93,7 +93,7 @@ export class ProductAPIService {
   }
 
   GetProductDetail() {
-    return new Observable<DTORespone>((obs) => {
+    return new Observable<DTOResponse>((obs) => {
       this.http.get<any>(this.testDetailProduct).subscribe(
         (res) => {
           obs.next(res);
