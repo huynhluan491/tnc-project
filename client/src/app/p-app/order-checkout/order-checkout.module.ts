@@ -2,6 +2,9 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, } from "@angular/co
 import { CommonModule } from '@angular/common';
 import { OrderCheckoutComponent } from "./order-checkout.component";
 import { PLayoutModule } from "../p-layout/p-layout.module";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { TextBoxModule } from '@progress/kendo-angular-inputs';
+import { ButtonsModule } from '@progress/kendo-angular-buttons';
 
 @NgModule({
     declarations: [
@@ -9,9 +12,13 @@ import { PLayoutModule } from "../p-layout/p-layout.module";
     ],
     imports: [
         CommonModule,
-        PLayoutModule
+        PLayoutModule,
+        FormsModule,
+        ReactiveFormsModule,
+        TextBoxModule,
+        ButtonsModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-    exports: [],
+    exports: [OrderCheckoutComponent],
 })
 export class OrderCheckoutModule { }

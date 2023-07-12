@@ -14,7 +14,8 @@ import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { LayoutModule } from '@progress/kendo-angular-layout';
 import { CartCheckoutComponent } from './p-app/cart-checkout/cart-checkout.component';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
-import { OrderCheckoutComponent } from './p-app/order-checkout/order-checkout.component';
+import { OrderCheckoutModule } from './p-app/order-checkout/order-checkout.module';
+import { TncProfileModule } from './p-app/tnc-profile/tnc-profile.module';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { OrderCheckoutComponent } from './p-app/order-checkout/order-checkout.co
     ButtonsModule,
     LayoutModule,
     DropDownsModule,
+    OrderCheckoutModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

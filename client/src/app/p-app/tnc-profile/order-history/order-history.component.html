@@ -1,0 +1,64 @@
+<div class="wrapper">
+    <div class="user-title">
+        <div class="profile-img">
+            <img src="assets/img/avt_profile.webp">
+        </div>
+        <div class="user-welcom">
+            <p class="name">Khánh Luân</p>
+            <p class="name-line"></p>
+        </div>
+    </div>
+    <div class="user-history-info">
+        <div class="info-box">
+            <p class="quantity">0</p>
+            <p class="topic-name">đơn hàng</p>
+        </div>
+        <div class="info-box">
+            <p class="quantity">0 đ</p>
+            <p class="topic-name">Tổng tiền tích lũy</p>
+        </div>
+    </div>
+    <div class="order-date-range">
+        <kendo-daterange>
+            <kendo-floatinglabel text="Start">
+              <kendo-dateinput
+                kendoDateRangeStartInput
+                [(value)]="range.start"
+              ></kendo-dateinput>
+            </kendo-floatinglabel>
+            <kendo-floatinglabel text="End">
+              <kendo-dateinput
+                kendoDateRangeEndInput
+                [(value)]="range.end"
+              ></kendo-dateinput>
+            </kendo-floatinglabel>
+          </kendo-daterange>
+    </div>
+    <div class="orders-grid-container">
+        <div class="status-filter-container">
+            <div class="status-btn selected">Tất cả</div>
+            <div class="status-btn">Chờ xác nhận</div>
+            <div class="status-btn">Đã xác nhận</div>
+            <div class="status-btn">Đang vận chuyển</div>
+            <div class="status-btn">Đã giao hàng</div>
+            <div class="status-btn">Đã hủy</div>
+        </div>
+        <!-- [data]="orderGridView | async" -->
+        <div class="grid-wrapper">
+            <kendo-grid 
+                [kendoGridBinding]="exampleData" 
+                [pageSize]="20"
+            >
+                <kendo-grid-column field="full_name" title="Tên sản phẩm"></kendo-grid-column>
+                <kendo-grid-column field="full_name" title="Tổng tiền"></kendo-grid-column>
+                <kendo-grid-column field="job_title" title="Trạng thái"></kendo-grid-column>
+                <kendo-grid-column field="job_title" title="Thanh toán"></kendo-grid-column>
+                <kendo-grid-column [width]="80">
+                    <ng-template kendoGridCellTemplate >
+                        <button class="cancel-order" kendoButton [themeColor]="'error'">Hủy</button>
+                      </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+        </div>
+    </div>
+</div>
