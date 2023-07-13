@@ -1,7 +1,7 @@
 const dbConfig = require("../database/dbconfig");
 const BrandSchema = require("../model/Brand");
 const dbUtils = require("../utils/dbUtils");
-
+const DTOBrand = require("../DTO/Default/DTOBrand");
 exports.addBrandIfNotExists = async (brand) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
@@ -40,7 +40,8 @@ exports.getBrands = async () => {
   }
   let request = dbConfig.db.pool.request();
   let result = await request.query(`select * from brand`);
-  return result.recordsets[0];
+  var dtos = result.recordsets[0].map((x) => new DTOBrand(x));
+  return dtos;
 };
 
 exports.getBrandById = async (id) => {
@@ -50,12 +51,15 @@ exports.getBrandById = async (id) => {
   let request = dbConfig.db.pool.request();
   let result = await request
     .input(
-      `${BrandSchema.schema.brandID.name}`,
-      BrandSchema.schema.brandID.sqlType,
+      `${BrandSchema.schema.BrandID.name}`,
+      BrandSchema.schema.BrandID.sqlType,
       id
     )
     .query(
-      `select * from ${BrandSchema.schemaName} where ${BrandSchema.schema.brandID.name} = @${BrandSchema.schema.brandID.name}`
+      `select * from ${BrandSchema.schemaName} where ${BrandSchema.schema.BrandID.name} = @${BrandSchema.schema.BrandID.name}`
     );
+  if (result.recordsets[0][0]) {
+    return new DTOBrand(result.recordsets[0][0]);
+  }
   return result.recordsets[0][0];
 };

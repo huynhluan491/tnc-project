@@ -18,14 +18,14 @@ exports.getProducts = async (req, res) => {
   try {
     const products = await ProductDAO.getAllProducts(req.query);
     res.status(200).json({
-      code: 200,
-      msg: null,
-      data: products,
+      Code: 200,
+      Msg: null,
+      Data: products,
     });
   } catch (err) {
     res.status(500).json({
-      code: 500,
-      msg: `FAIL with ${err}`,
+      Code: 500,
+      Msg: `FAIL with ${err}`,
     });
   }
 };
@@ -39,20 +39,20 @@ exports.getProductById = async (req, res) => {
       return res
         .status(404) //NOT FOUND
         .json({
-          code: 404,
-          msg: `Not found product with Id ${id}!`,
+          Code: 404,
+          Msg: `Not found product with Id ${id}!`,
         });
     }
     return res.status(200).json({
-      code: 200,
-      msg: null,
-      data: product,
+      Code: 200,
+      Msg: null,
+      Data: product,
     });
   } catch (e) {
     console.log(e);
     return res.status(500).json({
-      code: 500,
-      msg: e,
+      Code: 500,
+      Msg: e,
     });
   }
 };
@@ -66,8 +66,8 @@ exports.createNewProduct = async (req, res) => {
       return res
         .status(403) //Forbidden
         .json({
-          code: 403,
-          msg: `Product name duplicate!`,
+          Code: 403,
+          Msg: `Product name duplicate!`,
         });
     }
     await ProductDAO.createNewProduct(dto);
@@ -75,15 +75,15 @@ exports.createNewProduct = async (req, res) => {
     product && (await ProductDAO.createNewRating(product));
     // console.log(`Created new product successfully!`);
     return res.status(200).json({
-      code: 200,
-      msg: null,
-      data: product,
+      Code: 200,
+      Msg: null,
+      Data: product,
     });
   } catch (e) {
     console.log(e);
     res.status(500).json({
-      code: 500,
-      msg: `Product create failed`,
+      Code: 500,
+      Msg: `Product create failed`,
     });
   }
 };
@@ -96,20 +96,20 @@ exports.deleteById = async (req, res) => {
       return res
         .status(404) //NOT FOUND
         .json({
-          code: 404,
-          msg: `Product with Id ${id} not found!`,
+          Code: 404,
+          Msg: `Product with Id ${id} not found!`,
         });
     }
     await ProductDAO.deleteProductById(id);
     return res.status(200).json({
-      code: 200,
-      msg: null,
+      Code: 200,
+      Msg: null,
     });
   } catch (e) {
     console.log(e);
     return res.status(500).json({
-      code: 500,
-      msg: e,
+      Code: 500,
+      Msg: e,
     });
   }
 };
@@ -119,20 +119,20 @@ exports.deleteMultipleProductById = async (req, res) => {
   try {
     if (!idList || idList.length === 0) {
       return res.status(403).json({
-        code: 403,
-        msg: `Invalid ids`,
+        Code: 403,
+        Msg: `Invalid ids`,
       });
     }
     await ProductDAO.deleteMultipleProductById(idList);
     return res.status(200).json({
-      code: 200,
-      msg: null,
+      Code: 200,
+      Msg: null,
     });
   } catch (e) {
     console.log(e);
     return res.status(500).json({
-      code: 500,
-      msg: `Delete products with id ${idList} failed!`,
+      Code: 500,
+      Msg: `Delete products with id ${idList} failed!`,
     });
   }
 };
@@ -144,20 +144,20 @@ exports.getProductNonPaginate = async (req, res) => {
       return res
         .status(404) //NOT FOUND
         .json({
-          code: 404,
-          msg: `Products list not found!`,
+          Code: 404,
+          Msg: `Products list not found!`,
         });
     }
     return res.status(200).json({
-      code: 200,
-      msg: null,
-      data: products,
+      Code: 200,
+      Msg: null,
+      Data: products,
     });
   } catch (e) {
     console.log(e);
     return res.status(500).json({
-      code: 500,
-      msg: e,
+      Code: 500,
+      Msg: e,
     });
   }
 };
@@ -170,22 +170,22 @@ exports.updateProductById = async (req, res) => {
     let product = await ProductDAO.getProductById(id);
     if (!product) {
       return res.status(404).json({
-        code: 404,
-        msg: `Not found product with Id ${id}!`,
+        Code: 404,
+        Msg: `Not found product with Id ${id}!`,
       });
     }
     await ProductDAO.updateProductById(id, updateInfo);
     product = await ProductDAO.getProductById(id);
     return res.status(200).json({
-      code: 200,
-      msg: null,
-      data: product,
+      Code: 200,
+      Msg: null,
+      Data: product,
     });
   } catch (e) {
     console.log(e);
     res.status(500).json({
-      code: 500,
-      msg: `Update product with id: ${id} failed!`,
+      Code: 500,
+      Msg: `Update product with id: ${id} failed!`,
     });
   }
 };
@@ -195,7 +195,7 @@ exports.getFileProductImage = (req, res) => {
   const dirPath = path.join(
     __dirname,
     "..",
-    "dev-data",
+    "dev-Data",
     "productImages"
     // imageName + ".jpg"
   );
@@ -219,7 +219,7 @@ exports.saveFileProductImage = async (req, res) => {
   const imagePath = path.join(
     __dirname,
     "..",
-    "dev-data",
+    "dev-Data",
     "productImages",
     infor.imageName
   );

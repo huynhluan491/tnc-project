@@ -4,14 +4,14 @@ exports.getAllBrands = async (req, res) => {
   try {
     let brands = await brandDAO.getBrands();
     res.status(200).json({
-      code: 200,
-      msg: null,
-      data: brands
+      Code: 200,
+      Msg: null,
+      data: brands,
     });
   } catch (error) {
     res.status(404).json({
-      code: 404,
-      msg: error,
+      Code: 404,
+      Msg: error,
     });
   }
 };
@@ -25,19 +25,19 @@ exports.getBrandById = async (req, res) => {
       return res
         .status(404) //NOT FOUND
         .json({
-          code: 404,
-          msg: `Not found brand with Id ${id}!`,
+          Code: 404,
+          Msg: `Not found brand with Id ${id}!`,
         });
     }
     return res.status(200).json({
-      code: 200,
-      msg: null,
-      data: brand
+      Code: 200,
+      Msg: null,
+      data: brand,
     });
   } catch (e) {
     return res.status(500).json({
-      code: 500,
-      msg: e,
+      Code: 500,
+      Msg: e,
     });
   }
 };

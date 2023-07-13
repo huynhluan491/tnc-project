@@ -1,6 +1,6 @@
 
---use master
---drop database TNCShop
+-- use master
+-- drop database TNCShop
 
 create database TNCShop
 go
@@ -102,7 +102,7 @@ go
 create table Orders
 (
 	OrderID int identity(1,1) primary key,
-	UserID int constraint FK_Cart references Users(userID),
+	UserID int constraint FK_Order_User references Users(userID),
 	CustomerName nvarchar(max) null ,
 	Address nvarchar(max) not null,
 	Phone nvarchar(11) not null,
@@ -155,30 +155,31 @@ END;
 
 go
 
--- CREATE TRIGGER tr_product_create
--- ON product
--- AFTER INSERT
--- AS
--- BEGIN
--- 	INSERT INTO Rating(_5star,_4star,_3star,_2star,_1star,productID)
---   	VALUES (0,0,0,0,0,(SELECT inserted.productID FROM inserted))
--- END;
+CREATE TRIGGER tr_product_create
+ON product
+AFTER INSERT
+AS
+BEGIN
+	INSERT INTO Rating
+		(_5star,_4star,_3star,_2star,_1star,productID)
+	VALUES
+		(0, 0, 0, 0, 0, (SELECT inserted.productID
+			FROM inserted))
+END;
 
-
--- go
 go
---CREATE TRIGGER tr_user_delete
---ON users
---INSTEAD OF DELETE
---AS
---BEGIN
---	DELETE FROM Order WHERE userID IN (SELECT deleted.userID
---	FROM deleted);
---	DELETE FROM users WHERE userID IN (SELECT deleted.userID
---	FROM deleted);
---END;
+CREATE TRIGGER tr_user_delete
+ON users
+INSTEAD OF DELETE
+AS
+BEGIN
+	DELETE FROM Orders WHERE UserID IN (SELECT deleted.UserID
+	FROM deleted);
+	DELETE FROM users WHERE UserID IN (SELECT deleted.UserID
+	FROM deleted);
+END;
 
---go
+go
 
 CREATE TRIGGER tr_Orders_delete
 ON Orders
@@ -223,12 +224,6 @@ go
 
 -- select * from product where dbo.fuConvertToUnsign1(name)  like  N'%' + dbo.fuConvertToUnsign1(N'đồ') + '%'
 go
-insert into Auth
-values('master', GETDATE()),
-	('admin', GETDATE()),
-	('user', GETDATE())
-go
-
 select *
 from Product
 select *
@@ -254,4 +249,3 @@ from LS_Status
 
 --DBCC CHECKIDENT ('auth', RESEED, 1)
 --delete auth
-

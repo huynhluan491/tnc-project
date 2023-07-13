@@ -60,7 +60,7 @@ const UserSchema = new ModelSchema(
     }),
   },
   "Users",
-  "auth"
+  "AuthID"
 );
 
 module.exports = UserSchema;

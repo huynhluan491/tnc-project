@@ -1,4 +1,5 @@
 const FeatureDAO = require("../DAO/FeatureDAO");
+const DTOFeature = require("../DTO/Default/DTOFeature");
 
 exports.getFeatureById = async (req, res) => {
   const id = req.params.id * 1;
@@ -8,20 +9,20 @@ exports.getFeatureById = async (req, res) => {
       return res
         .status(404) //NOT FOUND
         .json({
-          code: 404,
-          msg: `Not found features with Id ${id}!`,
+          Code: 404,
+          Msg: `Not found features with Id ${id}!`,
         });
     }
     return res.status(200).json({
-      code: 200,
-      msg: `Got features with id ${id} successfully!`,
+      Code: 200,
+      Msg: `Got features with id ${id} successfully!`,
       data: features,
     });
   } catch (e) {
     console.log(e);
     return res.status(500).json({
-      code: 500,
-      msg: e,
+      Code: 500,
+      Msg: e,
     });
   }
 };
@@ -29,8 +30,8 @@ exports.getFeatures = async (req, res) => {
   try {
     let features;
     let id;
-    if (req.query.productId) {
-      id = req.query.productId * 1;
+    if (req.query.ProductID) {
+      id = req.query.ProductID * 1;
       features = await FeatureDAO.getFeaturesByProductId(id);
     } else {
       features = await FeatureDAO.getAllFeatures();
@@ -39,15 +40,15 @@ exports.getFeatures = async (req, res) => {
       return res
         .status(404) //NOT FOUND
         .json({
-          code: 404,
-          msg: id
+          Code: 404,
+          Msg: id
             ? `Not found features with productId ${id}!`
             : `Not found features!`,
         });
     }
     return res.status(200).json({
-      code: 200,
-      msg: id
+      Code: 200,
+      Msg: id
         ? `Got features with productId ${id} successfully!`
         : `Got features successfully!`,
       data: features,
@@ -55,25 +56,27 @@ exports.getFeatures = async (req, res) => {
   } catch (e) {
     console.log(e);
     return res.status(500).json({
-      code: 500,
-      msg: e,
+      Code: 500,
+      Msg: e,
     });
   }
 };
 exports.createNewFeature = async (req, res) => {
   const newFeature = req.body;
+  const dto = new DTOFeature(newFeature);
+  console.log(dto);
   try {
-    await FeatureDAO.createNewFeature(newFeature);
+    await FeatureDAO.createNewFeature(dto);
     // console.log(`Created new product successfully!`);
     return res.status(200).json({
-      code: 200,
-      msg: null,
+      Code: 200,
+      Msg: null,
     });
   } catch (e) {
     console.log(e);
     res.status(500).json({
-      code: 500,
-      msg: `Feature create failed`,
+      Code: 500,
+      Msg: `Feature create failed`,
     });
   }
 };
@@ -85,20 +88,20 @@ exports.deleteFeatureById = async (req, res) => {
       return res
         .status(404) //NOT FOUND
         .json({
-          code: 404,
-          msg: `Feature with Id ${id} not found!`,
+          Code: 404,
+          Msg: `Feature with Id ${id} not found!`,
         });
     }
     await FeatureDAO.deleteFeatureById(id);
     return res.status(200).json({
-      code: 200,
-      msg: null,
+      Code: 200,
+      Msg: null,
     });
   } catch (e) {
     console.log(e);
     return res.status(500).json({
-      code: 500,
-      msg: e,
+      Code: 500,
+      Msg: e,
     });
   }
 };
@@ -109,22 +112,22 @@ exports.updateFeatureById = async (req, res) => {
     let feature = await FeatureDAO.getFeatureById(id);
     if (!feature) {
       return res.status(404).json({
-        code: 404,
-        msg: `Not found feature with Id ${id}!`,
+        Code: 404,
+        Msg: `Not found feature with Id ${id}!`,
       });
     }
     await FeatureDAO.updateFeatureById(id, updateInfo);
     feature = await FeatureDAO.getFeatureById(id);
     return res.status(200).json({
-      code: 200,
-      msg: `Updated feature with id: ${id} successfully!`,
+      Code: 200,
+      Msg: `Updated feature with id: ${id} successfully!`,
       data: feature,
     });
   } catch (e) {
     console.log(e);
     res.status(500).json({
-      code: 500,
-      msg: `Update feature with id: ${id} failed!`,
+      Code: 500,
+      Msg: `Update feature with id: ${id} failed!`,
     });
   }
 };
