@@ -265,6 +265,5 @@ exports.userSignUp = async (dto) => {
   await this.insertUser(dto);
   const u = await this.getUserByUserName(dto.UserName);
   await OrderDAO.createNewOrder(u.UserID);
-
   return u;
 };

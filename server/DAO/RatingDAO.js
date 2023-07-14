@@ -9,12 +9,12 @@ exports.getRatingById = async (id) => {
   let request = dbConfig.db.pool.request();
   let result = await request
     .input(
-      `${RatingSchema.schema.ratingID.name}`,
-      RatingSchema.schema.ratingID.sqlType,
+      `${RatingSchema.schema.RatingID.name}`,
+      RatingSchema.schema.RatingID.sqlType,
       id
     )
     .query(
-      `select * from ${RatingSchema.schemaName} where ${RatingSchema.schema.ratingID.name} = @${RatingSchema.schema.ratingID.name}`
+      `select * from ${RatingSchema.schemaName} where ${RatingSchema.schema.RatingID.name} = @${RatingSchema.schema.RatingID.name}`
     );
   return result.recordsets[0][0];
 };
@@ -29,7 +29,7 @@ exports.addRatingIfNotExisted = async (rating) => {
   let query = `SET IDENTITY_INSERT ${RatingSchema.schemaName} ON insert into ${RatingSchema.schemaName}`;
 
   let insertData = RatingSchema.validateData(rating);
-  const { request, insertFieldNamesStr, insertValuesStr } =
+  const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(RatingSchema.schema, dbPool.request(), insertData);
   if (!insertFieldNamesStr || !insertValuesStr) {
     throw new Error("Invalid insert param");
@@ -66,12 +66,12 @@ exports.getRatingByProductId = async (id) => {
   let request = dbConfig.db.pool.request();
   let result = await request
     .input(
-      `${RatingSchema.schema.productID.name}`,
-      RatingSchema.schema.productID.sqlType,
+      `${RatingSchema.schema.ProductID.name}`,
+      RatingSchema.schema.ProductID.sqlType,
       id
     )
     .query(
-      `select * from ${RatingSchema.schemaName} where ${RatingSchema.schema.productID.name} = @${RatingSchema.schema.productID.name}`
+      `select * from ${RatingSchema.schemaName} where ${RatingSchema.schema.ProductID.name} = @${RatingSchema.schema.ProductID.name}`
     );
   // console.log(result);
   return result.recordsets[0][0];
@@ -86,7 +86,7 @@ exports.createNewRating = async (rating) => {
   }
   let insertData = RatingSchema.validateData(rating);
   let query = `insert into ${RatingSchema.schemaName}`;
-  const { request, insertFieldNamesStr, insertValuesStr } =
+  const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(
       RatingSchema.schema,
       dbConfig.db.pool.request(),
@@ -105,12 +105,12 @@ exports.deleteRatingById = async (id) => {
   let request = dbConfig.db.pool.request();
   let result = await request
     .input(
-      `${RatingSchema.schema.ratingID.name}`,
-      RatingSchema.schema.ratingID.sqlType,
+      `${RatingSchema.schema.RatingID.name}`,
+      RatingSchema.schema.RatingID.sqlType,
       id
     )
     .query(
-      `delete ${RatingSchema.schemaName} where ${RatingSchema.schema.ratingID.name} = @${RatingSchema.schema.ratingID.name}`
+      `delete ${RatingSchema.schemaName} where ${RatingSchema.schema.RatingID.name} = @${RatingSchema.schema.RatingID.name}`
     );
   return result.recordsets;
 };
@@ -118,21 +118,29 @@ exports.deleteRatingById = async (id) => {
 exports.updateRatingById = async (productID, updateInfo) => {
   // console.log(productID);
   // console.log(updateInfo);
-  const { rating } = updateInfo;
+  const rating = updateInfo;
+  delete rating["CreatedAt"];
+  for (let key in updateInfo) {
+    if (!rating[key]) delete rating[key];
+  }
+  console.log([]);
   if (!dbConfig.db.pool) {
     throw new Error("Not connected to db");
   }
-  const starQuantity = `_${rating}star`;
-  let query = `update ${RatingSchema.schemaName} set ${starQuantity} = ${starQuantity} + 1`;
+  const starQuantity = Object.keys(rating)[0];
+  let query = `update ${RatingSchema.schemaName} set ${starQuantity} = ${
+    rating[`${starQuantity}`]
+  } + 1`;
+  console.log(query);
   let request = dbConfig.db.pool.request();
   request.input(
-    `${RatingSchema.schema.productID.name}`,
-    RatingSchema.schema.productID.sqlType,
+    `${RatingSchema.schema.ProductID.name}`,
+    RatingSchema.schema.ProductID.sqlType,
     productID
   );
   query +=
     " " +
-    ` where ${RatingSchema.schema.productID.name} = @${RatingSchema.schema.productID.name}`;
+    ` where ${RatingSchema.schema.ProductID.name} = @${RatingSchema.schema.ProductID.name}`;
   let result = await request.query(query);
   return result.recordsets;
 };

@@ -1,5 +1,5 @@
 const RatingDAO = require("../DAO/RatingDAO");
-
+const DTORating = require("../DTO/Default/DTORating");
 exports.getRatingById = async (req, res) => {
   // console.log(req.params);
   const id = req.params.id * 1;
@@ -109,9 +109,10 @@ exports.deleteRatingById = async (req, res) => {
 exports.updateRatingById = async (req, res) => {
   // console.log("Id update", req.params.id);
   try {
-    const updateInfo = req.body;
-    const productID = updateInfo.productID;
-    delete updateInfo.productID;
+    const reqBody = req.body;
+    const updateInfo = new DTORating(reqBody);
+    const productID = updateInfo.ProductID;
+    delete updateInfo.ProductID;
     // console.log(updateInfo);
     await RatingDAO.updateRatingById(productID, updateInfo);
     rating = await RatingDAO.getRatingByProductId(productID);
@@ -124,7 +125,7 @@ exports.updateRatingById = async (req, res) => {
     console.log(e);
     res.status(500).json({
       Code: 500,
-      Msg: `Update rating with id failed!`,
+      Msg: `Update rating with id failed! ${e}`,
     });
   }
 };
