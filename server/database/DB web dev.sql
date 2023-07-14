@@ -221,7 +221,6 @@ CREATE FUNCTION [dbo].[fuConvertToUnsign1] ( @strInput NVARCHAR(4000) ) RETURNS 
 END
 
 go
-
 -- select * from product where dbo.fuConvertToUnsign1(name)  like  N'%' + dbo.fuConvertToUnsign1(N'đồ') + '%'
 go
 select *
