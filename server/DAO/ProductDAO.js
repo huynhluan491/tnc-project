@@ -125,7 +125,7 @@ exports.getAllProducts = async (filter) => {
     selectQuery += " " + paginationStr;
   }
 
-  console.log("selectQuery filter product", selectQuery);
+  // console.log("selectQuery filter product", selectQuery);
 
   const result = await dbConfig.db.pool.request().query(selectQuery);
   let countResult = await dbConfig.db.pool.request().query(countQuery);

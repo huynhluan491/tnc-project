@@ -4,6 +4,7 @@ const dbUtils = require("../utils/dbUtils");
 const bcrypt = require("bcryptjs");
 const StaticData = require("../utils/StaticData");
 const DTOUser = require("../DTO/Default/DTOUser");
+const OrderDAO = require("../DAO/OrderDAO");
 exports.addUserIfNotExisted = async (user) => {
   if (!dbConfig.db.pool) {
     throw new Error("Not connected to db");
@@ -39,9 +40,9 @@ exports.insertUser = async (user) => {
     throw new Error("Not connected to db");
   }
   // console.log("user auth", user.auth);
-  user.createdAt = new Date().toISOString();
+  user.CreatedAt = new Date().toISOString();
   let insertData = UserSchema.validateData(user);
-  insertData.password = await bcrypt.hash(insertData.password, 10);
+  insertData.password = await bcrypt.hash(insertData.Password, 10);
 
   let query = `insert into ${UserSchema.schemaName} `;
 
@@ -89,7 +90,6 @@ exports.getAllUsers = async (filter) => {
   if (paginationStr) {
     selectQuery += " " + paginationStr;
   }
-  console.log(selectQuery);
   const result = await dbConfig.db.pool.request().query(selectQuery);
   let countResult = await dbConfig.db.pool.request().query(countQuery);
 
@@ -249,4 +249,22 @@ exports.deleteMultipleUserById = async (idList, payload) => {
     `DELETE FROM ${UserSchema.schemaName} WHERE ${UserSchema.schema.UserID.name} ${deleteStr}`
   );
   return result.recordset;
+};
+
+exports.userSignUp = async (dto) => {
+  let user = await this.getUserByEmail(dto.Email);
+  if (user) {
+    // console.log(user);
+    throw new Error("User email used!");
+  }
+  user = await this.getUserByUserName(dto.UserName);
+  if (user) {
+    // console.log(user);
+    throw new Error("User name used!");
+  }
+  await this.insertUser(dto);
+  const u = await this.getUserByUserName(dto.UserName);
+  await OrderDAO.createNewOrder(u.UserID);
+
+  return u;
 };

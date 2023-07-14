@@ -1,5 +1,7 @@
 const UserDAO = require("../DAO/UserDAO");
+const DTOUser = require("../DTO/Default/DTOUser");
 const authController = require("../controllers/auth");
+const OrderDAO = require("../DAO/OrderDAO");
 exports.getUserById = async (req, res) => {
   const id = req.params.id * 1;
   try {
@@ -88,35 +90,18 @@ exports.getUserByUserName = async (req, res) => {
 
 exports.addUser = async (req, res) => {
   const newUser = req.body;
+  const dto = new DTOUser(newUser);
   try {
-    let user = await UserDAO.getUserByEmail(req.body.email);
-    if (user) {
-      // console.log(user);
-      return res.status(403).json({
-        Code: 403,
-        Msg: "User email used!",
-      });
-    }
-    user = await UserDAO.getUserByUserName(req.body.userName);
-    if (user) {
-      // console.log(user);
-      return res.status(403).json({
-        Code: 403,
-        Msg: "User name used!",
-      });
-    }
-    const result = await UserDAO.insertUser(newUser);
-    const u = await UserDAO.getUserByUserName(newUser.userName);
-    await CartDAO.createNewCart(u.userID);
-    return res.status(200).json({
+    const userAdded = await UserDAO.userSignUp(dto);
+    res.status(200).json({
       Code: 200,
-      Msg: null,
-      data: result,
+      Msg: "added",
+      Data: userAdded,
     });
-  } catch (error) {
+  } catch (Error) {
     res.status(404).json({
       Code: 404,
-      Msg: "Add user failed!",
+      Msg: Error.toString(),
     });
   }
 };
