@@ -9,7 +9,6 @@ const StaticData = require("../utils/StaticData");
 const categoryController = require("../controllers/Category");
 const DTOProductCustomize = require("../DTO/Customize/DTOProductCustomize");
 const DTOProduct = require("../DTO/Default/DTOProduct");
-
 exports.addProductIfNotExisted = async (product) => {
   if (!dbConfig.db.pool) {
     throw new Error("Not connected to db");
