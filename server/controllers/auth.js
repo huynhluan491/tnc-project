@@ -68,13 +68,30 @@ exports.login = async (req, res) => {
   }
 };
 
+exports.logout = async (req, res) => {
+  // res.clearCookie()
+  try {
+    const cookieKey = Object.keys(req.cookies)[0];
+    res.clearCookie(cookieKey);
+    res.status(200).json({
+      Code: 200,
+      Msg: "log out !!",
+    });
+  } catch (err) {
+    res.status(404).json({
+      Code: 404,
+      Msg: err.toString(),
+    });
+  }
+};
+
 exports.signup = async (req, res) => {
   try {
     const form = req.body;
     if (!form.Password || !form.UserName || !form.Email) {
       return res.status(403).json({
         Code: 403,
-        mgs: `Invalid Password`,
+        Msg: `Invalid Password`,
       });
     }
     const dto = new DTOUser(form);
