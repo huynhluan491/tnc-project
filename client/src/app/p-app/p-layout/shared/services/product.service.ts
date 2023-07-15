@@ -12,12 +12,20 @@ export class ProductService {
     console.log('product service started');
   }
 
-  getData(page: number, pageSize: number): Observable<DTOResponse> {
+  getData(
+    page: number,
+    pageSize: number,
+    filterStr: string
+  ): Observable<DTOResponse> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('pageSize', pageSize.toString());
-    return this.http.get<DTOProduct>('/api/v1/product', {
+    return this.http.get<DTOProduct>(`/api/v1/product/${filterStr}`, {
       params,
     });
+  }
+
+  getDataById(id: number): Observable<DTOResponse> {
+    return this.http.get<DTOProduct>(`/api/v1/product/${id}`);
   }
 }
