@@ -70,7 +70,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.productAPIService.GetProductDetail().pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       (res) => {
         this.productDetail = { ...res.data };
-        this.saleprice = this.productDetail.price - (this.productDetail.price * parseFloat(this.productDetail.sale));
+        this.saleprice = this.productDetail.Price - (this.productDetail.Price * parseFloat(this.productDetail.Sale));
 
       }
     )

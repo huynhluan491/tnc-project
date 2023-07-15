@@ -13,8 +13,8 @@
     </div>
     <div class="product-info-wrapper">
       <div class="info-header">
-        <p class="product-name">{{ productDetail.name | uppercase }}</p>
-        <span class="sale-off">SALE OFF {{ productDetail.sale | percentage }}</span>
+        <p class="product-name">{{ productDetail.Name | uppercase }}</p>
+        <span class="sale-off">SALE OFF {{ productDetail.Sale | percentage }}</span>
       </div>
       <div class="product-brand">
         <span class="product-general">
@@ -28,13 +28,13 @@
         </star-rating>
       </div>
       <span class="product-description">
-        {{ productDetail.description }}
+        {{ productDetail.Description }}
       </span>
       <div class="product-status">
         <span class="status-text">{{
-          productDetail.stock > 0 ? " CÒN HÀNG" : "HẾT HÀNG"
+          productDetail.Stock > 0 ? " CÒN HÀNG" : "HẾT HÀNG"
           }}</span>
-        <span class="old-price">{{ productDetail.price | number : "1.0-0" }} đ</span>
+        <span class="old-price">{{ productDetail.Price | number : "1.0-0" }} đ</span>
       </div>
       <div class="product-quantity-cart">
         <div style="display: flex; gap: 25px">
