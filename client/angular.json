@@ -76,7 +76,8 @@
               "browserTarget": "tnc-project:build:production"
             },
             "development": {
-              "browserTarget": "tnc-project:build:development"
+              "browserTarget": "tnc-project:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

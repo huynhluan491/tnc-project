@@ -1,4 +1,4 @@
-export class DTOFeature {
+export interface DTOFeature {
   FeatureID: number;
   Feature: string;
   ProductID: number;
