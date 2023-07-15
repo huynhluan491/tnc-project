@@ -49,13 +49,16 @@ exports.login = async (req, res) => {
     //4. get JWT & response to use  //https://jwt.io/
     const token = signToken(user.UserID, user.UserName, user.Auth, orderID);
     //res jwt cookie
+    delete user.Password;
+    delete user.AuthID;
+
     res.cookie("user", token, {
       httpOnly: true,
     });
     res.status(200).json({
       Code: 200,
       Msg: "OK",
-      Data: {token},
+      Data: {Token: token, User: user},
     });
   } catch (e) {
     console.error(e);
@@ -68,13 +71,31 @@ exports.login = async (req, res) => {
   }
 };
 
+exports.logout = async (req, res) => {
+  // res.clearCookie()
+  try {
+    const cookieKey = Object.keys(req.cookies)[0];
+    res.clearCookie(cookieKey);
+    cookies.set(`${cookieKey}`, {expires: Date.now()});
+    res.status(200).json({
+      Code: 200,
+      Msg: "log out !!",
+    });
+  } catch (err) {
+    res.status(404).json({
+      Code: 404,
+      Msg: err.toString(),
+    });
+  }
+};
+
 exports.signup = async (req, res) => {
   try {
     const form = req.body;
     if (!form.Password || !form.UserName || !form.Email) {
       return res.status(403).json({
         Code: 403,
-        mgs: `Invalid Password`,
+        Msg: `Invalid Password`,
       });
     }
     const dto = new DTOUser(form);

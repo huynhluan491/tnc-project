@@ -18,7 +18,7 @@ exports.getRatingById = async (req, res) => {
     return res.status(200).json({
       Code: 200,
       Msg: null,
-      data: rating,
+      Data: rating,
     });
   } catch (e) {
     console.log(e);
@@ -52,7 +52,7 @@ exports.getRatings = async (req, res) => {
     return res.status(200).json({
       Code: 200,
       Msg: null,
-      data: rating,
+      Data: rating,
     });
   } catch (e) {
     console.log(e);
@@ -119,7 +119,7 @@ exports.updateRatingById = async (req, res) => {
     return res.status(200).json({
       Code: 200,
       Msg: null,
-      data: rating,
+      Data: rating,
     });
   } catch (e) {
     console.log(e);

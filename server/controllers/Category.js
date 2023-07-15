@@ -6,7 +6,7 @@ exports.getAllCategories = async (req, res) => {
     res.status(200).json({
       Code: 200,
       Msg: null,
-      data: categories,
+      Data: categories,
     });
   } catch (error) {
     res.status(404).json({
@@ -32,7 +32,7 @@ exports.getCateIdByName = async (req, res) => {
     return res.status(200).json({
       Code: 200,
       Msg: null,
-      data: category,
+      Data: category,
     });
   } catch (e) {
     console.log(e);

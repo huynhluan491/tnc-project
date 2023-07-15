@@ -1,32 +1,42 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, Subscription, filter, map, of, pluck, switchMap, takeUntil, tap } from 'rxjs';
+import {
+  Subject,
+  Subscription,
+  filter,
+  map,
+  of,
+  pluck,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { ProductAPIService } from '../shared/services/product-api.service';
 import { DTOProduct } from '../shared/dto/DTOProduct.dto';
 
 const PolicyData = [
   {
-    text: "Hỗ trợ trả góp 0%, trả trước 0đ",
-    iconName: "icon_payment.svg"
+    text: 'Hỗ trợ trả góp 0%, trả trước 0đ',
+    iconName: 'icon_payment.svg',
   },
   {
-    text: "Hoàn tiền 200% nếu có hàng giả",
-    iconName: "icon_money.svg"
+    text: 'Hoàn tiền 200% nếu có hàng giả',
+    iconName: 'icon_money.svg',
   },
   {
-    text: "Giao hàng nhanh trên toàn quốc",
-    iconName: "icon_shipping.svg"
+    text: 'Giao hàng nhanh trên toàn quốc',
+    iconName: 'icon_shipping.svg',
   },
   {
-    text: "Hỗ trợ kĩ thuật online 7/7",
-    iconName: "icon_chat.svg"
+    text: 'Hỗ trợ kĩ thuật online 7/7',
+    iconName: 'icon_chat.svg',
   },
-]
+];
 
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
-  styleUrls: ['./product-detail.component.scss']
+  styleUrls: ['./product-detail.component.scss'],
 })
 export class ProductDetailComponent implements OnInit, OnDestroy {
   productDetail: DTOProduct = new DTOProduct();
@@ -52,28 +62,41 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   //subscriptions
   getProductDetail_sst: Subscription;
 
-  constructor(private route: ActivatedRoute, private productAPIService: ProductAPIService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private productAPIService: ProductAPIService
+  ) {}
 
   ngOnInit(): void {
-    this.route.params.pipe(
-      tap(params =>
-        this.breadCrumbList = [params['categoryname'], params['productname']]),
-      switchMap(params => {
-        console.log(this.breadCrumbList);
-        return of(params)
-      }), filter(product => !product)
-    ).subscribe(value => console.log(this.breadCrumbList))
+    this.route.params
+      .pipe(
+        tap(
+          (params) =>
+            (this.breadCrumbList = [
+              params['categoryname'],
+              params['productname'],
+            ])
+        ),
+        switchMap((params) => {
+          console.log(this.breadCrumbList);
+          return of(params);
+        }),
+        filter((product) => !product)
+      )
+      .subscribe((value) => console.log(this.breadCrumbList));
     this.GetTestProductDetail();
   }
 
   GetTestProductDetail() {
-    this.productAPIService.GetProductDetail().pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      (res) => {
-        this.productDetail = { ...res.data };
-        this.saleprice = this.productDetail.Price - (this.productDetail.Price * parseFloat(this.productDetail.Sale));
-
-      }
-    )
+    this.productAPIService
+      .GetProductDetail()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
+        this.productDetail = { ...res.Data };
+        this.saleprice =
+          this.productDetail.Price -
+          this.productDetail.Price * parseFloat(this.productDetail.Sale);
+      });
   }
 
   onHandleQuantity(type: string) {
