@@ -9,7 +9,7 @@ router
   .get(ratingController.getRatingById)
   .delete(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role.admin),
+    authController.restrictTo(StaticData.AUTH.Role),
     ratingController.deleteRatingById
   );
 // .patch(

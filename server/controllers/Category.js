@@ -4,14 +4,14 @@ exports.getAllCategories = async (req, res) => {
   try {
     let categories = await CategoryDAO.getCategories();
     res.status(200).json({
-      code: 200,
-      msg: null,
-      data: categories
+      Code: 200,
+      Msg: null,
+      data: categories,
     });
   } catch (error) {
     res.status(404).json({
-      code: 404,
-      msg: error,
+      Code: 404,
+      Msg: error,
     });
   }
 };
@@ -25,20 +25,20 @@ exports.getCateIdByName = async (req, res) => {
       return res
         .status(404) //NOT FOUND
         .json({
-          code: 404,
-          msg: `Not found categoryID with name ${name}!`,
+          Code: 404,
+          Msg: `Not found categoryID with name ${name}!`,
         });
     }
     return res.status(200).json({
-      code: 200,
-      msg: null,
+      Code: 200,
+      Msg: null,
       data: category,
     });
   } catch (e) {
     console.log(e);
     return res.status(500).json({
-      code: 500,
-      msg: e,
+      Code: 500,
+      Msg: e,
     });
   }
 };

@@ -1,4 +1,4 @@
-export class DTOSubimg {
+export interface DTOSubimg {
   SubimgID: number;
   image: string;
   Alt: string;

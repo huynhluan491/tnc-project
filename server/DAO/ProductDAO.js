@@ -102,8 +102,8 @@ exports.getAllProducts = async (filter) => {
   if (pageSize > StaticData.config.MAX_PAGE_SIZE) {
     pageSize = StaticData.config.MAX_PAGE_SIZE;
   }
-  let selectQuery = `SELECT p.*,b.BrandName FROM ${ProductSchema.schemaName} p
-  join ${BrandSchema.schemaName} b on b.brandID = p.brandID `;
+  let selectQuery = `SELECT ${ProductSchema.schemaName}.*,${BrandSchema.schemaName}.BrandName FROM ${ProductSchema.schemaName}
+  join ${BrandSchema.schemaName} on ${BrandSchema.schemaName}.brandID = ${ProductSchema.schemaName}.brandID `;
   let countQuery = `SELECT COUNT(DISTINCT ${ProductSchema.schema.ProductID.name}) as totalItem from ${ProductSchema.schemaName}`;
 
   const {filterStr, paginationStr} = dbUtils.getFilterProductsQuery(
@@ -125,7 +125,7 @@ exports.getAllProducts = async (filter) => {
     selectQuery += " " + paginationStr;
   }
 
-  console.log("selectQuery filter product", selectQuery);
+  // console.log("selectQuery filter product", selectQuery);
 
   const result = await dbConfig.db.pool.request().query(selectQuery);
   let countResult = await dbConfig.db.pool.request().query(countQuery);
@@ -139,11 +139,11 @@ exports.getAllProducts = async (filter) => {
     (element) => new DTOProductCustomize(element)
   );
   return {
-    page,
-    pageSize,
-    totalPage,
-    totalProduct,
-    dataProducts: productsDTO,
+    Page: page,
+    PageSize: pageSize,
+    TotalPage: totalPage,
+    TotalProduct: totalProduct,
+    DataProducts: productsDTO,
   };
 };
 exports.createNewRating = async (product) => {

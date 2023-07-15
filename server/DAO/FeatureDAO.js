@@ -1,7 +1,7 @@
 const FeatureSchema = require("../model/Feature");
 const dbConfig = require("../database/dbconfig");
 const dbUtils = require("../utils/dbUtils");
-
+const DTOFeature = require("../DTO/Default/DTOFeature");
 exports.addFeatureIfNotExisted = async (feature) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
@@ -11,7 +11,7 @@ exports.addFeatureIfNotExisted = async (feature) => {
 
   let insertData = FeatureSchema.validateData(feature);
   let query = `SET IDENTITY_INSERT ${FeatureSchema.schemaName} ON insert into ${FeatureSchema.schemaName}`;
-  const { request, insertFieldNamesStr, insertValuesStr } =
+  const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(FeatureSchema.schema, dbPool.request(), insertData);
   if (!insertFieldNamesStr || !insertValuesStr) {
     throw new Error("Invalid insert param");
@@ -39,12 +39,12 @@ exports.getFeatureById = async (id) => {
   let request = dbConfig.db.pool.request();
   let result = await request
     .input(
-      `${FeatureSchema.schema.featureID.name}`,
-      FeatureSchema.schema.featureID.sqlType,
+      `${FeatureSchema.schema.FeatureID.name}`,
+      FeatureSchema.schema.FeatureID.sqlType,
       id
     )
     .query(
-      `select * from ${FeatureSchema.schemaName} where ${FeatureSchema.schema.featureID.name} = @${FeatureSchema.schema.featureID.name}`
+      `select * from ${FeatureSchema.schemaName} where ${FeatureSchema.schema.FeatureID.name} = @${FeatureSchema.schema.FeatureID.name}`
     );
   return result.recordsets[0][0];
 };
@@ -64,14 +64,15 @@ exports.getFeaturesByProductId = async (id) => {
   let request = dbConfig.db.pool.request();
   let result = await request
     .input(
-      `${FeatureSchema.schema.productID.name}`,
-      FeatureSchema.schema.productID.sqlType,
+      `${FeatureSchema.schema.ProductID.name}`,
+      FeatureSchema.schema.ProductID.sqlType,
       id
     )
     .query(
-      `select * from ${FeatureSchema.schemaName} where ${FeatureSchema.schema.productID.name} = @${FeatureSchema.schema.productID.name}`
+      `select * from ${FeatureSchema.schemaName} where ${FeatureSchema.schema.ProductID.name} = @${FeatureSchema.schema.ProductID.name}`
     );
-  return result.recordsets[0];
+  let dtos = result.recordsets[0].map((x) => new DTOFeature(x));
+  return dtos;
 };
 
 exports.createNewFeature = async (feature) => {
@@ -84,7 +85,7 @@ exports.createNewFeature = async (feature) => {
   feature.createdAt = new Date().toISOString();
   let insertData = FeatureSchema.validateData(feature);
   let query = `insert into ${FeatureSchema.schemaName}`;
-  const { request, insertFieldNamesStr, insertValuesStr } =
+  const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(
       FeatureSchema.schema,
       dbConfig.db.pool.request(),
@@ -103,12 +104,12 @@ exports.deleteFeatureById = async (id) => {
   let request = dbConfig.db.pool.request();
   let result = await request
     .input(
-      `${FeatureSchema.schema.featureID.name}`,
-      FeatureSchema.schema.featureID.sqlType,
+      `${FeatureSchema.schema.FeatureID.name}`,
+      FeatureSchema.schema.FeatureID.sqlType,
       id
     )
     .query(
-      `delete from ${FeatureSchema.schemaName} where ${FeatureSchema.schema.featureID.name} = @${FeatureSchema.schema.featureID.name}`
+      `delete from ${FeatureSchema.schemaName} where ${FeatureSchema.schema.FeatureID.name} = @${FeatureSchema.schema.FeatureID.name}`
     );
   return result.recordsets;
 };
@@ -122,7 +123,7 @@ exports.updateFeatureById = async (id, updateInfo) => {
   }
 
   let query = `update ${FeatureSchema.schemaName} set`;
-  const { request, updateStr } = dbUtils.getUpdateQuery(
+  const {request, updateStr} = dbUtils.getUpdateQuery(
     FeatureSchema.schema,
     dbConfig.db.pool.request(),
     updateInfo
@@ -131,14 +132,14 @@ exports.updateFeatureById = async (id, updateInfo) => {
     throw new Error("Invalid update param");
   }
   request.input(
-    `${FeatureSchema.schema.featureID.name}`,
-    FeatureSchema.schema.featureID.sqlType,
+    `${FeatureSchema.schema.FeatureID.name}`,
+    FeatureSchema.schema.FeatureID.sqlType,
     id
   );
   query +=
     " " +
     updateStr +
-    ` where ${FeatureSchema.schema.featureID.name} = @${FeatureSchema.schema.featureID.name}`;
+    ` where ${FeatureSchema.schema.FeatureID.name} = @${FeatureSchema.schema.FeatureID.name}`;
   let result = await request.query(query);
   return result.recordsets;
 };

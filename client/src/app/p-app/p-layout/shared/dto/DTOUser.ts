@@ -1,4 +1,4 @@
-export class DTOUsers {
+export interface DTOUsers {
   UserID: number;
   UserName: string;
   Password: string;
@@ -8,6 +8,4 @@ export class DTOUsers {
   Address: string;
   Phone: string;
   CreateAt: string;
-
-  constructor() {}
 }

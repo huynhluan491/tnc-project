@@ -1,6 +1,6 @@
 const dbConfig = require("../database/dbconfig");
 const CategorySchema = require("../model/Category");
-
+const DTOCategory = require("../DTO/Default/DTOCategory");
 const dbUtils = require("../utils/dbUtils");
 exports.addCateIfNotExists = async (cate) => {
   const dbPool = dbConfig.db.pool;
@@ -11,7 +11,7 @@ exports.addCateIfNotExists = async (cate) => {
 
   let insertData = CategorySchema.validateData(cate);
   let query = `SET IDENTITY_INSERT ${CategorySchema.schemaName} ON insert into ${CategorySchema.schemaName}`;
-  const { request, insertFieldNamesStr, insertValuesStr } =
+  const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(CategorySchema.schema, dbPool.request(), insertData);
   if (!insertFieldNamesStr || !insertValuesStr) {
     throw new Error("Invalid insert param");
@@ -39,7 +39,8 @@ exports.getCategories = async () => {
   }
   let request = dbConfig.db.pool.request();
   let result = await request.query(`select * from category`);
-  return result.recordsets[0];
+  var dtos = result.recordsets[0].map((x) => new DTOCategory(x));
+  return dtos;
 };
 
 exports.getCategoryIdByName = async (name) => {
@@ -49,26 +50,29 @@ exports.getCategoryIdByName = async (name) => {
   let request = dbConfig.db.pool.request();
   let result = await request
     .input(
-      `${CategorySchema.schema.categoryName.name}`,
-      CategorySchema.schema.categoryName.sqlType,
+      `${CategorySchema.schema.CategoryName.name}`,
+      CategorySchema.schema.CategoryName.sqlType,
       name
     )
     .query(
-      `select categoryID from ${CategorySchema.schemaName} where ${CategorySchema.schema.categoryName.name} = @${CategorySchema.schema.categoryName.name}`
+      `select categoryID from ${CategorySchema.schemaName} where ${CategorySchema.schema.CategoryName.name} = @${CategorySchema.schema.CategoryName.name}`
     );
-  return result.recordsets[0][0].categoryID;
+  return result.recordsets[0][0].CategoryID;
 };
 
 exports.getCategoryById = async (id) => {
   let request = dbConfig.db.pool.request();
   let result = await request
     .input(
-      `${CategorySchema.schema.categoryID.name}`,
-      CategorySchema.schema.categoryID.sqlType,
+      `${CategorySchema.schema.CategoryName.name}`,
+      CategorySchema.schema.CategoryName.sqlType,
       id
     )
     .query(
-      `select * from ${CategorySchema.schemaName} where ${CategorySchema.schema.categoryID.name} = @${CategorySchema.schema.categoryID.name}`
+      `select * from ${CategorySchema.schemaName} where ${CategorySchema.schema.CategoryName.name} = @${CategorySchema.schema.CategoryName.name}`
     );
+  if (result.recordsets[0][0]) {
+    return new DTOCategory(result.recordsets[0][0]);
+  }
   return result.recordsets[0][0];
 };

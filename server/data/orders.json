@@ -1,15 +1,5 @@
 [
   {
-    "OrderID": 1,
-    "UserID": 1,
-    "CustomerName": "",
-    "Address": "abcxxxxxxxxxxxxxxxxxxxxx",
-    "Email": "abc@gmail.com",
-    "Phone": "0000000",
-    "PaymentID": 1,
-    "StatusID": 1
-  },
-  {
     "OrderID": 2,
     "UserID": 2,
     "CustomerName": "",

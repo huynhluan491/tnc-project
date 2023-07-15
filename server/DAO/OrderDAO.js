@@ -117,12 +117,12 @@ exports.getOrderIDByUserName = async (username) => {
   let result = await dbPool
     .request()
     .input(
-      UserSchema.schema.userName.name,
-      UserSchema.schema.userName.sqlType,
+      UserSchema.schema.UserName.name,
+      UserSchema.schema.UserName.sqlType,
       username
     )
     .query(
-      `select OrderID from ${OrdersSchema.schemaName} where UserID in (select userID from ${UserSchema.schemaName} where userName = @${UserSchema.schema.userName.name}) `
+      `select OrderID from ${OrdersSchema.schemaName} where UserID in (select UserID from ${UserSchema.schemaName} where userName = @${UserSchema.schema.UserName.name}) `
     );
   return result.recordsets[0];
 };

@@ -1,5 +1,5 @@
 const RatingDAO = require("../DAO/RatingDAO");
-
+const DTORating = require("../DTO/Default/DTORating");
 exports.getRatingById = async (req, res) => {
   // console.log(req.params);
   const id = req.params.id * 1;
@@ -10,21 +10,21 @@ exports.getRatingById = async (req, res) => {
       return res
         .status(404) //NOT FOUND
         .json({
-          code: 404,
-          msg: `Not found rating with Id ${id}!`,
+          Code: 404,
+          Msg: `Not found rating with Id ${id}!`,
         });
     }
 
     return res.status(200).json({
-      code: 200,
-      msg: null,
-      data:rating,
+      Code: 200,
+      Msg: null,
+      data: rating,
     });
   } catch (e) {
     console.log(e);
     return res.status(500).json({
-      code: 500,
-      msg: e,
+      Code: 500,
+      Msg: e,
     });
   }
 };
@@ -43,22 +43,22 @@ exports.getRatings = async (req, res) => {
       return res
         .status(404) //NOT FOUND
         .json({
-          code: 404,
-          msg: id
+          Code: 404,
+          Msg: id
             ? `Not found ratings with productId ${id}!`
             : `Not found ratings!`,
         });
     }
     return res.status(200).json({
-      code: 200,
-      msg: null,
-      data:rating,
+      Code: 200,
+      Msg: null,
+      data: rating,
     });
   } catch (e) {
     console.log(e);
     return res.status(500).json({
-      code: 500,
-      msg: e,
+      Code: 500,
+      Msg: e,
     });
   }
 };
@@ -68,14 +68,14 @@ exports.createNewRating = async (req, res) => {
   try {
     await RatingDAO.createNewRating(newRating);
     return res.status(200).json({
-      code: 200,
-      msg: null,
+      Code: 200,
+      Msg: null,
     });
   } catch (e) {
     console.log(e);
     res.status(500).json({
-      code: 500,
-      msg: `Create new rating failed!`,
+      Code: 500,
+      Msg: `Create new rating failed!`,
     });
   }
 };
@@ -88,20 +88,20 @@ exports.deleteRatingById = async (req, res) => {
       return res
         .status(404) //NOT FOUND
         .json({
-          code: 404,
-          msg: `Rating with Id ${id} not found!`,
+          Code: 404,
+          Msg: `Rating with Id ${id} not found!`,
         });
     }
     await RatingDAO.deleteRatingById(id);
     return res.status(200).json({
-      code: 200,
-      msg: null,
+      Code: 200,
+      Msg: null,
     });
   } catch (e) {
     console.log(e);
     return res.status(500).json({
-      code: 500,
-      msg: `Delete rating with id ${id} failed!`,
+      Code: 500,
+      Msg: `Delete rating with id ${id} failed!`,
     });
   }
 };
@@ -109,22 +109,23 @@ exports.deleteRatingById = async (req, res) => {
 exports.updateRatingById = async (req, res) => {
   // console.log("Id update", req.params.id);
   try {
-    const updateInfo = req.body;
-    const productID = updateInfo.productID;
-    delete updateInfo.productID;
+    const reqBody = req.body;
+    const updateInfo = new DTORating(reqBody);
+    const productID = updateInfo.ProductID;
+    delete updateInfo.ProductID;
     // console.log(updateInfo);
     await RatingDAO.updateRatingById(productID, updateInfo);
     rating = await RatingDAO.getRatingByProductId(productID);
     return res.status(200).json({
-      code: 200,
-      msg: null,
-      data:rating,
+      Code: 200,
+      Msg: null,
+      data: rating,
     });
   } catch (e) {
     console.log(e);
     res.status(500).json({
-      code: 500,
-      msg: `Update rating with id failed!`,
+      Code: 500,
+      Msg: `Update rating with id failed! ${e}`,
     });
   }
 };

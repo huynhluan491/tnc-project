@@ -1,4 +1,4 @@
-export class DTORating {
+export interface DTORating {
   RatingID: number;
   _5star: number;
   _4star: number;

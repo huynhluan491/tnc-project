@@ -1,4 +1,4 @@
-export class DTOOrders {
+export interface DTOOrders {
   OrderID: number;
   UserID: number;
   CutomerName: string;
@@ -8,6 +8,4 @@ export class DTOOrders {
   StatusID: number;
   PayIn: string;
   CreateAt: string;
-
-  constructor() {}
 }

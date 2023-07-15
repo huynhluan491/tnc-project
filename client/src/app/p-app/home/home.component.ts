@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ProductService } from './../p-layout/shared/services/product.service';
+import { Component, OnDestroy, OnInit, SkipSelf } from '@angular/core';
 import { LayoutAPIService } from '../p-layout/shared/services/layout-api.service';
 import { Subscription } from 'rxjs';
 
@@ -87,18 +88,28 @@ export class HomeComponent implements OnInit, OnDestroy {
   //Subscriptions
   getSlidersProduct_sst: Subscription;
 
-  constructor(private layoutAPIService: LayoutAPIService) { }
+  constructor(
+    private layoutAPIService: LayoutAPIService,
+    @SkipSelf() private productService: ProductService
+  ) {}
 
   ngOnInit() {
     this.getProducts();
   }
 
   getProducts() {
-    this.getSlidersProduct_sst = this.layoutAPIService
-      .GetProducts()
+    // this.getSlidersProduct_sst = this.layoutAPIService
+    //   .GetProducts()
+    //   .subscribe((res) => {
+    //     this.sliderProducts = [...res.slice(0, 15)];
+    //     console.log(this.sliderProducts);
+    //   });
+
+    this.getSlidersProduct_sst = this.productService
+      .getData(1, 15)
       .subscribe((res) => {
-        this.sliderProducts = [...res.slice(0, 15)];
-        console.log(this.sliderProducts);
+        console.log(res);
+        this.sliderProducts = res.data;
       });
   }
 

@@ -1,5 +1,7 @@
 const UserDAO = require("../DAO/UserDAO");
-
+const DTOUser = require("../DTO/Default/DTOUser");
+const authController = require("../controllers/auth");
+const OrderDAO = require("../DAO/OrderDAO");
 exports.getUserById = async (req, res) => {
   const id = req.params.id * 1;
   try {
@@ -8,20 +10,20 @@ exports.getUserById = async (req, res) => {
       return res
         .status(404) //NOT FOUND
         .json({
-          code: 404,
-          msg: `Not found user with Id ${id}!`,
+          Code: 404,
+          Msg: `Not found user with Id ${id}!`,
         });
     }
     req.user = user;
     return res.status(200).json({
-      code: 200,
-      msg: null,
+      Code: 200,
+      Msg: null,
       data: user,
     });
   } catch (e) {
     return res.status(500).json({
-      code: 500,
-      msg: e,
+      Code: 500,
+      Msg: e,
     });
   }
 };
@@ -29,11 +31,13 @@ exports.getUserById = async (req, res) => {
 exports.getUsers = async (req, res) => {
   const users = await UserDAO.getAllUsers(req.query);
   res.status(200).json({
-    code: 200,
-    msg: "OK",
-    data: {
-      users,
-    },
+    Code: 200,
+    Msg: "OK",
+    Page: users.Page,
+    PageSize: users.PageSize,
+    TotalPage: users.TotalPage,
+    TotalUser: users.TotalUser,
+    DataUsers: users.DataUsers,
   });
 };
 
@@ -41,8 +45,8 @@ exports.getUsers = async (req, res) => {
 //   try {
 //     const user = req.user;
 //     res.status(200).json({
-//       code: 200,
-//       msg: "OK",
+//       Code: 200,
+//       Msg: "OK",
 //       data: { user },
 //     });
 //   } catch (e) {
@@ -50,8 +54,8 @@ exports.getUsers = async (req, res) => {
 //     res
 //       .status(500) // 500 - Internal Error
 //       .json({
-//         code: 500,
-//         msg: e.toString(),
+//         Code: 500,
+//         Msg: e.toString(),
 //       });
 //   }
 // };
@@ -64,57 +68,40 @@ exports.getUserByUserName = async (req, res) => {
       return res
         .status(404) /// 404 - NOT FOUND!
         .json({
-          code: 404,
-          msg: `Not found user with name ${username}`,
+          Code: 404,
+          Msg: `Not found user with name ${username}`,
         });
     }
     res.status(200).json({
-      code: 200,
-      msg: null,
-      data: user ,
+      Code: 200,
+      Msg: null,
+      data: user,
     });
   } catch (e) {
     console.error(e);
     return res
       .status(500) // 500 - Internal Error
       .json({
-        code: 500,
-        msg: e.toString(),
+        Code: 500,
+        Msg: e.toString(),
       });
   }
 };
 
 exports.addUser = async (req, res) => {
   const newUser = req.body;
+  const dto = new DTOUser(newUser);
   try {
-    let user = await UserDAO.getUserByEmail(req.body.email);
-    if (user) {
-      // console.log(user);
-      return res.status(403).json({
-        code: 403,
-        msg: "User email used!",
-      });
-    }
-    user = await UserDAO.getUserByUserName(req.body.userName);
-    if (user) {
-      // console.log(user);
-      return res.status(403).json({
-        code: 403,
-        msg: "User name used!",
-      });
-    }
-    const result = await UserDAO.insertUser(newUser);
-    const u = await UserDAO.getUserByUserName(newUser.userName);
-    await CartDAO.createNewCart(u.userID);
-    return res.status(200).json({
-      code: 200,
-      msg: null,
-      data: result,
+    const userAdded = await UserDAO.userSignUp(dto);
+    res.status(200).json({
+      Code: 200,
+      Msg: "added",
+      Data: userAdded,
     });
-  } catch (error) {
+  } catch (Error) {
     res.status(404).json({
-      code: 404,
-      msg: "Add user failed!",
+      Code: 404,
+      Msg: Error.toString(),
     });
   }
 };
@@ -126,22 +113,22 @@ exports.updateUserById = async (req, res) => {
     let user = await UserDAO.getUserById(id);
     if (!user) {
       return res.status(404).json({
-        code: 404,
-        msg: `Not found user with Id ${id}!`,
+        Code: 404,
+        Msg: `Not found user with Id ${id}!`,
       });
     }
     await UserDAO.updateUserById(id, updateInfo);
     user = await UserDAO.getUserById(id);
     return res.status(200).json({
-      code: 200,
-      msg: null,
+      Code: 200,
+      Msg: null,
       data: user,
     });
   } catch (e) {
     console.log(e);
     res.status(500).json({
-      code: 500,
-      msg: `Update user with id: ${id} failed!`,
+      Code: 500,
+      Msg: `Update user with id: ${id} failed!`,
     });
   }
 };
@@ -154,28 +141,32 @@ exports.deleteUserById = async (req, res) => {
       return res
         .status(404) //NOT FOUND
         .json({
-          code: 404,
-          msg: `User with Id ${id} not found!`,
+          Code: 404,
+          Msg: `User with Id ${id} not found!`,
         });
     }
-    if (user.auth === 1) {
+    const token = authController.getTokenFromReq(req);
+    const payload = authController.verificationToken(token);
+    if (payload.AuthID < user.AuthID) {
+      await UserDAO.deleteUserById(id);
+    } else {
       return res
         .status(403) //NOT FOUND
         .json({
-          code: 403,
-          msg: `Cannot delete admin account!`,
+          Code: 403,
+          Msg: "You don't have permission to perform this action !!",
         });
     }
-    await UserDAO.deleteUserById(id);
+
     return res.status(200).json({
-      code: 200,
-      msg: `Deleted user with id ${id} successfully!`,
+      Code: 200,
+      Msg: `Deleted user with id ${id} successfully!`,
     });
   } catch (e) {
     console.log(e);
     return res.status(500).json({
-      code: 500,
-      msg: e,
+      Code: 500,
+      Msg: e,
     });
   }
 };
@@ -185,20 +176,23 @@ exports.deleteMultipleUserById = async (req, res) => {
   try {
     if (!idList || idList.length === 0) {
       return res.status(403).json({
-        code: 403,
-        msg: `Invalid ids`,
+        Code: 403,
+        Msg: `Invalid ids`,
       });
     }
-    await UserDAO.deleteMultipleUserById(idList);
+    const token = authController.getTokenFromReq(req);
+    const payload = authController.verificationToken(token);
+    // console.log(payload);
+    await UserDAO.deleteMultipleUserById(idList, payload);
     return res.status(200).json({
-      code: 200,
-      msg: null,
+      Code: 200,
+      Msg: null,
     });
   } catch (e) {
     console.log(e);
     return res.status(500).json({
-      code: 500,
-      msg: `Delete users with id ${idList} failed!`,
+      Code: 500,
+      Msg: `Delete users with id ${idList} failed!`,
     });
   }
 };

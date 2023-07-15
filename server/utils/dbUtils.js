@@ -219,7 +219,7 @@ exports.getFilterProductsQuery = (
     filterStr = "";
     let i = 0;
 
-    if (filter["categoryID"]) {
+    if (filter["CategoryID"]) {
       filterStr += "join category on category.categoryID = product.categoryID";
     }
 
@@ -267,7 +267,7 @@ exports.getFilterProductsQuery = (
         }
 
         //filter brand
-        if (criteria == "brandID") {
+        if (criteria == "BrandID") {
           console.log("brand");
           filterStr += "(";
           if (filter[criteria].constructor === Array) {

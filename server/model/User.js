@@ -23,7 +23,7 @@ const UserSchema = new ModelSchema(
       name: "AuthID",
       sqlType: sql.Int,
       require: true,
-      //default: StaticData.AUTH.Role.user,
+      default: StaticData.AUTH.Role.user,
     }),
     Email: new ModelSchemaValidator({
       name: "Email",
@@ -49,7 +49,6 @@ const UserSchema = new ModelSchema(
     Phone: new ModelSchemaValidator({
       name: "Phone",
       sqlType: sql.NVarChar,
-      require: true,
     }),
 
     CreatedAt: new ModelSchemaValidator({
@@ -60,7 +59,7 @@ const UserSchema = new ModelSchema(
     }),
   },
   "Users",
-  "auth"
+  "AuthID"
 );
 
 module.exports = UserSchema;

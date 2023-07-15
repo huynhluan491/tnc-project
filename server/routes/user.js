@@ -16,12 +16,12 @@ router
   .get(userController.getUserById)
   .patch(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role.admin),
+    authController.restrictTo(StaticData.AUTH.Role),
     userController.updateUserById
   )
   .delete(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role.admin),
+    authController.restrictTo(StaticData.AUTH.Role),
     userController.deleteUserById
   );
 //.get(userController.getUser)
@@ -30,17 +30,17 @@ router
   .route("/")
   .get(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role.admin),
+    authController.restrictTo(StaticData.AUTH.Role),
     userController.getUsers
   )
   .post(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role.admin),
+    authController.restrictTo(StaticData.AUTH.Role),
     userController.addUser
   )
   .delete(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role.admin),
+    authController.restrictTo(StaticData.AUTH.Role),
     userController.deleteMultipleUserById //param id=1,id=2,...
   );
 
