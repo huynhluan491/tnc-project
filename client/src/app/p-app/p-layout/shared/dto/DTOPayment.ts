@@ -1,4 +1,4 @@
-export class DTOPayment {
+export interface DTOPayment {
   PaymentID: number;
   PaymentName: string;
   PaymentType: string;

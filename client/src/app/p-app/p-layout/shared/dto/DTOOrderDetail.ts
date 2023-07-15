@@ -1,8 +1,6 @@
-export class DTOOrderDetail {
+export interface DTOOrderDetail {
   OrderID: number;
   ProductID: string;
   Amount: number;
   CreateAt: string;
-
-  constructor() {}
 }

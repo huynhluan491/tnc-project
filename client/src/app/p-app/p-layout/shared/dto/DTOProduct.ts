@@ -1,4 +1,6 @@
-export class DTOProduct {
+import { DTOResponse } from './DTOResponse';
+
+export interface DTOProduct extends DTOResponse {
   ProductID: number;
   Stock: number;
   Name: string;
