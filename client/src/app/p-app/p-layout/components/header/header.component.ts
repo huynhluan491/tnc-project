@@ -1,3 +1,4 @@
+import { DTOCategory } from './../../shared/dto/DTOCategory';
 import { RegisterService } from './../../shared/services/register.service';
 import {
   Component,
@@ -72,17 +73,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .GetCategories()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
-        const categories = res.data.categories;
-        if (Ps_UtilObjectService.hasListValue(categories)) {
-          categories.forEach((item) => {
-            this.headerMenuItems[0].items.push({
-              text: item.categoryName,
-              path: `${item.categoryName}`,
-            });
+        const categories = res.Data;
+        console.log('casd', res.Data);
+
+        // if (Ps_UtilObjectService.hasListValue(categories)) {
+        categories.forEach((item: DTOCategory) => {
+          this.headerMenuItems[0].items.push({
+            text: item.CategoryName,
+            path: `${item.CategoryName}`,
           });
-        } else {
-          window.alert('Không load được danh sách Category');
-        }
+        });
+        // } else {
+        //   window.alert('Không load được danh sách Category');
+        // }
       });
   }
 

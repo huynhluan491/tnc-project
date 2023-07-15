@@ -2,27 +2,27 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { DTOProduct } from '../dto/DTOProduct';
+import { DTOBrand } from '../dto/DTOBrand';
 import { DTOResponse } from '../dto/DTOResponse';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductService {
+export class BrandService {
   constructor(private http: HttpClient) {
-    console.log('product service started');
+    console.log('brand service started');
   }
 
   getData(
     page: number,
     pageSize: number,
-    filterStr: string = ''
+    filterStr: string
   ): Observable<DTOResponse> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('pageSize', pageSize.toString());
     return this.http
-      .get<DTOResponse>(`/api/v1/product/${filterStr}`, {
+      .get<DTOResponse>(`/api/v1/brand/${filterStr}`, {
         params,
       })
       .pipe(catchError(this.handleError));
@@ -30,25 +30,25 @@ export class ProductService {
 
   getDataById(id: number): Observable<DTOResponse> {
     return this.http
-      .get<DTOResponse>(`/api/v1/product/${id}`)
+      .get<DTOResponse>(`/api/v1/brand/${id}`)
       .pipe(catchError(this.handleError));
   }
 
-  createData(product: DTOProduct): Observable<DTOResponse> {
+  createData(brand: DTOBrand): Observable<DTOResponse> {
     return this.http
-      .post<DTOResponse>('/api/v1/product', product)
+      .post<DTOResponse>('/api/v1/brand', brand)
       .pipe(catchError(this.handleError));
   }
 
-  updateData(id: number, product: DTOProduct): Observable<DTOResponse> {
+  updateData(id: number, brand: DTOBrand): Observable<DTOResponse> {
     return this.http
-      .patch<DTOResponse>(`/api/v1/product/${id}`, product)
+      .patch<DTOResponse>(`/api/v1/brand/${id}`, brand)
       .pipe(catchError(this.handleError));
   }
 
   deleteDataById(id: number): Observable<DTOResponse> {
     return this.http
-      .delete<DTOResponse>(`/api/v1/product/${id}`)
+      .delete<DTOResponse>(`/api/v1/brand/${id}`)
       .pipe(catchError(this.handleError));
   }
 
