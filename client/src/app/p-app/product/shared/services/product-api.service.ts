@@ -49,7 +49,7 @@ export class ProductAPIService {
       labelName: 'label6',
     },
   ];
-  productURL = 'http://localhost:3001/api/v1/product/';
+  productURL = '/api/v1/product/';
   testDetailProduct = 'https://api.npoint.io/09883bf2746395a86b36';
   arrlabelFilter: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   removeItem: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
