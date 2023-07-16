@@ -19,7 +19,11 @@ exports.getProducts = async (req, res) => {
     res.status(200).json({
       Code: 200,
       Msg: null,
-      Data: products,
+      Page: products.Page,
+      PageSize: products.PageSize,
+      TotalPage: products.TotalPage,
+      TotalProduct: products.TotalProduct,
+      Data: products.DataProducts,
     });
   } catch (err) {
     res.status(500).json({
