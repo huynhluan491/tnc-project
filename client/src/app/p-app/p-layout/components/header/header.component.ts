@@ -76,8 +76,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
         const categories = res.Data;
-        console.log('casd', res.Data);
-
         // if (Ps_UtilObjectService.hasListValue(categories)) {
         categories.forEach((item: DTOCategory) => {
           this.headerMenuItems[0].items.push({

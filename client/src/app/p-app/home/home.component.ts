@@ -106,7 +106,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     //   });
 
     this.productService.getData(1, 15).subscribe((res) => {
-      console.log('CCCCC', res);
       this.sliderProducts = res.Data;
     });
   }
