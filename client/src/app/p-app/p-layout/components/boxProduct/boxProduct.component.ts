@@ -1,36 +1,38 @@
-import { formatCurrency } from "@angular/common";
-import { Component,OnChanges, Input, SimpleChanges  } from "@angular/core";
+import { formatCurrency } from '@angular/common';
+import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
+import { DTOProduct } from '../../shared/dto/DTOProduct';
 
 @Component({
-  selector : "box-product",
-  templateUrl :"./boxProduct.component.html",
-  styleUrls : ["./boxProduct.component.scss"]
+  selector: 'box-product',
+  templateUrl: './boxProduct.component.html',
+  styleUrls: ['./boxProduct.component.scss'],
 })
-export class BoxProductComponent implements OnChanges{
-  @Input() data:any
+export class BoxProductComponent implements OnChanges {
+  @Input() data: DTOProduct;
   salePrice: number = 0;
-  saleConvert:string =""
+  saleConvert: string = '';
   selected = 0;
-	hovered = 0;
-	readonly = true;
-  inforProduct = "infor-product"
+  hovered = 0;
+  readonly = true;
+  inforProduct = 'infor-product';
   ngOnInit(): void {
     this.calculateSalePrice();
-    this.convertToPercentage()
-
+    this.convertToPercentage();
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data'] && this['data']) {
       this.calculateSalePrice();
-      this.convertToPercentage()
+      this.convertToPercentage();
     }
   }
   private calculateSalePrice(): void {
-    this.salePrice =this['data'].sale ? this['data'].price - (this['data'].price * this['data'].sale) :  this['data'].price;
+    this.salePrice = this['data'].Sale
+      ? this['data'].Price - this['data'].Price * this['data'].Sale
+      : this['data'].Price;
   }
 
   private convertToPercentage(): string {
-    this.saleConvert = (this['data'].sale * -100 ).toString() + "%"
-    return this.saleConvert
+    this.saleConvert = (this['data'].Sale * 100).toString() + '%';
+    return this.saleConvert;
   }
 }
