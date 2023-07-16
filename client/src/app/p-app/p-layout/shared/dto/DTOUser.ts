@@ -1,4 +1,4 @@
-export class DTOUsers {
+export class DTOUser {
   UserID: number;
   UserName: string;
   Password: string;

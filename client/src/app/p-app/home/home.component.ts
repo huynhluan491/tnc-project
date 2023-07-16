@@ -105,12 +105,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     //     console.log(this.sliderProducts);
     //   });
 
-    this.getSlidersProduct_sst = this.productService
-      .getData(1, 15)
-      .subscribe((res) => {
-        console.log(res);
-        this.sliderProducts = res.Data;
-      });
+    this.productService.getData(1, 15).subscribe((res) => {
+      console.log('CCCCC', res);
+      this.sliderProducts = res.Data;
+    });
   }
 
   ngOnDestroy(): void {

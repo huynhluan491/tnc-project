@@ -12,6 +12,7 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { LayoutAPIService } from '../../shared/services/layout-api.service';
 import { Ps_UtilObjectService } from 'src/app/p-lib/ultilities/ulity.object';
 import { CartService } from '../../shared/services/cart.service';
+import { CategoryService } from '../../shared/services/category.service';
 
 @Component({
   selector: 'app-p-header',
@@ -22,6 +23,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private layoutAPIService: LayoutAPIService,
     @SkipSelf() private cartSerivce: CartService,
+    @SkipSelf() private categoryService: CategoryService,
     @SkipSelf() private registerService: RegisterService
   ) {}
 
@@ -69,8 +71,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   getCategoryList() {
-    this.layoutAPIService
-      .GetCategories()
+    this.categoryService
+      .getData(1, 100)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
         const categories = res.Data;
