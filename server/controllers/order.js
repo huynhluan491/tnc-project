@@ -7,7 +7,7 @@ exports.getProductInOrderByUSerID = async (req, res) => {
     res.status(200).json({
       Code: 200,
       Msg: null,
-      data: result,
+      Data: result,
     });
   } catch (error) {
     res.status(404).json({
@@ -43,7 +43,7 @@ exports.insertProductToOrder = async (req, res) => {
     res.status(200).json({
       Code: 200,
       Msg: null,
-      data: result,
+      Data: result,
     });
   } catch (error) {
     res.status(404).json({
@@ -62,7 +62,7 @@ exports.updateProductInOrder = async (req, res) => {
     res.status(200).json({
       Code: 200,
       Msg: null,
-      data: result,
+      Data: result,
     });
   } catch (error) {
     res.status(404).json({
