@@ -2,6 +2,7 @@ import { DTOCategory } from './../../shared/dto/DTOCategory';
 import { RegisterService } from './../../shared/services/register.service';
 import {
   Component,
+  Input,
   OnDestroy,
   OnInit,
   SkipSelf,
@@ -12,6 +13,11 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { LayoutAPIService } from '../../shared/services/layout-api.service';
 import { Ps_UtilObjectService } from 'src/app/p-lib/ultilities/ulity.object';
 import { CartService } from '../../shared/services/cart.service';
+import { AuthService } from 'src/app/p-app/http-interceptors/auth.service';
+import { DTOUser } from 'src/app/p-app/_models/DTOUser';
+import { StorageService } from '../../shared/services/storage.service';
+import { Route, Router } from '@angular/router';
+import { NotificationPopupService } from '../../shared/services/notification.service';
 
 @Component({
   selector: 'app-p-header',
@@ -19,13 +25,35 @@ import { CartService } from '../../shared/services/cart.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  userMenu: any[] = [
+    { text: 'TNCMember', icon: 'k-i-user'},
+    { text: 'Đăng xuất', icon: 'k-i-home'}
+  ] 
+
   constructor(
     private layoutAPIService: LayoutAPIService,
     @SkipSelf() private cartSerivce: CartService,
-    @SkipSelf() private registerService: RegisterService
+    @SkipSelf() private registerService: RegisterService,
+    private authService: AuthService,
+    private storageService: StorageService,
+    private route: Router,
+    private notificationService: NotificationPopupService
   ) {}
+  userName: string = '';
+  ngUnsubscribe = new Subject<void>();
+  isLoggedIn: boolean = false;
 
   ngOnInit(): void {
+    if (Object.keys(this.storageService.getUser()).length > 0) {
+      this.isLoggedIn = this.storageService.isLoggedIn();
+      this.userName = this.storageService.getUser().Data.UserName;
+    }
+    this.authService.getCurrentUserValue().subscribe(res => {
+      this.userName = res.UserName;
+    });
+    this.authService._isLoggedIn.subscribe(res => {
+      this.isLoggedIn = res;
+    });
     this.getCategoryList();
   }
 
@@ -57,8 +85,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     },
   ];
 
-  //Subscription
-  ngUnsubscribe: Subject<void> = new Subject<void>();
 
   toggleCart = () => {
     this.cartSerivce;
@@ -88,6 +114,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
         // }
       });
   }
+
+  onHandleMenu(type: string) {
+    if (type === 'TNCMember') {
+      this.route.navigate(['/profile']);
+    } else if (type === 'Đăng xuất') {
+      this.storageService.clean();
+      this.notificationService.onSuccess('Đăng xuất thành công');
+      this.isLoggedIn = false;
+      console.log('dang xuat');
+      
+    }
+  }
+
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();

@@ -19,6 +19,7 @@ const signToken = (id, username, auth, OrderID = 0) => {
 exports.login = async (req, res) => {
   try {
     const form = req.body;
+    console.log(form);
     //1. check if form is valid
     if (!form.Password || !form.UserName) {
       return res
@@ -58,7 +59,7 @@ exports.login = async (req, res) => {
     res.status(200).json({
       Code: 200,
       Msg: "OK",
-      Data: {Token: token, User: user},
+      Data: {Token: token, ...user},
     });
   } catch (e) {
     console.error(e);

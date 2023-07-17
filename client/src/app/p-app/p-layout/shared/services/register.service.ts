@@ -14,4 +14,8 @@ export class RegisterService {
     const currentValue = this.registerShownSubject.getValue();
     this.registerShownSubject.next(!currentValue);
   }
+
+  closeRegisterForm(): void {
+    this.registerShownSubject.next(false)
+  }
 }
