@@ -30,7 +30,7 @@
           </div>
           <div (click)="toggleCart()" class="header-cart button">
             <img src="../../../../../assets/icon/cart-icon.svg" />
-            <span class="cart-quantity">0</span>
+            <span class="cart-quantity">{{ cartItems }}</span>
           </div>
           <div class="signin button" (click)="toggleRegister()">Đăng nhập</div>
         </div>

@@ -13,6 +13,7 @@ import { LayoutAPIService } from '../../shared/services/layout-api.service';
 import { Ps_UtilObjectService } from 'src/app/p-lib/ultilities/ulity.object';
 import { CartService } from '../../shared/services/cart.service';
 import { CategoryService } from '../../shared/services/category.service';
+import { OrderService } from '../../shared/services/order.service';
 
 @Component({
   selector: 'app-p-header',
@@ -22,12 +23,14 @@ import { CategoryService } from '../../shared/services/category.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private layoutAPIService: LayoutAPIService,
-    @SkipSelf() private cartSerivce: CartService,
+    @SkipSelf() private cartService: CartService,
     @SkipSelf() private categoryService: CategoryService,
-    @SkipSelf() private registerService: RegisterService
+    @SkipSelf() private registerService: RegisterService,
+    @SkipSelf() private orderService: OrderService
   ) {}
 
   ngOnInit(): void {
+    this.getOrders();
     this.getCategoryList();
   }
 
@@ -58,16 +61,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
       items: [],
     },
   ];
-
+  cartItems: number = 0;
   //Subscription
   ngUnsubscribe: Subject<void> = new Subject<void>();
 
   toggleCart = () => {
-    this.cartSerivce;
+    const newValue = !this.cartService.isCartPopUpOpened.value;
+    this.cartService.onToggleCartPopUpState(newValue);
   };
 
   toggleRegister(): void {
     this.registerService.toggleRegisterShown();
+  }
+
+  getOrders() {
+    this.orderService.getData(1, 20, '?userID=1').subscribe((res) => {
+      this.cartItems = res.Data.length;
+    });
   }
 
   getCategoryList() {
