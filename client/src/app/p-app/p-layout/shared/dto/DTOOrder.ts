@@ -1,4 +1,4 @@
-export class DTOOrders {
+export class DTOOrder {
   OrderID: number;
   UserID: number;
   CutomerName: string;

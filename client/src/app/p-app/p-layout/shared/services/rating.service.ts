@@ -3,52 +3,52 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { DTOPayment } from '../dto/DTOPayment';
-import { DTOUser } from '../dto/DTOUser';
+import { DTORating } from '../dto/DTORating';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PaymentService {
   constructor(private http: HttpClient) {
-    console.log('user service started');
+    console.log('rating service started');
   }
 
   getData(
     page: number,
     pageSize: number,
     filterStr: string
-  ): Observable<DTOUser> {
+  ): Observable<DTORating> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('pageSize', pageSize.toString());
     return this.http
-      .get<DTOUser>(`/api/v1/user/${filterStr}`, {
+      .get<DTORating>(`/api/v1/rating/${filterStr}`, {
         params,
       })
       .pipe(catchError(this.handleError));
   }
 
-  getDataById(id: number): Observable<DTOUser> {
+  getDataById(id: number): Observable<DTORating> {
     return this.http
-      .get<DTOUser>(`/api/v1/user/${id}`)
+      .get<DTORating>(`/api/v1/rating/${id}`)
       .pipe(catchError(this.handleError));
   }
 
-  createData(user: DTOPayment): Observable<DTOUser> {
+  createData(rating: DTOPayment): Observable<DTORating> {
     return this.http
-      .post<DTOUser>('/api/v1/user', user)
+      .post<DTORating>('/api/v1/rating', rating)
       .pipe(catchError(this.handleError));
   }
 
-  updateData(id: number, user: DTOPayment): Observable<DTOUser> {
+  updateData(id: number, rating: DTOPayment): Observable<DTORating> {
     return this.http
-      .patch<DTOUser>(`/api/v1/user/${id}`, user)
+      .patch<DTORating>(`/api/v1/rating/${id}`, rating)
       .pipe(catchError(this.handleError));
   }
 
-  deleteDataById(id: number): Observable<DTOUser> {
+  deleteDataById(id: number): Observable<DTORating> {
     return this.http
-      .delete<DTOUser>(`/api/v1/user/${id}`)
+      .delete<DTORating>(`/api/v1/rating/${id}`)
       .pipe(catchError(this.handleError));
   }
 

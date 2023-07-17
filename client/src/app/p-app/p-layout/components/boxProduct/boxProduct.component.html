@@ -1,11 +1,11 @@
 <div class="swiper-slide">
   <div class="wrapper">
     <div class="avatar-product">
-      <img [src]="data.srcAvaterProduct" />
+      <!-- <img [src]="data.srcAvaterProduct" /> -->
     </div>
     <div [class]="inforProduct">
       <div class="title-product">
-        <span>{{ data?.name }}</span>
+        <span>{{ data?.Name }}</span>
       </div>
       <div class="rating">
         <ngb-rating
@@ -19,15 +19,15 @@
       </div>
       <div class="price-product">
         <span class="sale-price">{{ salePrice | number : "1.0-0" }} đ</span>
-        <span *ngIf="data.sale" class="base-price"
-          >{{ data.price | number : "1.0-0" }} đ</span
+        <span *ngIf="data.Sale" class="base-price"
+          >{{ data.Price | number : "1.0-0" }} đ</span
         >
       </div>
       <div class="buy-now">
         <buy-now></buy-now>
       </div>
     </div>
-    <div *ngIf="data.sale" class="percentage-sale">
+    <div *ngIf="data.Sale" class="percentage-sale">
       <span>{{ saleConvert }}</span>
     </div>
   </div>

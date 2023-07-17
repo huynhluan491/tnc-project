@@ -18,6 +18,7 @@ import { DTOUser } from 'src/app/p-app/_models/DTOUser';
 import { StorageService } from '../../shared/services/storage.service';
 import { Route, Router } from '@angular/router';
 import { NotificationPopupService } from '../../shared/services/notification.service';
+import { CategoryService } from '../../shared/services/category.service';
 
 @Component({
   selector: 'app-p-header',
@@ -38,6 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private storageService: StorageService,
     private route: Router,
     private notificationService: NotificationPopupService
+    @SkipSelf() private categoryService: CategoryService,
   ) {}
   userName: string = '';
   ngUnsubscribe = new Subject<void>();
@@ -95,13 +97,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   getCategoryList() {
-    this.layoutAPIService
-      .GetCategories()
+    this.categoryService
+      .getData(1, 100)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
         const categories = res.Data;
-        console.log('casd', res.Data);
-
         // if (Ps_UtilObjectService.hasListValue(categories)) {
         categories.forEach((item: DTOCategory) => {
           this.headerMenuItems[0].items.push({

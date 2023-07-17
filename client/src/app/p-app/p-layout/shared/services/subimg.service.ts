@@ -3,52 +3,52 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { DTOPayment } from '../dto/DTOPayment';
-import { DTOUser } from '../dto/DTOUser';
+import { DTOSubimg } from '../dto/DTOSubimg';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PaymentService {
   constructor(private http: HttpClient) {
-    console.log('user service started');
+    console.log('subimg service started');
   }
 
   getData(
     page: number,
     pageSize: number,
     filterStr: string
-  ): Observable<DTOUser> {
+  ): Observable<DTOSubimg> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('pageSize', pageSize.toString());
     return this.http
-      .get<DTOUser>(`/api/v1/user/${filterStr}`, {
+      .get<DTOSubimg>(`/api/v1/subimg/${filterStr}`, {
         params,
       })
       .pipe(catchError(this.handleError));
   }
 
-  getDataById(id: number): Observable<DTOUser> {
+  getDataById(id: number): Observable<DTOSubimg> {
     return this.http
-      .get<DTOUser>(`/api/v1/user/${id}`)
+      .get<DTOSubimg>(`/api/v1/subimg/${id}`)
       .pipe(catchError(this.handleError));
   }
 
-  createData(user: DTOPayment): Observable<DTOUser> {
+  createData(subimg: DTOPayment): Observable<DTOSubimg> {
     return this.http
-      .post<DTOUser>('/api/v1/user', user)
+      .post<DTOSubimg>('/api/v1/subimg', subimg)
       .pipe(catchError(this.handleError));
   }
 
-  updateData(id: number, user: DTOPayment): Observable<DTOUser> {
+  updateData(id: number, subimg: DTOPayment): Observable<DTOSubimg> {
     return this.http
-      .patch<DTOUser>(`/api/v1/user/${id}`, user)
+      .patch<DTOSubimg>(`/api/v1/subimg/${id}`, subimg)
       .pipe(catchError(this.handleError));
   }
 
-  deleteDataById(id: number): Observable<DTOUser> {
+  deleteDataById(id: number): Observable<DTOSubimg> {
     return this.http
-      .delete<DTOUser>(`/api/v1/user/${id}`)
+      .delete<DTOSubimg>(`/api/v1/subimg/${id}`)
       .pipe(catchError(this.handleError));
   }
 

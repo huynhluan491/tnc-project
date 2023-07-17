@@ -3,52 +3,52 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { DTOPayment } from '../dto/DTOPayment';
-import { DTOUser } from '../dto/DTOUser';
+import { DTOStatus } from '../dto/DTOStatus';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PaymentService {
   constructor(private http: HttpClient) {
-    console.log('user service started');
+    console.log('status service started');
   }
 
   getData(
     page: number,
     pageSize: number,
     filterStr: string
-  ): Observable<DTOUser> {
+  ): Observable<DTOStatus> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('pageSize', pageSize.toString());
     return this.http
-      .get<DTOUser>(`/api/v1/user/${filterStr}`, {
+      .get<DTOStatus>(`/api/v1/status/${filterStr}`, {
         params,
       })
       .pipe(catchError(this.handleError));
   }
 
-  getDataById(id: number): Observable<DTOUser> {
+  getDataById(id: number): Observable<DTOStatus> {
     return this.http
-      .get<DTOUser>(`/api/v1/user/${id}`)
+      .get<DTOStatus>(`/api/v1/status/${id}`)
       .pipe(catchError(this.handleError));
   }
 
-  createData(user: DTOPayment): Observable<DTOUser> {
+  createData(status: DTOPayment): Observable<DTOStatus> {
     return this.http
-      .post<DTOUser>('/api/v1/user', user)
+      .post<DTOStatus>('/api/v1/status', status)
       .pipe(catchError(this.handleError));
   }
 
-  updateData(id: number, user: DTOPayment): Observable<DTOUser> {
+  updateData(id: number, status: DTOPayment): Observable<DTOStatus> {
     return this.http
-      .patch<DTOUser>(`/api/v1/user/${id}`, user)
+      .patch<DTOStatus>(`/api/v1/status/${id}`, status)
       .pipe(catchError(this.handleError));
   }
 
-  deleteDataById(id: number): Observable<DTOUser> {
+  deleteDataById(id: number): Observable<DTOStatus> {
     return this.http
-      .delete<DTOUser>(`/api/v1/user/${id}`)
+      .delete<DTOStatus>(`/api/v1/status/${id}`)
       .pipe(catchError(this.handleError));
   }
 
