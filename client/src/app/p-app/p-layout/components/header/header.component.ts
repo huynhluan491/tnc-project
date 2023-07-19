@@ -28,18 +28,17 @@ import { OrderService } from '../../shared/services/order.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   userMenu: any[] = [
-    { text: 'TNCMember', icon: 'k-i-user'},
-    { text: 'Đăng xuất', icon: 'k-i-home'}
-  ] 
+    { text: 'TNCMember', icon: 'k-i-user' },
+    { text: 'Đăng xuất', icon: 'k-i-home' },
+  ];
 
   constructor(
     private layoutAPIService: LayoutAPIService,
-    @SkipSelf() private cartSerivce: CartService,
-    @SkipSelf() private registerService: RegisterService,
     private authService: AuthService,
     private storageService: StorageService,
     private route: Router,
-    private notificationService: NotificationPopupService
+    private notificationService: NotificationPopupService,
+    @SkipSelf() private cartService: CartService,
     @SkipSelf() private categoryService: CategoryService,
     @SkipSelf() private registerService: RegisterService,
     @SkipSelf() private orderService: OrderService
@@ -54,10 +53,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.isLoggedIn = this.storageService.isLoggedIn();
       this.userName = this.storageService.getUser().Data.UserName;
     }
-    this.authService.getCurrentUserValue().subscribe(res => {
+    this.authService.getCurrentUserValue().subscribe((res) => {
       this.userName = res.UserName;
     });
-    this.authService._isLoggedIn.subscribe(res => {
+    this.authService._isLoggedIn.subscribe((res) => {
       this.isLoggedIn = res;
     });
     this.getCategoryList();
@@ -92,7 +91,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ];
   cartItems: number = 0;
   //Subscription
-  ngUnsubscribe: Subject<void> = new Subject<void>();
 
   toggleCart = () => {
     const newValue = !this.cartService.isCartPopUpOpened.value;
@@ -136,10 +134,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.notificationService.onSuccess('Đăng xuất thành công');
       this.isLoggedIn = false;
       console.log('dang xuat');
-      
     }
   }
-
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
