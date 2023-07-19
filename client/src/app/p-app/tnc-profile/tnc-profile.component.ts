@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Route, Router, Routes } from '@angular/router';
 import { DrawerItem, DrawerSelectEvent } from '@progress/kendo-angular-layout';
 import { SVGIcon, bellIcon, calendarIcon, envelopLinkIcon, inboxIcon, menuIcon, starOutlineIcon } from '@progress/kendo-svg-icons';
+import { StorageService } from '../p-layout/shared/services/storage.service';
 
 const ProfileRoutes = [
   {
@@ -36,13 +37,13 @@ export class TncProfileComponent {
   public menuSvg: SVGIcon = menuIcon;
   public items: Array<{path: string, text: string, svgIcon: SVGIcon}> = ProfileRoutes;
 
-  constructor() {}
+  constructor(private storageService: StorageService) {}
 
   public onSelect(ev: DrawerSelectEvent): void {
     this.selected = ev.item.text;
     //TODO thực hiện log out 
     if (this.selected === 'Thoát tài khoản') {
-      window.alert('Logged out account');
+      this.storageService.clean();
     }
   }
 }

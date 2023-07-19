@@ -22,6 +22,9 @@ import { dropdownFilterComponent } from './components/dropdown-filter/dropdown-f
 import { PercentagePipe } from './shared/pipe/percentage.pipe';
 import { LayoutModule } from '@progress/kendo-angular-layout';
 import { RegisterComponent } from './components/register/register.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ButtonsModule } from '@progress/kendo-angular-buttons';
+import { IconsModule } from '@progress/kendo-angular-icons';
 @NgModule({
   declarations: [
     LayoutDefault,
@@ -46,6 +49,10 @@ import { RegisterComponent } from './components/register/register.component';
     MenusModule,
     NavigationModule,
     LayoutModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ButtonsModule,
+    IconsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   exports: [

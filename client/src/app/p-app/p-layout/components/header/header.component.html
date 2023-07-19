@@ -30,9 +30,25 @@
           </div>
           <div (click)="toggleCart()" class="header-cart button">
             <img src="../../../../../assets/icon/cart-icon.svg" />
-            <span class="cart-quantity">0</span>
+            <span class="cart-quantity">{{ cartItems }}</span>
           </div>
-          <div class="signin button" (click)="toggleRegister()">Đăng nhập</div>
+          <div *ngIf="!isLoggedIn" class="signin button" (click)="toggleRegister()">Đăng nhập</div>
+          <!-- <div *ngIf="isLoggedIn" class="signin button" style="display: flex;flex-direction: column;gap: 2px;">
+            <span class="k-icon k-i-user"></span>
+            {{userName}}
+          </div> -->
+          <kendo-dropdownbutton *ngIf="isLoggedIn" [data]="userMenu" themeColor="info">
+            <div>
+              <span class="k-icon k-i-user"></span>
+              {{userName}}
+            </div>
+            <ng-template kendoDropDownButtonItemTemplate let-dataItem>
+              <div (click)="onHandleMenu(dataItem.text)">
+                <span class="k-icon {{dataItem.icon}}"></span>
+                <span>{{ dataItem.text }}</span>
+              </div>
+            </ng-template>
+          </kendo-dropdownbutton>
         </div>
       </div>
     </div>
@@ -48,9 +64,8 @@
                   gap: 16px;
                   padding: 15px 0;
                 "
-                [routerLink]="
-                  item.path.length > 0 ? 'product/' + item.path : ''
-                "
+                (click)="onNavigate(item.path)"
+
               >
                 <img src="../../../../../assets/icon/{{ item.icon }}" />
                 <p
@@ -67,8 +82,8 @@
               <ng-container *ngIf="item.items.length > 0">
                 <ul class="sub-menu-list">
                   <li
-                    [routerLink]="'product/' + subMenu.path"
                     *ngFor="let subMenu of item.items"
+                    (click)="onNavigate('product/{{subMenu.path}}')"
                   >
                     {{ subMenu.text | uppercase }}
                   </li>

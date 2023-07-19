@@ -8,5 +8,5 @@ export class DTOUser {
     Address: string 
     Phone: string
     CreatedAt: string
-    token: string
+    Token: string
 }

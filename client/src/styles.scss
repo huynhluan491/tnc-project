@@ -42,6 +42,14 @@ body {
   text-rendering: optimizeSpeed;
   color: var(--text-color);
   overflow: hidden;
+
+  .k-notification-group {
+    // top: 10% !important;
+    z-index: 9999999999999999999;
+    .k-notification  {
+      padding: 12px;
+    }
+  }
 }
 
 ul {
@@ -89,3 +97,5 @@ button {
 .button:hover {
   opacity: 0.8;
 }
+
+

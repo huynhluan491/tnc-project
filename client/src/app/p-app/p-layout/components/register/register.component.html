@@ -1,16 +1,11 @@
-<div (click)="toggleShowRegister()" class="register-container">
-  <form class="register-form" (click)="$event.stopPropagation()">
+<div  class="register-container">
+  <form class="register-form" (ngSubmit)="onSubmit($event)" [formGroup]="isRegister ? registerForm : loginForm">
     <div (click)="toggleShowRegister()" class="register-exit">
       <img src="assets/icon/xmark-solid.svg" />
     </div>
-    <div *ngIf="isRegister; else loginTitle" class="register-title">
-      Đăng nhập
-    </div>
-    <ng-template #loginTitle>
-      <div class="register-title">Đăng kí</div></ng-template
-    >
+    <div class="register-title">{{isRegister ? 'Đăng kí' : 'Đăng nhập'}}</div>
     <div class="register-option">
-      <div *ngIf="isRegister; else login" class="register-question">
+      <div class="register-question">
         Chưa có tài khoản?
       </div>
       <input
@@ -18,51 +13,52 @@
         class="register-checkbox"
         type="checkbox"
       />
-      <ng-template #login>
-        <div class="register-question">Đã có tài khoản?</div></ng-template
-      >
     </div>
-
     <div class="register-input">
       <label class="register-label" for="userName"> Tên đăng nhập </label>
       <input
         required
         class="register-text"
         type="text"
-        id="userName"
-        name="userName"
+        #userName
+        formControlName="UserName"
       />
+      <div *ngIf="submitted && f['UserName'].errors" class="invalid-feedback">
+        <div *ngIf="f['UserName'].errors['required']">Username is required</div>
+      </div>
     </div>
     <div class="register-input">
-      <label class="register-label" for="password"> Mật khẩu </label>
+      <label class="register-label" [for]="password"> Mật khẩu </label>
       <input
+        formControlName="Password"
         required
         class="register-text"
         type="password"
-        id="password"
-        name="password"
+        #password
       />
     </div>
-    <div [ngClass]="{ hidden: !isRegister }" class="register-input">
-      <label class="register-label" for="userName"> Nhập lại mật khẩu </label>
-      <input
-        required
-        class="register-text"
-        type="password"
-        id="repeat-password"
-        name="repeat-password"
-      />
-    </div>
-    <div [ngClass]="{ hidden: !isRegister }" class="register-input">
-      <label class="register-label" for="userName"> Email </label>
-      <input
-        required
-        class="register-text"
-        type="email"
-        id="userName"
-        name="userName"
-      />
-    </div>
-    <input class="register-submit button" value="Tiếp tục" type="submit" />
+    <ng-container *ngIf="isRegister">
+      <div class="register-input">
+        <label class="register-label" [for]="confirmPassword"> Nhập lại mật khẩu </label>
+        <input
+          formControlName="ConfirmPassword"
+          required
+          class="register-text"
+          type="password"
+          #confirmPassword
+        />
+      </div>
+      <div class="register-input">
+        <label class="register-label" for="email"> Email </label>
+        <input
+          formControlName="Email"
+          required
+          class="register-text"
+          type="email"
+          #email
+        />
+      </div>
+    </ng-container>
+    <button kendoButton [theme]="'info'" (click)="onSubmit($event)">{{isRegister ? 'Đăng kí' : 'Đăng nhập'}}</button>
   </form>
 </div>
