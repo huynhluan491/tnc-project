@@ -32,7 +32,23 @@
             <img src="../../../../../assets/icon/cart-icon.svg" />
             <span class="cart-quantity">{{ cartItems }}</span>
           </div>
-          <div class="signin button" (click)="toggleRegister()">Đăng nhập</div>
+          <div *ngIf="!isLoggedIn" class="signin button" (click)="toggleRegister()">Đăng nhập</div>
+          <!-- <div *ngIf="isLoggedIn" class="signin button" style="display: flex;flex-direction: column;gap: 2px;">
+            <span class="k-icon k-i-user"></span>
+            {{userName}}
+          </div> -->
+          <kendo-dropdownbutton *ngIf="isLoggedIn" [data]="userMenu" themeColor="info">
+            <div>
+              <span class="k-icon k-i-user"></span>
+              {{userName}}
+            </div>
+            <ng-template kendoDropDownButtonItemTemplate let-dataItem>
+              <div (click)="onHandleMenu(dataItem.text)">
+                <span class="k-icon {{dataItem.icon}}"></span>
+                <span>{{ dataItem.text }}</span>
+              </div>
+            </ng-template>
+          </kendo-dropdownbutton>
         </div>
       </div>
     </div>

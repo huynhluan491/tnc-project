@@ -36,6 +36,7 @@
     "@progress/kendo-angular-layout": "13.0.2",
     "@progress/kendo-angular-menu": "^13.0.2",
     "@progress/kendo-angular-navigation": "13.0.2",
+    "@progress/kendo-angular-notification": "^13.0.2",
     "@progress/kendo-angular-pdf-export": "13.0.2",
     "@progress/kendo-angular-popup": "13.0.2",
     "@progress/kendo-angular-progressbar": "13.0.2",

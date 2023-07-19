@@ -83,6 +83,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // this.getProducts();
     this.getProducts();
     this.getCategories();
   }
