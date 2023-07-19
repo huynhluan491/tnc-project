@@ -16,7 +16,7 @@ export class OrderService {
   getData(
     page: number,
     pageSize: number,
-    filterStr: string
+    filterStr: string = ''
   ): Observable<DTOResponse> {
     const params = new HttpParams()
       .set('page', page.toString())
