@@ -259,5 +259,5 @@ from LS_Status
 --delete auth
 use tncshop
 select *
-from token
-where RefreshToken ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEyLCJVc2VybmFtZSI6Iml1bHZreHhvIiwiT3JkZXJJRCI6W3siT3JkZXJJRCI6MTJ9XSwiaWF0IjoxNjg5NjAyNjExLCJleHAiOjE2ODk2MjQyMTF9.oqRV2UxDXEMBnOd6P9B1bL-H34_sY2Obij6t5Qyoq3Q'
+FROM USERs
+WHERE userid = -1

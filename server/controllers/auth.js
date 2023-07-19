@@ -80,8 +80,18 @@ exports.signup = async (req, res) => {
 
 exports.protect = async (req, res, next) => {
   try {
-    const currentUser = utils.protect(req);
-    req.user = currentUser;
+    const newToken = await utils.protect(req);
+    req.cookies.user = newToken.Token;
+    req.cookies.RefreshToken = newToken.RefreshToken;
+    req.user = newToken.User;
+
+    res.cookie("user", newToken.Token, {
+      httpOnly: true,
+    });
+    res.cookie("ruser", newToken.RefreshToken, {
+      httpOnly: true,
+    });
+    res.cookie("csrf-token", newToken.CsrfToken, {secure: true});
   } catch (e) {
     console.error(e);
     return res
@@ -97,44 +107,39 @@ exports.protect = async (req, res, next) => {
 //roles
 exports.restrictTo = (roles) => {
   return async (req, res, next) => {
-    const roleUser = req.user.AuthID;
-    switch (roleUser) {
-      case roles.admin:
-      case roles.master:
-        next();
-        break;
-      default:
-        return res
-          .status(403) // 403 - Forbidden
-          .json({
-            Code: 403,
-            Msg: "You do not have permission to perform this action",
-          });
+    if (utils.checkRole(req, roles)) {
+      next();
     }
+    return res
+      .status(403) // 403 - Forbidden
+      .json({
+        Code: 403,
+        Msg: "You do not have permission to perform this action",
+      });
   };
 };
 
 exports.getTokenDev = async (req, res) => {
   try {
-    // get JWT & response to use  //https://jwt.io/
     const master = {
-      UserID: "-1",
-      UserName: "MASTER",
-      password: 1,
-      AuthID: 1,
+      UserName: "master",
+      Password: "1",
     };
-    const token = jwt.sign(master, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRED_IN,
-    });
-    res.cookie("access_token_dev", token, {
+
+    const result = await utils.login(master);
+    delete result.User;
+    res.cookie("user", result.Token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "dev",
     });
-    //await UserDAO.updateUserById(master.UserID, {Token: token});
+    res.cookie("ruser", result.RefreshToken, {
+      httpOnly: true,
+    });
+    res.cookie("csrf-token", result.CsrfToken, {});
+
     res.status(200).json({
       Code: 200,
       Msg: "OK",
-      Data: {token},
+      Data: result,
     });
   } catch (e) {
     console.error(e);

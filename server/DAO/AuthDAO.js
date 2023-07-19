@@ -52,6 +52,25 @@ exports.getRefreshTokenByUserID = async (id) => {
   return result.recordsets[0][0];
 };
 
+exports.getRefreshTokenByRefreshToken = async (refreshToken) => {
+  const dbPool = dbConfig.db.pool;
+  if (!dbPool) {
+    throw new Error("Not connected to db");
+  }
+
+  let result = await dbConfig.db.pool
+    .request()
+    .input(
+      RefreshTokenSchema.schema.RefreshToken.name,
+      RefreshTokenSchema.schema.RefreshToken.sqlType,
+      refreshToken
+    )
+    .query(
+      `SELECT * from ${RefreshTokenSchema.schemaName} where ${RefreshTokenSchema.schema.RefreshToken.name} = @${RefreshTokenSchema.schema.RefreshToken.name}`
+    );
+  return result.recordsets[0][0];
+};
+
 exports.createRecordRefreshTokenByUserId = async (id) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {

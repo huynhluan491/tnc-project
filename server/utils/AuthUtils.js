@@ -6,12 +6,12 @@ const OrderDAO = require("../DAO/OrderDAO");
 const UserDAO = require("../DAO/UserDAO");
 const AuthDAO = require("../DAO/AuthDAO");
 const DateTimeUtils = require("./DateTimeUtils");
-const signToken = (id, username, auth, OrderID = []) => {
+const signToken = (id, username, authID, OrderID = []) => {
   return jwt.sign(
     {
       UserID: id,
       Username: username,
-      Auth: auth,
+      AuthID: authID,
       OrderID: OrderID,
     },
     process.env.JWT_SECRET,
@@ -22,7 +22,7 @@ const signToken = (id, username, auth, OrderID = []) => {
 const signRToken = (
   id,
   username,
-  auth,
+  authID,
   OrderID = [],
   expiresIn = process.env.REFRESH_JWT_EXPRIRED_IN
 ) => {
@@ -30,7 +30,7 @@ const signRToken = (
     {
       UserID: id,
       Username: username,
-      Auth: auth,
+      AuthID: authID,
       OrderID: OrderID,
     },
     process.env.REFRESH_JWT_SECRET,
@@ -42,6 +42,8 @@ const validateRefreshToken = async (userID = null, refreshToken) => {
   let oldUserRFT;
   if (userID !== null) {
     oldUserRFT = await AuthDAO.getRefreshTokenByUserID(userID);
+  } else {
+    oldUserRFT = await AuthDAO.getRefreshTokenByRefreshToken(refreshToken);
   }
   if (
     oldUserRFT &&
@@ -51,7 +53,7 @@ const validateRefreshToken = async (userID = null, refreshToken) => {
       oldUserRFT.Expires,
       true
     ) &&
-    oldUserRFT.RefreshToken === refreshToken.RefreshToken
+    oldUserRFT.RefreshToken === refreshToken
   ) {
     return true;
   }
@@ -60,7 +62,14 @@ const validateRefreshToken = async (userID = null, refreshToken) => {
 
 const createCSRFToken = () => uuidv4();
 
-const protectCSRF = async (req) => {};
+const protectCSRF = (req) => {
+  const csrfToken = req.headers["csrf-token"];
+  const csrfCookie = req.cookies["csrf-token"];
+  if (csrfToken !== csrfCookie) {
+    return false;
+  }
+  return true;
+};
 
 /**
  * handle verify token
@@ -76,10 +85,10 @@ exports.handleRefreshToken = async (refreshToken) => {
       refreshToken.RefreshToken,
       process.env.REFRESH_JWT_SECRET
     );
-
+    console.log(user);
     //const orderIDQuery = await OrderDAO.getOrderIDByUserName(user.UserName);
 
-    if (validateRefreshToken(user.UserID, refreshToken)) {
+    if (validateRefreshToken(user.UserID, refreshToken.RefreshToken)) {
       const newUserToken = signToken(
         user.UserID,
         user.UserName,
@@ -103,11 +112,12 @@ exports.handleRefreshToken = async (refreshToken) => {
       });
       user.exp && delete user.exp;
       user.iat && delete user.iat;
-
+      const csrfToken = createCSRFToken();
       return {
         User: user,
         Token: newUserToken,
         RefreshToken: newUserRFT,
+        CSRFToken: csrfToken,
       };
     } else {
       throw new Error("Invalid Token");
@@ -174,8 +184,8 @@ exports.login = async (dto) => {
     throw new Error({Code: 401, Msg: "Invalid authentication"});
   }
   //4. get JWT & response to use  //https://jwt.io/
-  let token = signToken(user.UserID, user.UserName, user.Auth, orderID);
-  let rRoken = signRToken(user.UserID, user.UserName, user.Auth, orderID);
+  let token = signToken(user.UserID, user.UserName, user.AuthID, orderID);
+  let rRoken = signRToken(user.UserID, user.UserName, user.AuthID, orderID);
   const expirationTime = this.verificationToken(
     rRoken,
     process.env.REFRESH_JWT_SECRET
@@ -203,11 +213,17 @@ exports.login = async (dto) => {
 exports.protect = async (req) => {
   let token = this.getTokenFromReq(req);
   let refreshToken = this.getRefreshTokenFromReq(req);
+  let payload;
+  let msgXSRF = "";
+  const pCSRF = protectCSRF(req);
   try {
     if (!token) {
       throw new Error("You are not logged in! Please log in to get access.");
     }
-    const payload = this.verificationToken(token, process.env.JWT_SECRET);
+    if (!pCSRF) {
+      msgXSRF = "CSRF Token";
+    }
+    payload = this.verificationToken(token, process.env.JWT_SECRET);
     const currentUser = await UserDAO.getUserById(payload.UserID);
     if (
       !currentUser ||
@@ -217,12 +233,29 @@ exports.protect = async (req) => {
     }
     return currentUser;
   } catch (e) {
-    if ((await validateRefreshToken(null, refreshToken)) && token && !payload) {
-      const newToken = this.handleRefreshToken(refreshToken);
-      req.cookies.user = newToken.Token;
-      req.cookies.RefreshToken = newToken.RefreshToken;
-      req.user = newToken.User;
+    if (
+      (await validateRefreshToken(null, refreshToken)) &&
+      token &&
+      !payload &&
+      pCSRF
+    ) {
+      const newToken = await this.handleRefreshToken({
+        RefreshToken: refreshToken,
+      });
+      return newToken;
+    } else {
+      throw new Error(`Invalid authentication ${msgXSRF}`);
     }
-    throw new Error(`Invalid authentication`);
+  }
+};
+
+exports.checkRole = (req, roles) => {
+  const roleUser = req.user.AuthID;
+  switch (roleUser) {
+    case roles.admin:
+    case roles.master:
+      return true;
+    default:
+      return false;
   }
 };
