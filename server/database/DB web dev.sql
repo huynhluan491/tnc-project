@@ -4,6 +4,8 @@
 
 create database TNCShop
 go
+--ALTER DATABASE TNCShop
+--    COLLATE Vietnamese_CI_AS ;
 use TNCShop
 go
 alter database TNCShop set TRUSTWORTHY ON
@@ -65,7 +67,7 @@ create table Auth
 (
 	AuthID int identity(1,1) primary key,
 	AuthName nvarchar(100),
-	createdAt datetime default CURRENT_TIMESTAMP not null
+	CreatedAt datetime default CURRENT_TIMESTAMP not null
 )
 go
 create table Users
@@ -118,7 +120,7 @@ create table Order_Details
 	ProductID int,
 	Amount int,
 	primary key (OrderID,ProductID),
-	createdAt datetime default CURRENT_TIMESTAMP not null
+	CreatedAt datetime default CURRENT_TIMESTAMP not null
 )
 go
 alter table Order_Details add  constraint FK_Order_Details_Orders foreign key (OrderID)  references Orders(OrderID)
@@ -134,6 +136,14 @@ create table Feature
 )
 go
 
+create table Token
+(
+	ID int identity (1,1) primary key,
+	UserID int constraint FK_Token_User references Users(UserID),
+	RefreshToken nvarchar(max),
+	Expires datetime,
+	CreatedAt datetime default CURRENT_TIMESTAMP
+)
 
 go
 CREATE TRIGGER tr_product_delete
@@ -219,7 +229,6 @@ CREATE FUNCTION [dbo].[fuConvertToUnsign1] ( @strInput NVARCHAR(4000) ) RETURNS 
 	SET @strInput = replace(@strInput,' ','-')
 	RETURN @strInput
 END
-
 go
 -- select * from product where dbo.fuConvertToUnsign1(name)  like  N'%' + dbo.fuConvertToUnsign1(N'đồ') + '%'
 go
@@ -248,3 +257,7 @@ from LS_Status
 
 --DBCC CHECKIDENT ('auth', RESEED, 1)
 --delete auth
+use tncshop
+select *
+from token
+where RefreshToken ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjEyLCJVc2VybmFtZSI6Iml1bHZreHhvIiwiT3JkZXJJRCI6W3siT3JkZXJJRCI6MTJ9XSwiaWF0IjoxNjg5NjAyNjExLCJleHAiOjE2ODk2MjQyMTF9.oqRV2UxDXEMBnOd6P9B1bL-H34_sY2Obij6t5Qyoq3Q'
