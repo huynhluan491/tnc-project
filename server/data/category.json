@@ -26,5 +26,9 @@
   {
     "CategoryID": 7,
     "CategoryName": "watch"
+  },
+  {
+    "CategoryID": 8,
+    "CategoryName": "tivi"
   }
 ]

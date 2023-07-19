@@ -1,64 +1,25 @@
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 const UserDAO = require("../DAO/UserDAO");
-const OrderDAO = require("../DAO/OrderDAO");
 const DTOUser = require("../DTO/Default/DTOUser");
-
-const signToken = (id, username, auth, OrderID = 0) => {
-  return jwt.sign(
-    {
-      UserID: id,
-      Username: username,
-      Auth: auth,
-      OrderID: OrderID,
-    },
-    process.env.JWT_SECRET,
-    {expiresIn: process.env.JWT_EXPIRED_IN}
-  );
-};
+const utils = require("../Utils/AuthUtils");
 exports.login = async (req, res) => {
   try {
     const form = req.body;
-    //1. check if form is valid
-    if (!form.Password || !form.UserName) {
-      return res
-        .status(403) // 403 - Forbidden
-        .json({Code: 403, Msg: `Invalid params`});
-    }
-    //2. check if user existed
-    const user = await UserDAO.getUserByUserName(form.UserName);
-    const orderIDQuery = await OrderDAO.getOrderIDByUserName(form.UserName);
-    let orderID;
-    if (!orderIDQuery) {
-      orderID = -1;
-    } else {
-      orderID = orderIDQuery;
-    }
-    if (!user) {
-      return res
-        .status(401) // 401 - Unauthorized
-        .json({Code: 401, Msg: `Invalid user - ${form.UserName}`});
-    }
-    //3. check if password is valid
-    const isValidPassword = await bcrypt.compare(form.Password, user.Password);
-    if (!isValidPassword) {
-      return res
-        .status(401) // 401 - Unauthorized
-        .json({Code: 401, Msg: "Invalid authentication"});
-    }
-    //4. get JWT & response to use  //https://jwt.io/
-    const token = signToken(user.UserID, user.UserName, user.Auth, orderID);
-    //res jwt cookie
-    delete user.Password;
-    delete user.AuthID;
-
-    res.cookie("user", token, {
+    const dto = new DTOUser(form);
+    const result = await utils.login(dto);
+    res.cookie("user", result.Token, {
       httpOnly: true,
     });
+    //test
+    res.cookie("ruser", result.RefreshToken, {
+      httpOnly: true,
+    });
+    res.cookie("csrf-token", result.CsrfToken, {});
+
     res.status(200).json({
       Code: 200,
       Msg: "OK",
-      Data: {Token: token, User: user},
+      Data: result,
     });
   } catch (e) {
     console.error(e);
@@ -72,11 +33,10 @@ exports.login = async (req, res) => {
 };
 
 exports.logout = async (req, res) => {
-  // res.clearCookie()
   try {
     const cookieKey = Object.keys(req.cookies)[0];
     res.clearCookie(cookieKey);
-    cookies.set(`${cookieKey}`, {expires: Date.now()});
+    //delete rtoken and token here
     res.status(200).json({
       Code: 200,
       Msg: "log out !!",
@@ -99,14 +59,6 @@ exports.signup = async (req, res) => {
       });
     }
     const dto = new DTOUser(form);
-    // await UserDAO.insertUser({
-    //   UserName: form.UserName,
-    //   Email: form.Email,
-    //   Password: form.Password,
-    // });
-
-    // const user = await UserDAO.getUserByUserName(form.UserName);
-    // await OrderDAO.createNewOrder(user.UserID);
     const user = await UserDAO.userSignUp(dto);
     delete user.Password;
     delete user.AuthID;
@@ -128,26 +80,7 @@ exports.signup = async (req, res) => {
 
 exports.protect = async (req, res, next) => {
   try {
-    // 1) Getting token from header "Authorization"
-    let token = this.getTokenFromReq(req);
-    if (!token) {
-      return res
-        .status(401) // 401 - Unauthorized
-        .json({
-          Code: 401,
-          Msg: "You are not logged in! Please log in to get access.",
-        });
-    }
-    // 2) Verification token
-    const payload = this.verificationToken(token);
-    // 3) Check if user still exists
-    const currentUser = await UserDAO.getUserById(payload.UserID);
-    console.log("payload", payload);
-    if (!currentUser) {
-      return res
-        .status(401) // 401 - Unauthorized
-        .json({Code: 401, Msg: `Invalid authentication`});
-    }
+    const currentUser = utils.protect(req);
     req.user = currentUser;
   } catch (e) {
     console.error(e);
@@ -181,40 +114,23 @@ exports.restrictTo = (roles) => {
   };
 };
 
-exports.verificationToken = (token) =>
-  jwt.verify(token, process.env.JWT_SECRET);
-
-exports.getTokenFromReq = (req) => {
-  let token;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    //Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjcsInVzZXJuYW1lIjoidGVzdCIsImlhdCI6MTY3OTUzMzEwOSwiZXhwIjoxNjc5NTU0NzA5fQ.HZ7zIGlbU2dQjgCUDbBridcO-CATrGbjthnNH0X2w-M
-    token = req.headers.authorization.split(" ")[1];
-  } else {
-    token = req.cookies.access_token_dev;
-  }
-  return token;
-};
-
 exports.getTokenDev = async (req, res) => {
   try {
     // get JWT & response to use  //https://jwt.io/
-    const token = jwt.sign(
-      {
-        UserID: "-1",
-        UserName: "MASTER",
-        password: 1,
-        AuthID: 1,
-      },
-      process.env.JWT_SECRET,
-      {expiresIn: process.env.JWT_EXPIRED_IN}
-    );
+    const master = {
+      UserID: "-1",
+      UserName: "MASTER",
+      password: 1,
+      AuthID: 1,
+    };
+    const token = jwt.sign(master, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRED_IN,
+    });
     res.cookie("access_token_dev", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "dev",
     });
+    //await UserDAO.updateUserById(master.UserID, {Token: token});
     res.status(200).json({
       Code: 200,
       Msg: "OK",
@@ -222,6 +138,25 @@ exports.getTokenDev = async (req, res) => {
     });
   } catch (e) {
     console.error(e);
+    res
+      .status(500) // 500 - Internal Error
+      .json({
+        Code: 500,
+        Msg: e.toString(),
+      });
+  }
+};
+
+exports.getRefreshToken = async (req, res) => {
+  try {
+    const rToken = req.body || req.headers || req.cookies;
+    const newRToken = await utils.handleRefreshToken(rToken);
+    res.status(200).json({
+      Code: 200,
+      Msg: "OK",
+      Data: newRToken,
+    });
+  } catch (e) {
     res
       .status(500) // 500 - Internal Error
       .json({

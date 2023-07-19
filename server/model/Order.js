@@ -32,7 +32,13 @@ const OrdersSchema = new ModelSchema(
       name: "StatusID",
       sqlType: sql.Int,
     }),
-    createdAt: new ModelSchemaValidator({
+    PayIn: new ModelSchemaValidator({
+      name: "PayIn",
+      sqlType: sql.DateTime,
+      default: new Date().toISOString(),
+      require: true,
+    }),
+    CreatedAt: new ModelSchemaValidator({
       name: "CreatedAt",
       sqlType: sql.DateTime,
       default: new Date().toISOString(),

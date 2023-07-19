@@ -1,7 +1,8 @@
 const UserDAO = require("../DAO/UserDAO");
 const DTOUser = require("../DTO/Default/DTOUser");
-const authController = require("../controllers/auth");
+const authController = require("./auth");
 const OrderDAO = require("../DAO/OrderDAO");
+const AuthUltils = require("../Utils/AuthUtils");
 exports.getUserById = async (req, res) => {
   const id = req.params.id * 1;
   try {
@@ -18,7 +19,7 @@ exports.getUserById = async (req, res) => {
     return res.status(200).json({
       Code: 200,
       Msg: null,
-      data: user,
+      Data: user,
     });
   } catch (e) {
     return res.status(500).json({
@@ -47,7 +48,7 @@ exports.getUsers = async (req, res) => {
 //     res.status(200).json({
 //       Code: 200,
 //       Msg: "OK",
-//       data: { user },
+//       Data: { user },
 //     });
 //   } catch (e) {
 //     console.error(e);
@@ -75,7 +76,7 @@ exports.getUserByUserName = async (req, res) => {
     res.status(200).json({
       Code: 200,
       Msg: null,
-      data: user,
+      Data: user,
     });
   } catch (e) {
     console.error(e);
@@ -122,7 +123,7 @@ exports.updateUserById = async (req, res) => {
     return res.status(200).json({
       Code: 200,
       Msg: null,
-      data: user,
+      Data: user,
     });
   } catch (e) {
     console.log(e);
@@ -145,8 +146,8 @@ exports.deleteUserById = async (req, res) => {
           Msg: `User with Id ${id} not found!`,
         });
     }
-    const token = authController.getTokenFromReq(req);
-    const payload = authController.verificationToken(token);
+    const token = AuthUltils.getTokenFromReq(req);
+    const payload = AuthUltils.verificationToken(token);
     if (payload.AuthID < user.AuthID) {
       await UserDAO.deleteUserById(id);
     } else {
@@ -180,8 +181,8 @@ exports.deleteMultipleUserById = async (req, res) => {
         Msg: `Invalid ids`,
       });
     }
-    const token = authController.getTokenFromReq(req);
-    const payload = authController.verificationToken(token);
+    const token = AuthUltils.getTokenFromReq(req);
+    const payload = AuthUltils.verificationToken(token);
     // console.log(payload);
     await UserDAO.deleteMultipleUserById(idList, payload);
     return res.status(200).json({
