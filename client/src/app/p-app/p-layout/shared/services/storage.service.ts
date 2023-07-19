@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { DTOUser } from "src/app/p-app/_models/DTOUser";
+import { DTOLocalUser } from "src/app/p-app/_models/DTOLocalUser";
 
 const USER_KEY = 'auth-user';
 
@@ -11,7 +11,7 @@ export class StorageService {
         window.sessionStorage.clear();
     }
 
-    public saveUser(user: DTOUser): void {
+    public saveUser(user: DTOLocalUser): void {
         window.sessionStorage.removeItem(USER_KEY);
         window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
     }

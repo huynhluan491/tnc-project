@@ -75,8 +75,17 @@ export class RegisterComponent implements OnInit {
       this.authService.login(this.loginForm.value).pipe(takeUntil(this.ngUnsubscribe)).subscribe(
         data => {
           if (data.Code === 200) {
-            this.storageService.saveUser(data);
+            const { UserName, Address, Email, Phone, Point } = data.Data;
+            const loggedInUser = {
+              UserName,
+              Email,
+              Phone,
+              Point,
+              Address
+            }
+            this.storageService.saveUser(loggedInUser);
             this.registerService.closeRegisterForm();
+            this.reloadPage();
             this.notificationService.onSuccess('Đăng nhập thành công');
           } else {
             this.notificationService.onError('Đăng nhập thất bại');

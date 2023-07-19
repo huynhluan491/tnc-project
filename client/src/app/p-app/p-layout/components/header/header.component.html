@@ -64,9 +64,8 @@
                   gap: 16px;
                   padding: 15px 0;
                 "
-                [routerLink]="
-                  item.path.length > 0 ? 'product/' + item.path : ''
-                "
+                (click)="onNavigate(item.path)"
+
               >
                 <img src="../../../../../assets/icon/{{ item.icon }}" />
                 <p
@@ -83,8 +82,8 @@
               <ng-container *ngIf="item.items.length > 0">
                 <ul class="sub-menu-list">
                   <li
-                    [routerLink]="'product/' + subMenu.path"
                     *ngFor="let subMenu of item.items"
+                    (click)="onNavigate('product/{{subMenu.path}}')"
                   >
                     {{ subMenu.text | uppercase }}
                   </li>

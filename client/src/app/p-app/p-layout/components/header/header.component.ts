@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private storageService: StorageService,
     private route: Router,
-    private notificationService: NotificationPopupService
+    private notificationService: NotificationPopupService,
     @SkipSelf() private categoryService: CategoryService,
   ) {}
   userName: string = '';
@@ -48,14 +48,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (Object.keys(this.storageService.getUser()).length > 0) {
       this.isLoggedIn = this.storageService.isLoggedIn();
-      this.userName = this.storageService.getUser().Data.UserName;
+      this.userName = this.storageService.getUser().UserName;
     }
-    this.authService.getCurrentUserValue().subscribe(res => {
-      this.userName = res.UserName;
-    });
-    this.authService._isLoggedIn.subscribe(res => {
-      this.isLoggedIn = res;
-    });
     this.getCategoryList();
   }
 
@@ -119,12 +113,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (type === 'TNCMember') {
       this.route.navigate(['/profile']);
     } else if (type === 'Đăng xuất') {
+      this.authService.logout();
       this.storageService.clean();
+      this.userName = '';
       this.notificationService.onSuccess('Đăng xuất thành công');
+      this.route.navigate(['']);
       this.isLoggedIn = false;
-      console.log('dang xuat');
-      
     }
+  }
+
+  onNavigate(path: string) {
+    this.route.navigate([`/${path}`]);
   }
 
 

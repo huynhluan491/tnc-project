@@ -40,8 +40,8 @@ import { NotificationModule } from "@progress/kendo-angular-notification";
     NotificationModule
   ],
   providers: [
-    // { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true },
-    // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     httpInterceptorProviders
 ],
   bootstrap: [AppComponent],
