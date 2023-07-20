@@ -1,16 +1,18 @@
 const dbConfig = require("../database/dbconfig");
 const dbUtils = require("../utils/dbUtils");
-const UserSchema = require("../model/User");
-const {OrdersSchema, Order_DetailsSchema} = require("../model/Order");
+const UserSchema = require("../Model/User");
+const {OrdersSchema, Order_DetailsSchema} = require("../Model/Order");
 const DTOProduct = require("../DTO/Default/DTOProduct");
 const DTOProductCustomize = require("../DTO/Customize/DTOProductCustomize");
 const DTOOrderDetails = require("../DTO/Default/DTOOrderDetails");
+const DateTimeUtils = require("../utils/DateTimeUtils");
 exports.addOrderIfNotExisted = async (order) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  order.createdAt = new Date().toISOString();
+  const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
+  order.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
 
   let insertData = OrdersSchema.validateData(order);
   let query = `SET IDENTITY_INSERT ${OrdersSchema.schemaName} ON insert into ${OrdersSchema.schemaName}`;

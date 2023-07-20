@@ -1,19 +1,21 @@
 // const products = require("../../client/src/data/products.json");
 const sql = require("mssql");
-const ProductSchema = require("../model/Product");
-const BrandSchema = require("../model/Brand");
-const RatingSchema = require("../model/Rating");
+const ProductSchema = require("../Model/Product");
+const BrandSchema = require("../Model/Brand");
+const RatingSchema = require("../Model/Rating");
 const dbConfig = require("../database/dbconfig");
 const dbUtils = require("../utils/dbUtils");
+const DateTimeUtils = require("../utils/DateTimeUtils");
 const StaticData = require("../utils/StaticData");
-const categoryController = require("../controllers/Category");
+const categoryController = require("../Controllers/Category");
 const DTOProductCustomize = require("../DTO/Customize/DTOProductCustomize");
 const DTOProduct = require("../DTO/Default/DTOProduct");
 exports.addProductIfNotExisted = async (product) => {
   if (!dbConfig.db.pool) {
     throw new Error("Not connected to db");
   }
-  product.createdAt = new Date().toISOString();
+  const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
+  product.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
 
   let insertData = ProductSchema.validateData(product);
 
@@ -166,7 +168,8 @@ exports.createNewProduct = async (product) => {
   if (!product) {
     throw new Error("Invalid input param");
   }
-  product.createdAt = new Date().toISOString();
+  const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
+  product.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
   let insertData = ProductSchema.validateData(product);
   let query = `insert into ${ProductSchema.schemaName}`;
   const {request, insertFieldNamesStr, insertValuesStr} =

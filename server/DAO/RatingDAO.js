@@ -1,7 +1,7 @@
 const RatingSchema = require("../model/Rating");
 const dbConfig = require("../database/dbconfig");
 const dbUtils = require("../utils/dbUtils");
-
+const DateTimeUtils = require("../utils/DateTimeUtils");
 exports.getRatingById = async (id) => {
   if (!dbConfig.db.pool) {
     throw new Error("Not connected to db");
@@ -24,7 +24,8 @@ exports.addRatingIfNotExisted = async (rating) => {
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  rating.createdAt = new Date().toISOString();
+  const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
+  rating.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
 
   let query = `SET IDENTITY_INSERT ${RatingSchema.schemaName} ON insert into ${RatingSchema.schemaName}`;
 

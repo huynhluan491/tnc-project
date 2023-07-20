@@ -1,15 +1,18 @@
-const UserSchema = require("../model/User");
+const UserSchema = require("../Model/User");
 const dbConfig = require("../database/dbconfig");
 const dbUtils = require("../utils/dbUtils");
 const bcrypt = require("bcryptjs");
 const StaticData = require("../utils/StaticData");
 const DTOUser = require("../DTO/Default/DTOUser");
 const OrderDAO = require("../DAO/OrderDAO");
+const DateTimeUtils = require("../utils/DateTimeUtils");
+
 exports.addUserIfNotExisted = async (user) => {
   if (!dbConfig.db.pool) {
     throw new Error("Not connected to db");
   }
-  user.createdAt = new Date().toISOString();
+  const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
+  user.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
 
   let insertData = UserSchema.validateData(user);
   insertData.Password = await bcrypt.hash(insertData.Password, 10);
@@ -40,7 +43,8 @@ exports.insertUser = async (user) => {
     throw new Error("Not connected to db");
   }
   // console.log("user auth", user.auth);
-  user.CreatedAt = new Date().toISOString();
+  const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
+  user.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
   let insertData = UserSchema.validateData(user);
   insertData.password = await bcrypt.hash(insertData.Password, 10);
 
@@ -183,8 +187,10 @@ exports.updateUserById = async (id, updateInfo) => {
   if (!updateInfo) {
     throw new Error("Invalid input param");
   }
-  updateInfo = UserSchema.validateData(updateInfo);
-  updateInfo.password = await bcrypt.hash(updateInfo.password, 10);
+  //updateInfo = UserSchema.validateData(updateInfo);
+  if (updateInfo.Password) {
+    updateInfo.password = await bcrypt.hash(updateInfo.password, 10);
+  }
   // console.log(updateInfo);
   let query = `update ${UserSchema.schemaName} set`;
   const {request, updateStr} = dbUtils.getUpdateQuery(

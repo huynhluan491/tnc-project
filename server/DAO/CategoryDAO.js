@@ -1,13 +1,16 @@
 const dbConfig = require("../database/dbconfig");
-const CategorySchema = require("../model/Category");
+const CategorySchema = require("../Model/Category");
 const DTOCategory = require("../DTO/Default/DTOCategory");
 const dbUtils = require("../utils/dbUtils");
+const DateTimeUtils = require("../utils/DateTimeUtils");
+
 exports.addCateIfNotExists = async (cate) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  cate.createdAt = new Date().toISOString();
+  const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
+  cate.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
 
   let insertData = CategorySchema.validateData(cate);
   let query = `SET IDENTITY_INSERT ${CategorySchema.schemaName} ON insert into ${CategorySchema.schemaName}`;

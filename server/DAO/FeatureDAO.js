@@ -2,12 +2,14 @@ const FeatureSchema = require("../model/Feature");
 const dbConfig = require("../database/dbconfig");
 const dbUtils = require("../utils/dbUtils");
 const DTOFeature = require("../DTO/Default/DTOFeature");
+const DateTimeUtils = require("../utils/DateTimeUtils");
 exports.addFeatureIfNotExisted = async (feature) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  feature.createdAt = new Date().toISOString();
+  const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
+  feature.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
 
   let insertData = FeatureSchema.validateData(feature);
   let query = `SET IDENTITY_INSERT ${FeatureSchema.schemaName} ON insert into ${FeatureSchema.schemaName}`;
@@ -82,7 +84,8 @@ exports.createNewFeature = async (feature) => {
   if (!feature) {
     throw new Error("Invalid input param");
   }
-  feature.createdAt = new Date().toISOString();
+  const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
+  feature.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
   let insertData = FeatureSchema.validateData(feature);
   let query = `insert into ${FeatureSchema.schemaName}`;
   const {request, insertFieldNamesStr, insertValuesStr} =

@@ -6,7 +6,7 @@ exports.getAllBrands = async (req, res) => {
     res.status(200).json({
       Code: 200,
       Msg: null,
-      data: brands,
+      Data: brands,
     });
   } catch (error) {
     res.status(404).json({
@@ -32,7 +32,7 @@ exports.getBrandById = async (req, res) => {
     return res.status(200).json({
       Code: 200,
       Msg: null,
-      data: brand,
+      Data: brand,
     });
   } catch (e) {
     return res.status(500).json({

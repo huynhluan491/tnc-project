@@ -1,13 +1,15 @@
 const dbConfig = require("../database/dbconfig");
 const StatusSchema = require("../model/Status");
 const dbUtils = require("../utils/dbUtils");
+const DateTimeUtils = require("../utils/DateTimeUtils");
 
 exports.addStatusIfNotExists = async (status) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  status.createdAt = new Date().toISOString();
+  const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
+  status.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
 
   let insertData = StatusSchema.validateData(status);
   let query = `SET IDENTITY_INSERT ${StatusSchema.schemaName} ON insert into ${StatusSchema.schemaName}`;

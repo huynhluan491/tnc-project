@@ -1,13 +1,14 @@
 const PaymentSchema = require("../model/Payment");
 const dbConfig = require("../database/dbconfig");
 const dbUtils = require("../utils/dbUtils");
-
+const DateTimeUtils = require("../utils/DateTimeUtils");
 exports.addPaymentIfNotExists = async (payment) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  payment.createdAt = new Date().toISOString();
+  const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
+  payment.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
 
   let insertData = PaymentSchema.validateData(payment);
   let query = `SET IDENTITY_INSERT ${PaymentSchema.schemaName} ON insert into ${PaymentSchema.schemaName}`;

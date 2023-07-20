@@ -2,12 +2,14 @@ const dbConfig = require("../database/dbconfig");
 const BrandSchema = require("../model/Brand");
 const dbUtils = require("../utils/dbUtils");
 const DTOBrand = require("../DTO/Default/DTOBrand");
+const DateTimeUtils = require("../utils/DateTimeUtils");
 exports.addBrandIfNotExists = async (brand) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  brand.createdAt = new Date().toISOString();
+  const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
+  brand.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
 
   let insertData = BrandSchema.validateData(brand);
   let query = `SET IDENTITY_INSERT ${BrandSchema.schemaName} ON insert into ${BrandSchema.schemaName}`;
