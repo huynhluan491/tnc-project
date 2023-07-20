@@ -259,5 +259,4 @@ from LS_Status
 --delete auth
 use tncshop
 select *
-FROM USERs
-WHERE userid = -1
+FROM Token
