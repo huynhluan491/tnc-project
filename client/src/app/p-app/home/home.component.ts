@@ -81,9 +81,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   sliderProducts: any[] = [];
 
-  //Subscriptions
-  getSlidersProduct_sst: Subscription;
-
   constructor(
     private layoutAPIService: LayoutAPIService,
     @SkipSelf() private productService: ProductService,
@@ -97,14 +94,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getProducts() {
-    this.productService.getData(1, 15).subscribe((res: DTOResponse) => {
-      for (let product of res.Data) {
-        this.getProductImage(product.Image).subscribe((imageSrc) => {
-          product.ImageSrc = imageSrc;
-        });
-      }
-      this.sliderProducts = res.Data;
-    });
+    this.productService
+      .getData(1, 15)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res: DTOResponse) => {
+        for (let product of res.Data) {
+          this.getProductImage(product.Image)
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((imageSrc) => {
+              product.ImageSrc = imageSrc;
+            });
+        }
+        this.sliderProducts = res.Data;
+      });
   }
 
   getProductImage(imageName: string) {
@@ -119,7 +121,5 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.getSlidersProduct_sst?.unsubscribe();
-  }
+  ngOnDestroy(): void {}
 }
