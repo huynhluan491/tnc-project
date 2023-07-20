@@ -49,10 +49,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getOrders();
-    if (Object.keys(this.storageService.getUser()).length > 0) {
-      this.isLoggedIn = this.storageService.isLoggedIn();
-      this.userName = this.storageService.getUser().UserName;
-    }
+    this.authService._isLoggedIn.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+      res => {
+        this.isLoggedIn = res;
+        if (this.isLoggedIn) {
+          this.userName = this.storageService.getUser().UserName;
+          console.log(this.storageService.getUser().UserName);
+          
+        }
+      }
+    )
+    // if (Object.keys(this.storageService.getUser()).length > 0) {
+    //   this.isLoggedIn = this.storageService.isLoggedIn();
+    //   this.userName = this.storageService.getUser().UserName;
+    // }
     this.getCategoryList();
   }
 
@@ -124,12 +134,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (type === 'TNCMember') {
       this.route.navigate(['/profile']);
     } else if (type === 'Đăng xuất') {
-      this.authService.logout();
-      this.storageService.clean();
-      this.userName = '';
-      this.notificationService.onSuccess('Đăng xuất thành công');
-      this.route.navigate(['']);
-      this.isLoggedIn = false;
+      this.authService.logout().subscribe(() => {
+        this.authService.setLoginState(false);
+        this.storageService.clean();
+        this.userName = '';
+        this.notificationService.onSuccess('Đăng xuất thành công');
+        this.route.navigate(['']);
+      });
+    }
+  }
+
+  onCheckoutOrder() {
+    if (this.isLoggedIn) {
+      this.route.navigate(['profile']);
+    } else {
+      this.route.navigate(['orderCheckout']);
     }
   }
 

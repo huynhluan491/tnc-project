@@ -68,6 +68,7 @@ import { IconsModule } from '@progress/kendo-angular-icons';
     dropdownFilterComponent,
     PercentagePipe,
     CartComponent,
+    RegisterComponent
   ],
 })
 export class PLayoutModule {}

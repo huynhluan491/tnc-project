@@ -11,10 +11,10 @@ import { ChangePasswordComponent } from '../tnc-profile/change-password/change-p
 import { CartCheckout2Component } from '../cart-checkout2/cart-checkout2.component';
 
 export const LayoutRoutes: Routes = [
-  {
-    path: 'orderCheckout',
-    component: OrderCheckoutComponent
-  },
+  // {
+  //   path: 'orderCheckout',
+  //   component: OrderCheckoutComponent
+  // },
   {
     path: 'profile',
     component: TncProfileComponent,

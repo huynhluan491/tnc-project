@@ -15,6 +15,10 @@ export class RegisterService {
     this.registerShownSubject.next(!currentValue);
   }
 
+  openRegisterForm(): void {
+    this.registerShownSubject.next(true);
+  }
+
   closeRegisterForm(): void {
     this.registerShownSubject.next(false)
   }

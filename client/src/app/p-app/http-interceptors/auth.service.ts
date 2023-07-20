@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { LoginPayload } from "./loginPayload";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { BehaviorSubject, Observable, map } from "rxjs";
+import { BehaviorSubject, Observable, map, tap } from "rxjs";
 import { DTOUser } from "../_models/DTOUser";
 import { environment } from "src/app/environments/environments";
+import { StorageService } from "../p-layout/shared/services/storage.service";
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json'})
@@ -17,7 +18,7 @@ export class AuthService {
     private currentUser: Observable<DTOUser>;
     private isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-    constructor( private http: HttpClient ) {
+    constructor( private http: HttpClient, private storageService: StorageService) {
         this.currentUserSubject = new BehaviorSubject<DTOUser>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();  
     }
@@ -34,20 +35,30 @@ export class AuthService {
         return this.isLoggedIn.asObservable();
     }
 
+    setLoginState(state: boolean): void {
+        this.isLoggedIn.next(state);
+    }
+
     login(user: LoginPayload) {
         return this.http.post<any>(`${environment.apiUrl}/user/login`, user, httpOptions)
             .pipe(map(user => {
-                console.log(user);
-                const token = user.Data.Token;
+                const { UserName, Address, Email, Phone, Point } = user.Data;
+                const loggedInUser = {
+                  UserName,
+                  Email,
+                  Phone,
+                  Point,
+                  Address
+                }
+                this.storageService.saveUser(loggedInUser);
                 this.currentUserSubject.next(user.Data);
-                this.isLoggedIn.next(true);
+                this.setLoginState(true);
                 return user;
             }));
     }
 
     logout() {
         // remove user from local storage to log user out
-        this.isLoggedIn.next(false);
         return this.http.get(`${environment.apiUrl}/user/logout`, httpOptions)
     }
 }
