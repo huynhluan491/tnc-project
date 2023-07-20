@@ -11,6 +11,7 @@ export class DTOProduct {
   Description: string;
   StatusID: number;
   createdAt: string;
+  ImageSrc?: string;
 
   constructor(
     productID: number,

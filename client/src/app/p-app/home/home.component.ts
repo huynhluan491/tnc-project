@@ -1,8 +1,9 @@
 import { ProductService } from './../p-layout/shared/services/product.service';
 import { Component, OnDestroy, OnInit, SkipSelf } from '@angular/core';
 import { LayoutAPIService } from '../p-layout/shared/services/layout-api.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { CategoryService } from '../p-layout/shared/services/category.service';
+import { DTOResponse } from '../p-layout/shared/dto/DTOResponse';
 
 @Component({
   selector: 'app-p-home',
@@ -10,6 +11,8 @@ import { CategoryService } from '../p-layout/shared/services/category.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  ngUnsubscribe = new Subject<void>();
+
   mainBanner: string[] = [
     'https://www.tncstore.vn/image/catalog/banner/2022/Slide/loi-ich-1640x66-banner160520220.png',
     'https://www.tncstore.vn/image/catalog/Landing%20Page/Pc%20Gaming%2005.2023/banner-build-pc.jpg',
@@ -59,6 +62,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_manhinhgame_v2.png',
       color: '#FDF292',
     },
+    {
+      subTitle: 'CHIẾN MỌI GAME',
+      img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_manhinhgame_v2.png',
+      color: '#343D57',
+    },
   ];
 
   brandSlider = [
@@ -89,9 +97,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getProducts() {
-    this.productService.getData(1, 15).subscribe((res) => {
+    this.productService.getData(1, 15).subscribe((res: DTOResponse) => {
+      for (let product of res.Data) {
+        this.getProductImage(product.Image).subscribe((imageSrc) => {
+          product.ImageSrc = imageSrc;
+        });
+      }
       this.sliderProducts = res.Data;
     });
+  }
+
+  getProductImage(imageName: string) {
+    return this.productService.getProductImage(imageName);
   }
 
   getCategories() {
