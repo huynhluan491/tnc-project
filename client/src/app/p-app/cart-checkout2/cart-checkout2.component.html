@@ -24,7 +24,11 @@
         </div>
         <ng-template #product>
           <div class="cart-item-sub-wrapper2">
-            <form class="cart-item-info">
+            <form
+              class="cart-item-info"
+              [formGroup]="deliverForm"
+              (ngSubmit)="onSubmit()"
+            >
               <div class="cart-item-title">THÔNG TIN GIAO HÀNG</div>
               <div class="cart-item-input">
                 <input class="cart-item-checkbox" type="checkbox" />
@@ -38,6 +42,7 @@
                 </label>
                 <input
                   required
+                  formControlName="name"
                   class="cart-item-text"
                   type="text"
                   id="name"
@@ -50,6 +55,7 @@
                   >Địa chỉ email<span class="asterik">*</span></label
                 >
                 <input
+                  formControlName="email"
                   required
                   class="cart-item-text"
                   type="text"
@@ -63,6 +69,7 @@
                   >Số điện thoại<span class="asterik">*</span></label
                 >
                 <input
+                  formControlName="number"
                   required
                   class="cart-item-text"
                   type="text"
@@ -76,6 +83,7 @@
                   >Địa chỉ<span class="asterik">*</span></label
                 >
                 <input
+                  formControlName="address"
                   required
                   class="cart-item-text"
                   type="text"
@@ -88,10 +96,11 @@
               <div class="cart-item-title">HÌNH THỨC THANH TOÁN</div>
               <div class="cart-item-input">
                 <input
+                  formControlName="payment_method"
                   class="cart-item-radio"
                   type="radio"
                   id="cod"
-                  name="payment-method"
+                  name="payment_method"
                 />
                 <label class="cart-item-label" for="cod"
                   >Thanh toán tại nơi giao hàng</label
@@ -99,10 +108,11 @@
               </div>
               <div class="cart-item-input">
                 <input
+                  formControlName="payment_method"
                   class="cart-item-radio"
                   type="radio"
                   id="momo"
-                  name="payment-method"
+                  name="payment_method"
                 />
                 <label class="cart-item-label" for="momo"
                   >Thanh toán với ví momo</label

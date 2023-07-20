@@ -50,7 +50,6 @@ const UserSchema = new ModelSchema(
       name: "Phone",
       sqlType: sql.NVarChar,
     }),
-
     CreatedAt: new ModelSchemaValidator({
       name: "CreatedAt",
       sqlType: sql.DateTime,

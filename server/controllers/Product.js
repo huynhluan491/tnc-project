@@ -193,7 +193,6 @@ exports.updateProductById = async (req, res) => {
   }
 };
 
-const Blob = require("buffer");
 exports.getFileProductImage = (req, res) => {
   let imageName = req.params.imageName;
   const dirPath = path.join(
@@ -203,42 +202,20 @@ exports.getFileProductImage = (req, res) => {
     "productImages"
     // imageName + ".jpg"
   );
-  // fs.readdir(dirPath, (err, files) => {
-  //   if (err) {
-  //     console.error(err);
-  //     return;
-  //   }
-  //   const matchingFile = files.find((file) => file.startsWith(imageName));
-  //   if (matchingFile) {
-  //     const imagePath = path.join(dirPath, matchingFile);
-  //     // console.log(`Found file: ${imagePath}`);
-  //     const imageStream = fs.createReadStream(imagePath);
-  //     imageStream.pipe(res);
-  //   }
-
-  // });
-  const imagePath =
-    "C:\\Users\\ADMIN\\Desktop\\PJTNC\\server\\dev-Data\\productImages\\image1.jpg";
-  fs.readFile(imagePath, (err, data) => {
-    const base64Data = Buffer.from(data).toString("base64");
-    const dataUrl = `data:image/jpeg;base64,${base64Data}`;
-    const blob = base64ToBlob(dataUrl);
-    const url = URL.createObjectURL(blob);
-    res.status(200).json({imageUrl: url});
+  fs.readdir(dirPath, (err, files) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    const matchingFile = files.find((file) => file.startsWith(imageName));
+    if (matchingFile) {
+      const imagePath = path.join(dirPath, matchingFile);
+      // console.log(`Found file: ${imagePath}`);
+      const imageStream = fs.createReadStream(imagePath);
+      imageStream.pipe(res);
+    }
   });
-  // const binaryString = atob(result);
-  // const blob = new Blob([binaryString], {type: "image/png"});
-  // const blobUrl = URL.createObjectURL(blob);
 };
-function base64ToBlob(base64Data) {
-  const byteCharacters = atob(base64Data);
-  const byteNumbers = new Array(byteCharacters.length);
-  for (let i = 0; i < byteCharacters.length; i++) {
-    byteNumbers[i] = byteCharacters.charCodeAt(i);
-  }
-  const byteArray = new Uint8Array(byteNumbers);
-  return new Blob([byteArray]);
-}
 
 exports.saveFileProductImage = async (req, res) => {
   let infor = req.body;

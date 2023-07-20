@@ -136,25 +136,33 @@ exports.updateSubImgById = async (req, res) => {
 };
 
 exports.getFileSubImage = async (req, res) => {
+  const baseUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/api/images/subImgimages/`;
   let id = req.params.id;
-  const result = await SubImageDAO.getSubImgById(id);
-  const imageName = result.image;
+  const result = await SubImageDAO.getProductSubImgById(id);
   const dirPath = path.join(__dirname, "..", "dev-data", "subImgimages");
-  fs.readdir(dirPath, (err, files) => {
-    if (err) {
-      console.error(err);
-      return res.status(404).json({
-        Code: 404,
-        Msg: `FAIL`,
-      });
-    }
+  let arr = [];
+  for (let element of result) {
+    const imageName = element.Image;
+    const files = await fs.promises.readdir(dirPath);
+    // if (err) {
+    //   console.error(err);
+    //   return res.status(404).json({
+    //     Code: 404,
+    //     Msg: `FAIL`,
+    //   });
+    // }
     const matchingFile = files.find((file) => file.startsWith(imageName));
     if (matchingFile) {
       const imagePath = path.join(dirPath, matchingFile);
       // console.log(`Found file: ${imagePath}`);
-      const imageStream = fs.createReadStream(imagePath);
-      imageStream.pipe(res);
+      const imageData = await fs.promises.readFile(imagePath, "base64");
+      arr.push({url: `${baseUrl}/${imageName}`, base64: imageData});
     }
+  }
+  res.status(200).json({
+    data: arr,
   });
 };
 exports.saveFileSubImage = async (req, res) => {

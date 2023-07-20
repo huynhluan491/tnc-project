@@ -1,8 +1,9 @@
 import { ProductService } from './../p-layout/shared/services/product.service';
 import { Component, OnDestroy, OnInit, SkipSelf } from '@angular/core';
 import { LayoutAPIService } from '../p-layout/shared/services/layout-api.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { CategoryService } from '../p-layout/shared/services/category.service';
+import { DTOResponse } from '../p-layout/shared/dto/DTOResponse';
 
 @Component({
   selector: 'app-p-home',
@@ -10,6 +11,8 @@ import { CategoryService } from '../p-layout/shared/services/category.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  ngUnsubscribe = new Subject<void>();
+
   mainBanner: string[] = [
     'https://www.tncstore.vn/image/catalog/banner/2022/Slide/loi-ich-1640x66-banner160520220.png',
     'https://www.tncstore.vn/image/catalog/Landing%20Page/Pc%20Gaming%2005.2023/banner-build-pc.jpg',
@@ -26,38 +29,43 @@ export class HomeComponent implements OnInit, OnDestroy {
   productCategories = [
     {
       subTitle: 'CHIẾN MỌI GAME',
-      img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_maytinh_v2.png',
+      img: 'assets/images/headphone.png',
       color: '#1A5DC4',
     },
     {
       subTitle: 'CHIẾN MỌI GAME',
-      img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_banphimco_v2.png',
+      img: 'assets/images/keyboard.png',
       color: '#343332',
     },
     {
       subTitle: 'CHIẾN MỌI GAME',
-      img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_manhinhgame_v2.png',
+      img: 'assets/images/laptop.png',
       color: '#01F9C9',
     },
     {
       subTitle: 'CHIẾN MỌI GAME',
-      img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_dohoa_v3.png',
+      img: 'assets/images/modem.png',
       color: '#FFCC3A',
     },
     {
       subTitle: 'CHIẾN MỌI GAME',
-      img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_maytinh_v2.png',
+      img: 'assets/images/phone.png',
       color: '#D12137',
     },
     {
       subTitle: 'CHIẾN MỌI GAME',
-      img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_banphimco_v2.png',
+      img: 'assets/images/ipad.png',
       color: '#FF9005',
     },
     {
       subTitle: 'CHIẾN MỌI GAME',
-      img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_manhinhgame_v2.png',
+      img: 'assets/images/watch.png',
       color: '#FDF292',
+    },
+    {
+      subTitle: 'CHIẾN MỌI GAME',
+      img: 'assets/images/tv.png',
+      color: '#343D57',
     },
   ];
 
@@ -73,9 +81,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   sliderProducts: any[] = [];
 
-  //Subscriptions
-  getSlidersProduct_sst: Subscription;
-
   constructor(
     private layoutAPIService: LayoutAPIService,
     @SkipSelf() private productService: ProductService,
@@ -89,9 +94,23 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getProducts() {
-    this.productService.getData(1, 15).subscribe((res) => {
-      this.sliderProducts = res.Data;
-    });
+    this.productService
+      .getData(1, 15)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res: DTOResponse) => {
+        for (let product of res.Data) {
+          this.getProductImage(product.Image)
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((imageSrc) => {
+              product.ImageSrc = imageSrc;
+            });
+        }
+        this.sliderProducts = res.Data;
+      });
+  }
+
+  getProductImage(imageName: string) {
+    return this.productService.getProductImage(imageName);
   }
 
   getCategories() {
@@ -102,7 +121,5 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.getSlidersProduct_sst?.unsubscribe();
-  }
+  ngOnDestroy(): void {}
 }

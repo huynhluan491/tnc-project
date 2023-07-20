@@ -20,7 +20,8 @@ import { TncProfileModule } from './p-app/tnc-profile/tnc-profile.module';
 import { JWTInterceptor } from './p-app/_helpers/jwt.interceptor';
 import { ErrorInterceptor } from './p-app/_helpers/error.interceptor';
 import { httpInterceptorProviders } from './p-app/_helpers/http.interceptor';
-import { NotificationModule } from "@progress/kendo-angular-notification";
+import { NotificationModule } from '@progress/kendo-angular-notification';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [AppComponent, CartCheckoutComponent, CartCheckout2Component],
   imports: [
@@ -37,13 +38,15 @@ import { NotificationModule } from "@progress/kendo-angular-notification";
     LayoutModule,
     DropDownsModule,
     OrderCheckoutModule,
-    NotificationModule
+    NotificationModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    httpInterceptorProviders
-],
+    httpInterceptorProviders,
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

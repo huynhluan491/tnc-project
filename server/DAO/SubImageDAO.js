@@ -1,18 +1,20 @@
 const SubImageSchema = require("../model/SubImage");
 const dbUtils = require("../utils/dbUtils");
 const dbConfig = require("../database/dbconfig");
+const DateTimeUtils = require("../utils/DateTimeUtils");
 
 exports.addSubImageIfNotExisted = async (img) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  img.createdAt = new Date().toISOString();
+  const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
+  img.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
 
   let insertData = SubImageSchema.validateData(img);
 
   let query = `SET IDENTITY_INSERT ${SubImageSchema.schemaName} ON insert into ${SubImageSchema.schemaName}`;
-  const { request, insertFieldNamesStr, insertValuesStr } =
+  const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(SubImageSchema.schema, dbPool.request(), insertData);
   if (!insertFieldNamesStr || !insertValuesStr) {
     throw new Error("Invalid insert param");
@@ -38,12 +40,13 @@ exports.addImage = async (img) => {
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  img.createdAt = new Date().toISOString();
+  const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
+  img.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
 
   let insertData = SubImageSchema.validateData(img);
 
   let query = `insert into ${SubImageSchema.schemaName}`;
-  const { request, insertFieldNamesStr, insertValuesStr } =
+  const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(SubImageSchema.schema, dbPool.request(), insertData);
   if (!insertFieldNamesStr || !insertValuesStr) {
     throw new Error("Invalid insert param");
@@ -75,12 +78,12 @@ exports.getSubImgById = async (id) => {
   let request = dbConfig.db.pool.request();
   let result = await request
     .input(
-      `${SubImageSchema.schema.subimgID.name}`,
-      SubImageSchema.schema.subimgID.sqlType,
+      `${SubImageSchema.schema.SubimgID.name}`,
+      SubImageSchema.schema.SubimgID.sqlType,
       id
     )
     .query(
-      `select * from ${SubImageSchema.schemaName} where ${SubImageSchema.schema.subimgID.name} = @${SubImageSchema.schema.subimgID.name}`
+      `select * from ${SubImageSchema.schemaName} where ${SubImageSchema.schema.SubimgID.name} = @${SubImageSchema.schema.SubimgID.name}`
     );
   return result.recordsets[0][0];
 };
@@ -92,10 +95,11 @@ exports.createNewSubImg = async (subImg) => {
   if (!subImg) {
     throw new Error("Invalid input param");
   }
-  subImg.createdAt = new Date().toISOString();
+  const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
+  subImg.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
   let insertData = SubImageSchema.validateData(subImg);
   let query = `insert into ${SubImageSchema.schemaName}`;
-  const { request, insertFieldNamesStr, insertValuesStr } =
+  const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(
       SubImageSchema.schema,
       dbConfig.db.pool.request(),
@@ -133,7 +137,7 @@ exports.updateSubImgById = async (id, updateInfo) => {
   }
 
   let query = `update ${SubImageSchema.schemaName} set`;
-  const { request, updateStr } = dbUtils.getUpdateQuery(
+  const {request, updateStr} = dbUtils.getUpdateQuery(
     SubImageSchema.schema,
     dbConfig.db.pool.request(),
     updateInfo
@@ -172,12 +176,12 @@ exports.getProductSubImgById = async (id) => {
   let request = dbConfig.db.pool.request();
   let result = await request
     .input(
-      `${SubImageSchema.schema.productID.name}`,
-      SubImageSchema.schema.productID.sqlType,
+      `${SubImageSchema.schema.ProductID.name}`,
+      SubImageSchema.schema.ProductID.sqlType,
       id
     )
     .query(
-      `select * from ${SubImageSchema.schemaName} where ${SubImageSchema.schema.productID.name} = @${SubImageSchema.schema.productID.name}`
+      `select * from ${SubImageSchema.schemaName} where ${SubImageSchema.schema.ProductID.name} = @${SubImageSchema.schema.ProductID.name}`
     );
   return result.recordsets[0];
 };

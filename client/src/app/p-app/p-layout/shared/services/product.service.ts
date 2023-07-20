@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { DTOProduct } from '../dto/DTOProduct';
 import { DTOResponse } from '../dto/DTOResponse';
 
@@ -49,6 +49,18 @@ export class ProductService {
   deleteDataById(id: number): Observable<DTOResponse> {
     return this.http
       .delete<DTOResponse>(`/api/v1/product/${id}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getProductImage(imageName: string): Observable<any> {
+    return this.http
+      .get(`/api/v1/product/image/${imageName}`, { responseType: 'blob' })
+      .pipe(
+        map((baseImage: Blob) => {
+          let objectURL = URL.createObjectURL(baseImage);
+          return objectURL;
+        })
+      )
       .pipe(catchError(this.handleError));
   }
 

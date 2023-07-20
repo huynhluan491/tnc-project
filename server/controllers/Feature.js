@@ -16,7 +16,7 @@ exports.getFeatureById = async (req, res) => {
     return res.status(200).json({
       Code: 200,
       Msg: `Got features with id ${id} successfully!`,
-      data: features,
+      Data: features,
     });
   } catch (e) {
     console.log(e);
@@ -51,7 +51,7 @@ exports.getFeatures = async (req, res) => {
       Msg: id
         ? `Got features with productId ${id} successfully!`
         : `Got features successfully!`,
-      data: features,
+      Data: features,
     });
   } catch (e) {
     console.log(e);
@@ -121,7 +121,7 @@ exports.updateFeatureById = async (req, res) => {
     return res.status(200).json({
       Code: 200,
       Msg: `Updated feature with id: ${id} successfully!`,
-      data: feature,
+      Data: feature,
     });
   } catch (e) {
     console.log(e);

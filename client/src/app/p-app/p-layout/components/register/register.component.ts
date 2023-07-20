@@ -20,37 +20,41 @@ export class RegisterComponent implements OnInit {
   ngUnsubscribe = new Subject<void>();
   loginForm: FormGroup = new FormGroup({
     UserName: new FormControl(null, Validators.required),
-    Password: new FormControl(null, Validators.required)
-  })
-
-  registerForm: FormGroup = new FormGroup({
-    UserName: new FormControl(null, Validators.required),
     Password: new FormControl(null, Validators.required),
-    ConfirmPassword: new FormControl(null, Validators.required),
-    Email: new FormControl(null, Validators.required)
-  }, {validators: confirmPassword});
+  });
+
+  registerForm: FormGroup = new FormGroup(
+    {
+      UserName: new FormControl(null, Validators.required),
+      Password: new FormControl(null, Validators.required),
+      ConfirmPassword: new FormControl(null, Validators.required),
+      Email: new FormControl(null, Validators.required),
+    },
+    { validators: confirmPassword }
+  );
 
   constructor(
-    @SkipSelf() private registerService: RegisterService, 
+    @SkipSelf() private registerService: RegisterService,
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private storageService: StorageService,
     private notificationService: NotificationPopupService
-    ) {
-      // redirect to home if already logged in
-      if (this.authService.currentUserValue) { 
-        this.router.navigate(['/']);
-      }
+  ) {
+    // redirect to home if already logged in
+    if (this.authService.currentUserValue) {
+      this.router.navigate(['/']);
+    }
   }
 
   ngOnInit(): void {
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-    
   }
 
-  get f() { return this.loginForm.controls}
+  get f() {
+    return this.loginForm.controls;
+  }
 
   toggleShowRegister(): void {
     this.registerService.toggleRegisterShown();
@@ -60,13 +64,10 @@ export class RegisterComponent implements OnInit {
     this.isRegister = !this.isRegister;
   }
 
-
-
   onSubmit(e: any): void {
     e.preventDefault();
     this.submitted = true;
     console.log(this.loginForm.value);
-    
 
     if (this.isRegister && !this.registerForm.invalid) {
 
@@ -81,11 +82,7 @@ export class RegisterComponent implements OnInit {
           } else {
             this.notificationService.onError('Đăng nhập thất bại');
           }
-        },
-        error => {
-          this.notificationService.onError('Đăng nhập thất bại');
-        }
-      )
+    });
     }
   }
 
