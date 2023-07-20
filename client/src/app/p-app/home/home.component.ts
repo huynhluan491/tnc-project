@@ -29,42 +29,42 @@ export class HomeComponent implements OnInit, OnDestroy {
   productCategories = [
     {
       subTitle: 'CHIẾN MỌI GAME',
-      img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_maytinh_v2.png',
+      img: 'assets/images/headphone.png',
       color: '#1A5DC4',
     },
     {
       subTitle: 'CHIẾN MỌI GAME',
-      img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_banphimco_v2.png',
+      img: 'assets/images/keyboard.png',
       color: '#343332',
     },
     {
       subTitle: 'CHIẾN MỌI GAME',
-      img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_manhinhgame_v2.png',
+      img: 'assets/images/laptop.png',
       color: '#01F9C9',
     },
     {
       subTitle: 'CHIẾN MỌI GAME',
-      img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_dohoa_v3.png',
+      img: 'assets/images/modem.png',
       color: '#FFCC3A',
     },
     {
       subTitle: 'CHIẾN MỌI GAME',
-      img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_maytinh_v2.png',
+      img: 'assets/images/phone.png',
       color: '#D12137',
     },
     {
       subTitle: 'CHIẾN MỌI GAME',
-      img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_banphimco_v2.png',
+      img: 'assets/images/ipad.png',
       color: '#FF9005',
     },
     {
       subTitle: 'CHIẾN MỌI GAME',
-      img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_manhinhgame_v2.png',
+      img: 'assets/images/watch.png',
       color: '#FDF292',
     },
     {
       subTitle: 'CHIẾN MỌI GAME',
-      img: 'https://www.tncstore.vn/catalog/view/theme/default/image/cat_manhinhgame_v2.png',
+      img: 'assets/images/tv.png',
       color: '#343D57',
     },
   ];
