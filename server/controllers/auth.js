@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const UserDAO = require("../DAO/UserDAO");
+const AuthDAO = require("../DAO/AuthDAO");
 const DTOUser = require("../DTO/Default/DTOUser");
 const utils = require("../Utils/AuthUtils");
 exports.login = async (req, res) => {
@@ -34,13 +35,20 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
   try {
-    const cookieKey = Object.keys(req.cookies)[0];
-    res.clearCookie(cookieKey);
+    const cookieKeys = Object.keys(req.cookies);
+    for (let i = 0; i < cookieKeys.length; i++) {
+      res.clearCookie(cookieKeys[i]);
+    }
     //delete rtoken and token here
-    res.status(200).json({
-      Code: 200,
-      Msg: "log out !!",
-    });
+    const result = await utils.logout(req);
+    if (result) {
+      return res.status(200).json({
+        Code: 200,
+        Msg: "log out !!",
+      });
+    } else {
+      throw new Error("Logout failed !!");
+    }
   } catch (err) {
     res.status(404).json({
       Code: 404,
@@ -109,13 +117,14 @@ exports.restrictTo = (roles) => {
   return async (req, res, next) => {
     if (utils.checkRole(req, roles)) {
       next();
+    } else {
+      return res
+        .status(403) // 403 - Forbidden
+        .json({
+          Code: 403,
+          Msg: "You do not have permission to perform this action",
+        });
     }
-    return res
-      .status(403) // 403 - Forbidden
-      .json({
-        Code: 403,
-        Msg: "You do not have permission to perform this action",
-      });
   };
 };
 
@@ -160,6 +169,24 @@ exports.getRefreshToken = async (req, res) => {
       Code: 200,
       Msg: "OK",
       Data: newRToken,
+    });
+  } catch (e) {
+    res
+      .status(500) // 500 - Internal Error
+      .json({
+        Code: 500,
+        Msg: e.toString(),
+      });
+  }
+};
+
+exports.cleanRToken = async (req, res) => {
+  try {
+    const result = await AuthDAO.cleanRToken();
+    res.status(200).json({
+      Code: 200,
+      Msg: "OK",
+      Data: result,
     });
   } catch (e) {
     res

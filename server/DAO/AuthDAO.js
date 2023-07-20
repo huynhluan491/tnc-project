@@ -143,8 +143,42 @@ exports.updateRefreshTokenByUserId = async (id, updateInfo) => {
   return result.recordsets;
 };
 
+exports.deleteRefreshTokenByUserId = async (id) => {
+  if (!dbConfig.db.pool) {
+    throw new Error("Not connected to db");
+  }
+  const request = dbConfig.db.pool.request();
+  request.input(
+    `${RefreshTokenSchema.schema.UserID.name}`,
+    RefreshTokenSchema.schema.UserID.sqlType,
+    id
+  );
+  let query = `delete ${RefreshTokenSchema.schemaName} where ${RefreshTokenSchema.schema.RefreshToken.name} = @${RefreshTokenSchema.schema.RefreshToken.name}`;
+  const result = await request.query(query);
+  return result.recordsets;
+};
+exports.deleteRefreshTokenByRefreshToken = async (refreshToken) => {
+  if (!dbConfig.db.pool) {
+    throw new Error("Not connected to db");
+  }
+  const request = dbConfig.db.pool.request();
+  request.input(
+    `${RefreshTokenSchema.schema.RefreshToken.name}`,
+    RefreshTokenSchema.schema.RefreshToken.sqlType,
+    refreshToken
+  );
+  let query = `delete ${RefreshTokenSchema.schemaName} where ${RefreshTokenSchema.schema.RefreshToken.name} = @${RefreshTokenSchema.schema.RefreshToken.name}`;
+  const result = await request.query(query);
+  return result.recordsets;
+};
+
 exports.clearAll = async () => {
   query = `delete ${AuthSchema.schemaName}  DBCC CHECKIDENT ('[${AuthSchema.schemaName} ]', RESEED, 1);`;
+  let result = await dbConfig.db.pool.request().query(query);
+  return result.recordsets;
+};
+exports.cleanRToken = async () => {
+  query = `delete ${RefreshTokenSchema.schemaName}  DBCC CHECKIDENT ('[${RefreshTokenSchema.schemaName} ]', RESEED, 1);`;
   let result = await dbConfig.db.pool.request().query(query);
   return result.recordsets;
 };

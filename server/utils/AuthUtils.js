@@ -214,8 +214,27 @@ exports.protect = async (req) => {
   let token = this.getTokenFromReq(req);
   let refreshToken = this.getRefreshTokenFromReq(req);
   let payload;
+  let payloadRefresh;
   let msgXSRF = "";
   const pCSRF = protectCSRF(req);
+
+  if (typeof refreshToken == "object") {
+    refreshToken = refreshToken.RefreshToken;
+  }
+  // what will happend if refresh token is expired ?
+
+  if (refreshToken) {
+    try {
+      payloadRefresh = this.verificationToken(
+        refreshToken,
+        process.env.REFRESH_JWT_SECRET
+      );
+    } catch (e) {
+      await AuthDAO.deleteRefreshTokenByRefreshToken(refreshToken);
+      throw new Error(`Invalid Refresh Token`);
+    }
+  }
+
   try {
     if (!token) {
       throw new Error("You are not logged in! Please log in to get access.");
@@ -258,4 +277,19 @@ exports.checkRole = (req, roles) => {
     default:
       return false;
   }
+};
+
+exports.logout = async (req) => {
+  let refreshToken = this.getRefreshTokenFromReq(req);
+  if (typeof refreshToken == "object") {
+    refreshToken = refreshToken.RefreshToken;
+  }
+  if (!refreshToken) {
+    throw new Error("You was logged out !!!");
+  }
+  if (await validateRefreshToken(null, refreshToken)) {
+    await AuthDAO.deleteRefreshTokenByRefreshToken(refreshToken);
+    return true;
+  }
+  return false;
 };
