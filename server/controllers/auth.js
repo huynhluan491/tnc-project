@@ -115,6 +115,7 @@ exports.protect = async (req, res, next) => {
 //roles
 exports.restrictTo = (roles) => {
   return async (req, res, next) => {
+    console.log(req.user);
     if (utils.checkRole(req, roles)) {
       next();
     } else {

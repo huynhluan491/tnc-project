@@ -169,7 +169,7 @@ async function importDB() {
 
   for (let i = 0; i < orders.length; i++) {
     let order = new DTOOrder(orders[i]);
-    await OrderDAO.addOrderIfNotExisted(order);
+    await OrderDAO.addOrder(order);
     try {
       console.log("import order --- done!");
     } catch (Error) {

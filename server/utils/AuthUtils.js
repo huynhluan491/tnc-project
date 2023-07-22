@@ -269,6 +269,7 @@ exports.protect = async (req) => {
 };
 
 exports.checkRole = (req, roles) => {
+  console.log(req.user);
   const roleUser = req.user.AuthID;
   switch (roleUser) {
     case roles.admin:

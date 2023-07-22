@@ -1,6 +1,8 @@
 const OrderDAO = require("../DAO/OrderDAO");
 const DTOOrderDetails = require("../DTO/Default/DTOOrderDetails");
 
+//order details
+
 exports.getProductInOrderByUSerID = async (req, res) => {
   try {
     let result = await OrderDAO.getProductInOderByUserID(req.query.userID);
@@ -79,6 +81,26 @@ exports.deleteProductInOrder = async (req, res) => {
     res.status(200).json({
       Code: 200,
       Msg: null,
+    });
+  } catch (error) {
+    res.status(404).json({
+      Code: 404,
+      Msg: error,
+    });
+  }
+};
+
+// order
+
+exports.getOrderByUserID = async (req, res) => {
+  const r = req.params.UserID * 1;
+  console.log(r);
+  try {
+    let result = await OrderDAO.getOrderByUserID(r);
+    res.status(200).json({
+      Code: 200,
+      Msg: null,
+      Data: result,
     });
   } catch (error) {
     res.status(404).json({
