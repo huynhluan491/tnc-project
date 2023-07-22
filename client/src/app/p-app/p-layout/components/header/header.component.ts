@@ -52,6 +52,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService._isLoggedIn.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       res => {
         this.isLoggedIn = res;
+        console.log(this.isLoggedIn);
         if (this.isLoggedIn) {
           this.userName = this.storageService.getUser().UserName;
           console.log(this.storageService.getUser().UserName);
