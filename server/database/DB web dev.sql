@@ -74,6 +74,7 @@ create table Users
 (
 	UserID int identity(1,1) primary key,
 	UserName varchar(30) not null unique,
+	FullName nvarchar(max),
 	Password varchar(max) not null,
 	AuthID int constraint FK_Users_Auth references Auth(AuthID),
 	Email varchar(100) unique null ,

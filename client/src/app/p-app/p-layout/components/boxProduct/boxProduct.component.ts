@@ -1,4 +1,3 @@
-import { formatCurrency } from '@angular/common';
 import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { DTOProduct } from '../../shared/dto/DTOProduct';
 

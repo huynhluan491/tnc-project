@@ -2,6 +2,7 @@ module.exports = class DTOUser {
   constructor(data) {
     this.UserID = data.UserID;
     this.UserName = data.UserName;
+    this.FullName = data.FullName;
     this.Password = data.Password;
     this.AuthID = data.AuthID;
     this.Email = data.Email;

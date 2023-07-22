@@ -195,12 +195,19 @@ async function importDB() {
       await SubImageDAO.addSubImageIfNotExisted(img);
       console.log("import subImage --- done!");
     } catch (Error) {
-      throw new Error();
+      throw Error;
     }
+  }
+  //clean refresh token in token table
+  try {
+    await AuthDAO.cleanRToken();
+  } catch (e) {
+    throw e;
   }
 }
 
 async function dbClean() {
+  await AuthDAO.cleanRToken();
   await FeatureDAO.clearAll();
   await RatingDAO.clearAll();
   await SubImageDAO.clearAll();
