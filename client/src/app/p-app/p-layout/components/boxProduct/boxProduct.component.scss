@@ -1,11 +1,11 @@
-.swiper-slide{
+.swiper-slide {
   margin-top: 2rem;
   display: flex;
   justify-content: center;
   width: 100%;
   height: 100%;
 }
-.wrapper{
+.wrapper {
   cursor: pointer;
   position: relative;
   display: flex;
@@ -15,31 +15,32 @@
   border: 1.2px solid rgba(0, 0, 0, 0.377);
   overflow: hidden;
 }
-.avatar-product{
+.avatar-product {
   width: 100%;
   height: 70%;
   display: flex;
   justify-content: center;
   align-items: center;
-  img{
-    padding: 5px 2px 0px 2px;
+  background-color: #ffffff;
+  img {
+    padding: 10px;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 }
-.infor-product{
+.infor-product {
   height: 30%;
-  margin:0 0.56rem;
+  margin: 0 0.56rem;
   position: relative;
 }
-.title-product{
+.title-product {
   display: flex;
   height: 2.5rem;
   justify-content: start;
   align-items: center;
   margin: 0.6rem 0;
-  span{
+  span {
     font-weight: 600;
     font-size: 16px;
     line-height: 24px;
@@ -48,66 +49,65 @@
     text-overflow: ellipsis;
   }
 }
-.price-product{
+.price-product {
   display: flex;
   align-items: center;
   font-weight: 700;
 }
-.sale-price{
+.sale-price {
   font-size: 16px;
   color: red;
-
 }
-.base-price{
+.base-price {
   text-decoration-line: line-through;
   font-size: 12px;
   font-weight: 500;
   color: #99a0ad;
-  margin-left:0.5rem ;
+  margin-left: 0.5rem;
   margin-top: 3px;
 }
 .rating {
   height: auto;
   font-size: 1.5rem;
 }
-.percentage-sale{
+.percentage-sale {
   position: absolute;
   width: 44px;
   height: 22px;
   display: flex;
   justify-content: center;
-  background-color: rgb(249,73,95);
+  background-color: rgb(249, 73, 95);
   transform: skew(-12deg);
   margin-left: -4px;
   padding: 2px 7px;
-  span{
-  background-color: rgb(249,73,95);
+  span {
+    background-color: rgb(249, 73, 95);
     transform: skew(12deg);
     font-weight: 600;
     color: #fff;
     font-size: 14px;
   }
 }
-.buy-now{
+.buy-now {
   width: 100%;
   height: auto;
   visibility: hidden;
   opacity: 0;
 }
 
-.wrapper:hover>.infor-product >.price-product{
-display: none;
+.wrapper:hover > .infor-product > .price-product {
+  display: none;
 }
-.wrapper:hover>.infor-product{
+.wrapper:hover > .infor-product {
   color: #fff;
 }
-.wrapper:hover>.infor-product >.buy-now{
+.wrapper:hover > .infor-product > .buy-now {
   visibility: visible;
   opacity: 1;
-  transition: opacity  0.1s linear;
-  }
-  .wrapper:hover {
-    transition:   0.1s linear;
-    background-color: rgb(53, 46, 46);
-  }
-
+  transition: opacity 0.1s linear;
+}
+.wrapper:hover {
+  transition: 0.1s linear;
+  background-color: rgb(53, 46, 46);
+  border: 3px solid rgb(53, 46, 46);
+}
