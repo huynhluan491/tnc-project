@@ -4,7 +4,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PLayoutModule } from './p-app/p-layout/p-layout.module';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClientModule,
+  HttpClientXsrfModule,
+} from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsModule } from '@progress/kendo-angular-icons';
@@ -41,6 +45,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NotificationModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientXsrfModule.withOptions({
+      cookieName: 'csrf_access_token',
+      headerName: 'csrf-token',
+    }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true },
