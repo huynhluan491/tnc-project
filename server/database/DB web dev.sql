@@ -286,3 +286,7 @@ from Orders
   ) as Order_Details
 	on Orders.OrderID = Order_Details.OrderID
 where UserID = 1
+
+select *
+from users
+WHERE username ='userddTest12wasd4343'

@@ -65,7 +65,7 @@ const createCSRFToken = () => uuidv4();
 const protectCSRF = (req) => {
   const csrfToken = req.headers["csrf-token"];
   const csrfCookie = req.cookies["csrf-token"];
-  if (csrfToken !== csrfCookie) {
+  if (csrfToken !== csrfCookie || !csrfToken || !csrfCookie) {
     return false;
   }
   return true;
