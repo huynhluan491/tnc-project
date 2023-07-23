@@ -43,20 +43,40 @@
             <div class="status-btn">Đã giao hàng</div>
             <div class="status-btn">Đã hủy</div>
         </div>
-        <!-- [data]="orderGridView | async" -->
         <div class="grid-wrapper">
             <kendo-grid 
-                [kendoGridBinding]="exampleData" 
+                [data]="orderGridView | async"
                 [pageSize]="20"
             >
-                <kendo-grid-column field="full_name" title="Tên sản phẩm"></kendo-grid-column>
-                <kendo-grid-column field="full_name" title="Tổng tiền"></kendo-grid-column>
-                <kendo-grid-column field="job_title" title="Trạng thái"></kendo-grid-column>
-                <kendo-grid-column field="job_title" title="Thanh toán"></kendo-grid-column>
+                <kendo-grid-column field="OrderID" title="No" [width]="50">
+                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                        <span>{{ dataItem.OrderID}}</span>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="TotalPrice" title="Tổng tiền">
+                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                        <span>{{dataItem.TotalPrice}}</span>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="StatusName" title="Trạng thái">
+                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                        <span>{{dataItem.StatusName | titlecase}}</span>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="PaymentName" title="Phương thức">
+                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                        <span>{{dataItem.PaymentName | titlecase}}</span>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column [width]="120">
+                    <ng-template kendoGridCellTemplate >
+                        <button class="cancel-order" kendoButton [themeColor]="'info'">Chi tiết</button>
+                    </ng-template>
+                </kendo-grid-column>
                 <kendo-grid-column [width]="80">
                     <ng-template kendoGridCellTemplate >
                         <button class="cancel-order" kendoButton [themeColor]="'error'">Hủy</button>
-                      </ng-template>
+                    </ng-template>
                 </kendo-grid-column>
             </kendo-grid>
         </div>

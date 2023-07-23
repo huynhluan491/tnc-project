@@ -129,10 +129,11 @@
                             .k-table-row {
 
                                 .k-table-td {
-
-                                    &:last-child {
+                                    
+                                    &:nth-last-child(2), &:first-child, &:last-child {
                                         text-align: center;
                                     }
+
                                 }
                             }
 
