@@ -117,14 +117,14 @@ exports.getProductInOderByUserID = async (userID) => {
       OrdersSchema.schema.UserID.name,
       OrdersSchema.schema.UserID.sqlType,
       userID
-    ).query(`select count(*) as count from Order_Details od
+    ).query(`select  sum(amount) as TotalAmount from Order_Details od
      inner join orders o on o.OrderID = od.OrderID
     where od.OrderID in (select OrderID from Orders o where o.UserID = @UserID and o.PaymentID = 0)
   `);
   var dtos = result.recordsets[0].map(
     (element) => new DTOOrderDetailsProductCustomize(element)
   );
-  return {DataInOrder: dtos, TotalAmount: count.recordsets[0][0].count};
+  return {DataInOrder: dtos, TotalAmount: count.recordsets[0][0].TotalAmount};
 };
 
 exports.getOrderIDByUserName = async (username) => {
