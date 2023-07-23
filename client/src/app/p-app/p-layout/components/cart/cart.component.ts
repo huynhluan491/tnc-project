@@ -28,7 +28,7 @@ export class CartComponent implements OnInit {
   }
 
   getOrders() {
-    const orders = this.storageService.getOrders();
+    const orders = this.storageService.getOrders().orders;
     for (let product of orders) {
       this.getProductImage(product.Image)
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -41,6 +41,14 @@ export class CartComponent implements OnInit {
 
   getProductImage(imageName: string) {
     return this.productService.getProductImage(imageName);
+  }
+
+  getTotalProducts() {
+    let sum = 0;
+    for (let product of this.productList) {
+      sum += product.Amount;
+    }
+    return sum;
   }
 
   redirectToCheckout() {

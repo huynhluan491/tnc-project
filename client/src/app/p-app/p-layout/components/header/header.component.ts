@@ -110,9 +110,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.orderService
       .getData(1, 20, `?userID=${userId}`)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((res) => {
-        this.storageService.saveOrders(res.Data);
-        this.cartItems = res.Data.length;
+      .subscribe((res: any) => {
+        this.storageService.saveOrders(res);
+        this.cartItems = res.TotalAmount;
       });
   }
 
