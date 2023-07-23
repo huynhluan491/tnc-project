@@ -9,6 +9,8 @@ router
   .post(orderController.insertProductToOrder)
   .delete(orderController.deleteProductInOrder);
 
+router.route("/orderdetails/").get(orderController.getOrderDetailsByOrderID);
+
 router.route("/:UserID").get(orderController.getOrderByUserID);
 // router.route("/:userID").get(orderController.getProductInCartByUSerID);
 module.exports = router;
