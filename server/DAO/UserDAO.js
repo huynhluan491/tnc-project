@@ -275,6 +275,8 @@ exports.userSignUp = async (dto) => {
     // console.log(user);
     throw new Error("User name used!");
   }
+  const passEndcode = await bcrypt.hash(dto.Password, 10);
+  dto.Password = passEndcode;
   await this.insertUser(dto);
   const u = await this.getUserByUserName(dto.UserName);
   await OrderDAO.createNewOrder(u.UserID);

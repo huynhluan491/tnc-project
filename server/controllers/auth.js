@@ -4,8 +4,13 @@ const AuthDAO = require("../DAO/AuthDAO");
 const DTOUser = require("../DTO/Default/DTOUser");
 const utils = require("../Utils/AuthUtils");
 exports.login = async (req, res) => {
+  let code;
+  const form = req.body;
   try {
-    const form = req.body;
+    if (form.Code) {
+      code = form.Code;
+      delete form.Code;
+    }
     const dto = new DTOUser(form);
     const result = await utils.login(dto);
     res.cookie("user", result.Token, {
@@ -16,20 +21,34 @@ exports.login = async (req, res) => {
       httpOnly: true,
     });
     res.cookie("csrf-token", result.CsrfToken, {});
-
-    res.status(200).json({
-      Code: 200,
-      Msg: "OK",
-      Data: result,
-    });
+    if (code === 1) {
+      res.status(200).json({
+        Code: 200,
+        Msg: "OK, Sign Up & Login Success !!",
+        Data: result,
+      });
+    } else {
+      res.status(200).json({
+        Code: 200,
+        Msg: "OK",
+        Data: result,
+      });
+    }
   } catch (e) {
     console.error(e);
-    res
-      .status(500) // 500 - Internal Error
-      .json({
-        Code: 500,
-        Msg: e.toString(),
+    if (code === 1) {
+      res.status(200).json({
+        Code: 200,
+        Msg: "OK, Sign Up & Login Fail !!",
+        Data: result,
       });
+    } else {
+      res.status(200).json({
+        Code: 200,
+        Msg: "OK",
+        Data: result,
+      });
+    }
   }
 };
 
@@ -71,18 +90,15 @@ exports.signup = async (req, res) => {
     delete user.Password;
     delete user.AuthID;
     // console.log("usertest", user);
-    return res.status(200).json({
-      Code: 200,
-      Msg: "sign up success",
-      Data: user,
-    });
+    req.body = {
+      Code: 1,
+      UserName: form.UserName,
+      Password: form.Password,
+    };
+    console.log(req.body);
+    this.login(req, res);
   } catch (e) {
-    res
-      .status(500) // 500 - Internal Error
-      .json({
-        Code: 500,
-        Msg: e.toString(),
-      });
+    console.error(e.toString());
   }
 };
 
