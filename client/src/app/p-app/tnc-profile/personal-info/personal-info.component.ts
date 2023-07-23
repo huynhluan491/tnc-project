@@ -9,7 +9,7 @@ import { StorageService } from '../../p-layout/shared/services/storage.service';
 })
 export class PersonalInfoComponent implements OnInit {
   personalForm: FormGroup 
-  userName: string = '';
+  fullName: string = '';
 
   constructor(private storageService: StorageService) {}
 
@@ -17,7 +17,7 @@ export class PersonalInfoComponent implements OnInit {
     this.loadPersonalForm();
     const userInfo = this.storageService.getUser();
     this.personalForm.patchValue(userInfo);
-    this.userName = userInfo.UserName;
+    this.fullName = userInfo.FullName;
   }
 
   // convenience getter for easy access to form fields
