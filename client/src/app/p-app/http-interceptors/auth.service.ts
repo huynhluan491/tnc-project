@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { LoginPayload } from "./loginPayload";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { BehaviorSubject, Observable, map, tap } from "rxjs";
-import { DTOUser } from "../_models/DTOUser";
-import { environment } from "src/app/environments/environments";
-import { StorageService } from "../p-layout/shared/services/storage.service";
-import { RegisterPayload } from "./registerPayload";
+import { Injectable } from '@angular/core';
+import { LoginPayload } from './loginPayload';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { DTOUser } from '../_models/DTOUser';
+import { environment } from 'src/app/environments/environments';
+import { StorageService } from '../p-layout/shared/services/storage.service';
+import { RegisterPayload } from './registerPayload';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -39,7 +39,6 @@ export class AuthService {
   }
 
   get _isLoggedIn(): Observable<boolean> {
-    console.log('log', this.isLoggedIn.value);
     return this.isLoggedIn.asObservable();
   }
 
@@ -58,12 +57,16 @@ export class AuthService {
             }));
     }
 
-    signUp(user: RegisterPayload) {
-        return this.http.post<any>(`${environment.apiUrl}/user/signup`, user, httpOptions);
-    }
+  signUp(user: RegisterPayload) {
+    return this.http.post<any>(
+      `${environment.apiUrl}/user/signup`,
+      user,
+      httpOptions
+    );
+  }
 
-    logout() {
-        // remove user from local storage to log user out
-        return this.http.get(`${environment.apiUrl}/user/logout`, httpOptions)
-    }
+  logout() {
+    // remove user from local storage to log user out
+    return this.http.get(`${environment.apiUrl}/user/logout`, httpOptions);
+  }
 }

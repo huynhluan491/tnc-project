@@ -62,7 +62,7 @@ const UserSchema = new ModelSchema(
     }),
   },
   "Users",
-  "AuthID"
+  "UserID"
 );
 
 module.exports = UserSchema;

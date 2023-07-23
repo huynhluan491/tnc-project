@@ -68,6 +68,13 @@ exports.getAllUsers = async (filter) => {
   if (!dbConfig.db.pool) {
     throw new Error("Not connected to db");
   }
+  if (!filter.page) {
+    const result = await dbConfig.db.pool
+      .request()
+      .query(`SELECT * FROM ${UserSchema.schemaName} `);
+    return {DataUsers: result.recordsets[0]};
+  }
+
   const page = filter.page * 1 || 1;
   let pageSize = filter.pageSize * 1 || StaticData.config.MAX_PAGE_SIZE;
   if (pageSize > StaticData.config.MAX_PAGE_SIZE) {
@@ -103,7 +110,7 @@ exports.getAllUsers = async (filter) => {
   }
   let totalPage = Math.ceil(totalUser / pageSize); //round up
   const users = result.recordsets[0];
-  // console.log("finish log", selectQuery);
+  console.log("finish log", selectQuery);
   return {
     Page: page,
     PageSize: pageSize,
