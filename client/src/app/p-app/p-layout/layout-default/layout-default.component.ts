@@ -23,8 +23,8 @@ export class LayoutDefault implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isLoggedIn = this.storageService.isLoggedIn();
-    console.log(this.isLoggedIn);
-    
+    // console.log(this.isLoggedIn);
+
     this.cartService
       .getIsCartPopUpState()
       .pipe(takeUntil(this.ngUnsubscribe))

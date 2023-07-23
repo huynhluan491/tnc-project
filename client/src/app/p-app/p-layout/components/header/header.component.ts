@@ -53,10 +53,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
         this.isLoggedIn = res;
-        console.log(this.isLoggedIn);
+        // console.log(this.isLoggedIn);
         if (this.isLoggedIn) {
           this.userName = this.storageService.getUser().UserName;
-          console.log(this.storageService.getUser().UserName);
+          // console.log(this.storageService.getUser().UserName);
         }
       });
     // if (Object.keys(this.storageService.getUser()).length > 0) {
@@ -106,8 +106,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   getOrders() {
+    const userId = this.storageService.getUser().UserID;
     this.orderService
-      .getData(1, 20, '?userID=1')
+      .getData(1, 20, `?userID=${userId}`)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
         this.storageService.saveOrders(res.Data);
@@ -144,6 +145,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.userName = '';
         this.notificationService.onSuccess('Đăng xuất thành công');
         this.route.navigate(['']);
+        window.location.reload();
       });
     }
   }

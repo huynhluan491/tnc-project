@@ -86,6 +86,8 @@ export class RegisterComponent implements OnInit {
         res => {
           if (res.Code === 200) {
             const { CreatedAt, ...registeredUser} = res.Data;
+            console.log(registeredUser);
+            
             this.storageService.saveUser(registeredUser);
             this.registerService.closeRegisterForm();
             this.authService.setLoginState(true);
@@ -102,7 +104,7 @@ export class RegisterComponent implements OnInit {
           if (data.Code === 200) {
             this.registerService.closeRegisterForm();
             this.notificationService.onSuccess('Đăng nhập thành công');
-
+            this.reloadPage();
           } else {
             this.notificationService.onError('Đăng nhập thất bại');
           }
