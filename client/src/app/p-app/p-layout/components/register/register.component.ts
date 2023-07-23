@@ -19,8 +19,8 @@ export class RegisterComponent implements OnInit {
   returnUrl: string = '';
   ngUnsubscribe = new Subject<void>();
   loginForm: FormGroup = new FormGroup({
-    UserName: new FormControl(null, Validators.required),
-    Password: new FormControl(null, Validators.required),
+    UserName: new FormControl('', Validators.required),
+    Password: new FormControl('', Validators.required),
   });
 
   registerForm: FormGroup = new FormGroup(
@@ -52,9 +52,14 @@ export class RegisterComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
-  get f() {
+  get _loginForm() {
     return this.loginForm.controls;
   }
+  
+  get _registerForm() {
+    return this.registerForm.controls;
+  }
+
 
   toggleShowRegister(): void {
     this.registerService.toggleRegisterShown();

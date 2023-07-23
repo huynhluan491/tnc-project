@@ -27,9 +27,12 @@ export class StorageService {
     return {};
   }
 
-  public saveOrders(orders: [DTOOrder]): void {
+  public saveOrders(data: any): void {
     window.sessionStorage.removeItem(ORDER_KEY);
-    window.sessionStorage.setItem(ORDER_KEY, JSON.stringify(orders));
+    window.sessionStorage.setItem(
+      ORDER_KEY,
+      JSON.stringify({ totalAmount: data.TotalAmount, orders: data.Data })
+    );
   }
 
   public getOrders(): any {

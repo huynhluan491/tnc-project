@@ -8,6 +8,7 @@ export class DTOOrder {
   StatusID: number;
   PayIn: string;
   CreateAt: string;
+  Amount: number;
 
   constructor(
     orderID: number,
@@ -18,7 +19,8 @@ export class DTOOrder {
     paymentID: number,
     statusID: number,
     payIn: string,
-    createAt: string
+    createAt: string,
+    amount: number
   ) {
     this.OrderID = orderID;
     this.UserID = userID;
@@ -29,5 +31,6 @@ export class DTOOrder {
     this.StatusID = statusID;
     this.PayIn = payIn;
     this.CreateAt = createAt;
+    this.Amount = amount;
   }
 }

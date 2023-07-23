@@ -4,5 +4,5 @@ export const confirmPassword: ValidatorFn = (control: AbstractControl) : Validat
     const password = control.get('Password');
     const confirmPassword = control.get('ConfirmPassword');
 
-    return password?.value === confirmPassword?.value ? null : { notmatched: true};
+    return password?.value === confirmPassword?.value ? { notmatched: true} : null;
 };
