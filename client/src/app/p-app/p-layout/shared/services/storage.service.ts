@@ -1,36 +1,51 @@
-import { Injectable } from "@angular/core";
-import { DTOLocalUser } from "src/app/p-app/_models/DTOLocalUser";
+import { Injectable } from '@angular/core';
+import { DTOLocalUser } from 'src/app/p-app/_models/DTOLocalUser';
+import { DTOOrder } from '../dto/DTOOrder';
 
 const USER_KEY = 'auth-user';
+const ORDER_KEY = 'orders';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class StorageService {
-    constructor() {}
+  constructor() {}
 
-    clean(): void {
-        window.sessionStorage.clear();
+  clean(): void {
+    window.sessionStorage.clear();
+  }
+
+  public saveUser(user: DTOLocalUser): void {
+    window.sessionStorage.removeItem(USER_KEY);
+    window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+  }
+
+  public getUser(): any {
+    const user = window.sessionStorage.getItem(USER_KEY);
+    if (user) {
+      return JSON.parse(user);
     }
 
-    public saveUser(user: DTOLocalUser): void {
-        window.sessionStorage.removeItem(USER_KEY);
-        window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+    return {};
+  }
+
+  public saveOrders(orders: [DTOOrder]): void {
+    window.sessionStorage.removeItem(ORDER_KEY);
+    window.sessionStorage.setItem(ORDER_KEY, JSON.stringify(orders));
+  }
+
+  public getOrders(): any {
+    const orders = window.sessionStorage.getItem(ORDER_KEY);
+    if (orders) {
+      return JSON.parse(orders);
+    }
+    return [];
+  }
+
+  public isLoggedIn(): boolean {
+    const user = window.sessionStorage.getItem(USER_KEY);
+    if (user) {
+      return true;
     }
 
-    public getUser(): any {
-        const user = window.sessionStorage.getItem(USER_KEY);
-        if (user) {
-            return JSON.parse(user);
-        }
-
-        return {};
-    }
-
-    public isLoggedIn(): boolean {
-        const user = window.sessionStorage.getItem(USER_KEY);
-        if (user) {
-            return true;
-        }
-
-        return false;
-    }
+    return false;
+  }
 }

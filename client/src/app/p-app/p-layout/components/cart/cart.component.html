@@ -26,7 +26,7 @@
         </div>
         <p *ngIf="checkout" class="cart-item-title">THÔNG TIN SẢN PHẨM</p>
         <div
-          *ngIf="productList == 0; else product"
+          *ngIf="productList.length == 0; else product"
           class="cart-item-sub-wrapper"
         >
           <p class="cart-item-placeholder">
@@ -35,7 +35,10 @@
           </p>
         </div>
         <ng-template #product>
-          <div class="cart-item-sub-wrapper2">
+          <div
+            *ngFor="let product of productList"
+            class="cart-item-sub-wrapper2"
+          >
             <div class="cart-item-img-wrapper">
               <img
                 src="https://www.tncstore.vn/image/cache/catalog/CPU/12100f/cpu-intel-core-i3-12100f-1-228x228.jpg"
@@ -44,10 +47,9 @@
             </div>
             <div class="cart-item-info-wrapper">
               <p class="cart-item-info-title">
-                CPU Intel Core i3-12100F 4C/8T (3.3 Ghz up to 4.3GHz, 12MB,
-                LGA1700, Alder Lake) Hàng NK
+                {{ product.Name }}
               </p>
-              <p class="cart-item-info-price">2.290.000 đ</p>
+              <p class="cart-item-info-price">{{ product.Price }} đ</p>
               <div class="cart-item-sub-info">
                 <div class="cart-item-quantity-wrapper">
                   <p class="cart-item-quantity-title">Số lượng</p>

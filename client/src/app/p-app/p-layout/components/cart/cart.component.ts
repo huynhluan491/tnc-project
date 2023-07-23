@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CartService } from '../../shared/services/cart.service';
 import { Router } from '@angular/router';
+import { DTOOrder } from '../../shared/dto/DTOOrder';
 
 @Component({
   selector: 'app-cart',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent implements OnInit {
-  productList: number = 1;
+  productList: [DTOOrder] | [] = [];
 
   @Input() checkout: boolean = false;
 

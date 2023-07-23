@@ -22,7 +22,7 @@ export class OrderService {
       .set('page', page.toString())
       .set('pageSize', pageSize.toString());
     return this.http
-      .get<DTOResponse>(`/api/v1/order/${filterStr}`, {
+      .get<DTOResponse>(`/api/v1/order/product/${filterStr}`, {
         params,
       })
       .pipe(catchError(this.handleError));
