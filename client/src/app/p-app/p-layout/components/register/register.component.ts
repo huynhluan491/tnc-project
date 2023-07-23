@@ -70,19 +70,20 @@ export class RegisterComponent implements OnInit {
     console.log(this.loginForm.value);
 
     if (this.isRegister && !this.registerForm.invalid) {
-
-
-    } else if (!this.isRegister && !this.loginForm.invalid){
-      this.authService.login(this.loginForm.value).pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-        data => {
+    } else if (!this.isRegister && !this.loginForm.invalid) {
+      this.authService
+        .login(this.loginForm.value)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((data) => {
           if (data.Code === 200) {
             this.registerService.closeRegisterForm();
             console.log('2');
             this.notificationService.onSuccess('Đăng nhập thành công');
+            this.reloadPage();
           } else {
             this.notificationService.onError('Đăng nhập thất bại');
           }
-    });
+        });
     }
   }
 

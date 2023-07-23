@@ -31,7 +31,7 @@ export class CartCheckout2Component implements OnInit {
     });
 
     const userData = this.storageService.getUser();
-    // console.log(userData);
+    console.log(userData);
     this.deliverForm.patchValue({
       name: userData.Name,
       email: userData.Email,

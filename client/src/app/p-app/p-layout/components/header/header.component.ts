@@ -49,16 +49,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getOrders();
-    this.authService._isLoggedIn.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      res => {
+    this.authService._isLoggedIn
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
         this.isLoggedIn = res;
         if (this.isLoggedIn) {
           this.userName = this.storageService.getUser().UserName;
           console.log(this.storageService.getUser().UserName);
-          
         }
-      }
-    )
+      });
     // if (Object.keys(this.storageService.getUser()).length > 0) {
     //   this.isLoggedIn = this.storageService.isLoggedIn();
     //   this.userName = this.storageService.getUser().UserName;
@@ -106,9 +105,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   getOrders() {
-    this.orderService.getData(1, 20, '?userID=1').subscribe((res) => {
-      this.cartItems = res.Data.length;
-    });
+    this.orderService
+      .getData(1, 20, '?userID=1')
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
+        console.log(res.Data.length);
+        this.cartItems = res.Data.length;
+      });
   }
 
   getCategoryList() {
@@ -155,7 +158,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onNavigate(path: string) {
     this.route.navigate([`/${path}`]);
   }
-
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();

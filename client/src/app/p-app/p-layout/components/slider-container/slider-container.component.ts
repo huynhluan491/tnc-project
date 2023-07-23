@@ -19,6 +19,7 @@ export class SliderContainerComponent {
 
   ngOnInit(): void {
     this.slideConfig = {
+      lazyLoad: false,
       slidesToShow: this.slidesToShow,
       slidesToScroll: this.slidesToScroll,
       autoplay: this.autoPlay,
