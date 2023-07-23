@@ -145,7 +145,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.userName = '';
         this.notificationService.onSuccess('Đăng xuất thành công');
         this.route.navigate(['']);
-        window.location.reload();
+        // window.location.reload();
       });
     }
   }
