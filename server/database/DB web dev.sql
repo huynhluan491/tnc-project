@@ -290,3 +290,7 @@ where UserID = 1
 select *
 from users
 WHERE username ='userddTest12wasd4343'
+SELECT *
+FROM Users
+WHERE UserID > 0 AND username ='userddTest12wasd4343'
+ORDER BY AuthID asc OFFSET 0 ROWS FETCH NEXT 20 ROWS ONLY
