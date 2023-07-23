@@ -287,10 +287,9 @@ from Orders
 	on Orders.OrderID = Order_Details.OrderID
 where UserID = 1
 
-select *
-from users
-WHERE username ='userddTest12wasd4343'
-SELECT *
-FROM Users
-WHERE UserID > 0 AND username ='userddTest12wasd4343'
-ORDER BY AuthID asc OFFSET 0 ROWS FETCH NEXT 20 ROWS ONLY
+select count(*) as count
+from Order_Details od
+	inner join Orders o ON od.OrderID = o.OrderID
+where od.OrderID in (select OrderID
+from Orders o
+where o.UserID = 1 and o.PaymentID = 0
