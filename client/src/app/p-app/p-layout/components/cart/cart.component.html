@@ -40,10 +40,7 @@
             class="cart-item-sub-wrapper2"
           >
             <div class="cart-item-img-wrapper">
-              <img
-                src="https://www.tncstore.vn/image/cache/catalog/CPU/12100f/cpu-intel-core-i3-12100f-1-228x228.jpg"
-                class="cart-item-img"
-              />
+              <img [src]="product.ImageSrc" class="cart-item-img" />
             </div>
             <div class="cart-item-info-wrapper">
               <p class="cart-item-info-title">
@@ -56,7 +53,7 @@
                 <div class="cart-item-quantity-wrapper">
                   <p class="cart-item-quantity-title">Số lượng</p>
                   <div class="cart-item-quantity-sub">-</div>
-                  <p class="cart-item-quantity-value">1</p>
+                  <p class="cart-item-quantity-value">{{ product.Amount }}</p>
                   <div class="cart-item-quantity-add">+</div>
                 </div>
                 <div class="cart-item-delete-btn">
