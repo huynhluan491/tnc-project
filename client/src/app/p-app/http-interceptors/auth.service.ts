@@ -40,6 +40,8 @@ export class AuthService {
   }
 
   get _isLoggedIn(): Observable<boolean> {
+    const isLoggedIn = this.storageService.isLoggedIn();
+    this.isLoggedIn.next(isLoggedIn);
     return this.isLoggedIn.asObservable();
   }
 
@@ -52,7 +54,7 @@ export class AuthService {
       .post<any>(`${environment.apiUrl}/user/login`, user, httpOptions)
       .pipe(
         map((user) => {
-          const { UserName, Address, Email, Phone, Point } = user.Data;
+          const { UserName, Address, Email, Phone, Point } = user.Data.User;
           const loggedInUser = {
             UserName,
             Email,
