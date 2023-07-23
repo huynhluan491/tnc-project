@@ -9,7 +9,8 @@ exports.getProductInOrderByUSerID = async (req, res) => {
     res.status(200).json({
       Code: 200,
       Msg: null,
-      Data: result,
+      TotalAmount: result.TotalAmount,
+      Data: result.DataInOrder,
     });
   } catch (error) {
     res.status(404).json({

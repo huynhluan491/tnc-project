@@ -7,12 +7,13 @@ const UserSchema = require("../Model/User");
 const {OrdersSchema, Order_DetailsSchema} = require("../Model/Order");
 const StatusSchema = require("../Model/Status");
 const PaymentSchema = require("../Model/Payment");
+const ProductSchema = require("../Model/Product");
 
 const DTOProduct = require("../DTO/Default/DTOProduct");
 const DTOProductCustomize = require("../DTO/Customize/DTOProductCustomize");
 const DTOOrderDetails = require("../DTO/Default/DTOOrderDetails");
 const DTOOrderCustomize = require("../DTO/Customize/DTOOrderCustomize");
-const ProductSchema = require("../Model/Product");
+const DTOOrderDetailsProductCustomize = require("../DTO/Customize/DTOOrderDetailsCustomize");
 
 exports.addOrder = async (order) => {
   const dbPool = dbConfig.db.pool;
@@ -108,13 +109,22 @@ exports.getProductInOderByUserID = async (userID) => {
       userID
     ).query(` select  p.*,od.Amount from Order_Details od
        inner join Product p on p.ProductID = od.ProductID
-       where od.OrderID in (select OrderID from Orders o where o.UserID = @UserID)
+       where od.OrderID in (select OrderID from Orders o where o.UserID = @UserID and PaymentID = 0)
       `);
-
-  var dto = result.recordsets[0].map(
-    (element) => new DTOProductCustomize(element)
+  let count = await dbPool
+    .request()
+    .input(
+      OrdersSchema.schema.UserID.name,
+      OrdersSchema.schema.UserID.sqlType,
+      userID
+    ).query(`select count(*) as count from Order_Details od
+     inner join orders o on o.OrderID = od.OrderID
+    where od.OrderID in (select OrderID from Orders o where o.UserID = @UserID and o.PaymentID = 0)
+  `);
+  var dtos = result.recordsets[0].map(
+    (element) => new DTOOrderDetailsProductCustomize(element)
   );
-  return dto;
+  return {DataInOrder: dtos, TotalAmount: count.recordsets[0][0].count};
 };
 
 exports.getOrderIDByUserName = async (username) => {
