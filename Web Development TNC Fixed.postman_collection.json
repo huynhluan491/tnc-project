@@ -153,6 +153,35 @@
 						"header": []
 					},
 					"response": []
+				},
+				{
+					"name": "get order details by orderid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/order/orderdetails/?OrderID=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"order",
+								"orderdetails",
+								""
+							],
+							"query": [
+								{
+									"key": "OrderID",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

@@ -20,6 +20,23 @@ exports.getProductInOrderByUSerID = async (req, res) => {
   }
 };
 
+exports.getOrderDetailsByOrderID = async (req, res) => {
+  try {
+    console.log(req.query.OrderID);
+    let result = await OrderDAO.getOrderDetailsByOrderID(req.query.OrderID);
+    res.status(200).json({
+      Code: 200,
+      Msg: null,
+      Data: result,
+    });
+  } catch (error) {
+    res.status(404).json({
+      Code: 404,
+      Msg: error,
+    });
+  }
+};
+
 // exports.createNewCart = async(req,res)=>{
 //   try {
 //     let result = await OrderDAO.createNewCart(req.params.userID);

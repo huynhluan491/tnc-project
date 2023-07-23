@@ -221,6 +221,32 @@ exports.getOrderByUserID = async (userID) => {
   });
 };
 
+exports.getOrderDetailsByOrderID = async (OrderID) => {
+  const dbPool = dbConfig.db.pool;
+  if (!dbPool) {
+    throw new Error("Not connected to db");
+  }
+  const query = `select  ${Order_DetailsSchema.schemaName}.OrderID,
+  ${ProductSchema.schemaName}.ProductID,
+  ${ProductSchema.schemaName}.Name,
+  ${ProductSchema.schemaName}.Price,
+  ${ProductSchema.schemaName}.Image,
+  ${Order_DetailsSchema.schemaName}.Amount
+  from ${Order_DetailsSchema.schemaName}
+  inner join ${ProductSchema.schemaName} on ${Order_DetailsSchema.schemaName}.ProductID = ${ProductSchema.schemaName}.ProductID
+  where OrderID = @${Order_DetailsSchema.schema.OrderID.name}
+  `;
+  let result = await dbPool
+    .request()
+    .input(
+      OrdersSchema.schema.OrderID.name,
+      OrdersSchema.schema.OrderID.sqlType,
+      OrderID
+    )
+    .query(query);
+  return result.recordsets[0];
+};
+
 exports.clearAllOrder_Details = async () => {
   query = `delete ${Order_DetailsSchema.schemaName} ;`;
   let result = await dbConfig.db.pool.request().query(query);
