@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { StorageService } from '../../p-layout/shared/services/storage.service';
 
 @Component({
   selector: 'app-personal-info',
@@ -8,11 +9,15 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class PersonalInfoComponent implements OnInit {
   personalForm: FormGroup 
+  userName: string = '';
 
-  constructor() {}
+  constructor(private storageService: StorageService) {}
 
   ngOnInit(): void {
     this.loadPersonalForm();
+    const userInfo = this.storageService.getUser();
+    this.personalForm.patchValue(userInfo);
+    this.userName = userInfo.UserName;
   }
 
   // convenience getter for easy access to form fields
@@ -20,11 +25,11 @@ export class PersonalInfoComponent implements OnInit {
 
   loadPersonalForm() {
     this.personalForm = new FormGroup({
-      UserName: new FormControl('Khánh Luân'),
-      Email: new FormControl('huynhluan491@gmail.com', Validators.email),
-      Total: new FormControl('2000000'),
-      Address: new FormControl('TPHCM' ),
-      Phone: new FormControl('032133211312'),
+      UserName: new FormControl(''),
+      Email: new FormControl('', Validators.email),
+      Total: new FormControl(''),
+      Address: new FormControl('' ),
+      Phone: new FormControl(''),
     })
   }
 

@@ -1,5 +1,5 @@
 export interface DTOResponse {
   Msg: string;
-  Code: string;
+  Code: number;
   Data?: any;
 }

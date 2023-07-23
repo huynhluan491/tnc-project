@@ -3,13 +3,13 @@
         <div class="user-avt">
             <img src="assets/img/avt_profile.webp">
         </div>
-        <p class="name">Khánh Luân</p>
+        <p class="name">{{userName}}</p>
     </div>
 
     <form class="user-info-form" [formGroup]= "personalForm">
                 <kendo-formfield>
-                    <kendo-label class="input-wrapper" [for]="username" text="Họ và tên">
-                        <kendo-textbox formControlName="UserName" #username ></kendo-textbox>
+                    <kendo-label class="input-wrapper" [for]="FullName" text="Họ và tên">
+                        <kendo-textbox formControlName="FullName" #FullName ></kendo-textbox>
                     </kendo-label>
                 </kendo-formfield>
 
