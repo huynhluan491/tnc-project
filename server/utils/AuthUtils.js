@@ -85,7 +85,6 @@ exports.handleRefreshToken = async (refreshToken) => {
       refreshToken.RefreshToken,
       process.env.REFRESH_JWT_SECRET
     );
-    console.log(user);
     //const orderIDQuery = await OrderDAO.getOrderIDByUserName(user.UserName);
 
     if (validateRefreshToken(user.UserID, refreshToken.RefreshToken)) {
@@ -105,7 +104,6 @@ exports.handleRefreshToken = async (refreshToken) => {
         user.exp,
         1000
       );
-      console.log(rRokenExpiresIn);
       await AuthDAO.updateRefreshTokenByUserId(user.UserID, {
         RefreshToken: newUserRFT,
         Expires: rRokenExpiresIn,
@@ -162,7 +160,6 @@ exports.getRefreshTokenFromReq = (req) => {
  */
 exports.login = async (dto) => {
   //1. check if dto is valid
-  console.log(dto.UserName);
   if (!dto.Password || !dto.UserName) {
     throw new Error({Code: 403, Msg: `Invalid params`});
   }
@@ -269,7 +266,6 @@ exports.protect = async (req) => {
 };
 
 exports.checkRole = (req, roles) => {
-  console.log(req.user);
   const roleUser = req.user.AuthID;
   switch (roleUser) {
     case roles.admin:

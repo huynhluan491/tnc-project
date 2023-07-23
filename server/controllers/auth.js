@@ -35,11 +35,10 @@ exports.login = async (req, res) => {
       });
     }
   } catch (e) {
-    console.error(e);
     if (code === 1) {
       res.status(200).json({
         Code: 200,
-        Msg: "OK, Sign Up & Login Fail !!",
+        Msg: `OK, Sign Up & Login Fail !!${e.toString()}`,
         Data: result,
       });
     } else {
@@ -95,10 +94,14 @@ exports.signup = async (req, res) => {
       UserName: form.UserName,
       Password: form.Password,
     };
-    console.log(req.body);
     this.login(req, res);
   } catch (e) {
-    console.error(e.toString());
+    if (e) {
+      return res.status(403).json({
+        Code: 403,
+        Msg: e.toString(),
+      });
+    }
   }
 };
 
@@ -108,7 +111,6 @@ exports.protect = async (req, res, next) => {
     req.cookies.user = newToken.Token;
     req.cookies.RefreshToken = newToken.RefreshToken;
     req.user = newToken.User;
-    console.log(newToken);
     res.cookie("user", newToken.Token, {
       httpOnly: true,
     });
@@ -117,7 +119,6 @@ exports.protect = async (req, res, next) => {
     });
     res.cookie("csrf-token", newToken.CSRFToken);
   } catch (e) {
-    console.error(e);
     return res
       .status(500) // 500 - Internal Error
       .json({
@@ -131,7 +132,6 @@ exports.protect = async (req, res, next) => {
 //roles
 exports.restrictTo = (roles) => {
   return async (req, res, next) => {
-    console.log(req.user);
     if (utils.checkRole(req, roles)) {
       next();
     } else {
@@ -168,7 +168,6 @@ exports.getTokenDev = async (req, res) => {
       Data: result,
     });
   } catch (e) {
-    console.error(e);
     res
       .status(500) // 500 - Internal Error
       .json({
