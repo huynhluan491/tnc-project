@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CartService } from '../../shared/services/cart.service';
 import { Router } from '@angular/router';
 import { DTOOrder } from '../../shared/dto/DTOOrder';
+import { StorageService } from '../../shared/services/storage.service';
 
 @Component({
   selector: 'app-cart',
@@ -13,9 +14,19 @@ export class CartComponent implements OnInit {
 
   @Input() checkout: boolean = false;
 
-  constructor(private router: Router, private cartService: CartService) {}
+  constructor(
+    private storageService: StorageService,
+    private router: Router,
+    private cartService: CartService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getOrders();
+  }
+
+  getOrders() {
+    this.productList = this.storageService.getOrders();
+  }
 
   redirectToCheckout() {
     this.router.navigateByUrl('/checkout');
