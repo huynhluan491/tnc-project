@@ -55,6 +55,7 @@
         border: 1px #d8d8d8 solid;
         padding: 0.5rem;
         padding-right: 2rem;
+        width: 100%;
 
         .cart-item-img-wrapper {
           width: 14rem;
@@ -71,6 +72,8 @@
         }
 
         .cart-item-info-wrapper {
+          width: 100%;
+
           .cart-item-info-title {
             font-weight: 600;
             font-size: 16px;

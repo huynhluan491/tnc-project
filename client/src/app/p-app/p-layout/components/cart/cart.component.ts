@@ -1,8 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SkipSelf } from '@angular/core';
 import { CartService } from '../../shared/services/cart.service';
 import { Router } from '@angular/router';
 import { DTOOrder } from '../../shared/dto/DTOOrder';
 import { StorageService } from '../../shared/services/storage.service';
+import { ProductService } from '../../shared/services/product.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -11,10 +13,11 @@ import { StorageService } from '../../shared/services/storage.service';
 })
 export class CartComponent implements OnInit {
   productList: [DTOOrder] | [] = [];
-
+  ngUnsubscribe = new Subject<void>();
   @Input() checkout: boolean = false;
 
   constructor(
+    @SkipSelf() private productService: ProductService,
     private storageService: StorageService,
     private router: Router,
     private cartService: CartService
@@ -25,7 +28,19 @@ export class CartComponent implements OnInit {
   }
 
   getOrders() {
-    this.productList = this.storageService.getOrders();
+    const orders = this.storageService.getOrders();
+    for (let product of orders) {
+      this.getProductImage(product.Image)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((imageSrc) => {
+          product.ImageSrc = imageSrc;
+        });
+    }
+    this.productList = orders;
+  }
+
+  getProductImage(imageName: string) {
+    return this.productService.getProductImage(imageName);
   }
 
   redirectToCheckout() {
