@@ -92,14 +92,14 @@ exports.protect = async (req, res, next) => {
     req.cookies.user = newToken.Token;
     req.cookies.RefreshToken = newToken.RefreshToken;
     req.user = newToken.User;
-    console.log(req.user);
+    console.log(newToken);
     res.cookie("user", newToken.Token, {
       httpOnly: true,
     });
     res.cookie("ruser", newToken.RefreshToken, {
       httpOnly: true,
     });
-    res.cookie("csrf-token", newToken.CsrfToken);
+    res.cookie("csrf-token", newToken.CSRFToken);
   } catch (e) {
     console.error(e);
     return res
