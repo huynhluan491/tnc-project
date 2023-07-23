@@ -169,7 +169,7 @@ async function importDB() {
 
   for (let i = 0; i < orders.length; i++) {
     let order = new DTOOrder(orders[i]);
-    await OrderDAO.addOrderIfNotExisted(order);
+    await OrderDAO.addOrder(order);
     try {
       console.log("import order --- done!");
     } catch (Error) {
@@ -195,12 +195,19 @@ async function importDB() {
       await SubImageDAO.addSubImageIfNotExisted(img);
       console.log("import subImage --- done!");
     } catch (Error) {
-      throw new Error();
+      throw Error;
     }
+  }
+  //clean refresh token in token table
+  try {
+    await AuthDAO.cleanRToken();
+  } catch (e) {
+    throw e;
   }
 }
 
 async function dbClean() {
+  await AuthDAO.cleanRToken();
   await FeatureDAO.clearAll();
   await RatingDAO.clearAll();
   await SubImageDAO.clearAll();

@@ -193,8 +193,12 @@ exports.updateProductById = async (req, res) => {
   }
 };
 
-exports.getFileProductImage = (req, res) => {
+exports.getFileProductImage = async (req, res) => {
   let imageName = req.params.imageName;
+  let result;
+  const baseUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/api/images/subImgimages/`;
   const dirPath = path.join(
     __dirname,
     "..",
@@ -202,18 +206,15 @@ exports.getFileProductImage = (req, res) => {
     "productImages"
     // imageName + ".jpg"
   );
-  fs.readdir(dirPath, (err, files) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    const matchingFile = files.find((file) => file.startsWith(imageName));
-    if (matchingFile) {
-      const imagePath = path.join(dirPath, matchingFile);
-      // console.log(`Found file: ${imagePath}`);
-      const imageStream = fs.createReadStream(imagePath);
-      imageStream.pipe(res);
-    }
+  const files = await fs.promises.readdir(dirPath);
+  const matchingFile = files.find((file) => file.startsWith(imageName));
+  if (matchingFile) {
+    const imagePath = path.join(dirPath, matchingFile);
+    const imageData = await fs.promises.readFile(imagePath, "base64");
+    result = {url: `${baseUrl}/${imageName}`, base64: imageData};
+  }
+  res.status(200).json({
+    Data: result,
   });
 };
 

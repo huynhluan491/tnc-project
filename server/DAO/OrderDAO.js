@@ -1,12 +1,20 @@
 const dbConfig = require("../database/dbconfig");
+
 const dbUtils = require("../utils/dbUtils");
+const DateTimeUtils = require("../utils/DateTimeUtils");
+
 const UserSchema = require("../Model/User");
 const {OrdersSchema, Order_DetailsSchema} = require("../Model/Order");
+const StatusSchema = require("../Model/Status");
+const PaymentSchema = require("../Model/Payment");
+
 const DTOProduct = require("../DTO/Default/DTOProduct");
 const DTOProductCustomize = require("../DTO/Customize/DTOProductCustomize");
 const DTOOrderDetails = require("../DTO/Default/DTOOrderDetails");
-const DateTimeUtils = require("../utils/DateTimeUtils");
-exports.addOrderIfNotExisted = async (order) => {
+const DTOOrderCustomize = require("../DTO/Customize/DTOOrderCustomize");
+const ProductSchema = require("../Model/Product");
+
+exports.addOrder = async (order) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
@@ -27,7 +35,6 @@ exports.addOrderIfNotExisted = async (order) => {
     insertFieldNamesStr +
     ") select  " +
     insertValuesStr +
-    ` WHERE NOT EXISTS(SELECT * FROM ${OrdersSchema.schemaName} WHERE UserID = @UserID)` +
     ` SET IDENTITY_INSERT ${OrdersSchema.schemaName} OFF`;
   result = await request.query(query);
   return result.recordsets;
@@ -160,6 +167,48 @@ exports.deleteItemInOrder = async (urlQuery) => {
   }
   let q = `delete Order_Details where ProductID = ${urlQuery.ProductID} and OrderID = ${urlQuery.OrderID} `;
   let result = await dbPool.request().query(q);
+};
+
+exports.getOrderByUserID = async (userID) => {
+  const dbPool = dbConfig.db.pool;
+  if (!dbPool) {
+    throw new Error("Not connected to db");
+  }
+  const query = `select  ${OrdersSchema.schemaName}.*,
+  ${StatusSchema.schemaName}.${StatusSchema.schema.StatusName.name},
+  ${PaymentSchema.schemaName}.${PaymentSchema.schema.PaymentName.name},
+  Order_Details.TotalPrice,
+  Order_Details.TotalAmount
+   from ${OrdersSchema.schemaName}
+  inner join ${StatusSchema.schemaName} on ${OrdersSchema.schemaName}.StatusID = ${StatusSchema.schemaName}.StatusID
+  inner join ${PaymentSchema.schemaName} on ${OrdersSchema.schemaName}.PaymentID = ${PaymentSchema.schemaName}.PaymentID
+  inner join
+  (
+    select ${Order_DetailsSchema.schemaName}.OrderID,
+    sum(${Order_DetailsSchema.schemaName}.Amount * ${ProductSchema.schemaName}.Price) as TotalPrice,
+    count(${Order_DetailsSchema.schemaName}.Amount) as TotalAmount
+    from ${Order_DetailsSchema.schemaName}
+    inner join ${ProductSchema.schemaName}
+    on ${Order_DetailsSchema.schemaName}.ProductID = ${ProductSchema.schemaName}.ProductID
+    group by ${Order_DetailsSchema.schemaName}.OrderID
+  ) as Order_Details
+  on ${OrdersSchema.schemaName}.OrderID = ${Order_DetailsSchema.schemaName}.OrderID
+  where UserID = @${OrdersSchema.schema.UserID.name}
+  `;
+  console.log(query);
+  let result = await dbPool
+    .request()
+    .input(
+      OrdersSchema.schema.UserID.name,
+      OrdersSchema.schema.UserID.sqlType,
+      userID
+    )
+    .query(query);
+
+  return result.recordsets[0].map((x) => {
+    x.CreatedAt = DateTimeUtils.convertSqlDateTimeToUIDateTime(x.CreatedAt);
+    return new DTOOrderCustomize(x);
+  });
 };
 
 exports.clearAllOrder_Details = async () => {

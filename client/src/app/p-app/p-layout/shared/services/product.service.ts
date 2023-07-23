@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { DTOProduct } from '../dto/DTOProduct';
 import { DTOResponse } from '../dto/DTOResponse';
-
+import { DomSanitizer } from '@angular/platform-browser';
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
     console.log('product service started');
   }
 
@@ -54,11 +54,18 @@ export class ProductService {
 
   getProductImage(imageName: string): Observable<any> {
     return this.http
-      .get(`/api/v1/product/image/${imageName}`, { responseType: 'blob' })
+      .get(`/api/v1/product/image/${imageName}`)
       .pipe(
-        map((baseImage: Blob) => {
-          let objectURL = URL.createObjectURL(baseImage);
-          return objectURL;
+        map((res: any) => {
+          const byteCharacters = atob(res.Data.base64);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], { type: 'image/png' });
+          const url = URL.createObjectURL(blob);
+          return this.sanitizer.bypassSecurityTrustResourceUrl(url);
         })
       )
       .pipe(catchError(this.handleError));

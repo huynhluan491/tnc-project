@@ -67,8 +67,6 @@ export class RegisterComponent implements OnInit {
   onSubmit(e: any): void {
     e.preventDefault();
     this.submitted = true;
-    console.log(this.loginForm.value);
-
     if (this.isRegister && !this.registerForm.invalid) {
     } else if (!this.isRegister && !this.loginForm.invalid) {
       this.authService

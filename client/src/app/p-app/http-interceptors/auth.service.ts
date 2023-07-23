@@ -52,7 +52,7 @@ export class AuthService {
       .post<any>(`${environment.apiUrl}/user/login`, user, httpOptions)
       .pipe(
         map((user) => {
-          const { UserName, Address, Email, Phone, Point } = user.Data.User;
+          const { UserName, Address, Email, Phone, Point } = user.Data;
           const loggedInUser = {
             UserName,
             Email,

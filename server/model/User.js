@@ -14,6 +14,10 @@ const UserSchema = new ModelSchema(
       sqlType: sql.VarChar,
       require: true,
     }),
+    FullName: new ModelSchemaValidator({
+      name: "FullName",
+      sqlType: sql.NVarChar,
+    }),
     Password: new ModelSchemaValidator({
       name: "Password",
       sqlType: sql.VarChar,

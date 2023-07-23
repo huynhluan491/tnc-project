@@ -8,7 +8,7 @@ const StatusSchema = new ModelSchema(
       sqlType: sql.Int,
     }),
     StatusName: new ModelSchemaValidator({
-      StatusName: "StatusName",
+      name: "StatusName",
       sqlType: sql.NVarChar,
     }),
     TypeStatus: new ModelSchemaValidator({

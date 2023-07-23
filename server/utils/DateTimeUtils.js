@@ -51,7 +51,6 @@ exports.convertMillisecondsToDateTime = (
   if (add7h) {
     ms += this.convertToMilliseconds("7h");
   }
-  console.log(ms);
   const converted = moment(ms).toISOString();
   const vnDateTimeString = moment(converted)
     .tz("Asia/Ho_Chi_Minh")
@@ -81,4 +80,12 @@ exports.calculateTimeDifference = (start, end, getBoolen = false) => {
     return diff > 0;
   }
   return diff;
+};
+
+/**
+ * convert date time to YYYY-MM-DD HH:mm:ss format
+ **/
+exports.convertSqlDateTimeToUIDateTime = (sqlDateTime) => {
+  const converted = moment(sqlDateTime).format("DD-MM-YYYY HH:mm:ss");
+  return converted;
 };

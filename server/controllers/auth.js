@@ -92,14 +92,14 @@ exports.protect = async (req, res, next) => {
     req.cookies.user = newToken.Token;
     req.cookies.RefreshToken = newToken.RefreshToken;
     req.user = newToken.User;
-
+    console.log(req.user);
     res.cookie("user", newToken.Token, {
       httpOnly: true,
     });
     res.cookie("ruser", newToken.RefreshToken, {
       httpOnly: true,
     });
-    res.cookie("csrf-token", newToken.CsrfToken, {secure: true});
+    res.cookie("csrf-token", newToken.CsrfToken);
   } catch (e) {
     console.error(e);
     return res
@@ -115,6 +115,7 @@ exports.protect = async (req, res, next) => {
 //roles
 exports.restrictTo = (roles) => {
   return async (req, res, next) => {
+    console.log(req.user);
     if (utils.checkRole(req, roles)) {
       next();
     } else {

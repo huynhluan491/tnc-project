@@ -27,7 +27,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3001/api/v1/order/?userID=1",
+							"raw": "http://localhost:3001/api/v1/order/product/?userID=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -37,12 +37,13 @@
 								"api",
 								"v1",
 								"order",
+								"product",
 								""
 							],
 							"query": [
 								{
 									"key": "userID",
-									"value": "1"
+									"value": "2"
 								}
 							]
 						}
@@ -64,7 +65,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3001/api/v1/order",
+							"raw": "http://localhost:3001/api/v1/order/product",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -73,7 +74,8 @@
 							"path": [
 								"api",
 								"v1",
-								"order"
+								"order",
+								"product"
 							]
 						}
 					},
@@ -94,7 +96,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3001/api/v1/order",
+							"raw": "http://localhost:3001/api/v1/order/product/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -103,7 +105,9 @@
 							"path": [
 								"api",
 								"v1",
-								"order"
+								"order",
+								"product",
+								""
 							]
 						}
 					},
@@ -115,7 +119,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/api/v1/order/?ProductID=1&OrderID=2",
+							"raw": "http://localhost:3001/api/v1/order/product/?ProductID=1&OrderID=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -125,6 +129,7 @@
 								"api",
 								"v1",
 								"order",
+								"product",
 								""
 							],
 							"query": [
@@ -138,6 +143,14 @@
 								}
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "get orders by user id",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
@@ -340,7 +353,7 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "get avatar product",
 					"request": {
 						"method": "GET",
 						"header": [],

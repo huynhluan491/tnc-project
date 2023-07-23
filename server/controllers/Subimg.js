@@ -162,7 +162,7 @@ exports.getFileSubImage = async (req, res) => {
     }
   }
   res.status(200).json({
-    data: arr,
+    Data: arr,
   });
 };
 exports.saveFileSubImage = async (req, res) => {
