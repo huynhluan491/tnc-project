@@ -114,11 +114,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getCategories() {
-    this.categoryService.getData(1, 20).subscribe((res) => {
-      for (let i = 0; i < res.Data.length; i++) {
-        this.productCategories[i]['CategoryName'] = res.Data[i]['CategoryName'];
-      }
-    });
+    this.categoryService
+      .getData(1, 20)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
+        for (let i = 0; i < res.Data.length; i++) {
+          this.productCategories[i]['CategoryName'] =
+            res.Data[i]['CategoryName'];
+        }
+      });
   }
 
   ngOnDestroy(): void {}

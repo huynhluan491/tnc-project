@@ -8,39 +8,45 @@ import { StorageService } from "../p-layout/shared/services/storage.service";
 import { RegisterPayload } from "./registerPayload";
 
 const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json'})
-}
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+};
 
 @Injectable({ providedIn: 'root' })
-
 export class AuthService {
-    loginURL: 'http://localhost:3001/api/v1/user/login';
-    private currentUserSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-    private currentUser: Observable<DTOUser>;
-    private isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  loginURL: 'http://localhost:3001/api/v1/user/login';
+  private currentUserSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+    null
+  );
+  private currentUser: Observable<DTOUser>;
+  private isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
 
-    constructor( private http: HttpClient, private storageService: StorageService) {
-        this.currentUserSubject = new BehaviorSubject<DTOUser>(JSON.parse(localStorage.getItem('currentUser')));
-        this.currentUser = this.currentUserSubject.asObservable();  
-    }
+  constructor(
+    private http: HttpClient,
+    private storageService: StorageService
+  ) {
+    this.currentUserSubject = new BehaviorSubject<DTOUser>(
+      JSON.parse(localStorage.getItem('currentUser'))
+    );
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
 
-    public get currentUserValue(): DTOUser {
-        return this.currentUserSubject.value;
-    }
+  public get currentUserValue(): DTOUser {
+    return this.currentUserSubject.value;
+  }
 
-    getCurrentUserValue(): Observable<DTOUser> {
-        return this.currentUserSubject;
-    }
+  getCurrentUserValue(): Observable<DTOUser> {
+    return this.currentUserSubject;
+  }
 
-    get _isLoggedIn(): Observable<boolean> {
-        const isLoggedIn = this.storageService.isLoggedIn();
-        this.isLoggedIn.next(isLoggedIn);
-        return this.isLoggedIn.asObservable();
-    }
+  get _isLoggedIn(): Observable<boolean> {
+    return this.isLoggedIn.asObservable();
+  }
 
-    setLoginState(state: boolean): void {
-        this.isLoggedIn.next(state);
-    }
+  setLoginState(state: boolean): void {
+    this.isLoggedIn.next(state);
+  }
 
     login(user: LoginPayload) {
         return this.http.post<any>(`${environment.apiUrl}/user/login`, user, httpOptions)
