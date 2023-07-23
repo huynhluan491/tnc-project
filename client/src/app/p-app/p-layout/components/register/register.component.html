@@ -59,6 +59,6 @@
         />
       </div>
     </ng-container>
-    <button kendoButton [theme]="'info'" (click)="onSubmit($event)">{{isRegister ? 'Đăng kí' : 'Đăng nhập'}}</button>
+    <div class="submit-btn"><button kendoButton (click)="onSubmit($event)">{{isRegister ? 'Đăng kí' : 'Đăng nhập'}}</button></div>
   </form>
 </div>
