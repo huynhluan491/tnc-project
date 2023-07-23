@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, SkipSelf } from '@angular/core';
 import { RegisterService } from '../../shared/services/register.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { confirmPassword } from '../../shared/directives/registerationForm.directive';
 import { AuthService } from 'src/app/p-app/http-interceptors/auth.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -64,16 +64,43 @@ export class RegisterComponent implements OnInit {
     this.isRegister = !this.isRegister;
   }
 
+  getFormValidationErrors() {
+    Object.keys(this.registerForm.controls).forEach(key => {
+      const controlErrors: ValidationErrors = this.registerForm.get(key).errors;
+      if (controlErrors != null) {
+        Object.keys(controlErrors).forEach(keyError => {
+         console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
+        });
+      }
+    });
+  }
+
   onSubmit(e: any): void {
     e.preventDefault();
     this.submitted = true;
+    this.getFormValidationErrors();
+    
     if (this.isRegister && !this.registerForm.invalid) {
-    } else if (!this.isRegister && !this.loginForm.invalid){
+      const registerInfo = this.registerForm.value;
+      this.authService.signUp(registerInfo).pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        res => {
+          if (res.Code === 200) {
+            const { UserID, CreatedAt, ...registeredUser} = res.Data;
+            this.storageService.saveUser(registeredUser);
+            this.registerService.closeRegisterForm();
+            this.authService.setLoginState(true);
+          } else {
+            this.notificationService.onError('Đăng kí thất bại');
+          }
+        }
+      )
+    } 
+    else if (!this.isRegister && !this.loginForm.invalid)
+    {
       this.authService.login(this.loginForm.value).pipe(takeUntil(this.ngUnsubscribe)).subscribe(
         data => {
           if (data.Code === 200) {
             this.registerService.closeRegisterForm();
-            console.log('2');
             this.notificationService.onSuccess('Đăng nhập thành công');
           } else {
             this.notificationService.onError('Đăng nhập thất bại');
