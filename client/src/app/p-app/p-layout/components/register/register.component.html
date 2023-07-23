@@ -23,12 +23,12 @@
         #userName
         formControlName="UserName"
       />
-      <div *ngIf="submitted && _loginForm['UserName'].errors" class="invalid-feedback">
+      <!-- <div *ngIf="submitted && _loginForm['UserName'].errors" class="invalid-feedback">
         <div *ngIf="_loginForm['UserName'].errors['required']">Vui lòng nhập tên tài khoản</div>
       </div>
       <div *ngIf="submitted && _registerForm['UserName'].errors" class="invalid-feedback">
         <div *ngIf="_registerForm['UserName'].errors['required']">Vui lòng nhập tên tài khoản</div>
-      </div>
+      </div> -->
     </div>
     <div class="register-input">
       <label class="register-label" [for]="password"> Mật khẩu </label>
@@ -39,12 +39,12 @@
         type="password"
         #password
       />
-      <div *ngIf="submitted && _loginForm['Password'].errors" class="invalid-feedback">
+      <!-- <div *ngIf="submitted && _loginForm['Password'].errors" class="invalid-feedback">
         <div *ngIf="_loginForm['Password'].errors['required']">Vui lòng nhập mật khẩu</div>
       </div>
       <div *ngIf="submitted && _registerForm['Password'].errors" class="invalid-feedback">
         <div *ngIf="_registerForm['Password'].errors['required']">Vui lòng nhập mật khẩu</div>
-      </div>
+      </div> -->
     </div>
     <ng-container *ngIf="isRegister">
       <div class="register-input">
@@ -67,9 +67,9 @@
           type="email"
           #email
         />
-        <div *ngIf="submitted && _registerForm['Email'].errors" class="invalid-feedback">
+        <!-- <div *ngIf="submitted && _registerForm['Email'].errors" class="invalid-feedback">
           <div *ngIf="_registerForm['Email'].errors['required']">Vui lòng nhập mật khẩu</div>
-        </div>
+        </div> -->
       </div>
     </ng-container>
     <div class="submit-btn"><button kendoButton (click)="onSubmit($event)">{{isRegister ? 'Đăng kí' : 'Đăng nhập'}}</button></div>
