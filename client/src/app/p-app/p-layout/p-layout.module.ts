@@ -25,6 +25,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { IconsModule } from '@progress/kendo-angular-icons';
+import { VnCurrencyPipe } from './shared/pipe/vn-currency.pipe';
 @NgModule({
   declarations: [
     LayoutDefault,
@@ -40,6 +41,7 @@ import { IconsModule } from '@progress/kendo-angular-icons';
     PercentagePipe,
     CartComponent,
     RegisterComponent,
+    VnCurrencyPipe,
   ],
   imports: [
     CommonModule,

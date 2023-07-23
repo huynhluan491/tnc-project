@@ -85,7 +85,7 @@ export class RegisterComponent implements OnInit {
       this.authService.signUp(registerInfo).pipe(takeUntil(this.ngUnsubscribe)).subscribe(
         res => {
           if (res.Code === 200) {
-            const { UserID, CreatedAt, ...registeredUser} = res.Data;
+            const { CreatedAt, ...registeredUser} = res.Data;
             this.storageService.saveUser(registeredUser);
             this.registerService.closeRegisterForm();
             this.authService.setLoginState(true);
@@ -102,7 +102,7 @@ export class RegisterComponent implements OnInit {
           if (data.Code === 200) {
             this.registerService.closeRegisterForm();
             this.notificationService.onSuccess('Đăng nhập thành công');
-            this.reloadPage();
+
           } else {
             this.notificationService.onError('Đăng nhập thất bại');
           }
