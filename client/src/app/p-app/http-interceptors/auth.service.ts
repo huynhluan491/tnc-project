@@ -18,9 +18,7 @@ export class AuthService {
     null
   );
   private currentUser: Observable<DTOUser>;
-  private isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    false
-  );
+  private isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.storageService.isLoggedIn());
 
   constructor(
     private http: HttpClient,
@@ -41,6 +39,7 @@ export class AuthService {
   }
 
   get _isLoggedIn(): Observable<boolean> {
+    console.log('log', this.isLoggedIn.value);
     return this.isLoggedIn.asObservable();
   }
 
@@ -51,7 +50,7 @@ export class AuthService {
     login(user: LoginPayload) {
         return this.http.post<any>(`${environment.apiUrl}/user/login`, user, httpOptions)
             .pipe(map(user => {
-                const { UserID, CreatedAt, ...loggedInUser} = user.Data.User;
+                const { CreatedAt, ...loggedInUser} = user.Data.User;
                 this.storageService.saveUser(loggedInUser);
                 this.currentUserSubject.next(user.Data);
                 this.setLoginState(true);
