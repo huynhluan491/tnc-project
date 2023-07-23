@@ -20,6 +20,7 @@ import { Route, Router } from '@angular/router';
 import { NotificationPopupService } from '../../shared/services/notification.service';
 import { CategoryService } from '../../shared/services/category.service';
 import { OrderService } from '../../shared/services/order.service';
+import { DTOResponse } from '../../shared/dto/DTOResponse';
 
 @Component({
   selector: 'app-p-header',
@@ -110,9 +111,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.orderService
       .getData(1, 20, `?userID=${userId}`)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((res: any) => {
-        this.storageService.saveOrders(res);
-        this.cartItems = res.TotalAmount;
+      .subscribe((res: DTOResponse) => {
+        this.storageService.saveOrders(res.Data);
+        this.cartItems = res.Data.TotalAmount;
       });
   }
 
@@ -145,7 +146,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.userName = '';
         this.notificationService.onSuccess('Đăng xuất thành công');
         this.route.navigate(['']);
-        // window.location.reload();
+        window.location.reload();
       });
     }
   }

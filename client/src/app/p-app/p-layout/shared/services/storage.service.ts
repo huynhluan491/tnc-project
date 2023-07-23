@@ -31,7 +31,10 @@ export class StorageService {
     window.sessionStorage.removeItem(ORDER_KEY);
     window.sessionStorage.setItem(
       ORDER_KEY,
-      JSON.stringify({ totalAmount: data.TotalAmount, orders: data.Data })
+      JSON.stringify({
+        totalAmount: data.TotalAmount,
+        orders: data.DataInOrder,
+      })
     );
   }
 
