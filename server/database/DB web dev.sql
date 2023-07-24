@@ -263,33 +263,16 @@ select *
 FROM Orders
 where OrderID = 2
 
-select Orders.*,
-	LS_Status.StatusName,
-	Payment.PaymentName,
-	Order_Details.TotalPrice,
-	Order_Details.TotalAmount
-from Orders
-	inner join LS_Status on Orders.StatusID = LS_Status.StatusID
-	inner join Payment on Orders.PaymentID = Payment.PaymentID
-	inner join
-	(
-    select Order_Details.OrderID,
-		sum(Order_Details.Amount * Product.Price) as TotalPrice,
-		count(Order_Details.Amount) as TotalAmount
+use tncshop
+SELECT *
+from Users
+	inner join Orders on Users.UserID = Orders.UserID
+	inner join (
+   select Order_Details.OrderID,
+		sum(Order_Details.Amount * Product.Price) as TotalPrice
 	from Order_Details
 		inner join Product
 		on Order_Details.ProductID = Product.ProductID
-	WHERE OrderID in (select OrderID
-	from Orders
-	where UserID = 1)
 	group by Order_Details.OrderID
-  ) as Order_Details
-	on Orders.OrderID = Order_Details.OrderID
-where UserID = 1
-
-select count(*) as count
-from Order_Details od
-	inner join Orders o ON od.OrderID = o.OrderID
-where od.OrderID in (select OrderID
-from Orders o
-where o.UserID = 1 and o.PaymentID = 0
+ ) as Order_Details on Order_Details.OrderID = Orders.OrderID
+where Users.UserID = 1

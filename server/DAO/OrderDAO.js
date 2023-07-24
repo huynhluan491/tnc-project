@@ -214,11 +214,24 @@ exports.getOrderByUserID = async (userID) => {
       userID
     )
     .query(query);
+  let resultTotalOrder = await dbPool
+    .request()
+    .input(
+      OrdersSchema.schema.UserID.name,
+      OrdersSchema.schema.UserID.sqlType,
+      userID
+    ).query(`
+      select count(*) as TotalOrder from ${OrdersSchema.schemaName} where UserID = @${OrdersSchema.schema.UserID.name}
 
-  return result.recordsets[0].map((x) => {
+    `);
+  const dataArr = result.recordsets[0].map((x) => {
     x.CreatedAt = DateTimeUtils.convertSqlDateTimeToUIDateTime(x.CreatedAt);
     return new DTOOrderCustomize(x);
   });
+  return {
+    Data: dataArr,
+    TotalOrder: resultTotalOrder.recordsets[0][0].TotalOrder,
+  };
 };
 
 exports.getOrderDetailsByOrderID = async (OrderID) => {

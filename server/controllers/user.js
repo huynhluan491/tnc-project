@@ -7,6 +7,7 @@ exports.getUserById = async (req, res) => {
   const id = req.params.id * 1;
   try {
     const user = await UserDAO.getUserById(id);
+    console.log("ok");
     if (!user) {
       return res
         .status(404) //NOT FOUND
@@ -24,7 +25,7 @@ exports.getUserById = async (req, res) => {
   } catch (e) {
     return res.status(500).json({
       Code: 500,
-      Msg: e,
+      Msg: e.toString(),
     });
   }
 };

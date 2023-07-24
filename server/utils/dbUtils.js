@@ -1,7 +1,6 @@
 exports.getFilterQuery = (schema, filter, page, pageSize, defaultSort) => {
   let filterStr;
   let paginationStr;
-
   const skip = (page - 1) * pageSize;
   paginationStr = "ORDER BY";
   let defaultSortStr = `${defaultSort} asc`;
@@ -209,7 +208,6 @@ exports.getFilterProductsQuery = (
   if (filter.sort) {
     sort = filter.sort;
   }
-
   delete filter.page;
   delete filter.pageSize;
   delete filter.sort;
@@ -222,7 +220,6 @@ exports.getFilterProductsQuery = (
     if (filter["CategoryID"]) {
       filterStr += "join category on category.categoryID = product.categoryID";
     }
-
     for (let criteria in filter) {
       const schemaProp = schema[criteria];
       if (schema[criteria]) {
@@ -297,7 +294,7 @@ exports.getFilterProductsQuery = (
           }
         }
         //filter category
-        if (criteria == "categoryID") {
+        if (criteria == "CategoryID") {
           if (schemaProp.type === "number") {
             filterStr += "Product." + criteria + " = " + filter[criteria] + "";
           }
@@ -327,8 +324,8 @@ exports.getFilterProductsQuery = (
         " OFFSET " + skip + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
     }
   }
-  // console.log("filter string", filterStr);
   filterStr = filterStr.replace(/[\n\r]/g, "");
+  console.log("filter string", filterStr, paginationStr);
   return {filterStr, paginationStr};
 };
 

@@ -1,9 +1,14 @@
-const UserSchema = require("../Model/User");
 const dbConfig = require("../database/dbconfig");
 const dbUtils = require("../utils/dbUtils");
 const bcrypt = require("bcryptjs");
+
 const StaticData = require("../utils/StaticData");
+const {OrdersSchema, Order_DetailsSchema} = require("../Model/Order");
+const UserSchema = require("../Model/User");
+const ProductSchema = require("../Model/Product");
+
 const DTOUser = require("../DTO/Default/DTOUser");
+const DTOUserCustomize = require("../DTO/Customize/DTOUserCustomize");
 const OrderDAO = require("../DAO/OrderDAO");
 const DateTimeUtils = require("../utils/DateTimeUtils");
 
@@ -130,17 +135,32 @@ exports.getUserById = async (id) => {
   if (!dbConfig.db.pool) {
     throw new Error("Not connected to db");
   }
+
+  const query = `
+
+ SELECT ${UserSchema.schemaName}.*, Order_Details.TotalPrice from ${UserSchema.schemaName}
+   inner join ${OrdersSchema.schemaName} on ${UserSchema.schemaName}.UserID = ${OrdersSchema.schemaName}.UserID
+   inner join (
+   select ${Order_DetailsSchema.schemaName}.OrderID,
+   sum(${Order_DetailsSchema.schemaName}.Amount * ${ProductSchema.schemaName}.Price) as TotalPrice
+    from ${Order_DetailsSchema.schemaName}
+   inner join ${ProductSchema.schemaName}
+    on ${Order_DetailsSchema.schemaName}.ProductID = ${ProductSchema.schemaName}.ProductID
+   group by ${Order_DetailsSchema.schemaName}.OrderID
+ ) as Order_Details on Order_Details.OrderID = ${OrdersSchema.schemaName}.OrderID
+ where ${UserSchema.schemaName}.${UserSchema.schema.UserID.name} = @${UserSchema.schema.UserID.name}
+
+
+ `;
   let result = await dbConfig.db.pool
     .request()
     .input(UserSchema.schema.UserID.name, UserSchema.schema.UserID.sqlType, id)
-    .query(
-      `SELECT * from ${UserSchema.schemaName} where ${UserSchema.schema.UserID.name} = @${UserSchema.schema.UserID.name}`
-    );
+    .query(query);
 
-  // console.log(result);
+  console.log(result);
 
   if (result.recordsets[0].length > 0) {
-    return new DTOUser(result.recordsets[0][0]);
+    return new DTOUserCustomize(result.recordsets[0][0]);
   }
   return null;
 };
