@@ -157,8 +157,6 @@ exports.getUserById = async (id) => {
     .input(UserSchema.schema.UserID.name, UserSchema.schema.UserID.sqlType, id)
     .query(query);
 
-  console.log(result);
-
   if (result.recordsets[0].length > 0) {
     return new DTOUserCustomize(result.recordsets[0][0]);
   }
@@ -179,10 +177,7 @@ exports.getUserByUserName = async (username) => {
     .query(
       `SELECT * from ${UserSchema.schemaName} where ${UserSchema.schema.UserName.name} = @${UserSchema.schema.UserName.name}`
     );
-  // console.log(
-  //   `SELECT * from ${UserSchema.schemaName} where ${UserSchema.schema.userName.name} = @${UserSchema.schema.userName.name}`
-  // );
-  // console.log("result", result);
+
   if (result.recordsets[0].length > 0) {
     return new DTOUser(result.recordsets[0][0]);
   }
