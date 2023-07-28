@@ -9,7 +9,9 @@ router
   .post(orderController.insertProductToOrder)
   .delete(orderController.deleteProductInOrder);
 
-router.route("/orderdetails/").get(orderController.getOrderDetailsByOrderID);
+router
+  .route("/orderdetails/")
+  .post(orderController.getOrderDetailsByOrderIDUserID);
 
 router.route("/:UserID").get(orderController.getOrderByUserID);
 // router.route("/:userID").get(orderController.getProductInCartByUSerID);

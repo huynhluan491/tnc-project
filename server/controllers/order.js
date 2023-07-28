@@ -22,10 +22,10 @@ exports.getProductInOrderByUSerID = async (req, res) => {
   }
 };
 
-exports.getOrderDetailsByOrderID = async (req, res) => {
+exports.getOrderDetailsByOrderIDUserID = async (req, res) => {
   try {
-    console.log(req.query.OrderID);
-    let result = await OrderDAO.getOrderDetailsByOrderID(req.query.OrderID);
+    const reqBody = req.body;
+    let result = await OrderDAO.getOrderDetailsByOrderIDUserID(req.body);
     res.status(200).json({
       Code: 200,
       Msg: null,

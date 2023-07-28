@@ -237,11 +237,14 @@ exports.getOrderByUserID = async (userID) => {
   };
 };
 
-exports.getOrderDetailsByOrderID = async (OrderID) => {
+exports.getOrderDetailsByOrderIDUserID = async (reqBody) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
+  const OrderID = reqBody.OrderID;
+  const UserID = reqBody.UserID;
+
   const query = `select  ${Order_DetailsSchema.schemaName}.OrderID,
   ${ProductSchema.schemaName}.ProductID,
   ${ProductSchema.schemaName}.Name,
@@ -250,14 +253,21 @@ exports.getOrderDetailsByOrderID = async (OrderID) => {
   ${Order_DetailsSchema.schemaName}.Amount
   from ${Order_DetailsSchema.schemaName}
   inner join ${ProductSchema.schemaName} on ${Order_DetailsSchema.schemaName}.ProductID = ${ProductSchema.schemaName}.ProductID
-  where OrderID = @${Order_DetailsSchema.schema.OrderID.name}
+  inner join ${OrdersSchema.schemaName} o on ${Order_DetailsSchema.schemaName}.OrderID = o.OrderID
+  where o.OrderID = @${Order_DetailsSchema.schema.OrderID.name} and o.UserID = @${OrdersSchema.schema.UserID.name}
   `;
+  console.log(query);
   let result = await dbPool
     .request()
     .input(
       OrdersSchema.schema.OrderID.name,
       OrdersSchema.schema.OrderID.sqlType,
       OrderID
+    )
+    .input(
+      OrdersSchema.schema.UserID.name,
+      OrdersSchema.schema.UserID.sqlType,
+      UserID
     )
     .query(query);
   return result.recordsets[0];

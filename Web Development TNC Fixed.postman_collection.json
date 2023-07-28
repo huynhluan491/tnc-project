@@ -155,12 +155,21 @@
 					"response": []
 				},
 				{
-					"name": "get order details by orderid",
+					"name": "get order details by orderid and userid",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"OrderID\" : 1,\r\n    \"UserID\" : 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:3001/api/v1/order/orderdetails/?OrderID=1",
+							"raw": "http://localhost:3001/api/v1/order/orderdetails",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -170,14 +179,7 @@
 								"api",
 								"v1",
 								"order",
-								"orderdetails",
-								""
-							],
-							"query": [
-								{
-									"key": "OrderID",
-									"value": "1"
-								}
+								"orderdetails"
 							]
 						}
 					},
@@ -940,6 +942,19 @@
 								"logout"
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "payment",
+			"item": [
+				{
+					"name": "get all payment",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
