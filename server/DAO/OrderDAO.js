@@ -109,7 +109,9 @@ exports.getProductInOderByUserID = async (userID) => {
       userID
     ).query(` select  p.*,od.Amount from Order_Details od
        inner join Product p on p.ProductID = od.ProductID
-       where od.OrderID in (select OrderID from Orders o where o.UserID = @UserID and PaymentID = 0)
+       inner join orders o on o.OrderID = od.OrderID
+       inner join LS_Status s on s.StatusID = o.StatusID
+       where od.OrderID in (select OrderID from Orders o where o.UserID = @UserID ) and o.StatusID =1 and s.TypeStatus =2
       `);
   let count = await dbPool
     .request()
@@ -119,7 +121,8 @@ exports.getProductInOderByUserID = async (userID) => {
       userID
     ).query(`select  sum(amount) as TotalAmount from Order_Details od
      inner join orders o on o.OrderID = od.OrderID
-    where od.OrderID in (select OrderID from Orders o where o.UserID = @UserID and o.PaymentID = 0)
+     inner join LS_Status s on s.StatusID = o.StatusID
+    where od.OrderID in (select OrderID from Orders o where o.UserID = @UserID ) and o.StatusID =1 and s.TypeStatus =2
   `);
   var dtos = result.recordsets[0].map(
     (element) => new DTOOrderDetailsProductCustomize(element)

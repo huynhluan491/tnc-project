@@ -29,6 +29,17 @@ exports.addPaymentIfNotExists = async (payment) => {
   return result.recordsets;
 };
 
+exports.getAllPayment = async () => {
+  if (!dbConfig.db.pool) {
+    throw new Error("Not connected to db");
+  }
+  const query = `
+  select * from ${PaymentSchema.schemaName}
+  `;
+  let result = await dbConfig.db.pool.request().query(query);
+  return result.recordsets[0];
+};
+
 exports.clearAll = async () => {
   query = `delete ${PaymentSchema.schemaName}  DBCC CHECKIDENT ('[${PaymentSchema.schemaName} ]', RESEED, 1);`;
   let result = await dbConfig.db.pool.request().query(query);
