@@ -44,11 +44,7 @@ export class CartComponent implements OnInit {
   }
 
   getTotalProducts() {
-    let sum = 0;
-    for (let product of this.productList) {
-      sum += product.Amount;
-    }
-    return sum;
+    return this.storageService.getOrders().totalAmount;
   }
 
   redirectToCheckout() {
