@@ -5,10 +5,10 @@ import { StorageService } from '../../p-layout/shared/services/storage.service';
 @Component({
   selector: 'app-personal-info',
   templateUrl: './personal-info.component.html',
-  styleUrls: ['./personal-info.component.scss']
+  styleUrls: ['./personal-info.component.scss'],
 })
 export class PersonalInfoComponent implements OnInit {
-  personalForm: FormGroup 
+  personalForm: FormGroup;
   fullName: string = '';
 
   constructor(private storageService: StorageService) {}
@@ -21,17 +21,18 @@ export class PersonalInfoComponent implements OnInit {
   }
 
   // convenience getter for easy access to form fields
-  get f() { return this.personalForm.controls; }
+  get f() {
+    return this.personalForm.controls;
+  }
 
   loadPersonalForm() {
     this.personalForm = new FormGroup({
       UserName: new FormControl(''),
+      FullName: new FormControl(''),
       Email: new FormControl('', Validators.email),
       Total: new FormControl(''),
-      Address: new FormControl('' ),
+      Address: new FormControl(''),
       Phone: new FormControl(''),
-    })
+    });
   }
-
-
 }
