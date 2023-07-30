@@ -18,9 +18,9 @@ exports.convertImageToBase64 = async (imageName, baseUrl = null) => {
   if (matchingFile) {
     const imagePath = path.join(dirPath, matchingFile);
     const imageData = await fs.promises.readFile(imagePath, "base64");
-    result = {url: `${baseUrl}/${imageName}`, base64: imageData};
+    result = {Url: `${baseUrl}/${imageName}`, Base64: imageData};
   } else {
-    result = {url: `${baseUrl}/${imageName}`, base64: null};
+    result = {Url: `${baseUrl}/${imageName}`, Base64: null};
   }
   return result;
 };
