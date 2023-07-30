@@ -33,14 +33,16 @@ exports.create_payment_url = async (req, res, next) => {
   var date = new Date();
 
   var createDate = dateFormat(date, "yyyymmddHHmmss");
-  var orderId = dateFormat(date, "HHmmss");
   date.setTime(date.getTime() + 15 * 60 * 1000);
   var expire = dateFormat(date, "yyyymmddHHMMss");
   console.log(new Date(date.getTime() + 60 * 60 * 60 * 60 * 2));
-  var amount = req.body.amount || 100000;
   var bankCode = req.body.bankCode || "";
+
+  var orderId = dateFormat(date, "HHmmss");
+  var amount = req.body.amount || 100000;
   var orderInfo = req.body.orderDescription || "Hai dzai";
   var orderType = req.body.orderType || "billpayment";
+
   var locale = req.body.language;
   if (!locale) {
     locale = "vn";

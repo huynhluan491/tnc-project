@@ -6,7 +6,9 @@ const path = require("path");
 const fs = require("fs");
 const DTOProduct = require("../DTO/Default/DTOProduct");
 exports.getProducts = async (req, res) => {
-  let form = req.body;
+  let filter = req.headers;
+
+  console.log(filter);
   if (form.CategoryName) {
     const cateid = await CategoryDAO.getCategoryIdByName(form["CategoryName"]);
     form.CategoryID = cateid;

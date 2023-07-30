@@ -6,6 +6,7 @@ const router = express.Router();
 
 router
   .route("/")
+  .get(productController.getProducts)
   .post(
     authController.protect,
     authController.restrictTo(StaticData.AUTH.Role),
@@ -16,8 +17,6 @@ router
     authController.restrictTo(StaticData.AUTH.Role),
     productController.deleteMultipleProductById
   );
-
-router.route("/search").post(productController.getProducts);
 
 router
   .route("/productnonpagination")

@@ -140,11 +140,10 @@ exports.getAllProducts = async (filter) => {
   const productsDTO = await Promise.all(
     products.map(async (element) => {
       const converted = await ImageUtils.convertImageToBase64(element.Image);
-      element.Base64Image = converted;
+      element.Base64Image = converted.Base64;
       return new DTOProductCustomize(element);
     })
   );
-  console.log(productsDTO);
 
   return {
     Page: page,
