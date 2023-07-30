@@ -211,7 +211,6 @@ exports.getFilterProductsQuery = (
   delete filter.page;
   delete filter.pageSize;
   delete filter.sort;
-  console.log(filter);
   // console.log("brand filter", filter["brand"]);
   if (filter) {
     filterStr = "";
@@ -222,6 +221,7 @@ exports.getFilterProductsQuery = (
     }
     for (let criteria in filter) {
       const schemaProp = schema[criteria];
+      console.log("criteria", schemaProp);
       if (schema[criteria]) {
         if (i > 0) {
           filterStr += " AND ";
@@ -325,7 +325,6 @@ exports.getFilterProductsQuery = (
     }
   }
   filterStr = filterStr.replace(/[\n\r]/g, "");
-  console.log("filter string", filterStr, paginationStr);
   return {filterStr, paginationStr};
 };
 

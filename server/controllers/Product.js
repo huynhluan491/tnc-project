@@ -6,16 +6,9 @@ const path = require("path");
 const fs = require("fs");
 const DTOProduct = require("../DTO/Default/DTOProduct");
 exports.getProducts = async (req, res) => {
-  let filter = req.headers;
-
-  console.log(filter);
-  if (form.CategoryName) {
-    const cateid = await CategoryDAO.getCategoryIdByName(form["CategoryName"]);
-    form.CategoryID = cateid;
-    delete form.CategoryName;
-  }
+  let reqHeader = req.headers;
   try {
-    const products = await ProductDAO.getAllProducts(form);
+    const products = await ProductDAO.getAllProducts(reqHeader);
     res.status(200).json({
       Code: 200,
       Msg: null,

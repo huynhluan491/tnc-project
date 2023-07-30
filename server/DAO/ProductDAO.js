@@ -1,14 +1,18 @@
 // const products = require("../../client/src/data/products.json");
 const sql = require("mssql");
+
 const ProductSchema = require("../Model/Product");
 const BrandSchema = require("../Model/Brand");
 const RatingSchema = require("../Model/Rating");
+
 const dbConfig = require("../database/dbconfig");
 const dbUtils = require("../utils/dbUtils");
 const DateTimeUtils = require("../utils/DateTimeUtils");
 const ImageUtils = require("../utils/ImageUtils");
 const StaticData = require("../utils/StaticData");
-const categoryController = require("../Controllers/Category");
+
+const CategoryDAO = require("./CategoryDAO");
+
 const DTOProductCustomize = require("../DTO/Customize/DTOProductCustomize");
 const DTOProduct = require("../DTO/Default/DTOProduct");
 exports.addProductIfNotExisted = async (product) => {
@@ -94,9 +98,33 @@ exports.getProductById = async (id) => {
   return new DTOProductCustomize(result.recordsets[0][0]);
 };
 
-exports.getAllProducts = async (filter) => {
+exports.getAllProducts = async (reqHeader) => {
   if (!dbConfig.db.pool) {
     throw new Error("Not connected to db");
+  }
+
+  let filter = {};
+  const {categoryname, brandid, price} = reqHeader;
+  const priceArr = price.split(",");
+  if (price) {
+    filter.Price = {};
+    priceArr.forEach((item) => {
+      const [key, value] = item.split(":");
+      filter.Price[key.trim()] = parseFloat(value);
+    });
+  }
+  if (categoryname) {
+    filter.CategoryName = categoryname;
+  }
+  if (brandid) {
+    filter.BrandID = brandid;
+  }
+  if (filter.CategoryName) {
+    const cateid = await CategoryDAO.getCategoryIdByName(
+      filter["CategoryName"]
+    );
+    filter.CategoryID = cateid;
+    delete filter.CategoryName;
   }
 
   const page = filter.page * 1 || 1;
