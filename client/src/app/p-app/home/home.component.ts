@@ -28,42 +28,42 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   productCategories = [
     {
-      subTitle: 'CHIẾN MỌI GAME',
+      subTitle: 'chân thực',
       img: 'assets/images/headphone.png',
       color: '#1A5DC4',
     },
     {
-      subTitle: 'CHIẾN MỌI GAME',
+      subTitle: 'thao tác dễ dàng',
       img: 'assets/images/keyboard.png',
       color: '#343332',
     },
     {
-      subTitle: 'CHIẾN MỌI GAME',
+      subTitle: 'mỏng nhẹ',
       img: 'assets/images/laptop.png',
       color: '#01F9C9',
     },
     {
-      subTitle: 'CHIẾN MỌI GAME',
+      subTitle: 'bền bỉ',
       img: 'assets/images/modem.png',
       color: '#FFCC3A',
     },
     {
-      subTitle: 'CHIẾN MỌI GAME',
+      subTitle: 'sang trọng',
       img: 'assets/images/phone.png',
       color: '#D12137',
     },
     {
-      subTitle: 'CHIẾN MỌI GAME',
+      subTitle: 'sống động',
       img: 'assets/images/ipad.png',
       color: '#FF9005',
     },
     {
-      subTitle: 'CHIẾN MỌI GAME',
+      subTitle: 'tiện lợi',
       img: 'assets/images/watch.png',
       color: '#FDF292',
     },
     {
-      subTitle: 'CHIẾN MỌI GAME',
+      subTitle: 'ảnh sắc nét',
       img: 'assets/images/tv.png',
       color: '#343D57',
     },

@@ -44,7 +44,8 @@ export class CartComponent implements OnInit {
   }
 
   getTotalProducts() {
-    return this.storageService.getOrders().totalAmount;
+    const amount = this.storageService.getOrders().totalAmount;
+    return amount ? amount : 0;
   }
 
   redirectToCheckout() {
