@@ -12,6 +12,7 @@ const ImageUtils = require("../utils/ImageUtils");
 const StaticData = require("../utils/StaticData");
 
 const CategoryDAO = require("./CategoryDAO");
+const BrandDAO = require("./BrandDAO");
 
 const DTOProductCustomize = require("../DTO/Customize/DTOProductCustomize");
 const DTOProduct = require("../DTO/Default/DTOProduct");
@@ -104,9 +105,10 @@ exports.getAllProducts = async (reqHeader) => {
   }
 
   let filter = {};
-  const {categoryname, brandid, price} = reqHeader;
-  const priceArr = price.split(",");
+  const {categoryname, brandname, price} = reqHeader;
+
   if (price) {
+    const priceArr = price.split(",");
     filter.Price = {};
     priceArr.forEach((item) => {
       const [key, value] = item.split(":");
@@ -116,8 +118,8 @@ exports.getAllProducts = async (reqHeader) => {
   if (categoryname) {
     filter.CategoryName = categoryname;
   }
-  if (brandid) {
-    filter.BrandID = brandid;
+  if (brandname) {
+    filter.BrandID = await BrandDAO.getBrandIDByBrandName(brandname);
   }
   if (filter.CategoryName) {
     const cateid = await CategoryDAO.getCategoryIdByName(
