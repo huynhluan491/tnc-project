@@ -112,6 +112,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .getData(1, 20, `?userID=${userId}`)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res: DTOResponse) => {
+        console.log(res);
+
         this.storageService.saveOrders(res.Data);
         this.cartItems = res.Data.TotalAmount;
       });

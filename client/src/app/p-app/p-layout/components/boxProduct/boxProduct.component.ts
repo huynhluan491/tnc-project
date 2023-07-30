@@ -15,6 +15,8 @@ export class BoxProductComponent implements OnChanges {
   readonly = true;
   inforProduct = 'infor-product';
   ngOnInit(): void {
+    console.log(this.data);
+
     this.calculateSalePrice();
     this.convertToPercentage();
   }

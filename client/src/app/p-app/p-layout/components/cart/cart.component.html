@@ -4,7 +4,9 @@
       *ngIf="!checkout"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      <p class="cart-title">Bạn đang có 0 sản phẩm trong giỏ hàng</p>
+      <p class="cart-title">
+        Bạn đang có {{ getTotalProducts() }} sản phẩm trong giỏ hàng
+      </p>
       <span
         class="k-icon k-i-close"
         style="cursor: pointer; font-size: 30px"
