@@ -24,11 +24,23 @@ export class OrderHistoryComponent implements OnInit {
   getPersonalOrders() {
     this.orderService.getDataById(this.userID).pipe(takeUntil(this.ngUnsubscribe$)).subscribe(
       res => {
+        console.log(res.Data.Data);
+        
         if (res.Code === 200) {
           this.orderGridView.next({
-            data: res.Data,
+            data: res.Data.Data,
             total: res.Data.length
           })
       }})
+  }
+
+  getOrderDetail(orderID: number) {
+    const body = {
+      OrderID: orderID,
+      UserID: this.userID
     }
+    this.orderService.getOrderDetail(body).pipe(takeUntil(this.ngUnsubscribe$)).subscribe(res => {
+      console.log(res);
+    })
+  }
 }

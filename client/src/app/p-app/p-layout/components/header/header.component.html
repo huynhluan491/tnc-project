@@ -83,7 +83,7 @@
                 <ul class="sub-menu-list">
                   <li
                     *ngFor="let subMenu of item.items"
-                    (click)="onNavigate('product/' + subMenu.path)"
+                    (click)="onNavigate('category/' + subMenu.path)"
                   >
                     {{ subMenu.text | uppercase }}
                   </li>

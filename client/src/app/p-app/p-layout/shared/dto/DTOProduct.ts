@@ -14,30 +14,18 @@ export class DTOProduct {
   ImageSrc?: string;
 
   constructor(
-    productID: number,
-    stock: number,
-    name: string,
-    favorite: number,
-    categoryID: number,
-    price: number,
-    brandID: number,
-    image: string,
-    sale: number,
-    description: string,
-    statusID: number,
-    createdAt: string
   ) {
-    this.ProductID = productID;
-    this.Stock = stock;
-    this.Name = name;
-    this.Favorite = favorite;
-    this.CategoryID = categoryID;
-    this.Price = price;
-    this.BrandID = brandID;
-    this.Image = image;
-    this.Sale = sale;
-    this.Description = description;
-    this.StatusID = statusID;
-    this.createdAt = createdAt;
+    this.ProductID = 0;
+    this.Stock = 0;
+    this.Name = '';
+    this.Favorite = null;
+    this.CategoryID = null;
+    this.Price = null;
+    this.BrandID = null;
+    this.Image = null;
+    this.Sale = null;
+    this.Description = '';
+    this.StatusID = null;
+    this.createdAt = '';
   }
 }
