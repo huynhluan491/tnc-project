@@ -211,7 +211,7 @@ exports.getFilterProductsQuery = (
   delete filter.page;
   delete filter.pageSize;
   delete filter.sort;
-  // console.log(filter);
+  console.log(filter);
   // console.log("brand filter", filter["brand"]);
   if (filter) {
     filterStr = "";
@@ -301,7 +301,7 @@ exports.getFilterProductsQuery = (
           i++;
         }
         //filter name
-        if (criteria == "name" && filter[criteria].length > 0) {
+        if (criteria == "Name" && filter[criteria].length > 0) {
           filterStr +=
             `dbo.fuConvertToUnsign1(${criteria})` +
             " like N'%' + " +

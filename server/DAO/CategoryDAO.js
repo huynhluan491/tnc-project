@@ -58,7 +58,7 @@ exports.getCategoryIdByName = async (name) => {
       name
     )
     .query(
-      `select categoryID from ${CategorySchema.schemaName} where ${CategorySchema.schema.CategoryName.name} = @${CategorySchema.schema.CategoryName.name}`
+      `select CategoryID from ${CategorySchema.schemaName} where ${CategorySchema.schema.CategoryName.name} = @${CategorySchema.schema.CategoryName.name}`
     );
   return result.recordsets[0][0].CategoryID;
 };

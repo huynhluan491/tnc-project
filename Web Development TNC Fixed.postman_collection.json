@@ -191,12 +191,21 @@
 			"name": "products",
 			"item": [
 				{
-					"name": "get all products",
+					"name": "get all products/filter product",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// {\r\n//     //\"Name\" : \"Laptop Apple MacBook Air M1\",\r\n//     \"Price\" :{\r\n//         \"gte\" : \"2790000\",\r\n//         \"lt\" : \"10000000\"\r\n//     }\r\n// }\r\n\r\n\r\n//get all\r\n{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:3001/api/v1/product/?page=2&BrandID=3",
+							"raw": "http://localhost:3001/api/v1/product/search",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -206,7 +215,7 @@
 								"api",
 								"v1",
 								"product",
-								""
+								"search"
 							],
 							"query": [
 								{
@@ -218,19 +227,6 @@
 									"key": "pageSize",
 									"value": "10",
 									"disabled": true
-								},
-								{
-									"key": "categoryID",
-									"value": "3",
-									"disabled": true
-								},
-								{
-									"key": "page",
-									"value": "2"
-								},
-								{
-									"key": "BrandID",
-									"value": "3"
 								}
 							]
 						}
@@ -952,6 +948,14 @@
 			"item": [
 				{
 					"name": "get all payment",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
 					"request": {
 						"method": "GET",
 						"header": []
