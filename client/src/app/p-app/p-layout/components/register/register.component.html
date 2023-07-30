@@ -21,8 +21,8 @@
         class="register-text"
         type="text"
         #userName
-        [FormControl]="loginForm.get('UserName').value"
-      />
+        formControlName="UserName"
+        />
       <div *ngIf="submitted && _loginForm['UserName'].errors" class="invalid-feedback">
         <div *ngIf="_loginForm['UserName'].errors['required']">Vui lòng nhập tên tài khoản</div>
       </div>

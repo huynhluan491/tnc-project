@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { DTOOrder } from '../dto/DTOOrder';
 import { DTOResponse } from '../dto/DTOResponse';
 import { DTOOrderDetailPayload } from '../dto/DTOOrderDetailPayload.';
+import { environment } from 'src/app/environments/environments';
 
 @Injectable({
   providedIn: 'root',
@@ -30,12 +31,12 @@ export class OrderService {
   }
 
   getOrderDetail(payload: DTOOrderDetailPayload): Observable<DTOResponse> {
-    return this.http.post<DTOResponse>('/api/v1/order/orderdetails', payload);
+    return this.http.post<DTOResponse>(`${environment.apiUrl}/order/orderdetails`, payload);
   }
 
   getDataById(id: number): Observable<DTOResponse> {
     return this.http
-      .get<DTOResponse>(`/api/v1/order/${id}`)
+      .get<DTOResponse>(`${environment.apiUrl}/order/${id}`)
       .pipe(catchError(this.handleError));
   }
 

@@ -5,6 +5,8 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { DTOProduct } from '../dto/DTOProduct';
 import { DTOResponse } from '../dto/DTOResponse';
 import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from 'src/app/environments/environments';
+import { DTOProductFilter } from '../dto/DTOProductFilter.dto';
 @Injectable({
   providedIn: 'root',
 })
@@ -26,6 +28,10 @@ export class ProductService {
         params,
       })
       .pipe(catchError(this.handleError));
+  }
+
+  getProduct(filter: DTOProductFilter): Observable<DTOResponse> {
+    return this.http.post<DTOResponse>(`${environment.apiUrl}/product/search`, filter);
   }
 
   getDataById(id: number): Observable<DTOResponse> {
@@ -51,6 +57,8 @@ export class ProductService {
       .delete<DTOResponse>(`/api/v1/product/${id}`)
       .pipe(catchError(this.handleError));
   }
+
+
 
   getProductImage(imageName: string): Observable<any> {
     return this.http

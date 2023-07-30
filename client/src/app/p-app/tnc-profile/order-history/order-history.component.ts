@@ -27,6 +27,8 @@ export class OrderHistoryComponent implements OnInit {
         console.log(res.Data.Data);
         
         if (res.Code === 200) {
+          console.log('check');
+          
           this.orderGridView.next({
             data: res.Data.Data,
             total: res.Data.length

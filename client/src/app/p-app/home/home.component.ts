@@ -1,9 +1,10 @@
 import { ProductService } from './../p-layout/shared/services/product.service';
 import { Component, OnDestroy, OnInit, SkipSelf } from '@angular/core';
 import { LayoutAPIService } from '../p-layout/shared/services/layout-api.service';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, Subscription, concatMap, takeUntil, tap } from 'rxjs';
 import { CategoryService } from '../p-layout/shared/services/category.service';
 import { DTOResponse } from '../p-layout/shared/dto/DTOResponse';
+import { DTOProductFilter } from '../p-layout/shared/dto/DTOProductFilter.dto';
 
 @Component({
   selector: 'app-p-home',
@@ -108,6 +109,30 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.sliderProducts = res.Data;
       });
   }
+
+  // getListProduct() {
+  //   const param: DTOProductFilter = {
+  //     Page: 1,
+  //     PageSize: 15,
+  //   }
+  //   this.productService.getProduct(param).pipe(
+  //     concatMap((res) => {
+  //       if (res.Code === 200) {
+  //         res.Data.forEach((product) => {
+  //           this.getProductImage(product.Image).pipe(
+  //             takeUntil(this.ngUnsubscribe),
+  //             tap((imgSrc) => {
+  //               product.imageSrc = imgSrc;
+  //             })
+  //           )
+  //         })
+  //       }
+  //       this.sliderProducts = [...res.Data];
+  //       return 
+  //     }),
+  //     takeUntil(this.ngUnsubscribe)
+  //   ).subscribe()
+  // }
 
   getProductImage(imageName: string) {
     return this.productService.getProductImage(imageName);
