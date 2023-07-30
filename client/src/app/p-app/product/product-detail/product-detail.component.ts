@@ -72,12 +72,11 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       .pipe(
         pluck('productname'),
         switchMap((params) => {
-          console.log(params);
+          this.productName = params;
           return of(params);
         }),
         filter((product) => !product)
       )
-      .subscribe((value) => console.log(this.breadCrumbList));
     this.GetTestProductDetail();
   }
 
