@@ -5,17 +5,15 @@ const path = require("path");
 const fs = require("fs");
 const DTOProduct = require("../DTO/Default/DTOProduct");
 exports.getProducts = async (req, res) => {
-  console.log("req.query", req.query);
-  if (req.query.categoryName) {
-    const cateid = await CategoryDAO.getCategoryIdByName(
-      req.query["categoryName"]
-    );
-    req.query.categoryID = cateid;
-
-    delete req.query.categoryName;
+  let form = req.body;
+  if (form.CategoryName) {
+    const cateid = await CategoryDAO.getCategoryIdByName(form["CategoryName"]);
+    form.CategoryID = cateid;
+    delete form.CategoryName;
+    console.log(form);
   }
   try {
-    const products = await ProductDAO.getAllProducts(req.query);
+    const products = await ProductDAO.getAllProducts(form);
     res.status(200).json({
       Code: 200,
       Msg: null,

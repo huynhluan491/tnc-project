@@ -36,16 +36,14 @@ exports.login = async (req, res) => {
     }
   } catch (e) {
     if (code === 1) {
-      res.status(200).json({
+      res.status(404).json({
         Code: 200,
         Msg: `OK, Sign Up & Login Fail !!${e.toString()}`,
-        Data: result,
       });
     } else {
-      res.status(200).json({
+      res.status(404).json({
         Code: 200,
-        Msg: "OK",
-        Data: result,
+        Msg: "Fail",
       });
     }
   }

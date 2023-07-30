@@ -1,6 +1,11 @@
 import { Component, Input, OnInit, SkipSelf } from '@angular/core';
 import { RegisterService } from '../../shared/services/register.service';
-import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { confirmPassword } from '../../shared/directives/registerationForm.directive';
 import { AuthService } from 'src/app/p-app/http-interceptors/auth.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -55,11 +60,10 @@ export class RegisterComponent implements OnInit {
   get _loginForm() {
     return this.loginForm.controls;
   }
-  
+
   get _registerForm() {
     return this.registerForm.controls;
   }
-
 
   toggleShowRegister(): void {
     this.registerService.toggleRegisterShown();
@@ -70,11 +74,14 @@ export class RegisterComponent implements OnInit {
   }
 
   getFormValidationErrors() {
-    Object.keys(this.registerForm.controls).forEach(key => {
+    Object.keys(this.registerForm.controls).forEach((key) => {
       const controlErrors: ValidationErrors = this.registerForm.get(key).errors;
       if (controlErrors != null) {
-        Object.keys(controlErrors).forEach(keyError => {
-         console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
+        Object.keys(controlErrors).forEach((keyError) => {
+          console.log(
+            'Key control: ' + key + ', keyError: ' + keyError + ', err value: ',
+            controlErrors[keyError]
+          );
         });
       }
     });
@@ -84,31 +91,29 @@ export class RegisterComponent implements OnInit {
     e.preventDefault();
     this.submitted = true;
     this.getFormValidationErrors();
-    
-    console.log(!this.registerForm.invalid);
-    
 
     if (this.isRegister) {
       const registerInfo = this.registerForm.value;
-      this.authService.signUp(registerInfo).pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-        res => {
+      this.authService
+        .signUp(registerInfo)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((res) => {
           if (res.Code === 200) {
             const { CreatedAt, ...registeredUser} = res.Data.User;
             console.log(registeredUser);
-            
+
             this.storageService.saveUser(registeredUser);
             this.registerService.closeRegisterForm();
             this.authService.setLoginState(true);
           } else {
             this.notificationService.onError('Đăng kí thất bại');
           }
-        }
-      )
-    } 
-    else if (!this.isRegister && !this.loginForm.invalid)
-    {
-      this.authService.login(this.loginForm.value).pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-        data => {
+        });
+    } else if (!this.isRegister) {
+      this.authService
+        .login(this.loginForm.value)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((data) => {
           if (data.Code === 200) {
             this.registerService.closeRegisterForm();
             this.notificationService.onSuccess('Đăng nhập thành công');
