@@ -1,7 +1,10 @@
 <div class="swiper-slide" (click)="navigateDetail()">
   <div class="wrapper">
     <div class="avatar-product">
-      <img [src]="data.ImageSrc" [alt]="data.Image" />
+      <img
+        [src]="'data:image/jpeg;base64,' + data.Base64Image"
+        [alt]="data.Image"
+      />
     </div>
     <div [class]="inforProduct">
       <div class="title-product">

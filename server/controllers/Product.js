@@ -1,19 +1,14 @@
 const ProductDAO = require("../DAO/ProductDAO");
 const CategoryDAO = require("../DAO/CategoryDAO");
 // const ProductSchema = require("../model/Product");
+const ImageUtils = require("../utils/ImageUtils");
 const path = require("path");
 const fs = require("fs");
 const DTOProduct = require("../DTO/Default/DTOProduct");
 exports.getProducts = async (req, res) => {
-  let form = req.body;
-  if (form.CategoryName) {
-    const cateid = await CategoryDAO.getCategoryIdByName(form["CategoryName"]);
-    form.CategoryID = cateid;
-    delete form.CategoryName;
-    console.log(form);
-  }
+  let reqHeader = req.headers;
   try {
-    const products = await ProductDAO.getAllProducts(form);
+    const products = await ProductDAO.getAllProducts(reqHeader);
     res.status(200).json({
       Code: 200,
       Msg: null,
@@ -193,24 +188,11 @@ exports.updateProductById = async (req, res) => {
 
 exports.getFileProductImage = async (req, res) => {
   let imageName = req.params.imageName;
-  let result;
   const baseUrl = `${req.protocol}://${req.get(
     "host"
   )}/api/images/subImgimages/`;
-  const dirPath = path.join(
-    __dirname,
-    "..",
-    "dev-Data",
-    "productImages"
-    // imageName + ".jpg"
-  );
-  const files = await fs.promises.readdir(dirPath);
-  const matchingFile = files.find((file) => file.startsWith(imageName));
-  if (matchingFile) {
-    const imagePath = path.join(dirPath, matchingFile);
-    const imageData = await fs.promises.readFile(imagePath, "base64");
-    result = {url: `${baseUrl}/${imageName}`, base64: imageData};
-  }
+  const result = await ImageUtils.convertImageToBase64(imageName, baseUrl);
+  console.log(result);
   res.status(200).json({
     Data: result,
   });

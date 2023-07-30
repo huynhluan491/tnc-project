@@ -65,3 +65,20 @@ exports.getBrandById = async (id) => {
   }
   return result.recordsets[0][0];
 };
+
+exports.getBrandIDByBrandName = async (name) => {
+  if (!dbConfig.db.pool) {
+    throw new Error("Not connected to db");
+  }
+  let request = dbConfig.db.pool.request();
+  let result = await request
+    .input(
+      `${BrandSchema.schema.BrandName.name}`,
+      BrandSchema.schema.BrandName.sqlType,
+      name
+    )
+    .query(
+      `select BrandID from ${BrandSchema.schemaName} where ${BrandSchema.schema.BrandName.name} = @${BrandSchema.schema.BrandName.name}`
+    );
+  return result.recordsets[0][0].BrandID;
+};
