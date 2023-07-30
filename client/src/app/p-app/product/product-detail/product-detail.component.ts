@@ -70,15 +70,9 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.params
       .pipe(
-        tap(
-          (params) =>
-            (this.breadCrumbList = [
-              params['categoryname'],
-              params['productname'],
-            ])
-        ),
+        pluck('productname'),
         switchMap((params) => {
-          console.log(this.breadCrumbList);
+          console.log(params);
           return of(params);
         }),
         filter((product) => !product)

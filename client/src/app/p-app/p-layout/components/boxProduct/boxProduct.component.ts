@@ -1,5 +1,6 @@
 import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { DTOProduct } from '../../shared/dto/DTOProduct';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'box-product',
@@ -14,6 +15,9 @@ export class BoxProductComponent implements OnChanges {
   hovered = 0;
   readonly = true;
   inforProduct = 'infor-product';
+
+  constructor(private route: Router) {}
+
   ngOnInit(): void {
     this.calculateSalePrice();
     this.convertToPercentage();
@@ -33,5 +37,9 @@ export class BoxProductComponent implements OnChanges {
   private convertToPercentage(): string {
     this.saleConvert = (this['data'].Sale * 100).toString() + '%';
     return this.saleConvert;
+  }
+
+  navigateDetail() {
+    this.route.navigate(['/product', this.data.Name]);
   }
 }

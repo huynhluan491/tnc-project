@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { DTOOrder } from '../dto/DTOOrder';
 import { DTOResponse } from '../dto/DTOResponse';
+import { DTOOrderDetailPayload } from '../dto/DTOOrderDetailPayload.';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +27,10 @@ export class OrderService {
         params,
       })
       .pipe(catchError(this.handleError));
+  }
+
+  getOrderDetail(payload: DTOOrderDetailPayload): Observable<DTOResponse> {
+    return this.http.post<DTOResponse>('/api/v1/order/orderdetails', payload);
   }
 
   getDataById(id: number): Observable<DTOResponse> {

@@ -26,6 +26,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { IconsModule } from '@progress/kendo-angular-icons';
 import { VnCurrencyPipe } from './shared/pipe/vn-currency.pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
 @NgModule({
   declarations: [
     LayoutDefault,
@@ -54,7 +55,8 @@ import { VnCurrencyPipe } from './shared/pipe/vn-currency.pipe';
     FormsModule,
     ReactiveFormsModule,
     ButtonsModule,
-    IconsModule
+    IconsModule,
+    NgxPaginationModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   exports: [

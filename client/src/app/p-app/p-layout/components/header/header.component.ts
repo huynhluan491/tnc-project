@@ -57,7 +57,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         // console.log(this.isLoggedIn);
         if (this.isLoggedIn) {
           this.userName = this.storageService.getUser().UserName;
-          // console.log(this.storageService.getUser().UserName);
+          
         }
       });
     // if (Object.keys(this.storageService.getUser()).length > 0) {
@@ -145,8 +145,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.storageService.clean();
         this.userName = '';
         this.notificationService.onSuccess('Đăng xuất thành công');
-        this.route.navigate(['']);
         window.location.reload();
+        this.route.navigate(['']);
       });
     }
   }
@@ -160,6 +160,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onNavigate(path: string) {
+    console.log(path);
     this.route.navigate([`/${path}`]);
   }
 

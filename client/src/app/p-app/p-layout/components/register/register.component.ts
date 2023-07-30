@@ -25,8 +25,8 @@ export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup = new FormGroup(
     {
-      UserName: new FormControl(null, Validators.required),
-      Password: new FormControl(null, Validators.required),
+      UserName: new FormControl('', Validators.required),
+      Password: new FormControl('', Validators.required),
       ConfirmPassword: new FormControl(null, Validators.required),
       Email: new FormControl(null, Validators.required),
     },
@@ -85,12 +85,15 @@ export class RegisterComponent implements OnInit {
     this.submitted = true;
     this.getFormValidationErrors();
     
-    if (this.isRegister && !this.registerForm.invalid) {
+    console.log(!this.registerForm.invalid);
+    
+
+    if (this.isRegister) {
       const registerInfo = this.registerForm.value;
       this.authService.signUp(registerInfo).pipe(takeUntil(this.ngUnsubscribe)).subscribe(
         res => {
           if (res.Code === 200) {
-            const { CreatedAt, ...registeredUser} = res.Data;
+            const { CreatedAt, ...registeredUser} = res.Data.User;
             console.log(registeredUser);
             
             this.storageService.saveUser(registeredUser);

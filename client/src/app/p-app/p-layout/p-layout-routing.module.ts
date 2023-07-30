@@ -9,6 +9,7 @@ import { OrderHistoryComponent } from '../tnc-profile/order-history/order-histor
 import { PersonalInfoComponent } from '../tnc-profile/personal-info/personal-info.component';
 import { ChangePasswordComponent } from '../tnc-profile/change-password/change-password.component';
 import { CartCheckout2Component } from '../cart-checkout2/cart-checkout2.component';
+import { ProductListComponent } from '../product/product-list/product-list.component';
 
 export const LayoutRoutes: Routes = [
   // {
@@ -45,6 +46,10 @@ export const LayoutRoutes: Routes = [
         path: 'checkout',
         component: CartCheckout2Component,
       },
+      {
+        path: 'category/:categoryname',
+        component: ProductListComponent
+      }
     ],
   },
   {
