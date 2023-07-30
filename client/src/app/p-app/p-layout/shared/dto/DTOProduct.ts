@@ -11,10 +11,9 @@ export class DTOProduct {
   Description: string;
   StatusID: number;
   createdAt: string;
-  ImageSrc?: string;
+  Base64Image?: string;
 
-  constructor(
-  ) {
+  constructor() {
     this.ProductID = 0;
     this.Stock = 0;
     this.Name = '';

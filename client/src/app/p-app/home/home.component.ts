@@ -98,13 +98,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       .getData(1, 15)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res: DTOResponse) => {
-        for (let product of res.Data) {
-          this.getProductImage(product.Image)
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((imageSrc) => {
-              product.ImageSrc = imageSrc;
-            });
-        }
         this.sliderProducts = res.Data;
       });
   }
