@@ -39,13 +39,11 @@ exports.login = async (req, res) => {
       res.status(200).json({
         Code: 200,
         Msg: `OK, Sign Up & Login Fail !!${e.toString()}`,
-        Data: result,
       });
     } else {
       res.status(200).json({
         Code: 200,
         Msg: "OK",
-        Data: result,
       });
     }
   }
