@@ -104,15 +104,10 @@ exports.vnpay_return = (req, res, next) => {
     //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
     res.json({code: 200, Msg: "success"});
     // res.redirect("http://localhost:3001/success");
+    // handle success here
     console.log("success");
-    // res.render("success", {code: vnp_Params["vnp_ResponseCode"]});
   } else {
     res.json({code: 404, Msg: "fail"});
-    // const queryString = new URLSearchParams({
-    //   VnPayStatus: vnp_Params["vnp_TransactionStatus"],
-    // }).toString();
-    // res.redirect("http://localhost:3001/payment/?" + queryString);
-    // res.render("success", {code: "97"});
   }
 };
 

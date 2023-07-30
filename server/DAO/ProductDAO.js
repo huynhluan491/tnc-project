@@ -6,6 +6,7 @@ const RatingSchema = require("../Model/Rating");
 const dbConfig = require("../database/dbconfig");
 const dbUtils = require("../utils/dbUtils");
 const DateTimeUtils = require("../utils/DateTimeUtils");
+const ImageUtils = require("../utils/ImageUtils");
 const StaticData = require("../utils/StaticData");
 const categoryController = require("../Controllers/Category");
 const DTOProductCustomize = require("../DTO/Customize/DTOProductCustomize");
@@ -136,9 +137,15 @@ exports.getAllProducts = async (filter) => {
   }
   let totalPage = Math.ceil(totalProduct / pageSize); //round up
   const products = result.recordsets[0];
-  const productsDTO = products.map(
-    (element) => new DTOProductCustomize(element)
+  const productsDTO = await Promise.all(
+    products.map(async (element) => {
+      const converted = await ImageUtils.convertImageToBase64(element.Image);
+      element.Base64Image = converted;
+      return new DTOProductCustomize(element);
+    })
   );
+  console.log(productsDTO);
+
   return {
     Page: page,
     PageSize: pageSize,
