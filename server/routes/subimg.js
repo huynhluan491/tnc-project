@@ -36,7 +36,7 @@ router
     SubImageController.saveFileSubImage
   );
 router
-  .route("/image/:id")
+  .route("/product/:id")
   .get(SubImageController.getFileSubImage)
   .delete(
     authController.protect,

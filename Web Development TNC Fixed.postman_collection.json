@@ -27,7 +27,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3001/api/v1/order/product/?userID=2",
+							"raw": "http://localhost:3001/api/v1/order/product/?userID=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -43,7 +43,7 @@
 							"query": [
 								{
 									"key": "userID",
-									"value": "2"
+									"value": "1"
 								}
 							]
 						}
@@ -96,7 +96,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3001/api/v1/order/product/",
+							"raw": "http://localhost:3001/api/v1/order/product",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -106,8 +106,7 @@
 								"api",
 								"v1",
 								"order",
-								"product",
-								""
+								"product"
 							]
 						}
 					},
@@ -1031,6 +1030,138 @@
 					"request": {
 						"method": "GET",
 						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "subimg",
+			"item": [
+				{
+					"name": "get subimg by productID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/subimg/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"subimg",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete subimg by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/subimg/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"subimg",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update subimg by id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"image\": \"imageTét\",\r\n    \"alt\": \"subImg1\",\r\n    \"productID\": 1,\r\n    \"createdAt\": \"2023-04-14T12:41:20.407Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/v1/subimg",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"subimg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create new subimg",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n    \"image\": \"imageTét\",\r\n    \"alt\": \"subImg1\",\r\n    \"productID\": 1,\r\n    \"createdAt\": \"2023-04-14T12:41:20.407Z\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/v1/subimg",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"subimg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all subimage by product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/subimg/image/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"subimg",
+								"image",
+								"8"
+							]
+						}
 					},
 					"response": []
 				}

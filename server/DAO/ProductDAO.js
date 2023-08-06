@@ -105,7 +105,7 @@ exports.getAllProducts = async (reqHeader) => {
   }
 
   let filter = {};
-  const {categoryname, brandname, price} = reqHeader;
+  const {categoryname, brandname, price, name} = reqHeader;
 
   if (price) {
     const priceArr = price.split(",");
@@ -127,6 +127,9 @@ exports.getAllProducts = async (reqHeader) => {
     );
     filter.CategoryID = cateid;
     delete filter.CategoryName;
+  }
+  if (name) {
+    filter.Name = name;
   }
 
   const page = filter.page * 1 || 1;
