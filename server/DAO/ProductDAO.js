@@ -129,7 +129,7 @@ exports.getAllProducts = async (reqHeader) => {
     delete filter.CategoryName;
   }
   if (name) {
-    filter.Name = name;
+    filter.Name = name.replace("%", " ");
   }
 
   const page = filter.page * 1 || 1;
