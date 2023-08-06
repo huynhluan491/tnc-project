@@ -192,7 +192,7 @@ exports.getFileProductImage = async (req, res) => {
     "host"
   )}/api/images/subImgimages/`;
   const result = await ImageUtils.convertImageToBase64(imageName, baseUrl);
-  console.log(result);
+  // console.log(result);
   res.status(200).json({
     Data: result,
   });

@@ -237,14 +237,12 @@ exports.getOrderByUserID = async (userID) => {
   };
 };
 
-exports.getOrderDetailsByOrderIDUserID = async (reqBody) => {
+exports.getOrderDetailsByOrderIDUserID = async (reqHeader) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  const OrderID = reqBody.OrderID;
-  const UserID = reqBody.UserID;
-
+  const {orderid, userid} = reqHeader;
   const query = `select  ${Order_DetailsSchema.schemaName}.OrderID,
   ${ProductSchema.schemaName}.ProductID,
   ${ProductSchema.schemaName}.Name,
@@ -256,21 +254,43 @@ exports.getOrderDetailsByOrderIDUserID = async (reqBody) => {
   inner join ${OrdersSchema.schemaName} o on ${Order_DetailsSchema.schemaName}.OrderID = o.OrderID
   where o.OrderID = @${Order_DetailsSchema.schema.OrderID.name} and o.UserID = @${OrdersSchema.schema.UserID.name}
   `;
-  console.log(query);
   let result = await dbPool
     .request()
     .input(
       OrdersSchema.schema.OrderID.name,
       OrdersSchema.schema.OrderID.sqlType,
-      OrderID
+      orderid
     )
     .input(
       OrdersSchema.schema.UserID.name,
       OrdersSchema.schema.UserID.sqlType,
-      UserID
+      userid
     )
     .query(query);
   return result.recordsets[0];
+};
+
+exports.updateStatusPayment = async (updateInfo) => {
+  if (!dbConfig.db.pool) {
+    throw new Error("Not connected to db");
+  }
+  console.log("updateInfo", updateInfo);
+  const orderID = updateInfo.OrderID;
+  delete updateInfo.OrderID;
+  const {request, updateStr} = dbUtils.getUpdateQuery(
+    OrdersSchema.schema,
+    dbConfig.db.pool.request(),
+    updateInfo
+  );
+  const query = `update ${OrdersSchema.schemaName} set ${updateStr} where OrderID = @OrderID`;
+  const result = await request
+    .input(
+      OrdersSchema.schema.OrderID.name,
+      OrdersSchema.schema.OrderID.sqlType,
+      orderID
+    )
+    .query(query);
+  console.log(result);
 };
 
 exports.clearAllOrder_Details = async () => {

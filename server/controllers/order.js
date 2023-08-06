@@ -24,8 +24,8 @@ exports.getProductInOrderByUSerID = async (req, res) => {
 
 exports.getOrderDetailsByOrderIDUserID = async (req, res) => {
   try {
-    const reqBody = req.body;
-    let result = await OrderDAO.getOrderDetailsByOrderIDUserID(req.body);
+    const reqHeaders = req.headers;
+    let result = await OrderDAO.getOrderDetailsByOrderIDUserID(reqHeaders);
     res.status(200).json({
       Code: 200,
       Msg: null,
@@ -126,6 +126,22 @@ exports.getOrderByUserID = async (req, res) => {
     res.status(404).json({
       Code: 404,
       Msg: error,
+    });
+  }
+};
+
+exports.updateStatusPayment = async (req, res) => {
+  try {
+    let result = await OrderDAO.updateStatusPayment(req.body);
+    res.status(200).json({
+      Code: 200,
+      Msg: null,
+      Data: result,
+    });
+  } catch (error) {
+    res.status(404).json({
+      Code: 404,
+      Msg: error.toString(),
     });
   }
 };

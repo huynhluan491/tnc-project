@@ -11,8 +11,11 @@ router
 
 router
   .route("/orderdetails/")
-  .post(orderController.getOrderDetailsByOrderIDUserID);
+  .get(orderController.getOrderDetailsByOrderIDUserID);
 
-router.route("/:UserID").get(orderController.getOrderByUserID);
+router.route("/user/:UserID").get(orderController.getOrderByUserID);
 // router.route("/:userID").get(orderController.getProductInCartByUSerID);
+
+router.route("/test").post(orderController.updateStatusPayment);
+
 module.exports = router;

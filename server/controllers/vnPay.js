@@ -38,7 +38,7 @@ exports.create_payment_url = async (req, res, next) => {
   console.log(new Date(date.getTime() + 60 * 60 * 60 * 60 * 2));
   var bankCode = req.body.bankCode || "";
 
-  var orderId = dateFormat(date, "HHmmss");
+  var orderId = req.body || dateFormat(date, "HHmmss");
   var amount = req.body.amount || 100000;
   var orderInfo = req.body.orderDescription || "Hai dzai";
   var orderType = req.body.orderType || "billpayment";
@@ -101,12 +101,13 @@ exports.vnpay_return = (req, res, next) => {
   var crypto = require("crypto");
   var hmac = crypto.createHmac("sha512", secretKey);
   var signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
-  console.log(vnp_Params);
+  console.log("vnp_Params return", vnp_Params);
   if (secureHash === signed && vnp_Params["vnp_TransactionStatus"] === "00") {
     //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
     res.json({code: 200, Msg: "success"});
-    // res.redirect("http://localhost:3001/success");
     // handle success here
+    const orderId = vnp_Params["vnp_TxnRef"];
+
     console.log("success");
   } else {
     res.json({code: 404, Msg: "fail"});
@@ -127,7 +128,6 @@ exports.vnpay_ipn = (req, res, next) => {
   var crypto = require("crypto");
   var hmac = crypto.createHmac("sha512", secretKey);
   var signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
-
   if (secureHash === signed) {
     var orderId = vnp_Params["vnp_TxnRef"];
     var rspCode = vnp_Params["vnp_ResponseCode"];
