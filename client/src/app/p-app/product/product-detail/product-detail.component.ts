@@ -62,6 +62,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private subImgService: subImgService,
   ) {}
 
+  
+
   ngOnInit(): void {
     this.GetDetailProduct();
   }

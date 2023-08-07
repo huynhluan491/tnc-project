@@ -59,5 +59,5 @@ import { IndicatorsModule } from '@progress/kendo-angular-indicators';
     httpInterceptorProviders,
   ],
   bootstrap: [AppComponent],
-})
+  })
 export class AppModule {}

@@ -80,4 +80,6 @@ import { IndicatorsModule } from '@progress/kendo-angular-indicators';
     SalePricePipe
   ],
 })
+
 export class PLayoutModule {}
+

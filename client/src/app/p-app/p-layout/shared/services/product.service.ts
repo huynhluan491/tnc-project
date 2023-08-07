@@ -89,6 +89,8 @@ export class ProductService {
       .pipe(catchError(this.handleError));
   }
 
+
+  
   private handleError(error: any) {
     console.error('An error occurred:', error);
     return throwError(

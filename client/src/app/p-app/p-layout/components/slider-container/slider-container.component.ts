@@ -21,6 +21,8 @@ export class SliderContainerComponent implements OnInit, OnChanges {
     console.log(changes['imgs'].currentValue);
   }
 
+  
+
   ngOnInit(): void {
     this.slideConfig = {
       lazyLoad: false,

@@ -42,4 +42,5 @@ export class BoxProductComponent implements OnChanges {
   navigateDetail() {
     this.route.navigate(['/product', this.data.Name]);
   }
+  
 }
