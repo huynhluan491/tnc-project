@@ -1,10 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 @Component({
   selector: 'app-slider-container',
   templateUrl: './slider-container.component.html',
   styleUrls: ['./slider-container.component.scss'],
 })
-export class SliderContainerComponent implements OnInit, OnChanges {
+export class SliderContainerComponent {
   constructor() {}
 
   @Input() slidesToShow: Number = 1;
