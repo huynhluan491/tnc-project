@@ -27,6 +27,8 @@ import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { IconsModule } from '@progress/kendo-angular-icons';
 import { VnCurrencyPipe } from './shared/pipe/vn-currency.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { SalePricePipe } from './shared/pipe/sale-price.pipe';
+import { IndicatorsModule } from '@progress/kendo-angular-indicators';
 @NgModule({
   declarations: [
     LayoutDefault,
@@ -43,6 +45,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     CartComponent,
     RegisterComponent,
     VnCurrencyPipe,
+    SalePricePipe
   ],
   imports: [
     CommonModule,
@@ -56,7 +59,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ReactiveFormsModule,
     ButtonsModule,
     IconsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    IndicatorsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   exports: [
@@ -72,7 +76,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     dropdownFilterComponent,
     PercentagePipe,
     CartComponent,
-    RegisterComponent
+    RegisterComponent,
+    SalePricePipe
   ],
 })
 export class PLayoutModule {}

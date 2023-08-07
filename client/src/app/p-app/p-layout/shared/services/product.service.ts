@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { DTOProduct } from '../dto/DTOProduct';
@@ -32,6 +32,16 @@ export class ProductService {
 
   getProduct(filter: DTOProductFilter): Observable<DTOResponse> {
     return this.http.post<DTOResponse>(`${environment.apiUrl}/product/search`, filter);
+  }
+
+  getDetaiProductByName(Name: string): Observable<DTOResponse> {
+    const encodedName = encodeURI(Name);
+    const headers = new HttpHeaders ({
+      'Name': encodedName
+    })
+    console.log('header', headers);
+    
+    return this.http.get<DTOResponse>(`${environment.apiUrl}/product`, {headers}).pipe(catchError(this.handleError));
   }
 
   getDataById(id: number): Observable<DTOResponse> {

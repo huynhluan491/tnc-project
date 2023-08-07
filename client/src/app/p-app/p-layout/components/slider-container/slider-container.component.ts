@@ -1,10 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 @Component({
   selector: 'app-slider-container',
   templateUrl: './slider-container.component.html',
   styleUrls: ['./slider-container.component.scss'],
 })
-export class SliderContainerComponent {
+export class SliderContainerComponent implements OnInit, OnChanges {
   constructor() {}
 
   @Input() slidesToShow: Number = 1;
@@ -16,6 +16,10 @@ export class SliderContainerComponent {
   @Input() type: string;
 
   slideConfig = {};
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes['imgs'].currentValue);
+  }
 
   ngOnInit(): void {
     this.slideConfig = {

@@ -4,11 +4,13 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { DTOPayment } from '../dto/DTOPayment';
 import { DTOSubimg } from '../dto/DTOSubimg';
+import { DTOSubImageResponse } from '../dto/DTOSubImage.dto';
+import { environment } from 'src/app/environments/environments';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PaymentService {
+export class subImgService {
   constructor(private http: HttpClient) {
     console.log('subimg service started');
   }
@@ -32,6 +34,10 @@ export class PaymentService {
     return this.http
       .get<DTOSubimg>(`/api/v1/subimg/${id}`)
       .pipe(catchError(this.handleError));
+  }
+
+  getProductSubImage(id: number): Observable<DTOSubImageResponse> {
+    return this.http.get<DTOSubImageResponse>(`${environment.apiUrl}/subimg/product/${id}`).pipe(catchError(this.handleError));
   }
 
   createData(subimg: DTOPayment): Observable<DTOSubimg> {

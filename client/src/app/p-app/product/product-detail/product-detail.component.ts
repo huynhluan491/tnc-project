@@ -2,16 +2,18 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   Subject,
-  Subscription,
-  filter,
-  map,
+  concatMap,
   of,
   pluck,
   switchMap,
   takeUntil,
-  tap,
 } from 'rxjs';
-import { ProductAPIService } from '../shared/services/product-api.service';
+import { LayoutAPIService } from '../../p-layout/shared/services/layout-api.service';
+import { ProductService } from '../../p-layout/shared/services/product.service';
+import { NotificationPopupService } from '../../p-layout/shared/services/notification.service';
+import { subImgService } from '../../p-layout/shared/services/subimg.service';
+import { Ps_UtilObjectService } from 'src/app/p-lib/ultilities/ulity.object';
+import { convertBase64ToImg } from '../../p-layout/shared/core/convertBase64Img';
 import { DTOProduct } from '../shared/dto/DTOProduct.dto';
 
 const PolicyData = [
@@ -45,6 +47,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   breadCrumbList: string[] = [];
   policyList: any[] = PolicyData;
+  subImgList: string[] = [];
 
   //Cart handle declarations
   cartQuantity: number = 1;
@@ -52,44 +55,50 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   //subscription
   ngUnsubscribe = new Subject<void>();
 
-  testSubimg: any[] = [
-    'https://www.tncstore.vn/image/cache/catalog/PC%20Dong%20Bo/Dell/Dell%20Precision%203660%20Tower%20(CTO)/pc-dong-bo-dell-precision-3660-tower-2-500x500.jpg',
-    'https://www.tncstore.vn/image/cache/catalog/PC%20Dong%20Bo/Dell/Dell%20Precision%203660%20Tower%20(CTO)/pc-dong-bo-dell-precision-3660-tower-3-500x500.jpg',
-    'https://www.tncstore.vn/image/cache/catalog/PC%20Dong%20Bo/Dell/Dell%20Precision%203660%20Tower%20(CTO)/pc-dong-bo-dell-precision-3660-tower-2-500x500.jpg',
-    'https://www.tncstore.vn/image/cache/catalog/PC%20Dong%20Bo/Dell/Dell%20Precision%203660%20Tower%20(CTO)/pc-dong-bo-dell-precision-3660-tower-3-500x500.jpg',
-  ];
-
-  //subscriptions
-  getProductDetail_sst: Subscription;
-
   constructor(
     private route: ActivatedRoute,
-    private productAPIService: ProductAPIService
+    private productAPIService: ProductService,
+    private notiService: NotificationPopupService,
+    private subImgService: subImgService,
   ) {}
 
   ngOnInit(): void {
-    this.route.params
-      .pipe(
-        pluck('productname'),
-        switchMap((params) => {
-          this.productName = params;
-          return of(params);
-        }),
-        filter((product) => !product)
-      )
-    this.GetTestProductDetail();
+    this.GetDetailProduct();
   }
 
-  GetTestProductDetail() {
-    this.productAPIService
-      .GetProductDetail()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((res) => {
-        this.productDetail = { ...res.Data };
-        this.saleprice =
-          this.productDetail.Price -
-          this.productDetail.Price * parseFloat(this.productDetail.Sale);
-      });
+  GetDetailProduct() {
+    this.route.params
+    .pipe(
+      pluck('productname'),
+      switchMap((params) => {
+        this.productName = params;
+        return this.productAPIService.getDetaiProductByName(this.productName);
+      }),
+      concatMap((res) => {
+        if (res.Code === 200) {
+          this.productDetail = {...res.Data[0]};
+          return this.subImgService.getProductSubImage(this.productDetail.ProductID);
+        } else {
+          this.notiService.onError('Đã xảy ra lỗi khi load chi tiết sản phẩm');
+          return of();
+        }
+    }),
+    takeUntil(this.ngUnsubscribe)
+    )
+    .subscribe(res => {
+      if (Ps_UtilObjectService.hasListValue(res.Data)) {
+        const imgList = [...res.Data];
+        const mainImg = convertBase64ToImg(this.productDetail.Base64Image);
+        this.subImgList.unshift(mainImg);
+        imgList.forEach((img) => {
+          const convertedImg = convertBase64ToImg(img.base64);
+          this.subImgList.push(convertedImg);
+        })
+        console.log(this.subImgList);
+      } else {
+        this.notiService.onError('Đã xảy ra lỗi khi load ảnh sản phẩm');
+      }
+    });
   }
 
   onHandleQuantity(type: string) {
