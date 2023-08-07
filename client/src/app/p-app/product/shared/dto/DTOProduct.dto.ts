@@ -2,7 +2,6 @@ export class DTOProduct {
   Name: string;
   Sale: string;
   Image: string;
-  Base64Image: string;
   Price: number;
   Stock: number;
   ProductID: number;
@@ -28,6 +27,5 @@ export class DTOProduct {
     this.StatusID = 0;
     this.CreatedAt = null;
     this.BrandName = '';
-    this.Base64Image = '';
   }
 }
