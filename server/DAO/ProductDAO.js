@@ -106,7 +106,13 @@ exports.getAllProducts = async (reqHeader) => {
 
   let filter = {};
   const {categoryname, brandname, price, name} = reqHeader;
-  console.log(categoryname, brandname, price, name);
+  console.log(
+    "categoryname, brandname, price, name",
+    categoryname,
+    brandname,
+    price,
+    name
+  );
   if (price) {
     const priceArr = price.split(",");
     filter.Price = {};

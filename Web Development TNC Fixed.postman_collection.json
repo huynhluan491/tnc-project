@@ -1148,7 +1148,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/api/v1/subimg/image/8",
+							"raw": "http://localhost:3001/api/v1/subimg/product/8",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1158,7 +1158,7 @@
 								"api",
 								"v1",
 								"subimg",
-								"image",
+								"product",
 								"8"
 							]
 						}
