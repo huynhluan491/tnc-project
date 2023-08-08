@@ -7,6 +7,7 @@ const fs = require("fs");
 const DTOProduct = require("../DTO/Default/DTOProduct");
 exports.getProducts = async (req, res) => {
   let reqHeader = req.headers;
+
   try {
     const products = await ProductDAO.getAllProducts(reqHeader);
     res.status(200).json({

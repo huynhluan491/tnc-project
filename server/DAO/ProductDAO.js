@@ -106,7 +106,7 @@ exports.getAllProducts = async (reqHeader) => {
 
   let filter = {};
   const {categoryname, brandname, price, name} = reqHeader;
-
+  console.log(categoryname, brandname, price, name);
   if (price) {
     const priceArr = price.split(",");
     filter.Price = {};
@@ -129,7 +129,8 @@ exports.getAllProducts = async (reqHeader) => {
     delete filter.CategoryName;
   }
   if (name) {
-    filter.Name = name.replace("%", " ");
+    // filter.Name = name.replace("%", " ");
+    filter.Name = name;
   }
 
   const page = filter.page * 1 || 1;
