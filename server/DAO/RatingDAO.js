@@ -25,7 +25,7 @@ exports.addRatingIfNotExisted = async (rating) => {
     throw new Error("Not connected to db");
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  rating.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  rating.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
 
   let query = `SET IDENTITY_INSERT ${RatingSchema.schemaName} ON insert into ${RatingSchema.schemaName}`;
 

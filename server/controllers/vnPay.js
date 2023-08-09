@@ -34,6 +34,8 @@ exports.create_payment_url = async (req, res, next) => {
 
   var date = new Date();
   const reqBody = req.body;
+  console.log(reqBody);
+
   var createDate = dateFormat(date, "yyyymmddHHmmss");
   date.setTime(date.getTime() + 15 * 60 * 1000);
   var expire = dateFormat(date, "yyyymmddHHMMss");
@@ -45,10 +47,9 @@ exports.create_payment_url = async (req, res, next) => {
   if (!orderId) {
     res.status(400).json({code: 400, message: "Missing orderId parameter"});
   }
-  var amount = reqBody.Amount || 100000;
+  var amount = reqBody.Amount || 100000; // lay amount trong db
   var orderInfo = reqBody.OrderDescription || "Hai dzai";
   var orderType = reqBody.OrderType || "billpayment";
-
   var locale = reqBody.Language || "vn";
 
   var currCode = "VND";
@@ -67,13 +68,13 @@ exports.create_payment_url = async (req, res, next) => {
   vnp_Params["vnp_IpAddr"] = ipAddr;
   vnp_Params["vnp_CreateDate"] = createDate;
   vnp_Params["vnp_ExpireDate"] = expire;
+  console.log(vnpUrl);
 
   if (bankCode !== null && bankCode !== "") {
     vnp_Params["vnp_BankCode"] = bankCode;
   }
 
   vnp_Params = sortObject(vnp_Params);
-
   var querystring = require("qs");
   var signData = querystring.stringify(vnp_Params, {encode: false});
   var crypto = require("crypto");
@@ -81,9 +82,9 @@ exports.create_payment_url = async (req, res, next) => {
   var signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
   vnp_Params["vnp_SecureHash"] = signed;
   vnpUrl += "?" + querystring.stringify(vnp_Params, {encode: false});
-  // res.status(200).json({code: 200, data: vnpUrl});
+  res.status(200).json({code: 200, data: vnpUrl});
   console.log(vnpUrl);
-  res.redirect(vnpUrl);
+  // res.redirect(vnpUrl);
 };
 
 exports.vnpay_return = (req, res, next) => {
@@ -107,7 +108,7 @@ exports.vnpay_return = (req, res, next) => {
   console.log("vnp_Params return", vnp_Params);
   if (secureHash === signed && vnp_Params["vnp_TransactionStatus"] === "00") {
     //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-    res.json({code: 200, Msg: "success"});
+    // res.json({code: 200, Msg: "success"});
     // handle success here
     const orderId = vnp_Params["vnp_TxnRef"];
     const updateInfor = {
@@ -123,6 +124,7 @@ exports.vnpay_return = (req, res, next) => {
     };
     const result = OrderDAO.updateStatusPayment(updateInfor);
     console.log("success");
+    res.redirect("http://localhost:3001");
   } else {
     res.json({code: 404, Msg: "fail"});
   }

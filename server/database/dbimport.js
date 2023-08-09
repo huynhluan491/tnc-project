@@ -102,7 +102,7 @@ async function importDB() {
       await ProductDAO.addProductIfNotExisted(product);
       console.log("import product --- done!");
     } catch (error) {
-      throw new error("errr", product);
+      throw error;
     }
   }
   //import users
@@ -122,7 +122,7 @@ async function importDB() {
       await FeatureDAO.addFeatureIfNotExisted(feature);
       console.log("import feature --- done!");
     } catch (Error) {
-      throw new Error("errr", feature);
+      // throw new Error("errr", feature);
     }
   }
 
@@ -135,7 +135,7 @@ async function importDB() {
       await RatingDAO.addRatingIfNotExisted(rating);
       console.log("import rating --- done!");
     } catch (Error) {
-      throw new Error("errr", rating);
+      // throw new Error("errr", rating);
     }
   }
 

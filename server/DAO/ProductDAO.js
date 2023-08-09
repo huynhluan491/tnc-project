@@ -21,7 +21,7 @@ exports.addProductIfNotExisted = async (product) => {
     throw new Error("Not connected to db");
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  product.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  product.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
 
   let insertData = ProductSchema.validateData(product);
 
@@ -215,7 +215,7 @@ exports.createNewProduct = async (product) => {
     throw new Error("Invalid input param");
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  product.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  product.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
   let insertData = ProductSchema.validateData(product);
   let query = `insert into ${ProductSchema.schemaName}`;
   const {request, insertFieldNamesStr, insertValuesStr} =

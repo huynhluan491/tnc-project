@@ -9,7 +9,7 @@ exports.addFeatureIfNotExisted = async (feature) => {
     throw new Error("Not connected to db");
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  feature.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  feature.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
 
   let insertData = FeatureSchema.validateData(feature);
   let query = `SET IDENTITY_INSERT ${FeatureSchema.schemaName} ON insert into ${FeatureSchema.schemaName}`;
@@ -85,7 +85,7 @@ exports.createNewFeature = async (feature) => {
     throw new Error("Invalid input param");
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  feature.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  feature.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
   let insertData = FeatureSchema.validateData(feature);
   let query = `insert into ${FeatureSchema.schemaName}`;
   const {request, insertFieldNamesStr, insertValuesStr} =

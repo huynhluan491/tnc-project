@@ -6,7 +6,7 @@ create database TNCShop
 go
 --ALTER DATABASE TNCShop
 --    COLLATE Vietnamese_CI_AS ;
-use TNCShop
+use master
 go
 alter database TNCShop set TRUSTWORTHY ON
 go

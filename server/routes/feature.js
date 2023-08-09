@@ -26,6 +26,6 @@ router
     authController.restrictTo(StaticData.AUTH.Role),
     FeatureController.createNewFeature
   );
-// router.route("/:productId").get(FeatureController.getFeatureByProductId);
+// router.route("/").get(FeatureController.getFeatureByProductId);
 
 module.exports = router;

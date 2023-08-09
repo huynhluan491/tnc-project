@@ -9,7 +9,7 @@ exports.addStatusIfNotExists = async (status) => {
     throw new Error("Not connected to db");
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  status.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  status.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
 
   let insertData = StatusSchema.validateData(status);
   let query = `SET IDENTITY_INSERT ${StatusSchema.schemaName} ON insert into ${StatusSchema.schemaName}`;
