@@ -1,84 +1,106 @@
 <div class="wrapper">
-    <div class="user-title">
-        <div class="profile-img">
-            <img src="assets/img/avt_profile.webp">
-        </div>
-        <div class="user-welcom">
-            <p class="name">Khánh Luân</p>
-            <p class="name-line"></p>
-        </div>
+  <div class="user-title">
+    <div class="profile-img">
+      <img src="assets/img/avt_profile.webp" />
     </div>
-    <div class="user-history-info">
-        <div class="info-box">
-            <p class="quantity">0</p>
-            <p class="topic-name">đơn hàng</p>
-        </div>
-        <div class="info-box">
-            <p class="quantity">0 đ</p>
-            <p class="topic-name">Tổng tiền tích lũy</p>
-        </div>
+    <div class="user-welcom">
+      <p class="name">{{ fullName }}</p>
+      <p class="name-line"></p>
     </div>
-    <div class="order-date-range">
-        <kendo-daterange>
-            <kendo-floatinglabel text="Start">
-              <kendo-dateinput
-                kendoDateRangeStartInput
-                [(value)]="range.start"
-              ></kendo-dateinput>
-            </kendo-floatinglabel>
-            <kendo-floatinglabel text="End">
-              <kendo-dateinput
-                kendoDateRangeEndInput
-                [(value)]="range.end"
-              ></kendo-dateinput>
-            </kendo-floatinglabel>
-          </kendo-daterange>
+  </div>
+  <div class="user-history-info">
+    <div class="info-box">
+      <p class="quantity">0</p>
+      <p class="topic-name">đơn hàng</p>
     </div>
-    <div class="orders-grid-container">
-        <div class="status-filter-container">
-            <div class="status-btn selected">Tất cả</div>
-            <div class="status-btn">Chờ xác nhận</div>
-            <div class="status-btn">Đã xác nhận</div>
-            <div class="status-btn">Đang vận chuyển</div>
-            <div class="status-btn">Đã giao hàng</div>
-            <div class="status-btn">Đã hủy</div>
-        </div>
-        <div class="grid-wrapper">
-            <kendo-grid 
-                [data]="orderGridView | async"
-                [pageSize]="20"
+    <div class="info-box">
+      <p class="quantity">0 đ</p>
+      <p class="topic-name">Tổng tiền tích lũy</p>
+    </div>
+  </div>
+  <div class="order-date-range">
+    <kendo-daterange>
+      <kendo-floatinglabel text="Start">
+        <kendo-dateinput
+          kendoDateRangeStartInput
+          [(value)]="range.start"
+        ></kendo-dateinput>
+      </kendo-floatinglabel>
+      <kendo-floatinglabel text="End">
+        <kendo-dateinput
+          kendoDateRangeEndInput
+          [(value)]="range.end"
+        ></kendo-dateinput>
+      </kendo-floatinglabel>
+    </kendo-daterange>
+  </div>
+  <div class="orders-grid-container">
+    <div class="status-filter-container">
+      <div class="status-btn selected">Tất cả</div>
+      <div class="status-btn">Chờ xác nhận</div>
+      <div class="status-btn">Đã xác nhận</div>
+      <div class="status-btn">Đang vận chuyển</div>
+      <div class="status-btn">Đã giao hàng</div>
+      <div class="status-btn">Đã hủy</div>
+    </div>
+    <div class="grid-wrapper">
+      <kendo-grid [data]="orderGridView | async" [pageSize]="20">
+        <kendo-grid-column field="OrderID" title="No" [width]="50">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem
+            let-rowIndex="rowIndex"
+          >
+            <span>{{ dataItem.OrderID }}</span>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="TotalPrice" title="Tổng tiền">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem
+            let-rowIndex="rowIndex"
+          >
+            <span>{{ dataItem.TotalPrice }}</span>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="StatusName" title="Trạng thái">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem
+            let-rowIndex="rowIndex"
+          >
+            <span>{{ dataItem.StatusName | titlecase }}</span>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="PaymentName" title="Phương thức">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem
+            let-rowIndex="rowIndex"
+          >
+            <span>{{ dataItem.PaymentName | titlecase }}</span>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column [width]="120">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <button
+              class="cancel-order"
+              kendoButton
+              [themeColor]="'info'"
+              (click)="getOrderDetail(dataItem.OrderID)"
             >
-                <kendo-grid-column field="OrderID" title="No" [width]="50">
-                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-                        <span>{{ dataItem.OrderID}}</span>
-                    </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column field="TotalPrice" title="Tổng tiền">
-                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-                        <span>{{dataItem.TotalPrice}}</span>
-                    </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column field="StatusName" title="Trạng thái">
-                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-                        <span>{{dataItem.StatusName | titlecase}}</span>
-                    </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column field="PaymentName" title="Phương thức">
-                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-                        <span>{{dataItem.PaymentName | titlecase}}</span>
-                    </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column [width]="120">
-                    <ng-template kendoGridCellTemplate let-dataItem>
-                        <button class="cancel-order" kendoButton [themeColor]="'info'" (click)="getOrderDetail(dataItem.OrderID)">Chi tiết</button>
-                    </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column [width]="80">
-                    <ng-template kendoGridCellTemplate >
-                        <button class="cancel-order" kendoButton [themeColor]="'error'">Hủy</button>
-                    </ng-template>
-                </kendo-grid-column>
-            </kendo-grid>
-        </div>
+              Chi tiết
+            </button>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column [width]="80">
+          <ng-template kendoGridCellTemplate>
+            <button class="cancel-order" kendoButton [themeColor]="'error'">
+              Hủy
+            </button>
+          </ng-template>
+        </kendo-grid-column>
+      </kendo-grid>
     </div>
+  </div>
 </div>

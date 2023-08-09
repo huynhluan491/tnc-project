@@ -18,7 +18,9 @@ export class AuthService {
     null
   );
   private currentUser: Observable<DTOUser>;
-  private isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.storageService.isLoggedIn());
+  private isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    this.storageService.isLoggedIn()
+  );
 
   constructor(
     private http: HttpClient,
@@ -46,23 +48,45 @@ export class AuthService {
     this.isLoggedIn.next(state);
   }
 
-    login(user: LoginPayload) {
-        return this.http.post<any>(`${environment.apiUrl}/user/login`, user, httpOptions)
-            .pipe(map(user => {
-                const { CreatedAt, ...loggedInUser} = user.Data.User;
-                this.storageService.saveUser(loggedInUser);
-                this.currentUserSubject.next(user.Data);
-                this.setLoginState(true);
-                return user;
-            }));
-    }
+  login(user: LoginPayload): any {
+    return this.http
+      .post<any>(`${environment.apiUrl}/user/login`, user, httpOptions)
+      .pipe(
+        map((user) => {
+          const { CreatedAt, ...loggedInUser } = user.Data.User;
+          const id = loggedInUser.UserID;
 
-  signUp(user: RegisterPayload) {
-    return this.http.post<any>(
-      `${environment.apiUrl}/user/signup`,
-      user,
-      httpOptions
-    );
+          this.getUserById(id).subscribe((res) => {
+            this.storageService.saveUser(res.Data);
+            this.currentUserSubject.next(user.Data);
+            this.setLoginState(true);
+            console.log('CCCCCCCC', user);
+          });
+
+          return user;
+        })
+      );
+  }
+
+  getUserById(id: number): Observable<any> {
+    return this.http.get<any>(`/api/v1/user/${id}`);
+  }
+
+  signUp(user: RegisterPayload): any {
+    return this.http
+      .post<any>(`${environment.apiUrl}/user/signup`, user, httpOptions)
+      .pipe(
+        map((user) => {
+          const { CreatedAt, ...loggedInUser } = user.Data.User;
+          const id = loggedInUser.UserID;
+          this.getUserById(id).subscribe((res) => {
+            this.storageService.saveUser(res.Data);
+            this.currentUserSubject.next(user.Data);
+            this.setLoginState(true);
+          });
+          return user;
+        })
+      );
   }
 
   logout() {
