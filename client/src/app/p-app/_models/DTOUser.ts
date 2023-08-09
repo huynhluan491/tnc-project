@@ -3,6 +3,7 @@ export class DTOUser {
     UserName: string
     Password: string
     AuthID: string
+    FullName: string
     Email: string
     Point: number
     Address: string 

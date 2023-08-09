@@ -31,7 +31,7 @@
             >
               <div class="cart-item-title">THÔNG TIN GIAO HÀNG</div>
               <div class="cart-item-input">
-                <input class="cart-item-checkbox" type="checkbox" />
+                <input class="cart-item-checkbox" type="checkbox" [formControl]="isBindUserInfo"/>
                 <label class="cart-item-checkbox-label" for="name"
                   >Sử dụng thông tin khách hàng để giao hàng</label
                 >
@@ -111,11 +111,11 @@
                   formControlName="payment_method"
                   class="cart-item-radio"
                   type="radio"
-                  id="momo"
+                  id="vnpay"
                   name="payment_method"
                 />
-                <label class="cart-item-label" for="momo"
-                  >Thanh toán với ví momo</label
+                <label class="cart-item-label" for="vnpay"
+                  >Thanh toán với ví VNPAY</label
                 >
               </div>
             </form>
@@ -132,17 +132,17 @@
           </div>
           <div class="cart-info-total">
             <p class="cart-info-total-txt">Tổng chi phí</p>
-            <p class="cart-info-total-no">1.234.567 đ</p>
+            <p class="cart-info-total-no"> {{total | number : "1.0-0" }} đ</p>
           </div>
           <p class="cart-info-tax">Đã bao gồm VAT (nếu có)</p>
-          <div class="cart-info-product">
+          <!-- <div class="cart-info-product">
             <div class="line"></div>
             <div class="cart-info-product-name">
               CPU Intel Core i3-12100F 4C/8T (3.3 Ghz up to 4.3GHz, 12MB,
               LGA1700, Alder Lake) Hàng NK
             </div>
             <div class="cart-info-product-price">1.234.567 đ</div>
-          </div>
+          </div> -->
           <div class="checkout-btn-wrapper" routerLink="checkout">
             <p class="checkout-btn-txt">XÁC NHẬN ĐƠN HÀNG</p>
           </div>

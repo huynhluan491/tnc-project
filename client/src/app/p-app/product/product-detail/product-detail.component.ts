@@ -96,7 +96,6 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
           const convertedImg = convertBase64ToImg(img.base64);
           this.subImgList.push(convertedImg);
         })
-        console.log(this.subImgList);
       } else {
         this.notiService.onError('Đã xảy ra lỗi khi load ảnh sản phẩm');
       }

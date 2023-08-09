@@ -18,10 +18,7 @@ export class SliderContainerComponent {
   slideConfig = {};
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes['imgs'].currentValue);
   }
-
-  
 
   ngOnInit(): void {
     this.slideConfig = {

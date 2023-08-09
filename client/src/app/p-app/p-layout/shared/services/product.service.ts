@@ -89,6 +89,10 @@ export class ProductService {
       .pipe(catchError(this.handleError));
   }
 
+  updateProductRating() {
+    
+  }
+
 
   
   private handleError(error: any) {
