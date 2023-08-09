@@ -136,29 +136,41 @@ exports.getUserById = async (id) => {
     throw new Error("Not connected to db");
   }
 
-  const query = `
-
- SELECT ${UserSchema.schemaName}.*, Order_Details.TotalPrice from ${UserSchema.schemaName}
-   inner join ${OrdersSchema.schemaName} on ${UserSchema.schemaName}.UserID = ${OrdersSchema.schemaName}.UserID
-   inner join (
-   select ${Order_DetailsSchema.schemaName}.OrderID,
-   sum(${Order_DetailsSchema.schemaName}.Amount * ${ProductSchema.schemaName}.Price) as TotalPrice
-    from ${Order_DetailsSchema.schemaName}
-   inner join ${ProductSchema.schemaName}
-    on ${Order_DetailsSchema.schemaName}.ProductID = ${ProductSchema.schemaName}.ProductID
-   group by ${Order_DetailsSchema.schemaName}.OrderID
- ) as Order_Details on Order_Details.OrderID = ${OrdersSchema.schemaName}.OrderID
- where ${UserSchema.schemaName}.${UserSchema.schema.UserID.name} = @${UserSchema.schema.UserID.name}
-
+  const queryUser = `
+  SELECT  * from ${UserSchema.schemaName} where ${UserSchema.schema.UserID.name} = @${UserSchema.schema.UserID.name}
 
  `;
-  let result = await dbConfig.db.pool
+  const queryTotalPrice = `
+
+    select ${Order_DetailsSchema.schemaName}.${Order_DetailsSchema.schema.OrderID.name},
+     sum(${Order_DetailsSchema.schemaName}.${Order_DetailsSchema.schema.Amount.name} * ${ProductSchema.schemaName}.${ProductSchema.schema.Price.name}) as TotalPrice
+     from ${Order_DetailsSchema.schemaName}
+     inner join ${OrdersSchema.schemaName} on ${OrdersSchema.schemaName}.${OrdersSchema.schema.OrderID.name} = ${Order_DetailsSchema.schemaName}.${Order_DetailsSchema.schema.OrderID.name}
+     inner join ${ProductSchema.schemaName} on ${Order_DetailsSchema.schemaName}.${Order_DetailsSchema.schema.ProductID.name} = ${ProductSchema.schemaName}.${ProductSchema.schema.ProductID.name}
+     where ${OrdersSchema.schemaName}.${OrdersSchema.schema.PayIn.name} is not null and ${OrdersSchema.schemaName}.${OrdersSchema.schema.UserID.name} = @${UserSchema.schema.UserID.name}
+     group by ${Order_DetailsSchema.schemaName}.${Order_DetailsSchema.schema.OrderID.name}
+  `;
+  console.log(queryTotalPrice);
+  console.log(queryUser);
+  let resultUser = await dbConfig.db.pool
     .request()
     .input(UserSchema.schema.UserID.name, UserSchema.schema.UserID.sqlType, id)
-    .query(query);
-
-  if (result.recordsets[0].length > 0) {
-    return new DTOUserCustomize(result.recordsets[0][0]);
+    .query(queryUser);
+  let resultTotalPrice = await dbConfig.db.pool
+    .request()
+    .input(UserSchema.schema.UserID.name, UserSchema.schema.UserID.sqlType, id)
+    .query(queryTotalPrice);
+  let totalPrice = 0;
+  if (resultTotalPrice.recordset.length != 0) {
+    totalPrice = resultTotalPrice.recordset[0].TotalPrice;
+  }
+  const result = {
+    ...resultUser.recordset[0],
+    TotalPrice: totalPrice,
+  };
+  console.log(result);
+  if (resultUser.recordset.length > 0) {
+    return new DTOUserCustomize(result);
   }
   return null;
 };
