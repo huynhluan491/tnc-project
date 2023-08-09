@@ -20,6 +20,8 @@ export class BoxProductComponent implements OnChanges {
   constructor(private route: Router) {}
 
   ngOnInit(): void {
+    console.log(this.data);
+
     this.calculateSalePrice();
     this.convertToPercentage();
   }
