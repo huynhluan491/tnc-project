@@ -25,7 +25,7 @@ router
 //   .get(paymentController.payment)
 //   .post(paymentController.paymentpaymentController.payment);
 
-router.post("/createPaymentUrl", vnPayController.create_payment_url);
+router.post("/handlerPayment", paymentController.handlerPayment);
 
 router.get("/vnpayReturn", vnPayController.vnpay_return);
 

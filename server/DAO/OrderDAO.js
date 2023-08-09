@@ -297,7 +297,7 @@ exports.getOrderById = async (id) => {
   if (!dbConfig.db.pool) {
     throw new Error("Not connected to db");
   }
-
+  const dbPool = dbConfig.db.pool;
   const orderid = id;
   const query = `select  ${Order_DetailsSchema.schemaName}.OrderID,
   ${ProductSchema.schemaName}.ProductID,

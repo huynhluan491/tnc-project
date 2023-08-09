@@ -51,10 +51,24 @@ exports.clearAll = async () => {
 };
 
 exports.handlerPayment = async (TypeOfPayment, req) => {
-  if (TypeOfPayment === "vnPay") {
+  if (TypeOfPayment === "VNPAY") {
     vnPayController.create_payment_url(req);
-  }
-  if (TypeOfPayment === "COD") {
-    const order = OrderDAO.getOrderById(req.body.OrderID);
+  } else if (TypeOfPayment === "COD") {
+    // const order = await OrderDAO.getOrderById(req.body.OrderID);
+    const updateInfor = {
+      OrderID: req.body.OrderID,
+      PaymentID: 1,
+      StatusID: 2,
+      PayIn: DateTimeUtils.convertMillisecondsToDateTimeSQL(
+        1,
+        false,
+        true,
+        true
+      ),
+    };
+    const result = await OrderDAO.updateStatusPayment(updateInfor);
+    return result;
+  } else {
+    throw new Error("Invalid type of payment method");
   }
 };
