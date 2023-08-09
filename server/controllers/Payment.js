@@ -24,11 +24,7 @@ exports.handlerPayment = async (req, res) => {
     }
     delete req.body.TypeOfPayment;
     const result = await PaymentDAO.handlerPayment(TypeOfPayment, req);
-    res.status(200).json({
-      Code: 200,
-      Msg: "OK",
-      Data: {result},
-    });
+    res.redirect("http://localhost:3001");
   } catch (e) {
     res.status(500).json({
       Code: 500,
