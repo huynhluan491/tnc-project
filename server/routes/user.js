@@ -16,8 +16,8 @@ router
   .route("/:id")
   .get(userController.getUserById)
   .patch(
-    authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role),
+    // authController.protect,
+    // authController.restrictTo(StaticData.AUTH.Role),
     userController.updateUserById
   )
   .delete(
