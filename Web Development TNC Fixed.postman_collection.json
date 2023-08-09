@@ -600,7 +600,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/api/v1/feature/4",
+							"raw": "http://localhost:3001/api/v1/feature/?ProductID=4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -610,7 +610,13 @@
 								"api",
 								"v1",
 								"feature",
-								"4"
+								""
+							],
+							"query": [
+								{
+									"key": "ProductID",
+									"value": "4"
+								}
 							]
 						}
 					},
@@ -1040,12 +1046,9 @@
 					"response": []
 				},
 				{
-					"name": "create url vnpay",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "handle Payment",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "",
@@ -1055,10 +1058,15 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": ""
+							"raw": "{\r\n    \"OrderID\":4,\r\n    \"TypeOfPayment\" : \"COD\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
-							"raw": "http://localhost:3001/api/v1/payment/createPaymentUrl",
+							"raw": "http://localhost:3001/api/v1/payment/handlePayment",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1068,7 +1076,7 @@
 								"api",
 								"v1",
 								"payment",
-								"createPaymentUrl"
+								"handlePayment"
 							]
 						}
 					},
