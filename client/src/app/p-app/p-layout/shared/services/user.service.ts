@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { DTOPayment } from '../dto/DTOPayment';
 import { DTOUser } from '../dto/DTOUser';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PaymentService {
+export class UserService {
   constructor(private http: HttpClient) {
     console.log('user service started');
   }
@@ -34,13 +33,13 @@ export class PaymentService {
       .pipe(catchError(this.handleError));
   }
 
-  createData(user: DTOPayment): Observable<DTOUser> {
+  createData(user: DTOUser): Observable<DTOUser> {
     return this.http
       .post<DTOUser>('/api/v1/user', user)
       .pipe(catchError(this.handleError));
   }
 
-  updateData(id: number, user: DTOPayment): Observable<DTOUser> {
+  updateData(id: number, user: any): Observable<any> {
     return this.http
       .patch<DTOUser>(`/api/v1/user/${id}`, user)
       .pipe(catchError(this.handleError));
