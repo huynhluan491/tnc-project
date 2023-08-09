@@ -51,7 +51,7 @@ exports.clearAll = async () => {
 };
 
 exports.handlerPayment = async (TypeOfPayment, req) => {
-  if (TypeOfPayment === "vnPay") {
+  if (TypeOfPayment === "VNPAY") {
     vnPayController.create_payment_url(req);
   } else if (TypeOfPayment === "COD") {
     // const order = await OrderDAO.getOrderById(req.body.OrderID);
