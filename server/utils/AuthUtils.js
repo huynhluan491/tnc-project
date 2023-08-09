@@ -100,7 +100,7 @@ exports.handleRefreshToken = async (refreshToken) => {
         user.AuthID,
         user.OrderID
       );
-      const rRokenExpiresIn = DateTimeUtils.convertMillisecondsToDateTime(
+      const rRokenExpiresIn = DateTimeUtils.convertMillisecondsToDateTimeSQL(
         user.exp,
         1000
       );
@@ -187,7 +187,7 @@ exports.login = async (dto) => {
     rRoken,
     process.env.REFRESH_JWT_SECRET
   ).exp;
-  const rRokenExpiresIn = DateTimeUtils.convertMillisecondsToDateTime(
+  const rRokenExpiresIn = DateTimeUtils.convertMillisecondsToDateTimeSQL(
     expirationTime,
     true
   );

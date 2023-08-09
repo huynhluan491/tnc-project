@@ -36,7 +36,7 @@ exports.convertToMilliseconds = (param) => {
 /**
  * convert ms to datetime (sql format)
  */
-exports.convertMillisecondsToDateTime = (
+exports.convertMillisecondsToDateTimeSQL = (
   ms,
   jwtExp = false,
   add7h = true,

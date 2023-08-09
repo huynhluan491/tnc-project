@@ -21,7 +21,7 @@ exports.addOrder = async (order) => {
     throw new Error("Not connected to db");
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  order.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  order.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
 
   let insertData = OrdersSchema.validateData(order);
   let query = `SET IDENTITY_INSERT ${OrdersSchema.schemaName} ON insert into ${OrdersSchema.schemaName}`;

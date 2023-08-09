@@ -260,17 +260,31 @@
 							{
 								"key": "CategoryName",
 								"value": "laptop",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							},
 							{
 								"key": "Price",
 								"value": "gt:100000",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							},
 							{
 								"key": "Price",
 								"value": "lt:200000",
 								"type": "text"
+							},
+							{
+								"key": "BrandName",
+								"value": "acer",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Name",
+								"value": "USB Wifi 300Mbps Tenda U3",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -1026,10 +1040,37 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "create url vnpay",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/v1/payment/createPaymentUrl",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"payment",
+								"createPaymentUrl"
+							]
+						}
 					},
 					"response": []
 				}

@@ -13,7 +13,7 @@ exports.addAuth = async (auth) => {
     new Date().toISOString()
   );
   console.log(ms);
-  auth.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  auth.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
   console.log(auth.CreatedAt);
   let insertData = AuthSchema.validateData(auth);
   let query = `SET IDENTITY_INSERT ${AuthSchema.schemaName} ON insert into ${AuthSchema.schemaName}`;

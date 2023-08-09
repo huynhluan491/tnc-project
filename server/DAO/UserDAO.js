@@ -17,7 +17,7 @@ exports.addUserIfNotExisted = async (user) => {
     throw new Error("Not connected to db");
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  user.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  user.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
 
   let insertData = UserSchema.validateData(user);
   insertData.Password = await bcrypt.hash(insertData.Password, 10);
@@ -49,7 +49,7 @@ exports.insertUser = async (user) => {
   }
   // console.log("user auth", user.auth);
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  user.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  user.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
   let insertData = UserSchema.validateData(user);
   insertData.password = await bcrypt.hash(insertData.Password, 10);
 
