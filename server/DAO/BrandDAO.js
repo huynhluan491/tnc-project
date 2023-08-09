@@ -9,7 +9,7 @@ exports.addBrandIfNotExists = async (brand) => {
     throw new Error("Not connected to db");
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  brand.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  brand.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
 
   let insertData = BrandSchema.validateData(brand);
   let query = `SET IDENTITY_INSERT ${BrandSchema.schemaName} ON insert into ${BrandSchema.schemaName}`;

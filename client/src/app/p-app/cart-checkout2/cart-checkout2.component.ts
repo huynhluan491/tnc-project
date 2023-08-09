@@ -1,15 +1,14 @@
-import { Component, OnDestroy, OnInit, SkipSelf } from '@angular/core';
+import { Component, OnInit, SkipSelf } from '@angular/core';
 import { StorageService } from '../p-layout/shared/services/storage.service';
 import { Subject, takeUntil } from 'rxjs';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { DTOUser } from '../_models/DTOUser';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-cart-checkout2',
   templateUrl: './cart-checkout2.component.html',
   styleUrls: ['./cart-checkout2.component.scss'],
 })
-export class CartCheckout2Component implements OnInit, OnDestroy {
+export class CartCheckout2Component implements OnInit {
   constructor(
     @SkipSelf() private storageService: StorageService,
     private formBuilder: FormBuilder
@@ -17,40 +16,12 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
 
   deliverForm!: FormGroup;
   isRegister: boolean = false;
-  total: number = 0;
+
   productList: number = 1;
-  currentUser: DTOUser;
-  isBindUserInfo: FormControl = new FormControl(false);
-  ngUnsubscribe$ = new Subject<void>();
 
   onSubmit() {}
 
   ngOnInit() {
-    this.loadDeliverForm();
-    this.currentUser = this.storageService.getUser();
-
-    const orders = this.storageService.getOrders().orders;
-    orders.forEach((product) => {
-      this.total += product.Price * product.Amount;
-    })
-
-    this.isBindUserInfo.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(
-      res => {
-        if (this.isBindUserInfo.value && this.currentUser) {
-          this.deliverForm.patchValue({
-            name: this.currentUser.FullName,
-            email: this.currentUser.Email,
-            number: this.currentUser.Phone,
-            address: this.currentUser.Address,
-          });
-          console.log(this.deliverForm.value);
-      } else{
-        this.deliverForm.reset();
-      }
-    });
-  }
-
-  loadDeliverForm() {
     this.deliverForm = this.formBuilder.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required]],
@@ -58,10 +29,13 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
       address: ['', [Validators.required]],
       payment_method: ['', [Validators.required]],
     });
-  }
 
-  ngOnDestroy(): void {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
+    const userData = this.storageService.getUser();
+    this.deliverForm.patchValue({
+      name: userData.Name,
+      email: userData.Email,
+      number: userData.Phone,
+      address: userData.Address,
+    });
   }
 }

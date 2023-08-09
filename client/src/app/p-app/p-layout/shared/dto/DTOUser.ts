@@ -7,6 +7,7 @@ export class DTOUser {
   Point: number;
   Address: string;
   Phone: string;
+  FullName: string;
   CreateAt: string;
 
   constructor(
@@ -16,6 +17,7 @@ export class DTOUser {
     authID: number,
     email: string,
     point: number,
+    fullname: string,
     address: string,
     phone: string,
     createAt: string
@@ -26,6 +28,7 @@ export class DTOUser {
     this.AuthID = authID;
     this.Email = email;
     this.Point = point;
+    this.FullName = fullname;
     this.Address = address;
     this.Phone = phone;
     this.CreateAt = createAt;

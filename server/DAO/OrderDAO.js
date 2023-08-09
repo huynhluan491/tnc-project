@@ -21,7 +21,7 @@ exports.addOrder = async (order) => {
     throw new Error("Not connected to db");
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  order.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  order.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
 
   let insertData = OrdersSchema.validateData(order);
   let query = `SET IDENTITY_INSERT ${OrdersSchema.schemaName} ON insert into ${OrdersSchema.schemaName}`;
@@ -291,6 +291,35 @@ exports.updateStatusPayment = async (updateInfo) => {
     )
     .query(query);
   console.log(result);
+};
+
+exports.getOrderById = async (id) => {
+  if (!dbConfig.db.pool) {
+    throw new Error("Not connected to db");
+  }
+  const dbPool = dbConfig.db.pool;
+  const orderid = id;
+  const query = `select  ${Order_DetailsSchema.schemaName}.OrderID,
+  ${ProductSchema.schemaName}.ProductID,
+  ${ProductSchema.schemaName}.Name,
+  ${ProductSchema.schemaName}.Price,
+  ${ProductSchema.schemaName}.Image,
+  ${Order_DetailsSchema.schemaName}.Amount
+  from ${Order_DetailsSchema.schemaName}
+  inner join ${ProductSchema.schemaName} on ${Order_DetailsSchema.schemaName}.ProductID = ${ProductSchema.schemaName}.ProductID
+  inner join ${OrdersSchema.schemaName} o on ${Order_DetailsSchema.schemaName}.OrderID = o.OrderID
+  where o.OrderID = @${Order_DetailsSchema.schema.OrderID.name}
+  `;
+  let result = await dbPool
+    .request()
+    .input(
+      OrdersSchema.schema.OrderID.name,
+      OrdersSchema.schema.OrderID.sqlType,
+      orderid
+    )
+
+    .query(query);
+  return result.recordsets[0];
 };
 
 exports.clearAllOrder_Details = async () => {

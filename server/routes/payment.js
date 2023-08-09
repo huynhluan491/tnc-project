@@ -25,10 +25,10 @@ router
 //   .get(paymentController.payment)
 //   .post(paymentController.paymentpaymentController.payment);
 
-router.get("/create_payment_url", vnPayController.create_payment_url);
+router.post("/handlerPayment", paymentController.handlerPayment);
 
-router.get("/vnpay_return", vnPayController.vnpay_return);
+router.get("/vnpayReturn", vnPayController.vnpay_return);
 
-router.get("/vnpay_ipn", vnPayController.vnpay_ipn);
+router.get("/vnpayIpn", vnPayController.vnpay_ipn);
 
 module.exports = router;

@@ -15,3 +15,20 @@ exports.getAllPayment = async (req, res) => {
     });
   }
 };
+
+exports.handlerPayment = async (req, res) => {
+  try {
+    const {TypeOfPayment} = req.body;
+    if (!TypeOfPayment) {
+      throw new Error("Invalid parameter format");
+    }
+    delete req.body.TypeOfPayment;
+    const result = await PaymentDAO.handlerPayment(TypeOfPayment, req);
+    res.redirect("http://localhost:3001");
+  } catch (e) {
+    res.status(500).json({
+      Code: 500,
+      Msg: e.toString(),
+    });
+  }
+};

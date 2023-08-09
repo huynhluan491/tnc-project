@@ -3,7 +3,7 @@
     <div class="user-avt">
       <img src="assets/img/avt_profile.webp" />
     </div>
-    <p class="name">{{ fullName }}</p>
+    <p class="name">{{ userInfo.FullName }}</p>
   </div>
 
   <form class="user-info-form" [formGroup]="personalForm">
@@ -41,13 +41,15 @@
     <kendo-formfield>
       <kendo-label class="input-wrapper" text="Tổng tiền đã mua sắm">
         <kendo-textbox
-          formControlName="Total"
+          formControlName="TotalPrice"
           [readonly]="true"
         ></kendo-textbox>
       </kendo-label>
     </kendo-formfield>
     <div class="btn-submit">
-      <button kendoButton [themeColor]="'info'">Cập nhật thông tin</button>
+      <button (click)="updateUserInfo()" kendoButton [themeColor]="'info'">
+        Cập nhật thông tin
+      </button>
     </div>
   </form>
 </div>

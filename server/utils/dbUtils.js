@@ -221,7 +221,6 @@ exports.getFilterProductsQuery = (
     }
     for (let criteria in filter) {
       const schemaProp = schema[criteria];
-      console.log("criteria", schemaProp);
       if (schema[criteria]) {
         if (i > 0) {
           filterStr += " AND ";
@@ -265,7 +264,6 @@ exports.getFilterProductsQuery = (
 
         //filter brand
         if (criteria == "BrandID") {
-          console.log("brand");
           filterStr += "(";
           if (filter[criteria].constructor === Array) {
             if (schemaProp.type === "number") {

@@ -21,7 +21,7 @@ exports.addProductIfNotExisted = async (product) => {
     throw new Error("Not connected to db");
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  product.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  product.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
 
   let insertData = ProductSchema.validateData(product);
 
@@ -106,7 +106,13 @@ exports.getAllProducts = async (reqHeader) => {
 
   let filter = {};
   const {categoryname, brandname, price, name} = reqHeader;
-
+  console.log(
+    "categoryname, brandname, price, name",
+    categoryname,
+    brandname,
+    price,
+    name
+  );
   if (price) {
     const priceArr = price.split(",");
     filter.Price = {};
@@ -129,8 +135,8 @@ exports.getAllProducts = async (reqHeader) => {
     delete filter.CategoryName;
   }
   if (name) {
-    const convertedName = decodeURI(name);
-    filter.Name = convertedName;
+    // filter.Name = name.replace("%", " ");
+    filter.Name = name;
   }
 
   const page = filter.page * 1 || 1;
@@ -209,7 +215,7 @@ exports.createNewProduct = async (product) => {
     throw new Error("Invalid input param");
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  product.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  product.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
   let insertData = ProductSchema.validateData(product);
   let query = `insert into ${ProductSchema.schemaName}`;
   const {request, insertFieldNamesStr, insertValuesStr} =

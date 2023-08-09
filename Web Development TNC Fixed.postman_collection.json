@@ -260,17 +260,31 @@
 							{
 								"key": "CategoryName",
 								"value": "laptop",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							},
 							{
 								"key": "Price",
 								"value": "gt:100000",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							},
 							{
 								"key": "Price",
 								"value": "lt:200000",
 								"type": "text"
+							},
+							{
+								"key": "BrandName",
+								"value": "acer",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Name",
+								"value": "USB Wifi 300Mbps Tenda U3",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -586,7 +600,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/api/v1/feature/4",
+							"raw": "http://localhost:3001/api/v1/feature/?ProductID=4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -596,7 +610,13 @@
 								"api",
 								"v1",
 								"feature",
-								"4"
+								""
+							],
+							"query": [
+								{
+									"key": "ProductID",
+									"value": "4"
+								}
 							]
 						}
 					},
@@ -1026,10 +1046,39 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "handle Payment",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"OrderID\":4,\r\n    \"TypeOfPayment\" : \"COD\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/v1/payment/handlePayment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"payment",
+								"handlePayment"
+							]
+						}
 					},
 					"response": []
 				}
@@ -1148,7 +1197,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/api/v1/subimg/image/8",
+							"raw": "http://localhost:3001/api/v1/subimg/product/8",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1158,7 +1207,7 @@
 								"api",
 								"v1",
 								"subimg",
-								"image",
+								"product",
 								"8"
 							]
 						}

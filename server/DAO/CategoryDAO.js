@@ -10,7 +10,7 @@ exports.addCateIfNotExists = async (cate) => {
     throw new Error("Not connected to db");
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  cate.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  cate.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
 
   let insertData = CategorySchema.validateData(cate);
   let query = `SET IDENTITY_INSERT ${CategorySchema.schemaName} ON insert into ${CategorySchema.schemaName}`;

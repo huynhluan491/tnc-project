@@ -8,6 +8,10 @@ const app = require("./app");
 const sql = require("mssql");
 const dbConfig = require("./database/dbconfig");
 
+app.set("view engine", "hbs");
+app.get("/", (req, res) => {
+  res.render("sucess_payment");
+});
 //https://www.npmjs.com/package/mssql#asyncawait => Global Pool Single Instance
 const appPool = new sql.ConnectionPool(dbConfig.sqlConfig);
 appPool

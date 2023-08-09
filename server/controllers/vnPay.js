@@ -1,6 +1,8 @@
 const StaticData = require("../utils/StaticData");
 const dateFormat = require("dateformat");
 const config = StaticData.configApiVnPay;
+const OrderDAO = require("../DAO/OrderDAO");
+const dateTimeUtils = require("../Utils/DateTimeUtils");
 
 const sortObject = (obj) => {
   let sorted = {};
@@ -31,22 +33,25 @@ exports.create_payment_url = async (req, res, next) => {
   var returnUrl = config.vnp_ReturnUrl;
 
   var date = new Date();
+  const reqBody = req.body;
+  console.log(reqBody);
 
   var createDate = dateFormat(date, "yyyymmddHHmmss");
   date.setTime(date.getTime() + 15 * 60 * 1000);
   var expire = dateFormat(date, "yyyymmddHHMMss");
-  console.log(new Date(date.getTime() + 60 * 60 * 60 * 60 * 2));
-  var bankCode = req.body.bankCode || "";
 
-  var orderId = req.body || dateFormat(date, "HHmmss");
-  var amount = req.body.amount || 100000;
-  var orderInfo = req.body.orderDescription || "Hai dzai";
-  var orderType = req.body.orderType || "billpayment";
+  var bankCode = reqBody.bankCode || "";
 
-  var locale = req.body.language;
-  if (!locale) {
-    locale = "vn";
+  const orderId = reqBody.OrderID || 2; //testing
+
+  if (!orderId) {
+    res.status(400).json({code: 400, message: "Missing orderId parameter"});
   }
+  var amount = reqBody.Amount || 100000; // lay amount trong db
+  var orderInfo = reqBody.OrderDescription || "Hai dzai";
+  var orderType = reqBody.OrderType || "billpayment";
+  var locale = reqBody.Language || "vn";
+
   var currCode = "VND";
   var vnp_Params = {};
   vnp_Params["vnp_Version"] = "2.1.0";
@@ -63,24 +68,23 @@ exports.create_payment_url = async (req, res, next) => {
   vnp_Params["vnp_IpAddr"] = ipAddr;
   vnp_Params["vnp_CreateDate"] = createDate;
   vnp_Params["vnp_ExpireDate"] = expire;
+  console.log(vnpUrl);
 
   if (bankCode !== null && bankCode !== "") {
     vnp_Params["vnp_BankCode"] = bankCode;
   }
 
   vnp_Params = sortObject(vnp_Params);
-
   var querystring = require("qs");
   var signData = querystring.stringify(vnp_Params, {encode: false});
   var crypto = require("crypto");
   var hmac = crypto.createHmac("sha512", secretKey);
   var signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
   vnp_Params["vnp_SecureHash"] = signed;
-  console.log(vnp_Params);
   vnpUrl += "?" + querystring.stringify(vnp_Params, {encode: false});
-  // res.status(200).json({code: 200, data: vnpUrl});
+  res.status(200).json({code: 200, data: vnpUrl});
   console.log(vnpUrl);
-  res.redirect(vnpUrl);
+  // res.redirect(vnpUrl);
 };
 
 exports.vnpay_return = (req, res, next) => {
@@ -104,11 +108,23 @@ exports.vnpay_return = (req, res, next) => {
   console.log("vnp_Params return", vnp_Params);
   if (secureHash === signed && vnp_Params["vnp_TransactionStatus"] === "00") {
     //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-    res.json({code: 200, Msg: "success"});
+    // res.json({code: 200, Msg: "success"});
     // handle success here
     const orderId = vnp_Params["vnp_TxnRef"];
-
+    const updateInfor = {
+      OrderID: orderId,
+      PaymentID: 1,
+      StatusID: 2,
+      PayIn: dateTimeUtils.convertMillisecondsToDateTimeSQL(
+        1,
+        false,
+        true,
+        true
+      ),
+    };
+    const result = OrderDAO.updateStatusPayment(updateInfor);
     console.log("success");
+    res.redirect("http://localhost:3001");
   } else {
     res.json({code: 404, Msg: "fail"});
   }

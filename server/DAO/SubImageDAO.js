@@ -9,7 +9,7 @@ exports.addSubImageIfNotExisted = async (img) => {
     throw new Error("Not connected to db");
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  img.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  img.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
 
   let insertData = SubImageSchema.validateData(img);
 
@@ -41,7 +41,7 @@ exports.addImage = async (img) => {
     throw new Error("Not connected to db");
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  img.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  img.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
 
   let insertData = SubImageSchema.validateData(img);
 
@@ -96,7 +96,7 @@ exports.createNewSubImg = async (subImg) => {
     throw new Error("Invalid input param");
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
-  subImg.CreatedAt = DateTimeUtils.convertMillisecondsToDateTime(ms);
+  subImg.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
   let insertData = SubImageSchema.validateData(subImg);
   let query = `insert into ${SubImageSchema.schemaName}`;
   const {request, insertFieldNamesStr, insertValuesStr} =

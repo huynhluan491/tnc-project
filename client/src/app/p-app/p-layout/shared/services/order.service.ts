@@ -31,12 +31,15 @@ export class OrderService {
   }
 
   getOrderDetail(payload: DTOOrderDetailPayload): Observable<DTOResponse> {
-    return this.http.post<DTOResponse>(`${environment.apiUrl}/order/orderdetails`, payload);
+    return this.http.post<DTOResponse>(
+      `${environment.apiUrl}/order/orderdetails`,
+      payload
+    );
   }
 
   getDataById(id: number): Observable<DTOResponse> {
     return this.http
-      .get<DTOResponse>(`${environment.apiUrl}/order/${id}`)
+      .get<DTOResponse>(`${environment.apiUrl}/order/user/${id}`)
       .pipe(catchError(this.handleError));
   }
 

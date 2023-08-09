@@ -73,24 +73,24 @@ export class RegisterComponent implements OnInit {
     this.isRegister = !this.isRegister;
   }
 
-  getFormValidationErrors() {
-    Object.keys(this.registerForm.controls).forEach((key) => {
-      const controlErrors: ValidationErrors = this.registerForm.get(key).errors;
-      if (controlErrors != null) {
-        Object.keys(controlErrors).forEach((keyError) => {
-          console.log(
-            'Key control: ' + key + ', keyError: ' + keyError + ', err value: ',
-            controlErrors[keyError]
-          );
-        });
-      }
-    });
-  }
+  // getFormValidationErrors() {
+  //   Object.keys(this.registerForm.controls).forEach((key) => {
+  //     const controlErrors: ValidationErrors = this.registerForm.get(key).errors;
+  //     if (controlErrors != null) {
+  //       Object.keys(controlErrors).forEach((keyError) => {
+  //         console.log(
+  //           'Key control: ' + key + ', keyError: ' + keyError + ', err value: ',
+  //           controlErrors[keyError]
+  //         );
+  //       });
+  //     }
+  //   });
+  // }
 
   onSubmit(e: any): void {
     e.preventDefault();
     this.submitted = true;
-    this.getFormValidationErrors();
+    // this.getFormValidationErrors();
 
     if (this.isRegister) {
       const registerInfo = this.registerForm.value;
@@ -98,15 +98,14 @@ export class RegisterComponent implements OnInit {
         .signUp(registerInfo)
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((res) => {
-          if (res.Code === 200) {
-            const { CreatedAt, ...registeredUser} = res.Data.User;
-            console.log(registeredUser);
+          console.log('CCCCCCCCCCCCCCCCC', res);
 
-            this.storageService.saveUser(registeredUser);
+          if (res.Code === 200) {
             this.registerService.closeRegisterForm();
-            this.authService.setLoginState(true);
+            this.notificationService.onSuccess('Đăng ký thành công');
+            this.reloadPage();
           } else {
-            this.notificationService.onError('Đăng kí thất bại');
+            this.notificationService.onError('Đăng ký thất bại');
           }
         });
     } else if (!this.isRegister) {
@@ -114,10 +113,12 @@ export class RegisterComponent implements OnInit {
         .login(this.loginForm.value)
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((data) => {
+          console.log('CCCCCCCCCCCCCCCCC', data);
+
           if (data.Code === 200) {
             this.registerService.closeRegisterForm();
             this.notificationService.onSuccess('Đăng nhập thành công');
-            // this.reloadPage();
+            this.reloadPage();
           } else {
             this.notificationService.onError('Đăng nhập thất bại');
           }
