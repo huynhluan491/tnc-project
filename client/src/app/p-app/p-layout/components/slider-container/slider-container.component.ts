@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 @Component({
   selector: 'app-slider-container',
   templateUrl: './slider-container.component.html',
@@ -16,6 +16,9 @@ export class SliderContainerComponent {
   @Input() type: string;
 
   slideConfig = {};
+
+  ngOnChanges(changes: SimpleChanges): void {
+  }
 
   ngOnInit(): void {
     this.slideConfig = {
