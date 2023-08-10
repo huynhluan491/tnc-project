@@ -3,6 +3,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { TextBoxComponent } from '@progress/kendo-angular-inputs';
 import { UserService } from '../../p-layout/shared/services/user.service';
 import { StorageService } from '../../p-layout/shared/services/storage.service';
+import { NotificationService } from '@progress/kendo-angular-notification';
+import { NotificationPopupService } from '../../p-layout/shared/services/notification.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-change-password',
@@ -12,10 +15,12 @@ import { StorageService } from '../../p-layout/shared/services/storage.service';
 export class ChangePasswordComponent implements AfterViewInit {
   @ViewChild('password') private password: TextBoxComponent;
   @ViewChild('repeatPassword') private repeatPassword: TextBoxComponent;
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     @SkipSelf() private userService: UserService,
-    @SkipSelf() private storageService: StorageService
+    @SkipSelf() private storageService: StorageService,
+    @SkipSelf() private notifyService: NotificationPopupService
   ) {}
 
   changePassWordForm: FormGroup = new FormGroup({
@@ -29,17 +34,26 @@ export class ChangePasswordComponent implements AfterViewInit {
   }
 
   updatePassword(): void {
-    const password = this.changePassWordForm.get('PassWord').value;
-    const repeat = this.changePassWordForm.get('RepeatPassWord').value;
-    if (password == repeat) {
-      const user = {
-        Password: password,
-      };
-      const userID = this.storageService.getUser().UserID;
-      this.userService.updateData(userID, user).subscribe((res) => {
+    const oldPassword = this.changePassWordForm.get('PassWord').value;
+    const newPassword = this.changePassWordForm.get('RepeatPassWord').value;
+    const userID = this.storageService.getUser().UserID;
+    const user = {
+      OldPassword: oldPassword,
+      NewPassword: newPassword,
+      UserID: userID,
+    };
+
+    this.userService
+      .changePasword(user)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
         console.log(res);
+
+        if (res.Code == 200) {
+          window.location.reload();
+          this.notifyService.onSuccess('Đổi mật khẩu thành công!');
+        }
       });
-    }
   }
 
   public toggleVisibility(type: string): void {
