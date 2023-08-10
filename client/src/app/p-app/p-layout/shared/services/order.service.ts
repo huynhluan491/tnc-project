@@ -49,9 +49,9 @@ export class OrderService {
       .pipe(catchError(this.handleError));
   }
 
-  updateData(id: number, order: DTOOrder): Observable<DTOResponse> {
+  updateData(order: any): Observable<DTOResponse> {
     return this.http
-      .patch<DTOResponse>(`/api/v1/order/${id}`, order)
+      .patch<DTOResponse>(`/api/v1/order`, order)
       .pipe(catchError(this.handleError));
   }
 

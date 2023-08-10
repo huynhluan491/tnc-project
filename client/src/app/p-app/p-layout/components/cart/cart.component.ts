@@ -5,6 +5,7 @@ import { DTOOrder } from '../../shared/dto/DTOOrder';
 import { StorageService } from '../../shared/services/storage.service';
 import { ProductService } from '../../shared/services/product.service';
 import { Subject, takeUntil } from 'rxjs';
+import { OrderService } from '../../shared/services/order.service';
 
 @Component({
   selector: 'app-cart',
@@ -12,7 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent implements OnInit {
-  productList: [DTOOrder] | [] = [];
+  productList = [];
   ngUnsubscribe = new Subject<void>();
   total: number = 0;
   @Input() checkout: boolean = false;
@@ -21,24 +22,50 @@ export class CartComponent implements OnInit {
     @SkipSelf() private productService: ProductService,
     private storageService: StorageService,
     private router: Router,
-    private cartService: CartService
+    private cartService: CartService,
+    private orderService: OrderService
   ) {}
 
   ngOnInit(): void {
     this.getOrders();
   }
 
+  decreaseItem(product) {
+    const updatedAmount = product.Amount - 1;
+    console.log(updatedAmount);
+
+    if (updatedAmount == 0) {
+      let orders = this.storageService.getOrders();
+      orders.orders = orders.orders.filter(
+        (item) => item.ProductID !== product.productID
+      );
+      this.storageService.saveOrders(orders);
+      this.productList = orders;
+    }
+    // const orderId = this.storageService.getOrders().OrderID;
+    // const order = {
+    //   Amount: updatedAmount,
+    //   Order: orderId,
+    //   ProductID: product.ProductID,
+    // };
+    // console.log(order);
+
+    // this.orderService.updateData(order).subscribe((res) => {
+    //   console.log(res);
+    // });
+  }
+
   getOrders() {
     const orders = this.storageService.getOrders().orders;
+
     orders.forEach((product) => {
       this.total += product.Price * product.Amount;
-      // this.getProductImage(product.Image)
-      //   .pipe(takeUntil(this.ngUnsubscribe))
-      //   .subscribe((imageSrc) => {
-      //     product.ImageSrc = imageSrc;
-      // });
-    })
-    console.log(this.total);
+      this.getProductImage(product.Image)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((res) => {
+          product.ImageSrc = res.Data.Base64;
+        });
+    });
     this.productList = orders;
   }
 

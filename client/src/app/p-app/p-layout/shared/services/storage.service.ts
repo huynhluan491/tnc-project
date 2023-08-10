@@ -28,6 +28,8 @@ export class StorageService {
   }
 
   public saveOrders(data: any): void {
+    console.log(data);
+
     window.sessionStorage.removeItem(ORDER_KEY);
     window.sessionStorage.setItem(
       ORDER_KEY,

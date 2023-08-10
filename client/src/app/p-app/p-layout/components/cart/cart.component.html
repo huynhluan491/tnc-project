@@ -42,7 +42,10 @@
             class="cart-item-sub-wrapper2"
           >
             <div class="cart-item-img-wrapper">
-              <img [src]="product.ImageSrc" class="cart-item-img" />
+              <img
+                [src]="'data:image/jpeg;base64,' + product.ImageSrc"
+                class="cart-item-img"
+              />
             </div>
             <div class="cart-item-info-wrapper">
               <p class="cart-item-info-title">
@@ -54,7 +57,12 @@
               <div class="cart-item-sub-info">
                 <div class="cart-item-quantity-wrapper">
                   <p class="cart-item-quantity-title">Số lượng</p>
-                  <div class="cart-item-quantity-sub">-</div>
+                  <div
+                    (click)="decreaseItem(product)"
+                    class="cart-item-quantity-sub"
+                  >
+                    -
+                  </div>
                   <p class="cart-item-quantity-value">{{ product.Amount }}</p>
                   <div class="cart-item-quantity-add">+</div>
                 </div>
@@ -112,7 +120,7 @@
           </div>
           <div class="cart-info-total">
             <p class="cart-info-total-txt">Tổng chi phí</p>
-            <p class="cart-info-total-no">{{ total  | number : "1.0-0" }} đ</p>
+            <p class="cart-info-total-no">{{ total | number : "1.0-0" }} đ</p>
           </div>
           <p class="cart-info-tax">Đã bao gồm VAT (nếu có)</p>
           <div
