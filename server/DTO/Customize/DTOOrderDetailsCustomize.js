@@ -5,7 +5,7 @@ module.exports = class DTOOrderDetailsProductCustomize extends (
 ) {
   constructor(data) {
     super(data);
-    // this.OrderID = data.OrderID ?? null;
+    this.OrderID = data.OrderID ?? null;
     this.Amount = data.Amount ?? null;
   }
 };
