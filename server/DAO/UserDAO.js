@@ -115,7 +115,6 @@ exports.getAllUsers = async (filter) => {
   }
   let totalPage = Math.ceil(totalUser / pageSize); //round up
   const users = result.recordsets[0];
-  console.log("finish log", selectQuery);
   return {
     Page: page,
     PageSize: pageSize,
@@ -150,8 +149,7 @@ exports.getUserById = async (id) => {
      where ${OrdersSchema.schemaName}.${OrdersSchema.schema.PayIn.name} is not null and ${OrdersSchema.schemaName}.${OrdersSchema.schema.UserID.name} = @${UserSchema.schema.UserID.name}
      group by ${Order_DetailsSchema.schemaName}.${Order_DetailsSchema.schema.OrderID.name}
   `;
-  console.log(queryTotalPrice);
-  console.log(queryUser);
+
   let resultUser = await dbConfig.db.pool
     .request()
     .input(UserSchema.schema.UserID.name, UserSchema.schema.UserID.sqlType, id)
@@ -168,7 +166,6 @@ exports.getUserById = async (id) => {
     ...resultUser.recordset[0],
     TotalPrice: totalPrice,
   };
-  console.log(result);
   if (resultUser.recordset.length > 0) {
     return new DTOUserCustomize(result);
   }
@@ -223,7 +220,7 @@ exports.updateUserById = async (id, updateInfo) => {
   }
   //updateInfo = UserSchema.validateData(updateInfo);
   if (updateInfo.Password) {
-    updateInfo.password = await bcrypt.hash(updateInfo.password, 10);
+    updateInfo.Password = await bcrypt.hash(updateInfo.Password, 10);
   }
   // console.log(updateInfo);
   let query = `update ${UserSchema.schemaName} set`;
@@ -308,4 +305,22 @@ exports.userSignUp = async (dto) => {
   const u = await this.getUserByUserName(dto.UserName);
   await OrderDAO.createNewOrder(u.UserID);
   return u;
+};
+
+exports.changePassword = async (payload) => {
+  const {UserID, OldPassword, NewPassword} = payload;
+  const user = await this.getUserById(UserID);
+
+  if (!user) {
+    throw new Error("User not found!");
+  }
+  // const oldPassEncode = await bcrypt.hash(OldPassword, 10);
+  const check = await bcrypt.compare(OldPassword, user.Password);
+
+  if (!check) {
+    throw new Error("Old password is not correct!");
+  }
+
+  const result = await this.updateUserById(UserID, {Password: NewPassword});
+  return result;
 };

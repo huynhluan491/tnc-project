@@ -46,7 +46,7 @@ import { StarRatingModule } from 'angular-star-rating';
     CartComponent,
     RegisterComponent,
     VnCurrencyPipe,
-    SalePricePipe
+    SalePricePipe,
   ],
   imports: [
     CommonModule,
@@ -79,9 +79,7 @@ import { StarRatingModule } from 'angular-star-rating';
     PercentagePipe,
     SalePricePipe,
     CartComponent,
-    RegisterComponent
+    RegisterComponent,
   ],
 })
-
 export class PLayoutModule {}
-
