@@ -124,10 +124,24 @@ exports.getProductInOderByUserID = async (userID) => {
      inner join LS_Status s on s.StatusID = o.StatusID
     where od.OrderID in (select OrderID from Orders o where o.UserID = @UserID ) and o.StatusID =1 and s.TypeStatus =2
   `);
+  let queryoOrderID = await dbPool
+    .request()
+    .input(
+      OrdersSchema.schema.UserID.name,
+      OrdersSchema.schema.UserID.sqlType,
+      userID
+    )
+    .query(
+      `select OrderID from Orders where UserID = @UserID and StatusID = 1`
+    );
   var dtos = result.recordsets[0].map(
     (element) => new DTOOrderDetailsProductCustomize(element)
   );
-  return {DataInOrder: dtos, TotalAmount: count.recordsets[0][0].TotalAmount};
+  return {
+    DataInOrder: dtos,
+    TotalAmount: count.recordsets[0][0].TotalAmount,
+    OrderID: queryoOrderID.recordsets[0][0].OrderID,
+  };
 };
 
 exports.getOrderIDByUserName = async (username) => {
