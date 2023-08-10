@@ -35,8 +35,6 @@ const OrdersSchema = new ModelSchema(
     PayIn: new ModelSchemaValidator({
       name: "PayIn",
       sqlType: sql.DateTime,
-      default: new Date().toISOString(),
-      require: true,
     }),
     CreatedAt: new ModelSchemaValidator({
       name: "CreatedAt",

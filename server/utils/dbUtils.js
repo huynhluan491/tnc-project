@@ -116,7 +116,6 @@ exports.getInsertQuery = (schema, request, insert) => {
   if (!insert) {
     throw new Error("Invalid insert param");
   }
-
   let insertFieldNamesStr = "";
   let insertValuesStr = "";
 

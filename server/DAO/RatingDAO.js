@@ -27,22 +27,30 @@ exports.addRatingIfNotExisted = async (rating) => {
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
   rating.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
 
-  let query = `SET IDENTITY_INSERT ${RatingSchema.schemaName} ON insert into ${RatingSchema.schemaName}`;
+  let updateData = RatingSchema.validateData(rating);
+  const productID = updateData.ProductID;
+  delete updateData.ProductID;
+  delete updateData.RatingID;
 
-  let insertData = RatingSchema.validateData(rating);
-  const {request, insertFieldNamesStr, insertValuesStr} =
-    dbUtils.getInsertQuery(RatingSchema.schema, dbPool.request(), insertData);
-  if (!insertFieldNamesStr || !insertValuesStr) {
+  const {request, updateStr} = dbUtils.getUpdateQuery(
+    RatingSchema.schema,
+    dbPool.request(),
+    updateData
+  );
+  if (!updateStr) {
     throw new Error("Invalid insert param");
   }
-  query +=
-    " (" +
-    insertFieldNamesStr +
-    ") select  " +
-    insertValuesStr +
-    ` WHERE NOT EXISTS(SELECT * FROM ${RatingSchema.schemaName} WHERE productID = @productID)` +
-    ` SET IDENTITY_INSERT ${RatingSchema.schemaName} OFF`;
-  let result = await request.query(query);
+  const query = `update ${RatingSchema.schemaName} set ${updateStr} where ${RatingSchema.schema.ProductID.name} = @${RatingSchema.schema.ProductID.name}`;
+
+  let result = await request
+    .input(
+      RatingSchema.schema.ProductID.name,
+      RatingSchema.schema.ProductID.sqlType,
+      productID
+    )
+    .query(query);
+  // console.lory);g(que
+
   return result.recordsets;
 };
 
@@ -60,7 +68,6 @@ exports.getAllRatings = async () => {
   return result.recordsets[0];
 };
 exports.getRatingByProductId = async (id) => {
-  console.log(id);
   if (!dbConfig.db.pool) {
     throw new Error("Not connected to db");
   }
@@ -124,7 +131,6 @@ exports.updateRatingById = async (productID, updateInfo) => {
   for (let key in updateInfo) {
     if (!rating[key]) delete rating[key];
   }
-  console.log([]);
   if (!dbConfig.db.pool) {
     throw new Error("Not connected to db");
   }
@@ -132,7 +138,6 @@ exports.updateRatingById = async (productID, updateInfo) => {
   let query = `update ${RatingSchema.schemaName} set ${starQuantity} = ${
     rating[`${starQuantity}`]
   } + 1`;
-  console.log(query);
   let request = dbConfig.db.pool.request();
   request.input(
     `${RatingSchema.schema.ProductID.name}`,
