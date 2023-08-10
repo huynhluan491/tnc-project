@@ -30,36 +30,56 @@ export class CartComponent implements OnInit {
     this.getOrders();
   }
 
+  increaseItem(product) {
+    const updatedAmount = product.Amount + 1;
+    if (updatedAmount <= product.Stock) {
+      let orders = this.storageService.getOrders();
+      const productIndexToUpdate = orders.orders.findIndex(
+        (order) => order.ProductID === product.ProductID
+      );
+      orders.orders[productIndexToUpdate].Amount = updatedAmount;
+      this.storageService.saveOrders2(orders);
+      const order = {
+        Amount: updatedAmount,
+        OrderID: orders.orderId,
+        ProductID: product.ProductID,
+      };
+      this.orderService.updateData(order).subscribe((res) => {});
+      this.getOrders();
+    }
+  }
+
   decreaseItem(product) {
     const updatedAmount = product.Amount - 1;
-    console.log(updatedAmount);
-
-    if (updatedAmount == 0) {
-      let orders = this.storageService.getOrders();
-      orders.orders = orders.orders.filter(
-        (item) => item.ProductID !== product.productID
+    let orders = this.storageService.getOrders();
+    if (updatedAmount >= 0) {
+      if (updatedAmount == 0) {
+        orders.orders = orders.orders.filter(
+          (item) => item.ProductID !== product.ProductID
+        );
+      }
+      const productIndexToUpdate = orders.orders.findIndex(
+        (order) => order.ProductID === product.ProductID
       );
-      this.storageService.saveOrders(orders);
-      this.productList = orders;
+      orders.orders[productIndexToUpdate].Amount = updatedAmount;
+      this.storageService.saveOrders2(orders);
+      const order = {
+        Amount: updatedAmount,
+        OrderID: orders.orderId,
+        ProductID: product.ProductID,
+      };
+      this.orderService.updateData(order).subscribe((res) => {});
+      this.getOrders();
+    } else {
+      return;
     }
-    // const orderId = this.storageService.getOrders().OrderID;
-    // const order = {
-    //   Amount: updatedAmount,
-    //   Order: orderId,
-    //   ProductID: product.ProductID,
-    // };
-    // console.log(order);
-
-    // this.orderService.updateData(order).subscribe((res) => {
-    //   console.log(res);
-    // });
   }
 
   getOrders() {
     const orders = this.storageService.getOrders().orders;
-
+    let total = 0;
     orders.forEach((product) => {
-      this.total += product.Price * product.Amount;
+      total += product.Price * product.Amount;
       this.getProductImage(product.Image)
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((res) => {
@@ -67,6 +87,7 @@ export class CartComponent implements OnInit {
         });
     });
     this.productList = orders;
+    this.total = total;
   }
 
   getProductImage(imageName: string) {
