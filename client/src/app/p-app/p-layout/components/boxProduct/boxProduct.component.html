@@ -10,15 +10,10 @@
       <div class="title-product">
         <span>{{ data?.Name }}</span>
       </div>
-      <div class="rating">
-        <ngb-rating
-          [(rate)]="selected"
-          (hover)="hovered = $event"
-          (leave)="hovered = 0"
-          [readonly]="readonly"
-          [max]="'5'"
-          [ariaSetSize]="'30px'"
-        ></ngb-rating>
+      <div class="rating d-flex justify-content-start">
+        <star-rating [hoverEnabled]="true" speed="slow" [starType]="'svg'" [rating]="5"
+        (starClickChange)="onRatingProduct($event)">
+        </star-rating>
       </div>
       <div class="price-product">
         <span class="sale-price">{{ salePrice | number : "1.0-0" }} đ</span>

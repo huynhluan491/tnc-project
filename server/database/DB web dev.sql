@@ -6,7 +6,7 @@ create database TNCShop
 go
 --ALTER DATABASE TNCShop
 --    COLLATE Vietnamese_CI_AS ;
-use master
+use TNCShop
 go
 alter database TNCShop set TRUSTWORTHY ON
 go
@@ -111,7 +111,7 @@ create table Orders
 	Phone nvarchar(11) null,
 	PaymentID int constraint FK_Order_Payment references Payment(PaymentId),
 	StatusID int constraint FK_Order_LS_Status references LS_Status(StatusID),
-	PayIn datetime default CURRENT_TIMESTAMP null,
+	PayIn datetime null,
 	CreatedAt datetime default CURRENT_TIMESTAMP not null
 )
 go

@@ -13,6 +13,7 @@ export class BoxProductComponent implements OnChanges {
   saleConvert: string = '';
   selected = 0;
   hovered = 0;
+  ratingValue: number = 0;
   readonly = true;
   inforProduct = 'infor-product';
 
@@ -44,4 +45,10 @@ export class BoxProductComponent implements OnChanges {
   navigateDetail() {
     this.route.navigate(['/product', this.data.Name]);
   }
+
+  onRatingProduct(event: any) {
+    console.log(event);
+  }
+
+  
 }

@@ -56,5 +56,5 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     httpInterceptorProviders,
   ],
   bootstrap: [AppComponent],
-})
+  })
 export class AppModule {}

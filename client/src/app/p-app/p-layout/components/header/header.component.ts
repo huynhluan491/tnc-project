@@ -80,19 +80,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       icon: 'icon_setting.svg',
       path: 'building',
       items: [],
-    },
-    {
-      text: 'XẢ KHO GEAR CỰC CHẤT',
-      icon: 'icon_sale.svg',
-      path: 'saleoff',
-      items: [],
-    },
-    {
-      text: 'TIN TỨC',
-      icon: '',
-      path: 'news',
-      items: [],
-    },
+    }
   ];
   cartItems: number = 0;
   //Subscription

@@ -14,6 +14,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class CartComponent implements OnInit {
   productList: [DTOOrder] | [] = [];
   ngUnsubscribe = new Subject<void>();
+  total: number = 0;
   @Input() checkout: boolean = false;
 
   constructor(
@@ -29,13 +30,15 @@ export class CartComponent implements OnInit {
 
   getOrders() {
     const orders = this.storageService.getOrders().orders;
-    for (let product of orders) {
-      this.getProductImage(product.Image)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((imageSrc) => {
-          product.ImageSrc = imageSrc;
-        });
-    }
+    orders.forEach((product) => {
+      this.total += product.Price * product.Amount;
+      // this.getProductImage(product.Image)
+      //   .pipe(takeUntil(this.ngUnsubscribe))
+      //   .subscribe((imageSrc) => {
+      //     product.ImageSrc = imageSrc;
+      // });
+    })
+    console.log(this.total);
     this.productList = orders;
   }
 

@@ -111,3 +111,7 @@
   background-color: rgb(53, 46, 46);
   border: 3px solid rgb(53, 46, 46);
 }
+
+::ng-deep .star-container {
+  margin-left: 0;
+}

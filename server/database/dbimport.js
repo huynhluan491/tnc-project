@@ -130,12 +130,11 @@ async function importDB() {
 
   for (let i = 0; i < ratings.length; i++) {
     let rating = new DTORating(ratings[i]);
-
     try {
       await RatingDAO.addRatingIfNotExisted(rating);
       console.log("import rating --- done!");
     } catch (Error) {
-      // throw new Error("errr", rating);
+      throw Error;
     }
   }
 

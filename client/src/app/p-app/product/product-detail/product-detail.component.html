@@ -1,12 +1,14 @@
 <div class="wrapper">
   <app-breadcrumb [plusBreadCrumbText]="breadCrumbList"></app-breadcrumb>
+  
   <div class="product-wrapper">
     <div class="main-img-slider" style="width: 50%">
+      
       <div style="width: 100%; border: 1px solid #dddfe6">
-        <app-slider-container [imgs]="testSubimg" [type]="'subimgs'"></app-slider-container>
+        <app-slider-container [imgs]="subImgList" [type]="'subimgs'"></app-slider-container>
       </div>
       <div class="subimg-slider" style="border: 1px solid #dddfe6">
-        <app-slider-container [autoPlay]="false" [slidesToScroll]="1" [imgs]="testSubimg" [type]="'img'"
+        <app-slider-container [autoPlay]="false" [slidesToScroll]="1" [imgs]="subImgList" [type]="'img'"
           [slidesToShow]="3">
         </app-slider-container>
       </div>
@@ -47,7 +49,7 @@
             </div>
           </div>
         </div>
-        <p class="sale-price">{{ saleprice | number : "1.0-0" }} đ</p>
+        <p class="sale-price">{{ productDetail.Price | salePricePipe: productDetail.Sale | number : "1.0-0" }} đ</p>
       </div>
 
       <div class="cart-button-hadling">
