@@ -103,4 +103,19 @@
       </kendo-grid>
     </div>
   </div>
+
+  <div #searchContainer class="search-products-wrapper" *ngIf="isDetailProductPopupOpened">
+    <div (click)="toggleProductPopup(false)">X</div>
+    <div class="product-item" *ngFor="let data of orderDetailProductList">
+      <img
+        class="product-img"
+        [src]="'data:image/jpeg;base64,' + data.Base64Image"
+        [alt]="data.Image"
+      />
+      <div class="product-info">
+        <p class="name">{{data.Name}}</p>
+        <p class="price">{{data.Price}}</p>
+      </div>
+    </div>
+  </div>
 </div>

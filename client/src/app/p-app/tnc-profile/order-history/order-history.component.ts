@@ -3,6 +3,10 @@ import { Subject, takeUntil } from 'rxjs';
 import { DTOOrder } from '../share/DTO/orderDTO.dto';
 import { OrderService } from '../../p-layout/shared/services/order.service';
 import { StorageService } from '../../p-layout/shared/services/storage.service';
+import { DTOProduct } from '../../p-layout/shared/dto/DTOProduct';
+import { Ps_UtilObjectService } from 'src/app/p-lib/ultilities/ulity.object';
+import { LayoutAPIService } from '../../p-layout/shared/services/layout-api.service';
+import { NotificationPopupService } from '../../p-layout/shared/services/notification.service';
 @Component({
   selector: 'app-order-history',
   templateUrl: './order-history.component.html',
@@ -16,9 +20,12 @@ export class OrderHistoryComponent implements OnInit {
   userID: number = null;
   constructor(
     private orderService: OrderService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private notiService: NotificationPopupService
   ) {}
   fullName: String = 'NAME';
+  orderDetailProductList: DTOProduct[] = [];
+  isDetailProductPopupOpened: boolean = false;
 
   ngOnInit(): void {
     this.userID = this.storageService.getUser().UserID;
@@ -46,15 +53,21 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   getOrderDetail(orderID: number) {
-    const body = {
-      OrderID: orderID,
-      UserID: this.userID,
-    };
     this.orderService
-      .getOrderDetail(body)
+      .getOrderDetail(orderID, this.userID)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((res) => {
-        console.log(res);
-      });
+        if (Ps_UtilObjectService.hasListValue(res.Data)) {
+          this.orderDetailProductList = [...res.Data];
+          console.log(this.orderDetailProductList);
+        } else {
+          this.notiService.onError("Lỗi khi tìm sản phẩm");
+        }
+    });
+    this.toggleProductPopup(true);
+  }
+
+  toggleProductPopup(value: boolean) {
+    this.isDetailProductPopupOpened = value; 
   }
 }
