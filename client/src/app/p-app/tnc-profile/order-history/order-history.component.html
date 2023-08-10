@@ -105,11 +105,11 @@
   </div>
 
   <div #searchContainer class="search-products-wrapper" *ngIf="isDetailProductPopupOpened">
-    <div (click)="toggleProductPopup(false)">X</div>
+    <div class="close-icon" (click)="toggleProductPopup(false)">X</div>
     <div class="product-item" *ngFor="let data of orderDetailProductList">
       <img
         class="product-img"
-        [src]="'data:image/jpeg;base64,' + data.Base64Image"
+        [src]="'data:image/jpeg;base64,' + data.ImgSrc"
         [alt]="data.Image"
       />
       <div class="product-info">
