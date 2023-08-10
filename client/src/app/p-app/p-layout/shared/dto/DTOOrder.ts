@@ -1,4 +1,5 @@
 export class DTOOrder {
+  ProductID: number;
   OrderID: number;
   UserID: number;
   CutomerName: string;
@@ -11,6 +12,7 @@ export class DTOOrder {
   Amount: number;
 
   constructor(
+    productID: number,
     orderID: number,
     userID: number,
     customerName: string,
@@ -22,6 +24,7 @@ export class DTOOrder {
     createAt: string,
     amount: number
   ) {
+    this.ProductID = productID;
     this.OrderID = orderID;
     this.UserID = userID;
     this.CutomerName = customerName;
