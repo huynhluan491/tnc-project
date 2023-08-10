@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { NotificationPopupService } from './notification.service';
+import { Injectable, SkipSelf } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -8,7 +9,10 @@ import { DTOUser } from '../dto/DTOUser';
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private notifyService: NotificationPopupService
+  ) {
     console.log('user service started');
   }
 
@@ -45,6 +49,12 @@ export class UserService {
       .pipe(catchError(this.handleError));
   }
 
+  changePasword(user: any): Observable<any> {
+    return this.http
+      .post<DTOUser>(`/api/v1/user/changePassword`, user)
+      .pipe(catchError(this.handlePasswordUpdateFail));
+  }
+
   deleteDataById(id: number): Observable<DTOUser> {
     return this.http
       .delete<DTOUser>(`/api/v1/user/${id}`)
@@ -53,6 +63,12 @@ export class UserService {
 
   private handleError(error: any) {
     console.error('An error occurred:', error);
+    return throwError(
+      () => new Error('Something went wrong. Please try again later.')
+    );
+  }
+  private handlePasswordUpdateFail(error: any) {
+    this.notifyService.onError('Đổi mật khẩu thất bại!');
     return throwError(
       () => new Error('Something went wrong. Please try again later.')
     );
