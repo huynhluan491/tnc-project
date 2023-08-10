@@ -2,6 +2,8 @@ import { DTOCategory } from './../../shared/dto/DTOCategory';
 import { RegisterService } from './../../shared/services/register.service';
 import {
   Component,
+  ElementRef,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -9,18 +11,21 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, Subscription, debounce, debounceTime, delay, switchMap, take, takeUntil } from 'rxjs';
 import { LayoutAPIService } from '../../shared/services/layout-api.service';
 import { Ps_UtilObjectService } from 'src/app/p-lib/ultilities/ulity.object';
 import { CartService } from '../../shared/services/cart.service';
 import { AuthService } from 'src/app/p-app/http-interceptors/auth.service';
 import { DTOUser } from 'src/app/p-app/_models/DTOUser';
 import { StorageService } from '../../shared/services/storage.service';
-import { Route, Router } from '@angular/router';
+import { NavigationExtras, Route, Router } from '@angular/router';
 import { NotificationPopupService } from '../../shared/services/notification.service';
 import { CategoryService } from '../../shared/services/category.service';
 import { OrderService } from '../../shared/services/order.service';
 import { DTOResponse } from '../../shared/dto/DTOResponse';
+import { FormControl } from '@angular/forms';
+import { ProductService } from '../../shared/services/product.service';
+import { DTOProduct } from '../../shared/dto/DTOProduct';
 
 @Component({
   selector: 'app-p-header',
@@ -28,6 +33,7 @@ import { DTOResponse } from '../../shared/dto/DTOResponse';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  @ViewChild('searchContainer') containerRef!: ElementRef;
   userMenu: any[] = [
     { text: 'TNCMember', icon: 'k-i-user' },
     { text: 'Đăng xuất', icon: 'k-i-home' },
@@ -42,11 +48,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     @SkipSelf() private cartService: CartService,
     @SkipSelf() private categoryService: CategoryService,
     @SkipSelf() private registerService: RegisterService,
-    @SkipSelf() private orderService: OrderService
+    @SkipSelf() private orderService: OrderService,
+    @SkipSelf() private productService: ProductService
   ) {}
   userName: string = '';
   ngUnsubscribe = new Subject<void>();
   isLoggedIn: boolean = false;
+  searchInputValue = new FormControl('');
+  searchedProductList: DTOProduct[] = [];
 
   ngOnInit(): void {
     this.getOrders();
@@ -60,11 +69,36 @@ export class HeaderComponent implements OnInit, OnDestroy {
           
         }
       });
-    // if (Object.keys(this.storageService.getUser()).length > 0) {
-    //   this.isLoggedIn = this.storageService.isLoggedIn();
-    //   this.userName = this.storageService.getUser().UserName;
-    // }
     this.getCategoryList();
+
+    this.searchInputValue.valueChanges.pipe(
+      debounceTime(1000),
+      switchMap((res) => this.productService.getDetaiProductByName(res)),
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe(
+      (res) => {
+        if (res.Code === 200 && Ps_UtilObjectService.hasListValue(res.Data)) {
+          this.searchedProductList = [...res.Data];
+          this.searchInputValue.patchValue('', {emitEvent: false}); //prevent emit when reset value of input
+          console.log(this.searchedProductList);
+        }
+      },
+      (error) => {
+        console.error('Error:', error);
+      }
+    );
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!this.containerRef?.nativeElement.contains(event.target)) {
+      this.searchedProductList = [];
+    }
+  }
+
+  navigateDetail(productName: string) {
+    this.searchedProductList = [];
+    this.route.navigate(['/product', productName]);
   }
 
   //Category list declaration

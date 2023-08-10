@@ -31,17 +31,22 @@ export class ProductService {
   }
 
   getProduct(filter: DTOProductFilter): Observable<DTOResponse> {
-    return this.http.post<DTOResponse>(`${environment.apiUrl}/product/search`, filter);
+    return this.http.post<DTOResponse>(
+      `${environment.apiUrl}/product/search`,
+      filter
+    );
   }
 
   getDetaiProductByName(Name: string): Observable<DTOResponse> {
     const encodedName = encodeURI(Name);
-    const headers = new HttpHeaders ({
-      'Name': encodedName
-    })
+    const headers = new HttpHeaders({
+      Name: encodedName,
+    });
     console.log('header', headers);
-    
-    return this.http.get<DTOResponse>(`${environment.apiUrl}/product`, {headers}).pipe(catchError(this.handleError));
+
+    return this.http
+      .get<DTOResponse>(`${environment.apiUrl}/product`, { headers })
+      .pipe(catchError(this.handleError));
   }
 
   getDataById(id: number): Observable<DTOResponse> {
@@ -68,33 +73,14 @@ export class ProductService {
       .pipe(catchError(this.handleError));
   }
 
-
-
   getProductImage(imageName: string): Observable<any> {
     return this.http
       .get(`/api/v1/product/image/${imageName}`)
-      .pipe(
-        map((res: any) => {
-          const byteCharacters = atob(res.Data.base64);
-          const byteNumbers = new Array(byteCharacters.length);
-          for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-          }
-          const byteArray = new Uint8Array(byteNumbers);
-          const blob = new Blob([byteArray], { type: 'image/png' });
-          const url = URL.createObjectURL(blob);
-          return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-        })
-      )
       .pipe(catchError(this.handleError));
   }
 
-  updateProductRating() {
-    
-  }
+  updateProductRating() {}
 
-
-  
   private handleError(error: any) {
     console.error('An error occurred:', error);
     return throwError(

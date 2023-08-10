@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { DTOOrder } from '../dto/DTOOrder';
@@ -30,11 +30,13 @@ export class OrderService {
       .pipe(catchError(this.handleError));
   }
 
-  getOrderDetail(payload: DTOOrderDetailPayload): Observable<DTOResponse> {
-    return this.http.post<DTOResponse>(
-      `${environment.apiUrl}/order/orderdetails`,
-      payload
-    );
+  getOrderDetail(orderID: number, userID: number): Observable<DTOResponse> {
+    const headers = new HttpHeaders ({
+      "OrderID": orderID,
+      "UserID": userID
+    })
+    return this.http.get<DTOResponse>(
+      `${environment.apiUrl}/order/orderdetails`,{headers}).pipe(catchError(this.handleError));
   }
 
   getDataById(id: number): Observable<DTOResponse> {
@@ -49,9 +51,9 @@ export class OrderService {
       .pipe(catchError(this.handleError));
   }
 
-  updateData(id: number, order: DTOOrder): Observable<DTOResponse> {
+  updateData(order: any): Observable<DTOResponse> {
     return this.http
-      .patch<DTOResponse>(`/api/v1/order/${id}`, order)
+      .patch<DTOResponse>(`/api/v1/order`, order)
       .pipe(catchError(this.handleError));
   }
 
