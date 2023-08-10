@@ -45,6 +45,8 @@ router
     userController.deleteMultipleUserById //param id=1,id=2,...
   );
 
+router.route("/changePassword").post(userController.changePassword);
+
 router.route("/byname/:username").post(userController.getUserByUserName);
 
 module.exports = router;

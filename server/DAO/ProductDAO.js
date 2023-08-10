@@ -107,7 +107,7 @@ exports.getAllProducts = async (reqHeader) => {
   }
 
   let filter = {};
-  const {categoryname, brandname, price, name} = reqHeader;
+  const {categoryname, brandname, price, name, currentpage} = reqHeader;
 
   if (price) {
     const priceArr = price.split(",");
@@ -134,8 +134,10 @@ exports.getAllProducts = async (reqHeader) => {
     const convertedName = decodeURI(name);
     filter.Name = convertedName;
   }
-
-  const page = filter.page * 1 || 1;
+  if (currentpage) {
+    filter.CurrentPage = currentpage;
+  }
+  const page = filter.CurrentPage * 1 || 1;
   let pageSize = filter.pageSize * 1 || StaticData.config.MAX_PAGE_SIZE;
   if (pageSize > StaticData.config.MAX_PAGE_SIZE) {
     pageSize = StaticData.config.MAX_PAGE_SIZE;
@@ -193,7 +195,7 @@ exports.getAllProducts = async (reqHeader) => {
         ratingAvg += productRating[key];
       }
       element.RatingAvg = ratingAvg / 5;
-      console.log(element);
+      // console.log(element);
       element.Base64Image = converted.Base64;
       return new DTOProductCustomize(element);
     })
@@ -313,7 +315,6 @@ exports.getProductsNotPagination = async () => {
   }
   let request = dbConfig.db.pool.request();
   let result = await request.query(`select * from ${ProductSchema.schemaName}`);
-  console.log(result.recordsets[0]);
   let dtos = result.recordsets[0].map((x) => new DTOProduct(x));
   return dtos;
 };

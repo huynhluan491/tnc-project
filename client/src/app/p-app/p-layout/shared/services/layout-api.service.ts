@@ -12,7 +12,7 @@ export class LayoutAPIService {
   brandURL = '/api/v1/brand';
   categoryURL = '/api/v1/category/';
   productURL = '/api/v1/product/';
-  filterProductURL = '/api/v1/product/?';
+  filterProductURL = '/api/v1/product';
   //Chưa chỉnh lại res từ api nên chưa gán DTO được
 
   GetProducts() {
@@ -28,9 +28,9 @@ export class LayoutAPIService {
     });
   }
 
-  GetFilterProducts(filterProductURL: string) {
+  GetFilterProducts(filterProductURL: string, headers: any) {
     return new Observable<any>((obs) => {
-      this.http.get<any>(filterProductURL).subscribe(
+      this.http.get<any>(filterProductURL, { headers: headers }).subscribe(
         (res) => {
           obs.next(res);
           obs.complete();
@@ -42,6 +42,7 @@ export class LayoutAPIService {
       );
     });
   }
+
   GetBrands() {
     return new Observable<DTOResponse>((obs) => {
       this.http.get<DTOResponse>(this.brandURL).subscribe(

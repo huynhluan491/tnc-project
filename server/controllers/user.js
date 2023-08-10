@@ -198,3 +198,18 @@ exports.deleteMultipleUserById = async (req, res) => {
     });
   }
 };
+exports.changePassword = async (req, res) => {
+  try {
+    const reqBody = req.body;
+    await UserDAO.changePassword(reqBody);
+    return res.status(200).json({
+      Code: 200,
+      Msg: null,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      Code: 500,
+      Msg: e.toString(),
+    });
+  }
+};
