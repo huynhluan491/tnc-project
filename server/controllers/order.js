@@ -12,6 +12,7 @@ exports.getProductInOrderByUSerID = async (req, res) => {
       Data: {
         TotalAmount: result.TotalAmount,
         OrderID: result.OrderID,
+        StatusID: result.StatusID,
         DataInOrder: result.DataInOrder,
       },
     });

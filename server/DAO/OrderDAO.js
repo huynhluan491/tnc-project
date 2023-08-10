@@ -132,7 +132,7 @@ exports.getProductInOderByUserID = async (userID) => {
       userID
     )
     .query(
-      `select OrderID from Orders where UserID = @UserID and StatusID = 1`
+      `select OrderID,StatusID from Orders where UserID = @UserID and StatusID = 1`
     );
   var dtos = result.recordsets[0].map(
     (element) => new DTOOrderDetailsProductCustomize(element)
@@ -141,6 +141,7 @@ exports.getProductInOderByUserID = async (userID) => {
     DataInOrder: dtos,
     TotalAmount: count.recordsets[0][0].TotalAmount,
     OrderID: queryoOrderID.recordsets[0][0].OrderID,
+    StatusID: queryoOrderID.recordsets[0][0].StatusID,
   };
 };
 
