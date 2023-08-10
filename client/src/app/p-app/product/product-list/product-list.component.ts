@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject, Subscription, pluck, takeUntil, tap } from 'rxjs';
 import { DTOProduct } from '../shared/dto/DTOProduct.dto';
 import { ProductAPIService } from '../shared/services/product-api.service';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+
 @Component({
   selector: 'product-list',
   templateUrl: './product-list.component.html',
@@ -25,7 +27,7 @@ export class ProductListComponent implements OnInit {
 
   //Paginate declarations
   page = 1;
-  pageSize = 10;
+  pageSize = 0;
   totalItems = 0;
 
   constructor(
@@ -43,11 +45,13 @@ export class ProductListComponent implements OnInit {
     this.handleGetFilter();
   }
 
-  getProducts() {
+  getProducts(headers = new HttpHeaders({}), url = '/api/v1/product') {
     this.getListProduct_sst = this.layoutAPIService
-      .GetProducts()
+      .GetFilterProducts(url, headers)
       .subscribe((res) => {
-        this.productList = [...res];
+        this.productList = [...res.Data];
+        this.pageSize = res.PageSize;
+        this.totalItems = res.TotalProduct;
       });
   }
 
@@ -78,7 +82,11 @@ export class ProductListComponent implements OnInit {
   }
   handlePageChange(event: any) {
     this.page = event;
-    this.getProducts();
+    console.log(event);
+    const headers = new HttpHeaders({
+      CurrentPage: `${this.page}`,
+    });
+    this.getProducts(headers);
   }
   handleURL(event: string) {
     console.log('event filter URL', event);

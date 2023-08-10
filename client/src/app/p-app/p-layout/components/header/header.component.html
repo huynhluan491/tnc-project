@@ -13,11 +13,26 @@
         <form class="search-box">
           <input
             class="search-input"
+            [formControl]="searchInputValue"
             type="text"
             placeholder="Nhập sản phẩm cần tìm.."
           />
           <div class="search-button">
             <img src="../../../.././../assets/icon/search-icon.svg" />
+          </div>
+
+          <div #searchContainer class="search-products-wrapper" *ngIf="searchedProductList.length > 0">
+            <div class="product-item" *ngFor="let data of searchedProductList | slice:0:5" (click)="navigateDetail(data.Name)">
+              <img
+                class="product-img"
+                [src]="'data:image/jpeg;base64,' + data.Base64Image"
+                [alt]="data.Image"
+              />
+              <div class="product-info">
+                <p class="name">{{data.Name}}</p>
+                <p class="price">{{data.Price}}</p>
+              </div>
+            </div>
           </div>
         </form>
         <div class="group-user-action">
@@ -33,10 +48,6 @@
             <span class="cart-quantity">{{ cartItems }}</span>
           </div>
           <div *ngIf="!isLoggedIn" class="signin button" (click)="toggleRegister()">Đăng nhập</div>
-          <!-- <div *ngIf="isLoggedIn" class="signin button" style="display: flex;flex-direction: column;gap: 2px;">
-            <span class="k-icon k-i-user"></span>
-            {{userName}}
-          </div> -->
           <kendo-dropdownbutton *ngIf="isLoggedIn" [data]="userMenu" themeColor="info">
             <div>
               <span class="k-icon k-i-user"></span>
@@ -104,4 +115,5 @@
       </div>
     </div>
   </div>
+
 </div>
