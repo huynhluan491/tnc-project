@@ -193,7 +193,7 @@ exports.getAllProducts = async (reqHeader) => {
         ratingAvg += productRating[key];
       }
       element.RatingAvg = ratingAvg / 5;
-      console.log(element);
+      // console.log(element);
       element.Base64Image = converted.Base64;
       return new DTOProductCustomize(element);
     })
