@@ -51,7 +51,7 @@ export class dropdownFilterComponent {
       .getRemoveItem()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
-        console.log('resRM', res);
+        // console.log('resRM', res);
         this.checkedItems = this.checkedItems.filter((i) => i != res[0]);
       });
   }

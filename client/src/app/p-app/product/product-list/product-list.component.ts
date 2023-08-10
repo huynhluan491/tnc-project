@@ -42,6 +42,7 @@ export class ProductListComponent implements OnInit {
       tap((value) => (this.categoryName = value))
     );
     this.getProducts();
+    this.productService.setCategories();
     this.handleGetFilter();
   }
 
@@ -73,6 +74,7 @@ export class ProductListComponent implements OnInit {
       .getCateFilter()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
+        console.log(res);
         var obj = {
           titleFilter: 'Category',
           dataItems: [...res],
