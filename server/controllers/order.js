@@ -5,7 +5,7 @@ const DTOOrderDetails = require("../DTO/Default/DTOOrderDetails");
 
 exports.getProductInOrderByUSerID = async (req, res) => {
   try {
-    let result = await OrderDAO.getProductInOderByUserID(req.query.userID);
+    let result = await OrderDAO.getProductInOderByUserID(req.query.UserID);
     res.status(200).json({
       Code: 200,
       Msg: null,
