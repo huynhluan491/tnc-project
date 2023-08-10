@@ -194,7 +194,7 @@ exports.getAllProducts = async (reqHeader) => {
       }
       element.RatingAvg = ratingAvg / 5;
       console.log(element);
-      // element.Base64Image = converted.Base64;
+      element.Base64Image = converted.Base64;
       return new DTOProductCustomize(element);
     })
   );
