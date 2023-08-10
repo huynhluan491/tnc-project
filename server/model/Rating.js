@@ -7,51 +7,45 @@ const RatingSchema = new ModelSchema(
     RatingID: new ModelSchemaValidator({
       name: "RatingID",
       sqlType: sql.Int,
-      default: 0,
     }),
     _5star: new ModelSchemaValidator({
       name: "_5star",
       sqlType: sql.Int,
       require: true,
-      default: 0,
     }),
     _4star: new ModelSchemaValidator({
       name: "_4star",
       sqlType: sql.Int,
       require: true,
-      default: 0,
     }),
     _3star: new ModelSchemaValidator({
       name: "_3star",
       sqlType: sql.Int,
       require: true,
-      default: 0,
     }),
     _2star: new ModelSchemaValidator({
       name: "_2star",
       sqlType: sql.Int,
       require: true,
-      default: 0,
     }),
     _1star: new ModelSchemaValidator({
       name: "_1star",
       sqlType: sql.Int,
       require: true,
-      default: 0,
     }),
     ProductID: new ModelSchemaValidator({
-      name: "productID",
+      name: "ProductID",
       sqlType: sql.Int,
       require: true,
     }),
     CreatedAt: new ModelSchemaValidator({
-      name: "createdAt",
+      name: "CreatedAt",
       sqlType: sql.DateTime,
       default: new Date().toISOString(),
       require: true,
     }),
   },
   "Rating",
-  "createAt"
+  "createdAt"
 );
 module.exports = RatingSchema;

@@ -127,9 +127,11 @@ async function importDB() {
   }
 
   // import rating
-
+  console.log(ratings.length);
   for (let i = 0; i < ratings.length; i++) {
     let rating = new DTORating(ratings[i]);
+    // let rating = ratings[i];
+
     try {
       await RatingDAO.addRatingIfNotExisted(rating);
       console.log("import rating --- done!");

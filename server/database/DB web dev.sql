@@ -54,11 +54,11 @@ go
 create table Rating
 (
 	RatingID int identity(1,1) primary key,
-	_5star int default 0,
-	_4star int default 0,
-	_3star int default 0,
-	_2star int default 0,
-	_1star int default 0,
+	_5star int default 0 ,
+	_4star int default 0 ,
+	_3star int default 0 ,
+	_2star int default 0 ,
+	_1star int default 0 ,
 	ProductID int constraint FK_Rating references Product(productID),
 	CreatedAt datetime default CURRENT_TIMESTAMP not null
 )

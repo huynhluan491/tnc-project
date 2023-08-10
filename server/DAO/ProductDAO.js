@@ -13,9 +13,11 @@ const StaticData = require("../utils/StaticData");
 
 const CategoryDAO = require("./CategoryDAO");
 const BrandDAO = require("./BrandDAO");
+const RatingDAO = require("./RatingDAO");
 
 const DTOProductCustomize = require("../DTO/Customize/DTOProductCustomize");
 const DTOProduct = require("../DTO/Default/DTOProduct");
+
 exports.addProductIfNotExisted = async (product) => {
   if (!dbConfig.db.pool) {
     throw new Error("Not connected to db");
@@ -106,13 +108,7 @@ exports.getAllProducts = async (reqHeader) => {
 
   let filter = {};
   const {categoryname, brandname, price, name} = reqHeader;
-  console.log(
-    "categoryname, brandname, price, name",
-    categoryname,
-    brandname,
-    price,
-    name
-  );
+
   if (price) {
     const priceArr = price.split(",");
     filter.Price = {};
@@ -144,9 +140,14 @@ exports.getAllProducts = async (reqHeader) => {
   if (pageSize > StaticData.config.MAX_PAGE_SIZE) {
     pageSize = StaticData.config.MAX_PAGE_SIZE;
   }
-  let selectQuery = `SELECT ${ProductSchema.schemaName}.*,${BrandSchema.schemaName}.BrandName FROM ${ProductSchema.schemaName}
+  let selectQuery = `
+  SELECT ${ProductSchema.schemaName}.*,
+    ${BrandSchema.schemaName}.BrandName
+    FROM ${ProductSchema.schemaName}
   join ${BrandSchema.schemaName} on ${BrandSchema.schemaName}.brandID = ${ProductSchema.schemaName}.brandID `;
   let countQuery = `SELECT COUNT(DISTINCT ${ProductSchema.schema.ProductID.name}) as totalItem from ${ProductSchema.schemaName}`;
+
+  const dataRating = await RatingDAO.getAllRatings();
 
   const {filterStr, paginationStr} = dbUtils.getFilterProductsQuery(
     ProductSchema.schema,
@@ -177,9 +178,22 @@ exports.getAllProducts = async (reqHeader) => {
   }
   let totalPage = Math.ceil(totalProduct / pageSize); //round up
   const products = result.recordsets[0];
+
   const productsDTO = await Promise.all(
     products.map(async (element) => {
       const converted = await ImageUtils.convertImageToBase64(element.Image);
+      const productRating = dataRating.find(
+        (rating) => rating.ProductID === element.ProductID
+      );
+      delete productRating.RatingID;
+      delete productRating.ProductID;
+      delete productRating.CreatedAt;
+      let ratingAvg = 0;
+      for (let key in productRating) {
+        ratingAvg += productRating[key];
+      }
+      element.RatingAvg = ratingAvg / 5;
+      console.log(element);
       element.Base64Image = converted.Base64;
       return new DTOProductCustomize(element);
     })
