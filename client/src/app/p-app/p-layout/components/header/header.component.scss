@@ -24,6 +24,7 @@
 
       .search-box {
         display: flex;
+        position: relative;
         align-items: center;
         height: 46px;
         border: 1px solid #005ec4;
@@ -178,6 +179,44 @@
           img {
             cursor: pointer;
           }
+        }
+      }
+    }
+  }
+
+  .search-products-wrapper {
+    position: absolute;
+    top: 45px;
+    z-index: 10;
+    background-color: #fcf9f9;
+    width: 100%;
+
+    .product-item {
+      display: flex;
+      padding: 8px 4px;
+      cursor: pointer;
+
+      &:hover {
+        background: #EAEAEA;
+      }
+
+      .product-img {
+        width: 70px;
+        height: 58px;
+        object-fit: contain;
+      }
+
+      .product-info {
+        
+        .name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .price {
+            font-size: 14px;  
+            font-weight: 500;
+            margin-top: 6px;
         }
       }
     }
