@@ -30,6 +30,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { SalePricePipe } from './shared/pipe/sale-price.pipe';
 import { IndicatorsModule } from '@progress/kendo-angular-indicators';
 import { StarRatingModule } from 'angular-star-rating';
+
 @NgModule({
   declarations: [
     LayoutDefault,
@@ -63,6 +64,7 @@ import { StarRatingModule } from 'angular-star-rating';
     NgxPaginationModule,
     IndicatorsModule,
     StarRatingModule.forRoot(),
+    
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   exports: [

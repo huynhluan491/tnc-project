@@ -30,21 +30,54 @@ export class CartComponent implements OnInit {
     this.getOrders();
   }
 
+  deleteItem(product) {
+    let orders = this.storageService.getOrders();
+
+    // update db
+    const order = {
+      Amount: 0,
+      OrderID: orders.orderId,
+      ProductID: product.ProductID,
+    };
+    this.orderService.updateData(order).subscribe((res) => {});
+
+    // update session
+    const productIndexToUpdate = orders.orders.findIndex(
+      (order) => order.ProductID === product.ProductID
+    );
+    orders.totalAmount =
+      orders.totalAmount - orders.orders[productIndexToUpdate].Amount;
+    orders.orders[productIndexToUpdate].Amount = 0;
+    orders.orders = orders.orders.filter(
+      (item) => item.ProductID !== product.ProductID
+    );
+
+    this.storageService.saveOrders2(orders);
+    this.getOrders();
+  }
+
   increaseItem(product) {
     const updatedAmount = product.Amount + 1;
     if (updatedAmount <= product.Stock) {
       let orders = this.storageService.getOrders();
-      const productIndexToUpdate = orders.orders.findIndex(
-        (order) => order.ProductID === product.ProductID
-      );
-      orders.orders[productIndexToUpdate].Amount = updatedAmount;
-      this.storageService.saveOrders2(orders);
+
+      // update db
       const order = {
         Amount: updatedAmount,
         OrderID: orders.orderId,
         ProductID: product.ProductID,
       };
       this.orderService.updateData(order).subscribe((res) => {});
+
+      // update session
+      const productIndexToUpdate = orders.orders.findIndex(
+        (order) => order.ProductID === product.ProductID
+      );
+      orders.orders[productIndexToUpdate].Amount = updatedAmount;
+
+      orders.totalAmount = orders.totalAmount + 1;
+
+      this.storageService.saveOrders2(orders);
       this.getOrders();
     }
   }
@@ -53,22 +86,28 @@ export class CartComponent implements OnInit {
     const updatedAmount = product.Amount - 1;
     let orders = this.storageService.getOrders();
     if (updatedAmount >= 0) {
-      if (updatedAmount == 0) {
-        orders.orders = orders.orders.filter(
-          (item) => item.ProductID !== product.ProductID
-        );
-      }
-      const productIndexToUpdate = orders.orders.findIndex(
-        (order) => order.ProductID === product.ProductID
-      );
-      orders.orders[productIndexToUpdate].Amount = updatedAmount;
-      this.storageService.saveOrders2(orders);
+      //update db
       const order = {
         Amount: updatedAmount,
         OrderID: orders.orderId,
         ProductID: product.ProductID,
       };
       this.orderService.updateData(order).subscribe((res) => {});
+
+      // update session
+      const productIndexToUpdate = orders.orders.findIndex(
+        (order) => order.ProductID === product.ProductID
+      );
+      orders.orders[productIndexToUpdate].Amount = updatedAmount;
+      if (updatedAmount == 0) {
+        orders.orders = orders.orders.filter(
+          (item) => item.ProductID !== product.ProductID
+        );
+      }
+
+      orders.totalAmount = orders.totalAmount - 1;
+
+      this.storageService.saveOrders2(orders);
       this.getOrders();
     } else {
       return;

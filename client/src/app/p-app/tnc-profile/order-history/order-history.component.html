@@ -10,15 +10,15 @@
   </div>
   <div class="user-history-info">
     <div class="info-box">
-      <p class="quantity">0</p>
+      <p class="quantity">{{orderTotal}}</p>
       <p class="topic-name">đơn hàng</p>
     </div>
     <div class="info-box">
-      <p class="quantity">0 đ</p>
+      <p class="quantity">{{totalPay | number: "1.0-0"}} VND</p>
       <p class="topic-name">Tổng tiền tích lũy</p>
     </div>
   </div>
-  <div class="order-date-range">
+  <!-- <div class="order-date-range">
     <kendo-daterange>
       <kendo-floatinglabel text="Start">
         <kendo-dateinput
@@ -33,16 +33,16 @@
         ></kendo-dateinput>
       </kendo-floatinglabel>
     </kendo-daterange>
-  </div>
+  </div> -->
   <div class="orders-grid-container">
-    <div class="status-filter-container">
+    <!-- <div class="status-filter-container">
       <div class="status-btn selected">Tất cả</div>
       <div class="status-btn">Chờ xác nhận</div>
       <div class="status-btn">Đã xác nhận</div>
       <div class="status-btn">Đang vận chuyển</div>
       <div class="status-btn">Đã giao hàng</div>
       <div class="status-btn">Đã hủy</div>
-    </div>
+    </div> -->
     <div class="grid-wrapper">
       <kendo-grid [data]="orderGridView | async" [pageSize]="20">
         <kendo-grid-column field="OrderID" title="No" [width]="50">
@@ -60,7 +60,7 @@
             let-dataItem
             let-rowIndex="rowIndex"
           >
-            <span>{{ dataItem.TotalPrice }}</span>
+            <span>{{ dataItem.TotalPrice | number : "1.0-0"}} VND</span>
           </ng-template>
         </kendo-grid-column>
         <kendo-grid-column field="StatusName" title="Trạng thái">
@@ -95,7 +95,7 @@
         </kendo-grid-column>
         <kendo-grid-column [width]="80">
           <ng-template kendoGridCellTemplate>
-            <button class="cancel-order" kendoButton [themeColor]="'error'">
+            <button class="cancel-order" (click)="open()" kendoButton [themeColor]="'error'">
               Hủy
             </button>
           </ng-template>
@@ -116,6 +116,21 @@
         <p class="name">{{data.Name}}</p>
         <p class="price">{{data.Price}}</p>
       </div>
+    </div>
+  </div>
+
+  <div class="cancel-popup" *ngIf="isCanceled">
+    <div class="title">
+      Hủy đơn hàng
+    </div>
+    <div class="content">
+      Bạn có chắc muốn hủy đơn hàng?
+    </div>
+    <div class="btn-group">
+      <button kendoButton (click)="close('no')">No</button>
+      <button kendoButton (click)="close('yes')" themeColor="primary">
+        Yes
+      </button>
     </div>
   </div>
 </div>

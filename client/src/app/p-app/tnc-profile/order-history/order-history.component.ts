@@ -28,6 +28,9 @@ export class OrderHistoryComponent implements OnInit {
   fullName: String = 'NAME';
   orderDetailProductList = [];
   isDetailProductPopupOpened: boolean = false;
+  isCanceled: boolean = false;
+  orderTotal: number = 0;
+  totalPay: number = 0;
 
   ngOnInit(): void {
     this.userID = this.storageService.getUser().UserID;
@@ -41,17 +44,21 @@ export class OrderHistoryComponent implements OnInit {
       .getDataById(this.userID)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((res) => {
-        console.log(res);
-
         if (res.Code === 200) {
-          console.log('check');
-
+          this.orderTotal = res.Data.TotalOrder;
           this.orderGridView.next({
             data: res.Data.Data,
             total: res.Data.TotalOrder,
-          });
-        }
-      });
+        });
+        let paid = 0;
+        res.Data.Data.forEach((order) => {
+          paid += order.TotalPrice;
+        })
+        this.totalPay = paid;
+        console.log(this.totalPay);
+        
+      }
+    });
   }
 
   getOrderDetail(orderID: number) {
@@ -96,5 +103,14 @@ export class OrderHistoryComponent implements OnInit {
 
   toggleProductPopup(value: boolean) {
     this.isDetailProductPopupOpened = value; 
+  }
+
+  public close(status: string): void {
+    console.log(`Dialog result: ${status}`);
+    this.isCanceled = false;
+  }
+
+  public open(): void {
+    this.isCanceled = true;
   }
 }
