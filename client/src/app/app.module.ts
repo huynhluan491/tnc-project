@@ -26,6 +26,7 @@ import { ErrorInterceptor } from './p-app/_helpers/error.interceptor';
 import { httpInterceptorProviders } from './p-app/_helpers/http.interceptor';
 import { NotificationModule } from '@progress/kendo-angular-notification';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DialogsModule } from '@progress/kendo-angular-dialog';
 @NgModule({
   declarations: [AppComponent, CartCheckoutComponent, CartCheckout2Component],
   imports: [
@@ -45,6 +46,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NotificationModule,
     FormsModule,
     ReactiveFormsModule,
+    DialogsModule,
     HttpClientXsrfModule.withOptions({
       cookieName: 'csrf_access_token',
       headerName: 'csrf-token',
