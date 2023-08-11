@@ -1,7 +1,12 @@
 import { Component, OnDestroy, OnInit, SkipSelf } from '@angular/core';
 import { StorageService } from '../p-layout/shared/services/storage.service';
 import { Subject, takeUntil } from 'rxjs';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { DTOUser } from '../_models/DTOUser';
 
 @Component({
@@ -22,7 +27,7 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
   currentUser: DTOUser;
   isBindUserInfo: FormControl = new FormControl(false);
   ngUnsubscribe$ = new Subject<void>();
-
+  amount = 0;
   onSubmit() {}
 
   ngOnInit() {
@@ -32,10 +37,11 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
     const orders = this.storageService.getOrders().orders;
     orders?.forEach((product) => {
       this.total += product.Price * product.Amount;
-    })
-
-    this.isBindUserInfo.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(
-      res => {
+    });
+    this.amount = this.storageService.getOrders().totalAmount;
+    this.isBindUserInfo.valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((res) => {
         if (this.isBindUserInfo.value && this.currentUser) {
           this.deliverForm.patchValue({
             name: this.currentUser.FullName,
@@ -44,10 +50,10 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
             address: this.currentUser.Address,
           });
           console.log(this.deliverForm.value);
-      } else{
-        this.deliverForm.reset();
-      }
-    });
+        } else {
+          this.deliverForm.reset();
+        }
+      });
   }
 
   loadDeliverForm() {
@@ -56,7 +62,8 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
       email: ['', [Validators.required]],
       number: ['', [Validators.required]],
       address: ['', [Validators.required]],
-      payment_method: ['', [Validators.required]],
+      payment_method1: ['', [Validators.required]],
+      payment_method2: ['', [Validators.required]],
     });
   }
 

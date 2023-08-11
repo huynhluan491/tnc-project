@@ -193,7 +193,6 @@ exports.login = async (dto) => {
   );
   //res jwt cookie
   delete user.Password;
-  delete user.AuthID;
   const csrfToken = createCSRFToken();
   await AuthDAO.updateRefreshTokenByUserId(user.UserID, {
     RefreshToken: rRoken,
@@ -247,6 +246,7 @@ exports.protect = async (req) => {
     ) {
       throw new Error(`Invalid authentication`);
     }
+    // console.log(currentUser);
     return currentUser;
   } catch (e) {
     if (
@@ -267,13 +267,23 @@ exports.protect = async (req) => {
 
 exports.checkRole = (req, roles) => {
   const roleUser = req.user.AuthID;
-  switch (roleUser) {
-    case roles.admin:
-    case roles.master:
-      return true;
-    default:
-      return false;
+  if (
+    (roleUser == 1 && roles == 2) ||
+    ((roleUser == 1 || roleUser == 2) && roles == 3)
+  ) {
+    return true;
   }
+  if (roles == roleUser) {
+    return true;
+  }
+  return false;
+  // switch (roleUser) {
+  //   case roles.admin:
+  //   case roles.master:
+  //     return true;
+  //   default:
+  //     return false;
+  // }
 };
 
 exports.logout = async (req) => {

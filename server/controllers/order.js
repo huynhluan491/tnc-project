@@ -99,7 +99,7 @@ exports.updateProductInOrder = async (req, res) => {
 exports.deleteProductInOrder = async (req, res) => {
   const q = req.query;
   try {
-    let result = await OrderDAO.deleteItemInOrder(q);
+    let result = await OrderDAO.deleteItemInOrder(q, req.user);
     res.status(200).json({
       Code: 200,
       Msg: null,
@@ -107,7 +107,7 @@ exports.deleteProductInOrder = async (req, res) => {
   } catch (error) {
     res.status(404).json({
       Code: 404,
-      Msg: error,
+      Msg: error.toString(),
     });
   }
 };

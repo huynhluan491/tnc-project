@@ -9,12 +9,12 @@ router
   .get(FeatureController.getFeatureById)
   .delete(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role),
+    authController.restrictTo(StaticData.AUTH.Role.admin),
     FeatureController.deleteFeatureById
   )
   .patch(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role),
+    authController.restrictTo(StaticData.AUTH.Role.admin),
     FeatureController.updateFeatureById
   );
 
@@ -23,7 +23,7 @@ router
   .get(FeatureController.getFeatures)
   .post(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role),
+    authController.restrictTo(StaticData.AUTH.Role.admin),
     FeatureController.createNewFeature
   );
 // router.route("/").get(FeatureController.getFeatureByProductId);

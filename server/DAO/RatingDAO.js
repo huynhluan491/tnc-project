@@ -124,8 +124,6 @@ exports.deleteRatingById = async (id) => {
 };
 
 exports.updateRatingById = async (productID, updateInfo) => {
-  // console.log(productID);
-  // console.log(updateInfo);
   const rating = updateInfo;
   delete rating["CreatedAt"];
   for (let key in updateInfo) {
@@ -135,9 +133,11 @@ exports.updateRatingById = async (productID, updateInfo) => {
     throw new Error("Not connected to db");
   }
   const starQuantity = Object.keys(rating)[0];
+  console.log(starQuantity);
   let query = `update ${RatingSchema.schemaName} set ${starQuantity} = ${
     rating[`${starQuantity}`]
-  } + 1`;
+  }`;
+  console.log(query);
   let request = dbConfig.db.pool.request();
   request.input(
     `${RatingSchema.schema.ProductID.name}`,

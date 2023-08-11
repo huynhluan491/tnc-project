@@ -9,12 +9,12 @@ router
   .get(SubImageController.getSubImages)
   .delete(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role),
+    authController.restrictTo(StaticData.AUTH.Role.admin),
     SubImageController.deleteSubImgById
   )
   .patch(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role),
+    authController.restrictTo(StaticData.AUTH.Role.admin),
     SubImageController.updateSubImgById
   );
 
@@ -23,7 +23,7 @@ router
   .get(SubImageController.getSubImages)
   .post(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role),
+    authController.restrictTo(StaticData.AUTH.Role.admin),
     SubImageController.createNewSubImg
   );
 
@@ -32,7 +32,7 @@ router
   .route("/image")
   .post(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role),
+    authController.restrictTo(StaticData.AUTH.Role.admin),
     SubImageController.saveFileSubImage
   );
 router
@@ -40,7 +40,7 @@ router
   .get(SubImageController.getFileSubImage)
   .delete(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role),
+    authController.restrictTo(StaticData.AUTH.Role.admin),
     SubImageController.deleteFileSubImage,
     SubImageController.deleteSubImgById
   );

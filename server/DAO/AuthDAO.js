@@ -103,7 +103,6 @@ exports.createRecordRefreshTokenByUserId = async (id) => {
   query += " (" + insertFieldNamesStr + ") select  " + insertValuesStr;
   await request.query(query);
   // console.log(result);
-  console.log(result);
   return result;
 };
 

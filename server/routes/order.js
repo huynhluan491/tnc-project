@@ -1,13 +1,18 @@
 const express = require("express");
-const orderController = require("../controllers/order");
 const router = express.Router();
-
+const orderController = require("../controllers/order");
+const authController = require("../controllers/auth");
+const StaticData = require("../utils/StaticData");
 router
   .route("/product/")
   .get(orderController.getProductInOrderByUSerID)
   .patch(orderController.updateProductInOrder)
   .post(orderController.insertProductToOrder)
-  .delete(orderController.deleteProductInOrder);
+  .delete(
+    authController.protect,
+    authController.restrictTo(StaticData.AUTH.Role.user),
+    orderController.deleteProductInOrder
+  );
 
 router
   .route("/orderdetails/")

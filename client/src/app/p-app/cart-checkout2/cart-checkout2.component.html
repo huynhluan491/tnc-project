@@ -31,7 +31,11 @@
             >
               <div class="cart-item-title">THÔNG TIN GIAO HÀNG</div>
               <div class="cart-item-input">
-                <input class="cart-item-checkbox" type="checkbox" [formControl]="isBindUserInfo"/>
+                <input
+                  class="cart-item-checkbox"
+                  type="checkbox"
+                  [formControl]="isBindUserInfo"
+                />
                 <label class="cart-item-checkbox-label" for="name"
                   >Sử dụng thông tin khách hàng để giao hàng</label
                 >
@@ -96,7 +100,7 @@
               <div class="cart-item-title">HÌNH THỨC THANH TOÁN</div>
               <div class="cart-item-input">
                 <input
-                  formControlName="payment_method"
+                  formControlName="payment_method1"
                   class="cart-item-radio"
                   type="radio"
                   id="cod"
@@ -108,7 +112,7 @@
               </div>
               <div class="cart-item-input">
                 <input
-                  formControlName="payment_method"
+                  formControlName="payment_method2"
                   class="cart-item-radio"
                   type="radio"
                   id="vnpay"
@@ -128,11 +132,11 @@
           <p class="cart-info-title">Thông tin giỏ hàng</p>
           <div class="cart-info-quantity">
             <p class="cart-info-quantity-txt">Số lượng sản phẩm</p>
-            <p class="cart-info-quantity-no">1</p>
+            <p class="cart-info-quantity-no">{{ amount }}</p>
           </div>
           <div class="cart-info-total">
             <p class="cart-info-total-txt">Tổng chi phí</p>
-            <p class="cart-info-total-no"> {{total | number : "1.0-0" }} đ</p>
+            <p class="cart-info-total-no">{{ total | number : "1.0-0" }} đ</p>
           </div>
           <p class="cart-info-tax">Đã bao gồm VAT (nếu có)</p>
           <!-- <div class="cart-info-product">

@@ -36,13 +36,13 @@ exports.login = async (req, res) => {
     }
   } catch (e) {
     if (code === 1) {
-      res.status(404).json({
-        Code: 200,
-        Msg: `OK, Sign Up & Login Fail !!${e.toString()}`,
+      res.status(401).json({
+        Code: 401,
+        Msg: `Fail, Sign Up & Login Fail !!${e.toString()}`,
       });
     } else {
-      res.status(404).json({
-        Code: 200,
+      res.status(401).json({
+        Code: 401,
         Msg: "Fail",
       });
     }
@@ -106,13 +106,17 @@ exports.signup = async (req, res) => {
 exports.protect = async (req, res, next) => {
   try {
     const newToken = await utils.protect(req);
-    req.cookies.user = newToken.Token;
-    req.cookies.RefreshToken = newToken.RefreshToken;
-    req.user = newToken.User;
-    res.cookie("user", newToken.Token, {
+    if (!newToken.currentUser) {
+      req.user = newToken;
+    } else {
+      req.user = newToken.User;
+    }
+    req.cookies.user = newToken.Token || req.cookies.user;
+    req.cookies.RefreshToken = newToken.RefreshToken || req.cookies.ruser;
+    res.cookie("user", newToken.Token || req.cookies.user, {
       httpOnly: true,
     });
-    res.cookie("ruser", newToken.RefreshToken, {
+    res.cookie("ruser", newToken.RefreshToken || req.cookies.ruser, {
       httpOnly: true,
     });
     res.cookie("csrf-token", newToken.CSRFToken);
