@@ -46,6 +46,12 @@ export class RatingService {
       .pipe(catchError(this.handleError));
   }
 
+  addRating(rating: any): Observable<DTOResponse> {
+    return this.http
+      .patch<DTOResponse>(`/api/v1/rating`, rating)
+      .pipe(catchError(this.handleError));
+  }
+
   deleteDataById(id: number): Observable<DTOResponse> {
     return this.http
       .delete<DTOResponse>(`/api/v1/rating/${id}`)

@@ -35,6 +35,8 @@ const PolicyData = [
   styleUrls: ['./product-detail.component.scss'],
 })
 export class ProductDetailComponent implements OnInit, OnDestroy {
+  private unsubscription$ = new Subject<void>();
+
   productDetail: DTOProduct = new DTOProduct();
   productName: string = '';
   saleprice: number = 0;
@@ -62,22 +64,25 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   }
 
   updateRating(ProductID) {
-    this.ratingService.getDataById(ProductID).subscribe((res) => {
-      let total_ratings =
-        res.Data._5star +
-        res.Data._4star +
-        res.Data._3star +
-        res.Data._2star +
-        res.Data._1star;
-      let stars =
-        5 * res.Data._5star +
-        4 * res.Data._4star +
-        3 * res.Data._3star +
-        2 * res.Data._2star +
-        1 * res.Data._1star;
-      const average_rating = stars / total_ratings;
-      this.rating = average_rating;
-    });
+    this.ratingService
+      .getDataById(ProductID)
+      .pipe(takeUntil(this.unsubscription$))
+      .subscribe((res) => {
+        let total_ratings =
+          res.Data._5star +
+          res.Data._4star +
+          res.Data._3star +
+          res.Data._2star +
+          res.Data._1star;
+        let stars =
+          5 * res.Data._5star +
+          4 * res.Data._4star +
+          3 * res.Data._3star +
+          2 * res.Data._2star +
+          1 * res.Data._1star;
+        const average_rating = stars / total_ratings;
+        this.rating = average_rating;
+      });
   }
 
   GetDetailProduct() {
@@ -130,7 +135,22 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   }
 
   onRatingProduct(event: any) {
-    console.log(event);
+    const rating = event.rating;
+    let updateRating = { ProductID: this.productDetail.ProductID };
+    this.ratingService
+      .getDataById(this.productDetail.ProductID)
+      .pipe(takeUntil(this.unsubscription$))
+      .subscribe((res) => {
+        updateRating[`_${rating}star`] = res.Data[`_${rating}star`];
+        updateRating[`_${rating}star`] += 1;
+        this.ratingService
+          .addRating(updateRating)
+          .pipe(takeUntil(this.unsubscription$))
+          .subscribe((res) => {
+            this.updateRating(this.productDetail.ProductID);
+            this.notiService.onSuccess('Đánh giá thành công!');
+          });
+      });
   }
 
   ngOnDestroy(): void {
