@@ -354,7 +354,9 @@ exports.deleteOrder = async (id) => {
     .query(`select * from ${OrdersSchema.schemaName} where OrderID = @OrderID`);
 
   const order = resultQueryOrder.recordset[0];
-  console.log(order);
+  if (order == null) {
+    throw new Error("Order not found");
+  }
   if (order.PayIn != null) {
     throw new Error("Order has been paid");
   }

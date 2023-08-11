@@ -10,7 +10,7 @@
 			"name": "order",
 			"item": [
 				{
-					"name": "get orders product by userid",
+					"name": "get cart product by userid",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -243,6 +243,28 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "delete order",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/order/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"order",
+								"2"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -250,7 +272,7 @@
 			"name": "products",
 			"item": [
 				{
-					"name": "get all products/filter product",
+					"name": "get all products/filter product pagination",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -488,6 +510,28 @@
 								"product",
 								"image",
 								"image8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all product non pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/product/productnonpagination",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"productnonpagination"
 							]
 						}
 					},
@@ -1097,7 +1141,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3001/api/v1/payment/handlePayment",
+							"raw": "http://localhost:3001/api/v1/payment/handlerPayment",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1107,7 +1151,7 @@
 								"api",
 								"v1",
 								"payment",
-								"handlePayment"
+								"handlerPayment"
 							]
 						}
 					},
