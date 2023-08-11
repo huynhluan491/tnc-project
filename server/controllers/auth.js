@@ -106,13 +106,17 @@ exports.signup = async (req, res) => {
 exports.protect = async (req, res, next) => {
   try {
     const newToken = await utils.protect(req);
-    req.cookies.user = newToken.Token;
-    req.cookies.RefreshToken = newToken.RefreshToken;
-    req.user = newToken.User;
-    res.cookie("user", newToken.Token, {
+    if (!newToken.currentUser) {
+      req.user = newToken;
+    } else {
+      req.user = newToken.User;
+    }
+    req.cookies.user = newToken.Token || req.cookies.user;
+    req.cookies.RefreshToken = newToken.RefreshToken || req.cookies.ruser;
+    res.cookie("user", newToken.Token || req.cookies.user, {
       httpOnly: true,
     });
-    res.cookie("ruser", newToken.RefreshToken, {
+    res.cookie("ruser", newToken.RefreshToken || req.cookies.ruser, {
       httpOnly: true,
     });
     res.cookie("csrf-token", newToken.CSRFToken);

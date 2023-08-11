@@ -10,12 +10,12 @@ router
   .route("/")
   .get(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role),
+    authController.restrictTo(StaticData.AUTH.Role.admin),
     paymentController.getAllPayment
   )
   .post(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role)
+    authController.restrictTo(StaticData.AUTH.Role.admin)
     // paymentController.paymentpaymentController.updatePayment
   );
 

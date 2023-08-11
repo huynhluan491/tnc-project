@@ -2,13 +2,14 @@ const dbConfig = require("../database/dbconfig");
 
 const dbUtils = require("../utils/dbUtils");
 const DateTimeUtils = require("../utils/DateTimeUtils");
+const authUtils = require("../utils/authUtils");
 
 const UserSchema = require("../Model/User");
 const {OrdersSchema, Order_DetailsSchema} = require("../Model/Order");
 const StatusSchema = require("../Model/Status");
 const PaymentSchema = require("../Model/Payment");
 const ProductSchema = require("../Model/Product");
-
+const RefreshTokenSchema = require("../Model/RefreshToken");
 const DTOProduct = require("../DTO/Default/DTOProduct");
 const DTOProductCustomize = require("../DTO/Customize/DTOProductCustomize");
 const DTOOrderDetails = require("../DTO/Default/DTOOrderDetails");
@@ -194,11 +195,33 @@ exports.updateOrder_Details = async (Order_Details) => {
   return dto;
 };
 
-exports.deleteItemInOrder = async (urlQuery) => {
+exports.deleteItemInOrder = async (urlQuery, user) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
+
+  const resultQueryOrder = await dbPool
+    .request()
+    .input(
+      OrdersSchema.schema.OrderID.name,
+      OrdersSchema.schema.OrderID.sqlType,
+      urlQuery.OrderID
+    )
+    .query(`select * from ${OrdersSchema.schemaName} where OrderID = @OrderID`);
+  const order = resultQueryOrder.recordset[0];
+  if (order == null) {
+    throw new Error("Order not found");
+  }
+  if (order.PayIn != null) {
+    throw new Error("Order has been paid");
+  }
+
+  //authen user
+  if (user.UserID != order.UserID) {
+    throw new Error("You dont have permission to delete this order");
+  }
+
   let q = `delete Order_Details where ProductID = ${urlQuery.ProductID} and OrderID = ${urlQuery.OrderID} `;
   let result = await dbPool.request().query(q);
 };

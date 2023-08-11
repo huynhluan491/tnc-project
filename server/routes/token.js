@@ -9,7 +9,7 @@ router
   .route("/refreshtoken/clean")
   .delete(
     authController.protect,
-    authController.restrictTo(StaticData.AUTH.Role),
+    authController.restrictTo(StaticData.AUTH.Role.admin),
     authController.cleanRToken
   );
 module.exports = router;
