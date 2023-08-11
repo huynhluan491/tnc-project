@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, SkipSelf } from '@angular/core';
 import { StorageService } from '../p-layout/shared/services/storage.service';
 import { Subject, takeUntil } from 'rxjs';
+import { VnCurrencyPipe } from '../p-layout/shared/pipe/vn-currency.pipe';
 import {
   FormBuilder,
   FormControl,
@@ -28,6 +29,7 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
   isBindUserInfo: FormControl = new FormControl(false);
   ngUnsubscribe$ = new Subject<void>();
   amount = 0;
+  products = [];
   onSubmit() {}
 
   ngOnInit() {
@@ -35,6 +37,7 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
     this.currentUser = this.storageService.getUser();
 
     const orders = this.storageService.getOrders().orders;
+    orders && (this.products = orders);
     orders?.forEach((product) => {
       this.total += product.Price * product.Amount;
     });
@@ -62,8 +65,7 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
       email: ['', [Validators.required]],
       number: ['', [Validators.required]],
       address: ['', [Validators.required]],
-      payment_method1: ['', [Validators.required]],
-      payment_method2: ['', [Validators.required]],
+      payment_method: ['cod'],
     });
   }
 
