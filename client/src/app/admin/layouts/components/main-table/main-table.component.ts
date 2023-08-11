@@ -35,15 +35,15 @@ export class MainTableComponent implements OnInit {
   fetchData() {
     this.loading = true;
 
-    setTimeout(() => {
-      this.dataService.getData(this.page, this.pageSize).subscribe((res) => {
-        console.log(res);
-        this.data = res.data;
-        this.pageSize = res.pageSize;
-        this.totalPages = res.totalPages;
-        this.loading = false;
-      });
-    }, 300);
+    // setTimeout(() => {
+    //   this.dataService.getData(this.page, this.pageSize).subscribe((res) => {
+    //     console.log(res);
+    //     this.data = res.data;
+    //     this.pageSize = res.pageSize;
+    //     this.totalPages = res.totalPages;
+    //     this.loading = false;
+    //   });
+    // }, 300);
   }
 
   getObjectKeys(obj: any): string[] {
