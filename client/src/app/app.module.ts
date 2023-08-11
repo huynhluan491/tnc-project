@@ -27,36 +27,40 @@ import { httpInterceptorProviders } from './p-app/_helpers/http.interceptor';
 import { NotificationModule } from '@progress/kendo-angular-notification';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogsModule } from '@progress/kendo-angular-dialog';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './p-app/_helpers/auth_guard';
 @NgModule({
-  declarations: [AppComponent, CartCheckoutComponent, CartCheckout2Component],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    PLayoutModule,
-    HomeModule,
-    HttpClientModule,
-    NgbModule,
-    IconsModule,
-    GridModule,
-    ButtonsModule,
-    LayoutModule,
-    DropDownsModule,
-    OrderCheckoutModule,
-    NotificationModule,
-    FormsModule,
-    ReactiveFormsModule,
-    DialogsModule,
-    HttpClientXsrfModule.withOptions({
-      cookieName: 'csrf_access_token',
-      headerName: 'csrf-token',
-    }),
-  ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    httpInterceptorProviders,
-  ],
-  bootstrap: [AppComponent],
-  })
+    declarations: [AppComponent, CartCheckoutComponent, CartCheckout2Component],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        httpInterceptorProviders,
+        AuthGuard
+    ],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        PLayoutModule,
+        HomeModule,
+        HttpClientModule,
+        NgbModule,
+        IconsModule,
+        GridModule,
+        ButtonsModule,
+        LayoutModule,
+        DropDownsModule,
+        OrderCheckoutModule,
+        NotificationModule,
+        FormsModule,
+        ReactiveFormsModule,
+        DialogsModule,
+        HttpClientXsrfModule.withOptions({
+            cookieName: 'csrf_access_token',
+            headerName: 'csrf-token',
+        }),
+        LoginComponent
+    ]
+})
 export class AppModule {}
