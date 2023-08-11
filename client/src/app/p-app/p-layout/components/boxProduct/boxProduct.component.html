@@ -11,8 +11,13 @@
         <span>{{ data?.Name }}</span>
       </div>
       <div class="rating d-flex justify-content-start">
-        <star-rating [hoverEnabled]="true" speed="slow" [starType]="'svg'" [rating]="5"
-        (starClickChange)="onRatingProduct($event)">
+        <star-rating
+          [hoverEnabled]="true"
+          speed="slow"
+          [starType]="'svg'"
+          [rating]="rating"
+          (starClickChange)="onRatingProduct($event)"
+        >
         </star-rating>
       </div>
       <div class="price-product">
