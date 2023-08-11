@@ -36,13 +36,13 @@ exports.login = async (req, res) => {
     }
   } catch (e) {
     if (code === 1) {
-      res.status(404).json({
-        Code: 200,
-        Msg: `OK, Sign Up & Login Fail !!${e.toString()}`,
+      res.status(401).json({
+        Code: 401,
+        Msg: `Fail, Sign Up & Login Fail !!${e.toString()}`,
       });
     } else {
-      res.status(404).json({
-        Code: 200,
+      res.status(401).json({
+        Code: 401,
         Msg: "Fail",
       });
     }
