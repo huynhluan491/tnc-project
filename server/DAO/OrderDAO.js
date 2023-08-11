@@ -22,7 +22,9 @@ exports.addOrder = async (order) => {
   }
   const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
   order.CreatedAt = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
-
+  if (order.PaymentID != 0) {
+    order.PayIn = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
+  }
   let insertData = OrdersSchema.validateData(order);
   let query = `SET IDENTITY_INSERT ${OrdersSchema.schemaName} ON insert into ${OrdersSchema.schemaName}`;
   const {request, insertFieldNamesStr, insertValuesStr} =
@@ -335,6 +337,49 @@ exports.getOrderById = async (id) => {
 
     .query(query);
   return result.recordsets[0];
+};
+
+exports.deleteOrder = async (id) => {
+  const dbPool = dbConfig.db.pool;
+  if (!dbPool) {
+    throw new Error("Not connected to db");
+  }
+  const resultQueryOrder = await dbPool
+    .request()
+    .input(
+      OrdersSchema.schema.OrderID.name,
+      OrdersSchema.schema.OrderID.sqlType,
+      id
+    )
+    .query(`select * from ${OrdersSchema.schemaName} where OrderID = @OrderID`);
+
+  const order = resultQueryOrder.recordset[0];
+  console.log(order);
+  if (order.PayIn != null) {
+    throw new Error("Order has been paid");
+  }
+  const queryDeleteOrderDetails = `delete ${Order_DetailsSchema.schemaName} where OrderID = @OrderID`;
+
+  const queryDeleteOrder = `delete ${OrdersSchema.schemaName} where OrderID = @OrderID`;
+
+  await dbPool
+    .request()
+    .input(
+      OrdersSchema.schema.OrderID.name,
+      OrdersSchema.schema.OrderID.sqlType,
+      id
+    )
+    .query(queryDeleteOrderDetails);
+
+  await dbPool
+    .request()
+    .input(
+      OrdersSchema.schema.OrderID.name,
+      OrdersSchema.schema.OrderID.sqlType,
+      id
+    )
+    .query(queryDeleteOrder);
+  await this.createNewOrder(order.UserID);
 };
 
 exports.clearAllOrder_Details = async () => {

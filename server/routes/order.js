@@ -13,6 +13,8 @@ router
   .route("/orderdetails/")
   .get(orderController.getOrderDetailsByOrderIDUserID);
 
+router.route("/:id").delete(orderController.deleteOrder);
+
 router.route("/user/:UserID").get(orderController.getOrderByUserID);
 // router.route("/:userID").get(orderController.getProductInCartByUSerID);
 

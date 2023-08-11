@@ -27,10 +27,12 @@ const OrdersSchema = new ModelSchema(
     PaymentID: new ModelSchemaValidator({
       name: "PaymentID",
       sqlType: sql.Int,
+      default: 0,
     }),
     StatusID: new ModelSchemaValidator({
       name: "StatusID",
       sqlType: sql.Int,
+      default: 1,
     }),
     PayIn: new ModelSchemaValidator({
       name: "PayIn",
