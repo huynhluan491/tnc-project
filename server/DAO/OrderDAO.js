@@ -180,12 +180,16 @@ exports.updateOrder_Details = async (Order_Details) => {
     dbPool.request(),
     updateData
   );
+  if (updateData.Amount == 0) {
+    q = `delete ${Order_DetailsSchema.schemaName} where ProductID =@ProductID and OrderID = @OrderID`;
+  } else {
+    q += updateStr + ` where ProductID =@ProductID and OrderID = @OrderID`;
+  }
 
-  q += updateStr + ` where ProductID =@ProductID and OrderID = @OrderID`;
-  objectReturn =
+  const queryCombie =
     q +
     ` select * from ${Order_DetailsSchema.schemaName} where ProductID =@ProductID and OrderID = @OrderID`;
-  let result = await request.query(objectReturn);
+  let result = await request.query(queryCombie);
   var dto = new DTOOrderDetails(result.recordsets[0][0]);
   return dto;
 };
