@@ -12,64 +12,13 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 export class ProductAPIService {
   ngUnsubscribe = new Subject<void>();
 
-  brandFilter = [
-    {
-      type: 'checkbox',
-      inputValue: 'field value',
-      field: 'query field',
-      labelName: 'label1',
-    },
-    {
-      type: 'checkbox',
-      inputValue: 'field value',
-      field: 'query field',
-      labelName: 'label2',
-    },
-    {
-      type: 'checkbox',
-      inputValue: 'field value',
-      field: 'query field',
-      labelName: 'label3',
-    },
-  ];
-
-  CategoryFilter = [
-    // {
-    //   type: 'checkbox',
-    //   inputValue: 'field value1',
-    //   field: 'query field1',
-    //   labelName: 'label4',
-    // },
-    // {
-    //   type: 'checkbox',
-    //   inputValue: 'field value2',
-    //   field: 'query field2',
-    //   labelName: 'label5',
-    // },
-    // {
-    //   type: 'checkbox',
-    //   inputValue: 'field value3',
-    //   field: 'query field3',
-    //   labelName: 'label6',
-    // },
-  ];
-
   productURL = '/api/v1/product/';
   testDetailProduct = 'https://api.npoint.io/09883bf2746395a86b36';
   arrlabelFilter: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   removeItem: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
-  constructor(
-    private http: HttpClient,
-    private categoryService: CategoryService
-  ) {}
+  constructor(private http: HttpClient) {}
 
-  getBrandFilter(): Observable<any[]> {
-    return of(this.brandFilter);
-  }
-  getCateFilter(): Observable<any[]> {
-    return of(this.CategoryFilter);
-  }
   getArrlabelFilter(): Observable<any[]> {
     return this.arrlabelFilter.asObservable();
   }
@@ -114,26 +63,5 @@ export class ProductAPIService {
         }
       );
     });
-  }
-
-  setCategories() {
-    this.categoryService
-      .getData(1, 100)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((res) => {
-        const categories = res.Data;
-        let arr = [];
-        categories.forEach((cate) => {
-          arr.push({
-            type: 'checkbox',
-            inputValue: cate.CategoryName,
-            field: 'CategoryName',
-            labelName: cate.CategoryName,
-          });
-        });
-
-        this.CategoryFilter = arr;
-        console.log(this.CategoryFilter);
-      });
   }
 }

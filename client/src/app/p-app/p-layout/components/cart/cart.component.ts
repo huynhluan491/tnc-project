@@ -30,36 +30,95 @@ export class CartComponent implements OnInit {
     this.getOrders();
   }
 
+  deleteItem(product) {
+    let orders = this.storageService.getOrders();
+
+    // update db
+    const order = {
+      Amount: 0,
+      OrderID: orders.orderId,
+      ProductID: product.ProductID,
+    };
+    this.orderService.updateData(order).subscribe((res) => {});
+
+    // update session
+    const productIndexToUpdate = orders.orders.findIndex(
+      (order) => order.ProductID === product.ProductID
+    );
+    orders.totalAmount =
+      orders.totalAmount - orders.orders[productIndexToUpdate].Amount;
+    orders.orders[productIndexToUpdate].Amount = 0;
+    orders.orders = orders.orders.filter(
+      (item) => item.ProductID !== product.ProductID
+    );
+
+    this.storageService.saveOrders2(orders);
+    this.getOrders();
+  }
+
+  increaseItem(product) {
+    const updatedAmount = product.Amount + 1;
+    if (updatedAmount <= product.Stock) {
+      let orders = this.storageService.getOrders();
+
+      // update db
+      const order = {
+        Amount: updatedAmount,
+        OrderID: orders.orderId,
+        ProductID: product.ProductID,
+      };
+      this.orderService.updateData(order).subscribe((res) => {});
+
+      // update session
+      const productIndexToUpdate = orders.orders.findIndex(
+        (order) => order.ProductID === product.ProductID
+      );
+      orders.orders[productIndexToUpdate].Amount = updatedAmount;
+
+      orders.totalAmount = orders.totalAmount + 1;
+
+      this.storageService.saveOrders2(orders);
+      this.getOrders();
+    }
+  }
+
   decreaseItem(product) {
     const updatedAmount = product.Amount - 1;
-    console.log(updatedAmount);
+    let orders = this.storageService.getOrders();
+    if (updatedAmount >= 0) {
+      //update db
+      const order = {
+        Amount: updatedAmount,
+        OrderID: orders.orderId,
+        ProductID: product.ProductID,
+      };
+      this.orderService.updateData(order).subscribe((res) => {});
 
-    if (updatedAmount == 0) {
-      let orders = this.storageService.getOrders();
-      orders.orders = orders.orders.filter(
-        (item) => item.ProductID !== product.productID
+      // update session
+      const productIndexToUpdate = orders.orders.findIndex(
+        (order) => order.ProductID === product.ProductID
       );
-      this.storageService.saveOrders(orders);
-      this.productList = orders;
-    }
-    // const orderId = this.storageService.getOrders().OrderID;
-    // const order = {
-    //   Amount: updatedAmount,
-    //   Order: orderId,
-    //   ProductID: product.ProductID,
-    // };
-    // console.log(order);
+      orders.orders[productIndexToUpdate].Amount = updatedAmount;
+      if (updatedAmount == 0) {
+        orders.orders = orders.orders.filter(
+          (item) => item.ProductID !== product.ProductID
+        );
+      }
 
-    // this.orderService.updateData(order).subscribe((res) => {
-    //   console.log(res);
-    // });
+      orders.totalAmount = orders.totalAmount - 1;
+
+      this.storageService.saveOrders2(orders);
+      this.getOrders();
+    } else {
+      return;
+    }
   }
 
   getOrders() {
     const orders = this.storageService.getOrders().orders;
-
+    let total = 0;
     orders.forEach((product) => {
-      this.total += product.Price * product.Amount;
+      total += product.Price * product.Amount;
       this.getProductImage(product.Image)
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((res) => {
@@ -67,6 +126,7 @@ export class CartComponent implements OnInit {
         });
     });
     this.productList = orders;
+    this.total = total;
   }
 
   getProductImage(imageName: string) {

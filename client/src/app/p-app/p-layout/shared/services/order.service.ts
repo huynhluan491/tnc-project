@@ -31,12 +31,13 @@ export class OrderService {
   }
 
   getOrderDetail(orderID: number, userID: number): Observable<DTOResponse> {
-    const headers = new HttpHeaders ({
-      "OrderID": orderID,
-      "UserID": userID
-    })
-    return this.http.get<DTOResponse>(
-      `${environment.apiUrl}/order/orderdetails`,{headers}).pipe(catchError(this.handleError));
+    const headers = new HttpHeaders({
+      OrderID: orderID,
+      UserID: userID,
+    });
+    return this.http
+      .get<DTOResponse>(`${environment.apiUrl}/order/orderdetails`, { headers })
+      .pipe(catchError(this.handleError));
   }
 
   getDataById(id: number): Observable<DTOResponse> {
@@ -53,7 +54,7 @@ export class OrderService {
 
   updateData(order: any): Observable<DTOResponse> {
     return this.http
-      .patch<DTOResponse>(`/api/v1/order`, order)
+      .patch<DTOResponse>(`/api/v1/order/product`, order)
       .pipe(catchError(this.handleError));
   }
 

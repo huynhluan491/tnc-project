@@ -1,3 +1,4 @@
+import { BrandService } from './../../p-layout/shared/services/brand.service';
 import { LayoutAPIService } from './../../p-layout/shared/services/layout-api.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -5,6 +6,7 @@ import { Subject, Subscription, pluck, takeUntil, tap } from 'rxjs';
 import { DTOProduct } from '../shared/dto/DTOProduct.dto';
 import { ProductAPIService } from '../shared/services/product-api.service';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { CategoryService } from '../../p-layout/shared/services/category.service';
 
 @Component({
   selector: 'product-list',
@@ -33,7 +35,9 @@ export class ProductListComponent implements OnInit {
   constructor(
     private layoutAPIService: LayoutAPIService,
     private route: ActivatedRoute,
-    private productService: ProductAPIService
+    private productService: ProductAPIService,
+    private categoryService: CategoryService,
+    private BrandService: BrandService
   ) {}
 
   ngOnInit() {
@@ -42,7 +46,6 @@ export class ProductListComponent implements OnInit {
       tap((value) => (this.categoryName = value))
     );
     this.getProducts();
-    this.productService.setCategories();
     this.handleGetFilter();
   }
 
@@ -56,31 +59,58 @@ export class ProductListComponent implements OnInit {
       });
   }
 
+  setCategories() {
+    this.categoryService
+      .getData(1, 100)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
+        const categories = res.Data;
+        let arr = [];
+        categories.forEach((cate) => {
+          arr.push({
+            type: 'checkbox',
+            inputValue: cate.CategoryName,
+            field: 'CategoryName',
+            labelName: cate.CategoryName,
+          });
+        });
+        var obj = {
+          titleFilter: 'Category',
+          dataItems: [...arr],
+        };
+        this.allDataDropdowns.push(obj);
+        console.log('this.CategoryFilter', obj);
+      });
+  }
+
+  setBrands() {
+    this.BrandService.getData(1, 100, '')
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
+        const brands = res.Data;
+        let arr = [];
+        brands.forEach((b) => {
+          arr.push({
+            type: 'checkbox',
+            inputValue: b.BrandName,
+            field: 'BrandName',
+            labelName: b.BrandName,
+          });
+        });
+        var obj = {
+          titleFilter: 'Brand',
+          dataItems: [...arr],
+        };
+        this.allDataDropdowns.push(obj);
+      });
+  }
+
   handleGetFilter() {
     this.productService.getArrlabelFilter().subscribe((arr) => {
       this.arrlabelFilter = arr;
     });
-    this.productService
-      .getBrandFilter()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((res) => {
-        var obj = {
-          titleFilter: 'Brand',
-          dataItems: [...res],
-        };
-        this.allDataDropdowns.push(obj);
-      });
-    this.productService
-      .getCateFilter()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((res) => {
-        console.log(res);
-        var obj = {
-          titleFilter: 'Category',
-          dataItems: [...res],
-        };
-        this.allDataDropdowns.push(obj);
-      });
+    this.setCategories();
+    this.setBrands();
   }
   handlePageChange(event: any) {
     this.page = event;

@@ -64,9 +64,14 @@
                     -
                   </div>
                   <p class="cart-item-quantity-value">{{ product.Amount }}</p>
-                  <div class="cart-item-quantity-add">+</div>
+                  <div
+                    (click)="increaseItem(product)"
+                    class="cart-item-quantity-add"
+                  >
+                    +
+                  </div>
                 </div>
-                <div class="cart-item-delete-btn">
+                <div (click)="deleteItem(product)" class="cart-item-delete-btn">
                   <svg
                     width="14"
                     height="16"

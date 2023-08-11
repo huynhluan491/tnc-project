@@ -36,6 +36,21 @@ export class StorageService {
       JSON.stringify({
         totalAmount: data.TotalAmount,
         orders: data.DataInOrder,
+        orderId: data.OrderID,
+      })
+    );
+  }
+
+  public saveOrders2(data: any): void {
+    console.log(data);
+
+    window.sessionStorage.removeItem(ORDER_KEY);
+    window.sessionStorage.setItem(
+      ORDER_KEY,
+      JSON.stringify({
+        totalAmount: data.totalAmount,
+        orders: data.orders,
+        orderId: data.orderId,
       })
     );
   }
