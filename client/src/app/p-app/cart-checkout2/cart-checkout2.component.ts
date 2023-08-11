@@ -62,7 +62,8 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
       email: ['', [Validators.required]],
       number: ['', [Validators.required]],
       address: ['', [Validators.required]],
-      payment_method: ['', [Validators.required]],
+      payment_method1: ['', [Validators.required]],
+      payment_method2: ['', [Validators.required]],
     });
   }
 

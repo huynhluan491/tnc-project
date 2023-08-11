@@ -1,22 +1,31 @@
 <div class="wrapper">
   <app-breadcrumb [plusBreadCrumbText]="breadCrumbList"></app-breadcrumb>
-  
+
   <div class="product-wrapper">
     <div class="main-img-slider" style="width: 50%">
-      
       <div style="width: 100%; border: 1px solid #dddfe6">
-        <app-slider-container [imgs]="subImgList" [type]="'subimgs'"></app-slider-container>
+        <app-slider-container
+          [imgs]="subImgList"
+          [type]="'subimgs'"
+        ></app-slider-container>
       </div>
       <div class="subimg-slider" style="border: 1px solid #dddfe6">
-        <app-slider-container [autoPlay]="false" [slidesToScroll]="1" [imgs]="subImgList" [type]="'img'"
-          [slidesToShow]="3">
+        <app-slider-container
+          [autoPlay]="false"
+          [slidesToScroll]="1"
+          [imgs]="subImgList"
+          [type]="'img'"
+          [slidesToShow]="3"
+        >
         </app-slider-container>
       </div>
     </div>
     <div class="product-info-wrapper">
       <div class="info-header">
         <p class="product-name">{{ productDetail.Name | uppercase }}</p>
-        <span class="sale-off">SALE OFF {{ productDetail.Sale | percentage }}</span>
+        <span class="sale-off"
+          >SALE OFF {{ productDetail.Sale | percentage }}</span
+        >
       </div>
       <div class="product-brand">
         <span class="product-general">
@@ -25,8 +34,13 @@
         </span>
       </div>
       <div class="rating-wrapper">
-        <star-rating [hoverEnabled]="true" speed="slow" [starType]="'svg'" [rating]="5"
-          (starClickChange)="onRatingProduct($event)">
+        <star-rating
+          [hoverEnabled]="true"
+          speed="slow"
+          [starType]="'svg'"
+          [rating]="rating"
+          (starClickChange)="onRatingProduct($event)"
+        >
         </star-rating>
       </div>
       <span class="product-description">
@@ -35,8 +49,10 @@
       <div class="product-status">
         <span class="status-text">{{
           productDetail.Stock > 0 ? " CÒN HÀNG" : "HẾT HÀNG"
-          }}</span>
-        <span class="old-price">{{ productDetail.Price | number : "1.0-0" }} đ</span>
+        }}</span>
+        <span class="old-price"
+          >{{ productDetail.Price | number : "1.0-0" }} đ</span
+        >
       </div>
       <div class="product-quantity-cart">
         <div style="display: flex; gap: 25px">
@@ -44,19 +60,42 @@
           <div class="quantity-wrapper">
             <p class="quantity-text">{{ cartQuantity }}</p>
             <div class="quantity-button">
-              <span class="k-icon k-i-plus" (click)="onHandleQuantity('increase')"></span>
-              <span class="k-icon k-i-minus" (click)="onHandleQuantity('decrease')"></span>
+              <span
+                class="k-icon k-i-plus"
+                (click)="onHandleQuantity('increase')"
+              ></span>
+              <span
+                class="k-icon k-i-minus"
+                (click)="onHandleQuantity('decrease')"
+              ></span>
             </div>
           </div>
         </div>
-        <p class="sale-price">{{ productDetail.Price | salePricePipe: productDetail.Sale | number : "1.0-0" }} đ</p>
+        <p class="sale-price">
+          {{
+            productDetail.Price
+              | salePricePipe : productDetail.Sale
+              | number : "1.0-0"
+          }}
+          đ
+        </p>
       </div>
 
       <div class="cart-button-hadling">
-        <button class="cart-btn add-cart-btn" fillMode="none" kendoButton imageUrl="assets/icon/icon_cart.svg">
+        <button
+          class="cart-btn add-cart-btn"
+          fillMode="none"
+          kendoButton
+          imageUrl="assets/icon/icon_cart.svg"
+        >
           THÊM VÀO GIỎ
         </button>
-        <button class="cart-btn buy-btn" fillMode="none" kendoButton imageUrl="assets/icon/icon_addWhite.svg">
+        <button
+          class="cart-btn buy-btn"
+          fillMode="none"
+          kendoButton
+          imageUrl="assets/icon/icon_addWhite.svg"
+        >
           MUA HÀNG
         </button>
       </div>
@@ -98,7 +137,9 @@
     <kendo-tabstrip-tab title="Thông số kỹ thuật" [selected]="true">
       <ng-template kendoTabContent>
         <div class="content">
-          <img src="https://www.telerik.com/kendo-angular-ui-develop/components/layout/assets/tabstrip/rainy.png" />
+          <img
+            src="https://www.telerik.com/kendo-angular-ui-develop/components/layout/assets/tabstrip/rainy.png"
+          />
           <h2>17<span>ºC</span></h2>
           <span>Rainy weather in Paris.</span>
         </div>
@@ -107,7 +148,9 @@
     <kendo-tabstrip-tab title="Chi tiết sản phẩm">
       <ng-template kendoTabContent>
         <div class="content">
-          <img src="https://www.telerik.com/kendo-angular-ui-develop/components/layout/assets/tabstrip/cloudy.png" />
+          <img
+            src="https://www.telerik.com/kendo-angular-ui-develop/components/layout/assets/tabstrip/cloudy.png"
+          />
           <h2>19<span>ºC</span></h2>
           <span>Cloudy weather in New York City.</span>
         </div>
@@ -116,7 +159,9 @@
     <kendo-tabstrip-tab title="Video">
       <ng-template kendoTabContent>
         <div class="content">
-          <img src="https://www.telerik.com/kendo-angular-ui-develop/components/layout/assets/tabstrip/sunny.png" />
+          <img
+            src="https://www.telerik.com/kendo-angular-ui-develop/components/layout/assets/tabstrip/sunny.png"
+          />
           <h2>23<span>ºC</span></h2>
           <span>Sunny weather in Tallinn.</span>
         </div>
@@ -125,7 +170,9 @@
     <kendo-tabstrip-tab title="Review sản phẩm">
       <ng-template kendoTabContent>
         <div class="content">
-          <img src="https://www.telerik.com/kendo-angular-ui-develop/components/layout/assets/tabstrip/rainy.png" />
+          <img
+            src="https://www.telerik.com/kendo-angular-ui-develop/components/layout/assets/tabstrip/rainy.png"
+          />
           <h2>16<span>ºC</span></h2>
           <span>Rainy weather in London.</span>
         </div>
