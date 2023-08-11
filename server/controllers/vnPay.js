@@ -2,6 +2,7 @@ const StaticData = require("../utils/StaticData");
 const dateFormat = require("dateformat");
 const config = StaticData.configApiVnPay;
 const OrderDAO = require("../DAO/OrderDAO");
+const UserDAO = require("../DAO/UserDAO");
 const dateTimeUtils = require("../Utils/DateTimeUtils");
 
 const sortObject = (obj) => {
@@ -84,8 +85,7 @@ exports.create_payment_url = async (req, res) => {
   vnpUrl += "?" + querystring.stringify(vnp_Params, {encode: false});
 
   console.log(vnpUrl);
-
-  res.redirect(vnpUrl);
+  res.status(200).json({code: 200, Msg: "success", PaymentUrl: vnpUrl});
 };
 
 exports.vnpay_return = async (req, res, next) => {
@@ -106,35 +106,35 @@ exports.vnpay_return = async (req, res, next) => {
   var crypto = require("crypto");
   var hmac = crypto.createHmac("sha512", secretKey);
   var signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
-  console.log("vnp_Params return", vnp_Params);
+  const orderId = vnp_Params["vnp_TxnRef"];
+  const u = await UserDAO.getUserByOrderID(orderId);
+
   if (secureHash === signed && vnp_Params["vnp_TransactionStatus"] === "00") {
     //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
     // handle success here
-    const orderId = vnp_Params["vnp_TxnRef"];
-    var expectedFormat = /^\d{4}\d{2}\d{2}\d{2}\d{2}\d{2}$/;
-    if (orderId.match(expectedFormat)) {
-      //handle cho don hang khach vang lai
-      // await OrderDAO.createNewOrder(null,)
-      console.log(vnp_Params.vnp_OrderInfo);
-    } else {
-      const updateInfor = {
-        OrderID: orderId,
-        PaymentID: 1,
-        StatusID: 2,
-        PayIn: dateTimeUtils.convertMillisecondsToDateTimeSQL(
-          1,
-          false,
-          true,
-          true
-        ),
-      };
-      await OrderDAO.updateStatusPayment(updateInfor);
-    }
+    //handle cho don hang khach vang lai
+    // await OrderDAO.createNewOrder(null,)
+
+    const updateInfor = {
+      OrderID: orderId,
+      PaymentID: 1,
+      StatusID: 2,
+      PayIn: dateTimeUtils.convertMillisecondsToDateTimeSQL(
+        1,
+        false,
+        true,
+        true
+      ),
+    };
+    await OrderDAO.updateStatusPayment(updateInfor);
 
     console.log("success");
     // res.redirect(StaticData.configApiVnPay.home_Url);
     res.json({code: 200, Msg: "success"});
   } else {
+    if (!u) {
+      await OrderDAO.deleteOrder(orderId);
+    }
     res.json({code: 402, Msg: "fail"});
   }
 };

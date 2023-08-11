@@ -64,11 +64,23 @@ exports.handlerPayment = async (TypeOfPayment, req, res) => {
     order = await OrderDAO.getOrderById(req.body.OrderID);
     user = await UserDAO.getUserByOrderID(req.body.OrderID);
   }
+  let orderID;
   if (reqBody.DataInOrder || reqBody.DataInOrder.length > 0) {
     //handle cho khach hang vang lai
+
     order = reqBody.DataInOrder;
-    // let OrderInfor = {DataInOrder: order};
-    // req.body.OrderInfor = OrderInfor;
+    user = reqBody.UserInfor;
+    orderID = await OrderDAO.createNewOrder(null);
+    //insert order detail
+    for (let i = 0; i < order.length; i++) {
+      const orderDetail = {
+        OrderID: orderID,
+        ProductID: order[i].ProductID,
+        Amount: order[i].Amount,
+        Price: order[i].Price,
+      };
+      await OrderDAO.addOrder_DetailsIfNotExisted(orderDetail);
+    }
   }
 
   const totalPrice = order.reduce(
@@ -87,6 +99,7 @@ exports.handlerPayment = async (TypeOfPayment, req, res) => {
   }
 
   req.body.TotalPrice = totalPrice;
+  req.body.OrderID = orderID;
   if (TypeOfPayment === "VNPAY") {
     vnPayController.create_payment_url(req, res);
   } else if (TypeOfPayment === "COD") {
