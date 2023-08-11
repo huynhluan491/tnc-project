@@ -193,7 +193,6 @@ exports.login = async (dto) => {
   );
   //res jwt cookie
   delete user.Password;
-  delete user.AuthID;
   const csrfToken = createCSRFToken();
   await AuthDAO.updateRefreshTokenByUserId(user.UserID, {
     RefreshToken: rRoken,
