@@ -20,13 +20,13 @@ const sortObject = (obj) => {
   return sorted;
 };
 
-exports.create_payment_url = async (req, res, next) => {
+exports.create_payment_url = async (req, res) => {
   var ipAddr =
     req.headers["x-forwarded-for"] ||
     req.connection.remoteAddress ||
     req.socket.remoteAddress ||
     req.connection.socket.remoteAddress;
-
+  // req.DataInfor = req.body;
   var tmnCode = config.vnp_TmnCode;
   var secretKey = config.vnp_HashSecret;
   var vnpUrl = config.vnp_Url;
@@ -34,7 +34,6 @@ exports.create_payment_url = async (req, res, next) => {
 
   var date = new Date();
   const reqBody = req.body;
-  console.log(reqBody);
 
   var createDate = dateFormat(date, "yyyymmddHHmmss");
   date.setTime(date.getTime() + 15 * 60 * 1000);
@@ -42,13 +41,13 @@ exports.create_payment_url = async (req, res, next) => {
 
   var bankCode = reqBody.bankCode || "";
 
-  const orderId = reqBody.OrderID || 2; //testing
+  const orderId = reqBody.OrderID || createDate; //neu order id is null -> khach vang lai
 
   if (!orderId) {
-    res.status(400).json({code: 400, message: "Missing orderId parameter"});
+    // res.status(400).json({code: 400, message: "Missing orderId parameter"});
   }
-  var amount = reqBody.Amount || 100000; // lay amount trong db
-  var orderInfo = reqBody.OrderDescription || "Hai dzai";
+  var amount = reqBody.TotalPrice || 100000; // lay amount trong db
+  var orderInfo = reqBody.OrderInfor || {};
   var orderType = reqBody.OrderType || "billpayment";
   var locale = reqBody.Language || "vn";
 
@@ -81,13 +80,15 @@ exports.create_payment_url = async (req, res, next) => {
   var hmac = crypto.createHmac("sha512", secretKey);
   var signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
   vnp_Params["vnp_SecureHash"] = signed;
+
   vnpUrl += "?" + querystring.stringify(vnp_Params, {encode: false});
-  res.status(200).json({code: 200, data: vnpUrl});
+
   console.log(vnpUrl);
-  // res.redirect(vnpUrl);
+
+  res.redirect(vnpUrl);
 };
 
-exports.vnpay_return = (req, res, next) => {
+exports.vnpay_return = async (req, res, next) => {
   var vnp_Params = req.query;
 
   var secureHash = vnp_Params["vnp_SecureHash"];
@@ -108,28 +109,37 @@ exports.vnpay_return = (req, res, next) => {
   console.log("vnp_Params return", vnp_Params);
   if (secureHash === signed && vnp_Params["vnp_TransactionStatus"] === "00") {
     //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-    // res.json({code: 200, Msg: "success"});
     // handle success here
     const orderId = vnp_Params["vnp_TxnRef"];
-    const updateInfor = {
-      OrderID: orderId,
-      PaymentID: 1,
-      StatusID: 2,
-      PayIn: dateTimeUtils.convertMillisecondsToDateTimeSQL(
-        1,
-        false,
-        true,
-        true
-      ),
-    };
-    const result = OrderDAO.updateStatusPayment(updateInfor);
+    var expectedFormat = /^\d{4}\d{2}\d{2}\d{2}\d{2}\d{2}$/;
+    if (orderId.match(expectedFormat)) {
+      //handle cho don hang khach vang lai
+      // await OrderDAO.createNewOrder(null,)
+      console.log(vnp_Params.vnp_OrderInfo);
+    } else {
+      const updateInfor = {
+        OrderID: orderId,
+        PaymentID: 1,
+        StatusID: 2,
+        PayIn: dateTimeUtils.convertMillisecondsToDateTimeSQL(
+          1,
+          false,
+          true,
+          true
+        ),
+      };
+      await OrderDAO.updateStatusPayment(updateInfor);
+    }
+
     console.log("success");
-    res.redirect("http://localhost:3001");
+    // res.redirect(StaticData.configApiVnPay.home_Url);
+    res.json({code: 200, Msg: "success"});
   } else {
-    res.json({code: 404, Msg: "fail"});
+    res.json({code: 402, Msg: "fail"});
   }
 };
 
+//chua hoan thanh
 exports.vnpay_ipn = (req, res, next) => {
   var vnp_Params = req.query;
   var secureHash = vnp_Params["vnp_SecureHash"];

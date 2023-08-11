@@ -44,15 +44,19 @@ exports.addOrder = async (order) => {
   return result.recordsets;
 };
 
-exports.createNewOrder = async (userID) => {
+exports.createNewOrder = async (userID, dataInOrder = {}) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  let order = {
-    UserID: userID,
-  };
-
+  let order;
+  if (dataInOrder != {}) {
+    order = dataInOrder;
+  } else {
+    order = {
+      UserID: userID,
+    };
+  }
   let insertData = OrdersSchema.validateData(order);
   const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(OrdersSchema.schema, dbPool.request(), insertData);

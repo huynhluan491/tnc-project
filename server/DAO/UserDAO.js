@@ -245,6 +245,26 @@ exports.updateUserById = async (id, updateInfo) => {
   return result.recordsets;
 };
 
+exports.getUserByOrderID = async (orderId) => {
+  if (!dbConfig.db.pool) {
+    throw new Error("Not connected to db");
+  }
+  const query = `
+  select u.* from ${UserSchema.schemaName} u
+  inner join ${OrdersSchema.schemaName} o on u.${UserSchema.schema.UserID.name} = o.${OrdersSchema.schema.UserID.name}
+  where o.${OrdersSchema.schema.OrderID.name} = @${OrdersSchema.schema.OrderID.name}
+  `;
+  const result = await dbConfig.db.pool
+    .request()
+    .input(
+      OrdersSchema.schema.OrderID.name,
+      OrdersSchema.schema.OrderID.sqlType,
+      orderId
+    )
+    .query(query);
+  return result.recordset[0];
+};
+
 exports.deleteUserById = async (id) => {
   if (!dbConfig.db.pool) {
     throw new Error("Not connected to db");

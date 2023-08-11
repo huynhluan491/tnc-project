@@ -1,10 +1,13 @@
 const PaymentSchema = require("../model/Payment");
 const dbConfig = require("../database/dbconfig");
+
 const dbUtils = require("../utils/dbUtils");
 const DateTimeUtils = require("../utils/DateTimeUtils");
+const discountUtils = require("../utils/discountUtils");
 
 const vnPayController = require("../controllers/vnPay");
 const OrderDAO = require("../DAO/OrderDAO");
+const UserDAO = require("../DAO/UserDAO");
 
 exports.addPaymentIfNotExists = async (payment) => {
   const dbPool = dbConfig.db.pool;
@@ -50,11 +53,43 @@ exports.clearAll = async () => {
   return result.recordsets;
 };
 
-exports.handlerPayment = async (TypeOfPayment, req) => {
+exports.handlerPayment = async (TypeOfPayment, req, res) => {
+  const reqBody = req.body;
+  if (!reqBody) {
+    throw new Error("Invalid parameter format");
+  }
+  let order;
+  let user;
+  if (reqBody.OrderID) {
+    order = await OrderDAO.getOrderById(req.body.OrderID);
+    user = await UserDAO.getUserByOrderID(req.body.OrderID);
+  }
+  if (reqBody.DataInOrder || reqBody.DataInOrder.length > 0) {
+    //handle cho khach hang vang lai
+    order = reqBody.DataInOrder;
+    // let OrderInfor = {DataInOrder: order};
+    // req.body.OrderInfor = OrderInfor;
+  }
+
+  const totalPrice = order.reduce(
+    (accumulator, product) => accumulator + product.Price * product.Amount,
+    0
+  );
+  if (reqBody.UserPoint && reqBody.OrderID) {
+    //update point for user
+    const updateInfor = {
+      UserID: user.UserID,
+      Point: discountUtils.getPoint(totalPrice),
+    };
+    await UserDAO.updateUserById(user.UserID, updateInfor);
+    //handle giam gia cho khach hang
+    totalPrice -= discountUtils.getDiscount(user.Point);
+  }
+
+  req.body.TotalPrice = totalPrice;
   if (TypeOfPayment === "VNPAY") {
-    vnPayController.create_payment_url(req);
+    vnPayController.create_payment_url(req, res);
   } else if (TypeOfPayment === "COD") {
-    // const order = await OrderDAO.getOrderById(req.body.OrderID);
     const updateInfor = {
       OrderID: req.body.OrderID,
       PaymentID: 1,

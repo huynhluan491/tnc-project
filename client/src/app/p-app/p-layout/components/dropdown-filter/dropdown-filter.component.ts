@@ -51,7 +51,10 @@ export class dropdownFilterComponent {
       .getRemoveItem()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
-        // console.log('resRM', res);
+        const arrQuery = this.query.split(',');
+        console.log('resRM', res);
+        console.log('arrQuery', arrQuery);
+
         this.checkedItems = this.checkedItems.filter((i) => i != res[0]);
       });
   }
@@ -61,17 +64,20 @@ export class dropdownFilterComponent {
     const hasClass = element.classList.contains('active-dropdown-list');
     hasClass ? (this.active = false) : (this.active = true);
   }
+
   handleCheck(event: any, item: any) {
     console.log(event.target.id);
     var ischecked = event.target.checked;
     event.target.checked
-      ? (this.query += `&${event.target.name}=${event.target.value}`)
+      ? (this.query += `${event.target.name}:${event.target.value},`)
       : (this.query = this.query.replace(
-          `&${event.target.name}=${event.target.value}`,
+          `${event.target.name}:${event.target.value}`,
           ''
         ));
+
     this.filterURL.emit(this.query);
     console.log(item.labelName);
+
     var lbName = item.labelName;
     if (ischecked) {
       this.checkedItems.push(lbName);
