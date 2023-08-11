@@ -11,7 +11,16 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { Subject, Subscription, debounce, debounceTime, delay, switchMap, take, takeUntil } from 'rxjs';
+import {
+  Subject,
+  Subscription,
+  debounce,
+  debounceTime,
+  delay,
+  switchMap,
+  take,
+  takeUntil,
+} from 'rxjs';
 import { LayoutAPIService } from '../../shared/services/layout-api.service';
 import { Ps_UtilObjectService } from 'src/app/p-lib/ultilities/ulity.object';
 import { CartService } from '../../shared/services/cart.service';
@@ -66,27 +75,28 @@ export class HeaderComponent implements OnInit, OnDestroy {
         // console.log(this.isLoggedIn);
         if (this.isLoggedIn) {
           this.userName = this.storageService.getUser().UserName;
-          
         }
       });
     this.getCategoryList();
 
-    this.searchInputValue.valueChanges.pipe(
-      debounceTime(1000),
-      switchMap((res) => this.productService.getDetaiProductByName(res)),
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe(
-      (res) => {
-        if (res.Code === 200 && Ps_UtilObjectService.hasListValue(res.Data)) {
-          this.searchedProductList = [...res.Data];
-          this.searchInputValue.patchValue('', {emitEvent: false}); //prevent emit when reset value of input
-          console.log(this.searchedProductList);
+    this.searchInputValue.valueChanges
+      .pipe(
+        debounceTime(1000),
+        switchMap((res) => this.productService.getDetaiProductByName(res)),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(
+        (res) => {
+          if (res.Code === 200 && Ps_UtilObjectService.hasListValue(res.Data)) {
+            this.searchedProductList = [...res.Data];
+            this.searchInputValue.patchValue('', { emitEvent: false }); //prevent emit when reset value of input
+            console.log(this.searchedProductList);
+          }
+        },
+        (error) => {
+          console.error('Error:', error);
         }
-      },
-      (error) => {
-        console.error('Error:', error);
-      }
-    );
+      );
   }
 
   @HostListener('document:click', ['$event'])
@@ -114,7 +124,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       icon: 'icon_setting.svg',
       path: 'building',
       items: [],
-    }
+    },
   ];
   cartItems: number = 0;
   //Subscription
@@ -131,7 +141,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   getOrders() {
     const userId = this.storageService.getUser().UserID;
     this.orderService
-      .getData(1, 20, `?userID=${userId}`)
+      .getData(1, 20, `?UserID=${userId}`)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res: DTOResponse) => {
         console.log(res);
