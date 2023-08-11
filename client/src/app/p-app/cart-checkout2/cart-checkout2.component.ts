@@ -35,7 +35,7 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
     this.currentUser = this.storageService.getUser();
 
     const orders = this.storageService.getOrders().orders;
-    orders.forEach((product) => {
+    orders?.forEach((product) => {
       this.total += product.Price * product.Amount;
     });
     this.amount = this.storageService.getOrders().totalAmount;

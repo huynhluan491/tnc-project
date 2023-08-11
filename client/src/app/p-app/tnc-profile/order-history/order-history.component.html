@@ -18,7 +18,7 @@
       <p class="topic-name">Tổng tiền tích lũy</p>
     </div>
   </div>
-  <div class="order-date-range">
+  <!-- <div class="order-date-range">
     <kendo-daterange>
       <kendo-floatinglabel text="Start">
         <kendo-dateinput
@@ -33,16 +33,16 @@
         ></kendo-dateinput>
       </kendo-floatinglabel>
     </kendo-daterange>
-  </div>
+  </div> -->
   <div class="orders-grid-container">
-    <div class="status-filter-container">
+    <!-- <div class="status-filter-container">
       <div class="status-btn selected">Tất cả</div>
       <div class="status-btn">Chờ xác nhận</div>
       <div class="status-btn">Đã xác nhận</div>
       <div class="status-btn">Đang vận chuyển</div>
       <div class="status-btn">Đã giao hàng</div>
       <div class="status-btn">Đã hủy</div>
-    </div>
+    </div> -->
     <div class="grid-wrapper">
       <kendo-grid [data]="orderGridView | async" [pageSize]="20">
         <kendo-grid-column field="OrderID" title="No" [width]="50">
