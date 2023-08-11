@@ -9,6 +9,10 @@ import { Ps_UtilObjectService } from 'src/app/p-lib/ultilities/ulity.object';
 import { convertBase64ToImg } from '../../p-layout/shared/core/convertBase64Img';
 import { DTOProduct } from '../shared/dto/DTOProduct.dto';
 import { RatingService } from '../../p-layout/shared/services/rating.service';
+import { StorageService } from '../../p-layout/shared/services/storage.service';
+import { OrderService } from '../../p-layout/shared/services/order.service';
+import { CategoryService } from '../../p-layout/shared/services/category.service';
+import { CartService } from '../../p-layout/shared/services/cart.service';
 
 const PolicyData = [
   {
@@ -54,13 +58,104 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private productAPIService: ProductService,
+    private storageService: StorageService,
     private notiService: NotificationPopupService,
     private subImgService: subImgService,
-    @SkipSelf() private ratingService: RatingService
+    @SkipSelf() private ratingService: RatingService,
+    @SkipSelf() private orderService: OrderService,
+    @SkipSelf() private cartService: CartService
   ) {}
 
   ngOnInit(): void {
     this.GetDetailProduct();
+  }
+
+  buyNow() {
+    const orderID = this.storageService.getOrders().orderId;
+    const productID = this.productDetail.ProductID;
+    const userID = this.storageService.getUser().UserID;
+    this.orderService.getData(1, 20, `?UserID=${userID}`).subscribe((res) => {
+      const product = res.Data.DataInOrder.find(
+        (product) => product.ProductID == productID
+      );
+      if (product) {
+        const body = {
+          ProductID: productID,
+          Amount: product.Amount + this.cartQuantity,
+          OrderID: orderID,
+        };
+        this.orderService
+          .updateCart(body)
+          .pipe(takeUntil(this.unsubscription$))
+          .subscribe((res) => {
+            this.orderService
+              .getData(1, 20, `?UserID=${userID}`)
+              .pipe(takeUntil(this.ngUnsubscribe))
+              .subscribe((res: any) => {
+                this.storageService.saveOrders(res.Data);
+                this.cartService.onToggleCartPopUpState(true);
+              });
+          });
+      } else {
+        const body = {
+          ProductID: productID,
+          Amount: this.cartQuantity,
+          OrderID: orderID,
+        };
+        this.orderService
+          .addToCart(body)
+          .pipe(takeUntil(this.unsubscription$))
+          .subscribe((res) => {
+            this.orderService
+              .getData(1, 20, `?UserID=${userID}`)
+              .pipe(takeUntil(this.ngUnsubscribe))
+              .subscribe((res: any) => {
+                this.storageService.saveOrders(res.Data);
+                this.cartService.onToggleCartPopUpState(true);
+              });
+          });
+      }
+    });
+  }
+
+  addToCart() {
+    const orderID = this.storageService.getOrders().orderId;
+    const productID = this.productDetail.ProductID;
+    const userID = this.storageService.getUser().UserID;
+    this.orderService.getData(1, 20, `?UserID=${userID}`).subscribe((res) => {
+      console.log(res);
+
+      const product = res.Data.DataInOrder.find(
+        (product) => product.ProductID == productID
+      );
+      if (product) {
+        const body = {
+          ProductID: productID,
+          Amount: product.Amount + this.cartQuantity,
+          OrderID: orderID,
+        };
+        this.orderService
+          .updateCart(body)
+          .pipe(takeUntil(this.unsubscription$))
+          .subscribe((res) => {
+            this.notiService.onSuccess('Thêm vào giỏ hàng thành công!');
+            window.location.reload();
+          });
+      } else {
+        const body = {
+          ProductID: productID,
+          Amount: this.cartQuantity,
+          OrderID: orderID,
+        };
+        this.orderService
+          .addToCart(body)
+          .pipe(takeUntil(this.unsubscription$))
+          .subscribe((res) => {
+            this.notiService.onSuccess('Thêm vào giỏ hàng thành công!');
+            window.location.reload();
+          });
+      }
+    });
   }
 
   updateRating(ProductID) {
@@ -126,7 +221,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   onHandleQuantity(type: string) {
     if (type === 'increase') {
-      this.cartQuantity += 1;
+      this.cartQuantity + 1 <= this.productDetail.Stock &&
+        (this.cartQuantity += 1);
     } else {
       if (this.cartQuantity > 1) {
         this.cartQuantity -= 1;

@@ -58,6 +58,18 @@ export class OrderService {
       .pipe(catchError(this.handleError));
   }
 
+  addToCart(order: any): Observable<DTOResponse> {
+    return this.http
+      .post<DTOResponse>(`/api/v1/order/product`, order)
+      .pipe(catchError(this.handleError));
+  }
+
+  updateCart(order: any): Observable<DTOResponse> {
+    return this.http
+      .patch<DTOResponse>(`/api/v1/order/product`, order)
+      .pipe(catchError(this.handleError));
+  }
+
   deleteDataById(id: number): Observable<DTOResponse> {
     return this.http
       .delete<DTOResponse>(`/api/v1/order/${id}`)
