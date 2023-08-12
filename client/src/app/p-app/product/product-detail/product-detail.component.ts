@@ -63,7 +63,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private subImgService: subImgService,
     @SkipSelf() private ratingService: RatingService,
     @SkipSelf() private orderService: OrderService,
-    @SkipSelf() private cartService: CartService
+    @SkipSelf() private cartService: CartService,
+    @SkipSelf() private productService: ProductService
   ) {}
 
   ngOnInit(): void {
@@ -74,88 +75,171 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     const orderID = this.storageService.getOrders().orderId;
     const productID = this.productDetail.ProductID;
     const userID = this.storageService.getUser().UserID;
-    this.orderService.getData(1, 20, `?UserID=${userID}`).subscribe((res) => {
-      const product = res.Data.DataInOrder.find(
-        (product) => product.ProductID == productID
-      );
+
+    //logged in
+    if (userID) {
+      this.orderService.getData(1, 20, `?UserID=${userID}`).subscribe((res) => {
+        const product = res.Data.DataInOrder.find(
+          (product) => product.ProductID == productID
+        );
+        if (product) {
+          const body = {
+            ProductID: productID,
+            Amount: product.Amount + this.cartQuantity,
+            OrderID: orderID,
+          };
+          product.Amount + this.cartQuantity <= product.Stock
+            ? this.orderService
+                .updateCart(body)
+                .pipe(takeUntil(this.unsubscription$))
+                .subscribe((res) => {
+                  this.orderService
+                    .getData(1, 20, `?UserID=${userID}`)
+                    .pipe(takeUntil(this.ngUnsubscribe))
+                    .subscribe((res: any) => {
+                      this.storageService.saveOrders(res.Data);
+                      this.cartService.onToggleCartPopUpState(true);
+                    });
+                })
+            : this.notiService.onError(
+                'Số lượng sản phẩm vượt quá số lượng tồn!'
+              );
+        } else {
+          const body = {
+            ProductID: productID,
+            Amount: this.cartQuantity,
+            OrderID: orderID,
+          };
+          this.orderService
+            .addToCart(body)
+            .pipe(takeUntil(this.unsubscription$))
+            .subscribe((res) => {
+              this.orderService
+                .getData(1, 20, `?UserID=${userID}`)
+                .pipe(takeUntil(this.ngUnsubscribe))
+                .subscribe((res: any) => {
+                  this.storageService.saveOrders(res.Data);
+                  this.cartService.onToggleCartPopUpState(true);
+                });
+            });
+        }
+      });
+    } else {
+      let product = this.storageService
+        .getOrders()
+        .orders.find((product) => product.ProductID == productID);
+
       if (product) {
-        const body = {
-          ProductID: productID,
-          Amount: product.Amount + this.cartQuantity,
-          OrderID: orderID,
-        };
-        this.orderService
-          .updateCart(body)
-          .pipe(takeUntil(this.unsubscription$))
-          .subscribe((res) => {
-            this.orderService
-              .getData(1, 20, `?UserID=${userID}`)
-              .pipe(takeUntil(this.ngUnsubscribe))
-              .subscribe((res: any) => {
-                this.storageService.saveOrders(res.Data);
-                this.cartService.onToggleCartPopUpState(true);
-              });
-          });
+        let orders = this.storageService.getOrders();
+        product.Amount += this.cartQuantity;
+        orders.totalAmount += this.cartQuantity;
+        if (product.Amount <= product.Stock) {
+          for (let i = 0; i < orders.orders.length; i++) {
+            if (orders.orders[i].ProductID === product.ProductID) {
+              orders.orders[i] = product;
+              break;
+            }
+          }
+          this.storageService.saveOrders2(orders);
+          this.cartService.onToggleCartPopUpState(true);
+        } else {
+          this.notiService.onError('Số lượng sản phẩm vượt quá số lượng tồn!');
+        }
       } else {
-        const body = {
-          ProductID: productID,
-          Amount: this.cartQuantity,
-          OrderID: orderID,
-        };
-        this.orderService
-          .addToCart(body)
-          .pipe(takeUntil(this.unsubscription$))
+        let orders = this.storageService.getOrders();
+        this.productService
+          .getDataById(this.productDetail.ProductID)
           .subscribe((res) => {
-            this.orderService
-              .getData(1, 20, `?UserID=${userID}`)
-              .pipe(takeUntil(this.ngUnsubscribe))
-              .subscribe((res: any) => {
-                this.storageService.saveOrders(res.Data);
-                this.cartService.onToggleCartPopUpState(true);
-              });
+            let newProduct = res.Data;
+            newProduct.Amount = this.cartQuantity;
+            orders.orders.push(newProduct);
+            orders.totalAmount += this.cartQuantity;
+            this.storageService.saveOrders2(orders);
+            this.cartService.onToggleCartPopUpState(true);
           });
       }
-    });
+    }
   }
 
   addToCart() {
     const orderID = this.storageService.getOrders().orderId;
     const productID = this.productDetail.ProductID;
     const userID = this.storageService.getUser().UserID;
-    this.orderService.getData(1, 20, `?UserID=${userID}`).subscribe((res) => {
-      console.log(res);
 
-      const product = res.Data.DataInOrder.find(
-        (product) => product.ProductID == productID
-      );
+    if (userID) {
+      this.orderService.getData(1, 20, `?UserID=${userID}`).subscribe((res) => {
+        const product = res.Data.DataInOrder.find(
+          (product) => product.ProductID == productID
+        );
+        if (product) {
+          const body = {
+            ProductID: productID,
+            Amount: product.Amount + this.cartQuantity,
+            OrderID: orderID,
+          };
+          product.Amount + this.cartQuantity <= product.Stock
+            ? this.orderService
+                .updateCart(body)
+                .pipe(takeUntil(this.unsubscription$))
+                .subscribe((res) => {
+                  this.notiService.onSuccess('Thêm vào giỏ hàng thành công!');
+                  window.location.reload();
+                })
+            : this.notiService.onError(
+                'Số lượng sản phẩm vượt quá số lượng tồn!'
+              );
+        } else {
+          const body = {
+            ProductID: productID,
+            Amount: this.cartQuantity,
+            OrderID: orderID,
+          };
+          this.orderService
+            .addToCart(body)
+            .pipe(takeUntil(this.unsubscription$))
+            .subscribe((res) => {
+              this.notiService.onSuccess('Thêm vào giỏ hàng thành công!');
+              window.location.reload();
+            });
+        }
+      });
+    } else {
+      let product = this.storageService
+        .getOrders()
+        .orders.find((product) => product.ProductID == productID);
+
       if (product) {
-        const body = {
-          ProductID: productID,
-          Amount: product.Amount + this.cartQuantity,
-          OrderID: orderID,
-        };
-        this.orderService
-          .updateCart(body)
-          .pipe(takeUntil(this.unsubscription$))
-          .subscribe((res) => {
-            this.notiService.onSuccess('Thêm vào giỏ hàng thành công!');
-            window.location.reload();
-          });
+        let orders = this.storageService.getOrders();
+        product.Amount += this.cartQuantity;
+        orders.totalAmount += this.cartQuantity;
+        if (product.Amount <= product.Stock) {
+          for (let i = 0; i < orders.orders.length; i++) {
+            if (orders.orders[i].ProductID === product.ProductID) {
+              orders.orders[i] = product;
+              break;
+            }
+          }
+          this.storageService.saveOrders2(orders);
+          this.notiService.onSuccess('Thêm vào giỏ hàng thành công!');
+          window.location.reload();
+        } else {
+          this.notiService.onError('Số lượng sản phẩm vượt quá số lượng tồn!');
+        }
       } else {
-        const body = {
-          ProductID: productID,
-          Amount: this.cartQuantity,
-          OrderID: orderID,
-        };
-        this.orderService
-          .addToCart(body)
-          .pipe(takeUntil(this.unsubscription$))
+        let orders = this.storageService.getOrders();
+        this.productService
+          .getDataById(this.productDetail.ProductID)
           .subscribe((res) => {
+            let newProduct = res.Data;
+            newProduct.Amount = this.cartQuantity;
+            orders.orders.push(newProduct);
+            orders.totalAmount += this.cartQuantity;
+            this.storageService.saveOrders2(orders);
             this.notiService.onSuccess('Thêm vào giỏ hàng thành công!');
             window.location.reload();
           });
       }
-    });
+    }
   }
 
   updateRating(ProductID) {
