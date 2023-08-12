@@ -104,11 +104,11 @@
                   formControlName="payment_method"
                   class="cart-item-radio"
                   type="radio"
-                  id="cod"
+                  id="COD"
                   name="payment_method"
-                  value="cod"
+                  value="COD"
                 />
-                <label class="cart-item-label" for="cod"
+                <label class="cart-item-label" for="COD"
                   >Thanh toán tại nơi giao hàng</label
                 >
               </div>
@@ -118,12 +118,29 @@
                   formControlName="payment_method"
                   class="cart-item-radio"
                   type="radio"
-                  id="vnpay"
+                  id="VNPAY"
                   name="payment_method"
-                  value="vnpay"
+                  value="VNPAY"
+                />
+                <label class="cart-item-label" for="VNPAY"
+                  >Thanh toán với ví VNPAY</label
+                >
+              </div>
+              <div class="line"></div>
+
+              <div class="cart-item-title">Điểm tích lũy</div>
+
+              <div class="cart-item-input">
+                <input
+                  required
+                  formControlName="usePoint"
+                  class="cart-item-radio"
+                  type="checkbox"
+                  id="usePoint"
+                  name="usePoint"
                 />
                 <label class="cart-item-label" for="vnpay"
-                  >Thanh toán với ví VNPAY</label
+                  >Check để giảm giá trên điểm tích lũy</label
                 >
               </div>
             </form>

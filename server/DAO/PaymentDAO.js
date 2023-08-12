@@ -20,7 +20,7 @@ exports.addPaymentIfNotExists = async (payment) => {
 
   let insertData = PaymentSchema.validateData(payment);
   let query = `SET IDENTITY_INSERT ${PaymentSchema.schemaName} ON insert into ${PaymentSchema.schemaName}`;
-  const {request, insertFieldNamesStr, insertValuesStr} =
+  const { request, insertFieldNamesStr, insertValuesStr } =
     dbUtils.getInsertQuery(PaymentSchema.schema, dbPool.request(), insertData);
   if (!insertFieldNamesStr || !insertValuesStr) {
     throw new Error("Invalid insert param");

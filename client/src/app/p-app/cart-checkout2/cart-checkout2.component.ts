@@ -62,20 +62,42 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
   }
 
   checkOut() {
-    const body = {
-      TypeOfPayment: 'VNPAY',
-      DataInOrder: [
-        {
-          ProductID: 3,
-          Price: 12440000,
-          Amount: 1,
+    const user = this.storageService.getUser();
+    const orders = this.storageService.getOrders();
+    const paymentMethod = this.deliverForm.get('payment_method').value;
+    let body;
+    if (!user.UserID) {
+      body = {
+        TypeOfPayment: paymentMethod,
+        DataInOrder: orders.orders,
+        OrderInfor: {
+          Email: this.deliverForm.get('email').value,
+          Name: this.deliverForm.get('name').value,
+          Phone: this.deliverForm.get('number').value,
+          Address: this.deliverForm.get('address').value,
         },
-      ],
-    };
+      };
+    } else {
+      body = {
+        TypeOfPayment: paymentMethod,
+        OrderID: orders.orderId,
+        OrderInfor: {
+          Email: this.deliverForm.get('email').value,
+          Name: this.deliverForm.get('name').value,
+          Phone: this.deliverForm.get('number').value,
+          Address: this.deliverForm.get('address').value,
+        },
+        UserPoint: this.deliverForm.get('usePoint').value,
+      };
+    }
+    console.log(body);
+
     this.paymentService
       .checkOut(body)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((res) => {
+        console.log(res);
+
         window.location.href = res.PaymentUrl;
       });
   }
@@ -86,7 +108,8 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
       email: ['', [Validators.required]],
       number: ['', [Validators.required]],
       address: ['', [Validators.required]],
-      payment_method: ['cod'],
+      usePoint: [false],
+      payment_method: ['COD'],
     });
   }
 
