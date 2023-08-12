@@ -28,6 +28,13 @@ export class BrandService {
       .pipe(catchError(this.handleError));
   }
 
+  
+  getListBrand(): Observable<DTOResponse> {
+    return this.http
+      .get<DTOResponse>(`/api/v1/brand/`)
+      .pipe(catchError(this.handleError));
+  }
+
   getDataById(id: number): Observable<DTOResponse> {
     return this.http
       .get<DTOResponse>(`/api/v1/brand/${id}`)

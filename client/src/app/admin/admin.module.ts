@@ -11,6 +11,8 @@ import { GridModule } from '@progress/kendo-angular-grid';
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogsModule } from '@progress/kendo-angular-dialog';
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -27,7 +29,8 @@ import { DialogsModule } from '@progress/kendo-angular-dialog';
     ButtonsModule,
     FormsModule,
     ReactiveFormsModule,
-    DialogsModule
+    DialogsModule,
+    DropDownsModule
   ],
   exports: [
     DashboardComponent,

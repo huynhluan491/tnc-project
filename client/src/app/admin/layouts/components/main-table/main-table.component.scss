@@ -1,5 +1,5 @@
 @use "../../../../../variables.scss" as v;
-$tablePadding: 0.8rem 1.5rem;
+$tablePadding: 1rem 1.5rem;
 
 .main-table-container {
   border-radius: 0.6rem;
@@ -19,8 +19,6 @@ $tablePadding: 0.8rem 1.5rem;
     align-items: center;
     justify-content: space-between;
     padding: $tablePadding;
-    padding-top: 0;
-    padding-bottom: 0;
     border-bottom: v.$border;
     height: 10%;
 
@@ -28,6 +26,8 @@ $tablePadding: 0.8rem 1.5rem;
       display: flex;
       align-items: center;
       gap: 0.8rem;
+      justify-content: space-between;
+      width: 100%;
 
       .main-table-header-name {
         margin: 0;
@@ -654,6 +654,7 @@ $tablePadding: 0.8rem 1.5rem;
         width: 100%;
         height: 150px;
         font-size: 14px;
+        resize: vertical;
       }
     }
   }
@@ -665,4 +666,48 @@ $tablePadding: 0.8rem 1.5rem;
   gap: 10px;
   margin-top: 10px;
   padding: 4px 0;
+}
+
+::ng-deep .k-window-content {
+  .input-form {
+    label {
+      text-align: left;
+      color: var(--gray-700, #344054);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px; 
+  }
+
+    input {
+        display: flex;
+        padding: 10px 14px;
+        align-items: center;
+        gap: 8px;
+        align-self: stretch;
+        border-radius: 8px;
+        border: 1px solid var(--gray-300, #D0D5DD);
+        background: var(--base-white, #FFF);
+        box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+        margin-bottom: 5px;
+        width: 100%;
+        font-size: 14px;
+
+    }
+
+    textarea {
+      display: flex;
+      padding: 10px 14px;
+      align-items: center;
+      gap: 8px;
+      align-self: stretch;
+      border-radius: 8px;
+      border: 1px solid var(--gray-300, #D0D5DD);
+      background: var(--base-white, #FFF);
+      box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+      margin-bottom: 5px;
+      width: 100%;
+      height: 150px;
+      font-size: 14px;
+    }
+  }
 }

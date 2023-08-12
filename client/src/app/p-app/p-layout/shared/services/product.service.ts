@@ -36,6 +36,12 @@ export class ProductService {
     );
   }
 
+  addImageProduct(img: any): Observable<DTOResponse> {
+    const formData = new FormData();
+    formData.append('file', img);
+    return this.http.post<DTOResponse>(`${environment.apiUrl}/product/image`, formData).pipe(catchError(this.handleError));
+  }
+
   getListProduct(
     page: number,
     pageSize: number,
