@@ -211,6 +211,7 @@ exports.saveFileProductImage = async (req, res) => {
       info.ImageName + ".jpg"
     );
     const file = req.file;
+    console.log(file);
     const imageBuffer = await fs.promises.readFile(file.path);
     const base64Image = imageBuffer.toString("base64");
     const buffer = Buffer.from(base64Image, "base64");
@@ -229,6 +230,7 @@ exports.saveFileProductImage = async (req, res) => {
     };
     await ProductDAO.updateProductById(info.ProductID, img);
   } catch (e) {
-    res.status(500).json({error: `Failed to save the file. ${e.toString()}`});
+    console.log(e);
+    // res.status(500).json({error: `Failed to save the file. ${e.toString()}`});
   }
 };
