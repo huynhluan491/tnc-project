@@ -152,7 +152,11 @@
               {{ product.Price | vnCurrency }}đ
             </div>
           </div>
-          <div class="checkout-btn-wrapper" routerLink="checkout">
+          <div
+            (click)="checkOut()"
+            class="checkout-btn-wrapper"
+            routerLink="checkout"
+          >
             <p class="checkout-btn-txt">XÁC NHẬN ĐƠN HÀNG</p>
           </div>
         </div>
