@@ -64,7 +64,7 @@
       [alt]="data.Image"
       style="width: 50px; height: 40px;"
       />
-      <input type="file" (change)="uploadFile($event)">
+      <input #imageInput type="file" (change)="updateImg(imageInput)" accept="image/*">
       <div class="input-form">
         <label>Tên sản phẩm</label>
         <input type="text" formControlName="Name">
@@ -131,7 +131,7 @@
   [width]="500"
 >
   <form class="product-form" [formGroup]="productForm">
-    <input type="file" (change)="uploadFile($event)">
+    <input #imageInput type="file" (change)="uploadFile(imageInput)" accept="image/*">
     <div class="input-form">
       <label>Tên sản phẩm</label>
       <input type="text" formControlName="Name">
