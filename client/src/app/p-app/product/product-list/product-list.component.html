@@ -12,6 +12,13 @@
       <!-- <dropdown-filter activeSearch="true"> </dropdown-filter> -->
       <!-- <dropdown-filter> </dropdown-filter> -->
     </div>
+    <div class="box-filter">
+      <dropdown-filter
+        filterbyPrice="true"
+        (filterPrice)="handleFilterPrice($event)"
+      >
+      </dropdown-filter>
+    </div>
   </div>
   <div class="wrapper-product-list">
     <div class="title-sort">
@@ -26,12 +33,19 @@
             [data]="listDataASC"
             [value]="selectedValue"
             class="dropdown-order-by"
+            (selectionChange)="handleDropdownSelectionChange($event)"
           >
           </kendo-dropdownlist>
         </div>
       </div>
     </div>
-    <div class="box-products">
+    <div *ngIf="isLoading" class="loading-indicator">
+      <div class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Loading...</p>
+      </div>
+    </div>
+    <div *ngIf="!isLoading" class="box-products">
       <div
         *ngIf="arrlabelFilter && arrlabelFilter.length > 0"
         class="box-label-filter"

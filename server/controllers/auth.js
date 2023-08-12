@@ -35,6 +35,8 @@ exports.login = async (req, res) => {
       });
     }
   } catch (e) {
+    console.log(e);
+
     if (code === 1) {
       res.status(401).json({
         Code: 401,
@@ -94,6 +96,8 @@ exports.signup = async (req, res) => {
     };
     this.login(req, res);
   } catch (e) {
+    console.log(e);
+
     if (e) {
       return res.status(403).json({
         Code: 403,
@@ -121,6 +125,8 @@ exports.protect = async (req, res, next) => {
     });
     res.cookie("csrf-token", newToken.CSRFToken);
   } catch (e) {
+    console.log(e);
+
     return res
       .status(500) // 500 - Internal Error
       .json({
@@ -170,6 +176,8 @@ exports.getTokenDev = async (req, res) => {
       Data: result,
     });
   } catch (e) {
+    console.log(e);
+
     res
       .status(500) // 500 - Internal Error
       .json({
@@ -189,6 +197,8 @@ exports.getRefreshToken = async (req, res) => {
       Data: newRToken,
     });
   } catch (e) {
+    console.log(e);
+
     res
       .status(500) // 500 - Internal Error
       .json({
@@ -207,6 +217,8 @@ exports.cleanRToken = async (req, res) => {
       Data: result,
     });
   } catch (e) {
+    console.log(e);
+
     res
       .status(500) // 500 - Internal Error
       .json({
