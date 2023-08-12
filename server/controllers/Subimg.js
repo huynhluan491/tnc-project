@@ -76,7 +76,7 @@ exports.createNewSubImg = async (req, res) => {
     console.log(e);
     res.status(500).json({
       Code: 500,
-      Msg: `SubImg create failed`,
+      Msg: `SubImg create failed ${e.toString()}`,
     });
   }
 };
@@ -130,7 +130,7 @@ exports.updateSubImgById = async (req, res) => {
     console.log(e);
     res.status(500).json({
       Code: 500,
-      Msg: `Update subImg with id: ${id} failed!`,
+      Msg: `Update subImg with id: ${id} failed! ${e.toString()}`,
     });
   }
 };

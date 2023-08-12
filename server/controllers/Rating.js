@@ -100,7 +100,7 @@ exports.deleteRatingById = async (req, res) => {
     console.log(e);
     return res.status(500).json({
       Code: 500,
-      Msg: `Delete rating with id ${id} failed!`,
+      Msg: `Delete rating with id ${id} failed! ${e.toString()}`,
     });
   }
 };
@@ -124,7 +124,7 @@ exports.updateRatingById = async (req, res) => {
     console.log(e);
     res.status(500).json({
       Code: 500,
-      Msg: `Update rating with id failed! ${e}`,
+      Msg: `Update rating with id failed! ${e.toString()}`,
     });
   }
 };

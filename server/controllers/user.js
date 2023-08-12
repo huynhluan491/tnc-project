@@ -130,7 +130,7 @@ exports.updateUserById = async (req, res) => {
     console.log(e);
     res.status(500).json({
       Code: 500,
-      Msg: `Update user with id: ${id} failed!`,
+      Msg: `Update user with id: ${id} failed! ${e.toString()}`,
     });
   }
 };
@@ -194,7 +194,7 @@ exports.deleteMultipleUserById = async (req, res) => {
     console.log(e);
     return res.status(500).json({
       Code: 500,
-      Msg: `Delete users with id ${idList} failed!`,
+      Msg: `Delete users with id ${idList} failed! ${e.toString()}`,
     });
   }
 };

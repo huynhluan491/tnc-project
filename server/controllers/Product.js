@@ -22,7 +22,7 @@ exports.getProducts = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       Code: 500,
-      Msg: `FAIL with ${err}`,
+      Msg: `FAIL with ${err.toString()}`,
     });
   }
 };

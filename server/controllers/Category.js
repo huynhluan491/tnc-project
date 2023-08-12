@@ -11,7 +11,7 @@ exports.getAllCategories = async (req, res) => {
   } catch (error) {
     res.status(404).json({
       Code: 404,
-      Msg: error,
+      Msg: error.toString(),
     });
   }
 };

@@ -45,7 +45,7 @@ exports.login = async (req, res) => {
     } else {
       res.status(401).json({
         Code: 401,
-        Msg: "Fail",
+        Msg: `Fail ${e.toString()}`,
       });
     }
   }
