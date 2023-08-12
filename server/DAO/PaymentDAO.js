@@ -124,7 +124,7 @@ exports.handlerPayment = async (TypeOfPayment, req, res) => {
       ProductDAO.handleUpdateStock(element)
     );
     await Promise.all(updatePromises);
-    res.redirect("/html/success.html");
+    res.redirect("../template/html/success.html");
   } else {
     throw new Error("Invalid type of payment method");
   }
