@@ -32,14 +32,16 @@ export class CartComponent implements OnInit {
 
   deleteItem(product) {
     let orders = this.storageService.getOrders();
-
-    // update db
-    const order = {
-      Amount: 0,
-      OrderID: orders.orderId,
-      ProductID: product.ProductID,
-    };
-    this.orderService.updateData(order).subscribe((res) => {});
+    const user = this.storageService.getUser();
+    if (user.UserID) {
+      // update db
+      const order = {
+        Amount: 0,
+        OrderID: orders.orderId,
+        ProductID: product.ProductID,
+      };
+      this.orderService.updateData(order).subscribe((res) => {});
+    }
 
     // update session
     const productIndexToUpdate = orders.orders.findIndex(
@@ -60,14 +62,16 @@ export class CartComponent implements OnInit {
     const updatedAmount = product.Amount + 1;
     if (updatedAmount <= product.Stock) {
       let orders = this.storageService.getOrders();
-
-      // update db
-      const order = {
-        Amount: updatedAmount,
-        OrderID: orders.orderId,
-        ProductID: product.ProductID,
-      };
-      this.orderService.updateData(order).subscribe((res) => {});
+      const user = this.storageService.getUser();
+      if (user.UserID) {
+        // update db
+        const order = {
+          Amount: updatedAmount,
+          OrderID: orders.orderId,
+          ProductID: product.ProductID,
+        };
+        this.orderService.updateData(order).subscribe((res) => {});
+      }
 
       // update session
       const productIndexToUpdate = orders.orders.findIndex(
@@ -86,13 +90,16 @@ export class CartComponent implements OnInit {
     const updatedAmount = product.Amount - 1;
     let orders = this.storageService.getOrders();
     if (updatedAmount >= 0) {
-      //update db
-      const order = {
-        Amount: updatedAmount,
-        OrderID: orders.orderId,
-        ProductID: product.ProductID,
-      };
-      this.orderService.updateData(order).subscribe((res) => {});
+      const user = this.storageService.getUser();
+      if (user.UserID) {
+        //update db
+        const order = {
+          Amount: updatedAmount,
+          OrderID: orders.orderId,
+          ProductID: product.ProductID,
+        };
+        this.orderService.updateData(order).subscribe((res) => {});
+      }
 
       // update session
       const productIndexToUpdate = orders.orders.findIndex(

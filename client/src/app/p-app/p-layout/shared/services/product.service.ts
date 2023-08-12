@@ -18,13 +18,12 @@ export class ProductService {
   getData(
     page: number,
     pageSize: number,
-    filterStr: string = ''
   ): Observable<DTOResponse> {
     const params = new HttpParams()
-      .set('page', page.toString())
+      .set('CurrentPage', page.toString())
       .set('pageSize', pageSize.toString());
     return this.http
-      .get<DTOResponse>(`/api/v1/product/${filterStr}`, {
+      .get<DTOResponse>(`/api/v1/product/`, {
         params,
       })
       .pipe(catchError(this.handleError));
@@ -35,6 +34,19 @@ export class ProductService {
       `${environment.apiUrl}/product/search`,
       filter
     );
+  }
+
+  getListProduct(
+    page: number,
+    pageSize: number,
+  ): Observable<DTOResponse> {
+    const headers = new HttpHeaders({
+      CurrentPage: page,
+      PageSize: pageSize
+    });
+    return this.http
+      .get<DTOResponse>(`${environment.apiUrl}/product`, { headers })
+      .pipe(catchError(this.handleError));
   }
 
   getDetaiProductByName(Name: string): Observable<DTOResponse> {
@@ -49,9 +61,9 @@ export class ProductService {
       .pipe(catchError(this.handleError));
   }
 
-  getDataById(id: number): Observable<DTOResponse> {
+  getDataById(id: number): Observable<any> {
     return this.http
-      .get<DTOResponse>(`/api/v1/product/${id}`)
+      .get<any>(`/api/v1/product/${id}`)
       .pipe(catchError(this.handleError));
   }
 

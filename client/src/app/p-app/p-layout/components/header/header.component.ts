@@ -140,15 +140,26 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   getOrders() {
     const userId = this.storageService.getUser().UserID;
-    this.orderService
-      .getData(1, 20, `?UserID=${userId}`)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((res: DTOResponse) => {
-        console.log(res);
+    if (!userId) {
+      const orders = this.storageService.getOrders();
+      if (!orders) {
+        const orders = { TotalAmount: 0, DataInOrder: [], OrderID: -1 };
+        this.storageService.saveOrders(orders);
+        this.cartItems = this.storageService.getOrders().totalAmount;
+      } else {
+        this.cartItems = orders.totalAmount;
+      }
+    } else {
+      this.orderService
+        .getData(1, 20, `?UserID=${userId}`)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((res: DTOResponse) => {
+          console.log(res);
 
-        this.storageService.saveOrders(res.Data);
-        this.cartItems = res.Data.TotalAmount;
-      });
+          this.storageService.saveOrders(res.Data);
+          this.cartItems = res.Data.TotalAmount > 0 ? res.Data.TotalAmount : 0;
+        });
+    }
   }
 
   getCategoryList() {

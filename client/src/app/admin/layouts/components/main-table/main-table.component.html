@@ -1,153 +1,122 @@
 <div class="main-table-container">
   <div class="main-table-header">
     <div class="main-table-header-info">
-      <p class="main-table-header-name">{{ tableName }}</p>
-      <div class="main-table-header-size">
-        {{ data.length + (data.length == 1 ? " user" : " users") }}
-      </div>
+      <p class="main-table-header-name">Quản lí sản phẩm</p>
     </div>
     <div class="main-table-header-btns">
-      <div
-        [ngClass]="{ greyed: checkedList.length <= 0 }"
-        class="main-table-header-delete"
-      >
-        Delete
+    </div>
+  </div>
+    <kendo-grid
+    [data]="productList | async"
+    [skip]="skip"
+    [pageSize]="20"
+    [pageable]="true"
+    (pageChange)="pageChange($event)"
+  >
+    <kendo-grid-column title="" [width]="80">
+      <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+        <img
+        class="product-img"
+        [src]="'data:image/jpeg;base64,' + dataItem.Base64Image"
+        [alt]="data.Image"
+        style="width: 50px; height: 40px;"
+        />
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column title="Name">
+      <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+        {{ dataItem.Name }}
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column title="Số lượng" [width]="80">
+      <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+        {{ dataItem.Stock }}
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column title="Giá sản phẩm" [width]="180">
+      <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+        {{ dataItem.Price | number: '1.0-0' }}
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column [width]="120">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <button
+          class="cancel-order"
+          kendoButton
+          [themeColor]="'info'"
+          (click)="selectProduct(dataItem)"
+        >
+          Chi tiết
+        </button>
+      </ng-template>
+    </kendo-grid-column>
+  </kendo-grid>
+
+  <div class="product-form-wrapper" *ngIf="isSelectedProduct">
+    <div class="close-btn" (click)="isSelectedProduct = false">X</div>
+    <form class="product-form" [formGroup]="productForm">
+      <img
+      class="product-img"
+      [src]="'data:image/jpeg;base64,' + selectedProduct.Base64Image"
+      [alt]="data.Image"
+      style="width: 50px; height: 40px;"
+      />
+  
+      <div class="input-form">
+        <label>Tên sản phẩm</label>
+        <input type="text" formControlName="Name">
       </div>
-      <div
-        [ngClass]="{ greyed: checkedList.length > 0 }"
-        class="main-table-header-create"
-        (click)="onToggleSubTable()"
-      >
-        Create New
+      <div class="input-form">
+        <label>Số lượng sản phẩm</label>
+        <input type="number" formControlName="Stock">
       </div>
+      <div class="input-form">
+        <label>Giá sản phẩm</label>
+        <input type="number" formControlName="Price">
+      </div>
+      <div class="input-form">
+        <label>Mô tả sản phẩm</label>
+        <textarea type="text" formControlName="Description"></textarea>
+      </div>
+    </form>
+
+    <div class="btn-update">
+      <button
+      class="cancel-order"
+      kendoButton
+      [themeColor]="'primary'"
+      (click)="isDeletePopupOpened = true"
+      >
+        Xóa sản phẩm
+      </button>
+
+      <button
+      class="cancel-order"
+      kendoButton
+      [themeColor]="'info'"
+      (click)="updateProductHandle()"
+    >
+      Cập nhật sản phẩm
+    </button>
     </div>
   </div>
 
-  <div *ngIf="loading; else table" class="main-table-loading">
-    <div></div>
-    <div></div>
-  </div>
+  <kendo-dialog
+      title="Please confirm"
+      *ngIf="isDeletePopupOpened"
+      (close)="isDeletePopupOpened = false"
+      [minWidth]="250"
+      [width]="450"
+    >
+      <p style="margin: 30px; text-align: center;">
+        Are you sure you want to continue?
+      </p>
+      <kendo-dialog-actions>
+        <button kendoButton (click)="isDeletePopupOpened = false">No</button>
+        <button kendoButton (click)="deleteProduct()" themeColor="primary">
+          Yes
+        </button>
+      </kendo-dialog-actions>
+    </kendo-dialog>
 
-  <ng-template #table>
-    <div *ngIf="totalPages > 0; else emptyTable" class="main-table-table">
-      <table>
-        <thead>
-          <tr>
-            <th *ngFor="let key of getObjectKeys(data)">{{ key }}</th>
-            <!-- <th class="main-table-table-th-first">
-              <div class="main-table-table-th-name">
-                <div class="main-table-table-checkbox-container">
-                  <input
-                    (change)="handleCheckAll($event)"
-                    class="main-table-table-checkbox"
-                    type="checkbox"
-                  />
-                  <span class="checkmark"></span>
-                </div>
-                Name
-              </div>
-            </th>
-            <th>Order Date</th>
-            <th>Phone Number</th>
-            <th>Location</th>
-            <th>Registered</th> -->
-            <th class="main-table-table-th-last"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let row of data">
-            <td *ngFor="let cell of getObjectValues(row)">{{ cell }}</td>
-            <!-- <td class="main-table-table-td-first">
-              <div class="main-table-table-td-name">
-                <div class="main-table-table-checkbox-container">
-                  <input
-                    class="main-table-table-checkbox"
-                    type="checkbox"
-                    [checked]="checkedList.includes(item.id)"
-                    (change)="toggleCheckbox(item.id)"
-                  />
-                  <span class="checkmark"></span>
-                </div>
-                <div class="main-table-table-img-container">
-                  <img class="main-table-table-img" [src]="item.name.img" />
-                </div>
-                {{ item.name.name }}
-              </div>
-            </td>
-            <td>{{ item.date | date : "dd MMM, yyyy : hh:mm a" }}</td>
-            <td>{{ formatPhoneNumber(item.number) }}</td>
-            <td>{{ item.location }}</td>
-            <td>
-              <div class="main-table-table-td-register">
-                <img
-                  class="main-table-table-td-register-icon"
-                  [src]="
-                    item.registered
-                      ? 'assets/success-dot.svg'
-                      : 'assets/error-dot.svg'
-                  "
-                />
-                {{ item.registered ? "yes" : "no" }}
-              </div>
-            </td> -->
-            <td class="main-table-table-td-last">
-              <div class="main-table-table-td-util">
-                <div class="main-table-table-td-util-del">
-                  <img class="del" src="assets/icon/trash-01.svg" />
-                </div>
-                <div
-                  (click)="onToggleSubTable()"
-                  class="main-table-table-td-util-edit"
-                >
-                  <img src="assets/icon/edit-01.svg" />
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr class="main-table-table-filler" *ngIf="data.length < pageSize">
-            <td [height]="getHeight(data.length)"></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </ng-template>
-  <ng-template #emptyTable>
-    <div class="main-table-empty">
-      <img src="assets/icon/empty-table.svg" />
-      <div
-        [ngClass]="{ greyed: checkedList.length > 0 }"
-        class="main-table-header-create"
-      >
-        Create New
-      </div>
-    </div>
-  </ng-template>
-  <div class="main-table-footer">
-    <div
-      [ngClass]="{ greyed: totalPages <= 0 || page == 1 }"
-      (click)="setPage(page - 1)"
-      class="main-table-footer-prev"
-    >
-      <img class="main-table-footer-prev-icon" src="assets/icon/arrow-left.svg" />
-      <p class="main-table-footer-prev-txt">Previous</p>
-    </div>
-    <div class="main-table-footer-pagination-container">
-      <div
-        (click)="setPage(item)"
-        [ngClass]="{ selectedPage: page.toString() == item }"
-        class="main-table-footer-pagination-item"
-        *ngFor="let item of getPagination()"
-      >
-        {{ item }}
-      </div>
-    </div>
-    <div
-      [ngClass]="{ greyed: totalPages <= 0 || page == totalPages }"
-      (click)="setPage(page + 1)"
-      class="main-table-footer-next"
-    >
-      <p class="main-table-footer-next-txt">Next</p>
-      <img class="main-table-footer-next-icon" src="assets/icon/arrow-right.svg" />
-    </div>
-  </div>
 </div>

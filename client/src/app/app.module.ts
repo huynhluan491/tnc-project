@@ -28,6 +28,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogsModule } from '@progress/kendo-angular-dialog';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './p-app/_helpers/auth_guard';
+
 @NgModule({
   declarations: [AppComponent, CartCheckoutComponent, CartCheckout2Component],
   providers: [

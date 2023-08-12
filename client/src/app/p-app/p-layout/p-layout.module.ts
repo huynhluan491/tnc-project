@@ -82,6 +82,7 @@ import { StarRatingModule } from 'angular-star-rating';
     SalePricePipe,
     CartComponent,
     RegisterComponent,
+    VnCurrencyPipe
   ],
 })
 export class PLayoutModule {}
