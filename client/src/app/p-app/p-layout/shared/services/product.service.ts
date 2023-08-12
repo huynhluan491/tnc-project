@@ -20,7 +20,7 @@ export class ProductService {
     pageSize: number,
   ): Observable<DTOResponse> {
     const params = new HttpParams()
-      .set('page', page.toString())
+      .set('CurrentPage', page.toString())
       .set('pageSize', pageSize.toString());
     return this.http
       .get<DTOResponse>(`/api/v1/product/`, {
@@ -34,6 +34,19 @@ export class ProductService {
       `${environment.apiUrl}/product/search`,
       filter
     );
+  }
+
+  getListProduct(
+    page: number,
+    pageSize: number,
+  ): Observable<DTOResponse> {
+    const headers = new HttpHeaders({
+      CurrentPage: page,
+      PageSize: pageSize
+    });
+    return this.http
+      .get<DTOResponse>(`${environment.apiUrl}/product`, { headers })
+      .pipe(catchError(this.handleError));
   }
 
   getDetaiProductByName(Name: string): Observable<DTOResponse> {

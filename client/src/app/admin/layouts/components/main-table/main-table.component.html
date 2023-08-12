@@ -68,11 +68,11 @@
       </div>
       <div class="input-form">
         <label>Số lượng sản phẩm</label>
-        <input type="text" formControlName="Stock">
+        <input type="number" formControlName="Stock">
       </div>
       <div class="input-form">
         <label>Giá sản phẩm</label>
-        <input type="text" formControlName="Price">
+        <input type="number" formControlName="Price">
       </div>
       <div class="input-form">
         <label>Mô tả sản phẩm</label>
@@ -80,7 +80,16 @@
       </div>
     </form>
 
-    <div class="btn-update" style="text-align: center; margin-top: 10px; padding: 4px 0;">
+    <div class="btn-update">
+      <button
+      class="cancel-order"
+      kendoButton
+      [themeColor]="'primary'"
+      (click)="isDeletePopupOpened = true"
+      >
+        Xóa sản phẩm
+      </button>
+
       <button
       class="cancel-order"
       kendoButton
@@ -91,5 +100,23 @@
     </button>
     </div>
   </div>
+
+  <kendo-dialog
+      title="Please confirm"
+      *ngIf="isDeletePopupOpened"
+      (close)="isDeletePopupOpened = false"
+      [minWidth]="250"
+      [width]="450"
+    >
+      <p style="margin: 30px; text-align: center;">
+        Are you sure you want to continue?
+      </p>
+      <kendo-dialog-actions>
+        <button kendoButton (click)="isDeletePopupOpened = false">No</button>
+        <button kendoButton (click)="deleteProduct()" themeColor="primary">
+          Yes
+        </button>
+      </kendo-dialog-actions>
+    </kendo-dialog>
 
 </div>

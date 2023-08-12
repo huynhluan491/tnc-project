@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DialogsModule } from '@progress/kendo-angular-dialog';
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -25,7 +26,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     GridModule,
     ButtonsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DialogsModule
   ],
   exports: [
     DashboardComponent,

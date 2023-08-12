@@ -61,3 +61,11 @@
     }
   }
 }
+
+::ng-deep .header-menu-profile {
+  .k-i-logout::before {
+    font-size: 21px;
+    color: currentcolor;
+    cursor: pointer;
+  }
+}

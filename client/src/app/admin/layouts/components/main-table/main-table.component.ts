@@ -28,6 +28,7 @@ export class MainTableComponent implements OnInit {
   skip: number = 0;
   selectedProduct: DTOProduct;
   isSelectedProduct: boolean = false;
+  isDeletePopupOpened: boolean = false;
 
   productForm: FormGroup = new FormGroup({
     Name: new FormControl(''),
@@ -56,7 +57,7 @@ export class MainTableComponent implements OnInit {
 
   fetchData() {
     this.loading = true;
-    this.productService.getData(this.page, this.pageSize).pipe(takeUntil(this.ngUnsubscription$)).subscribe(
+    this.productService.getListProduct(this.page, this.pageSize).pipe(takeUntil(this.ngUnsubscription$)).subscribe(
       res => {
         console.log(res.Data);
         this.productList.next({
@@ -80,11 +81,27 @@ export class MainTableComponent implements OnInit {
         } else {
           this.notiService.onError("Cập nhật sản phẩm thất bại");
           console.log('error');
-          
         }
       }
     )
   }
+
+  deleteProduct() {
+    this.productService.deleteDataById(this.selectedProduct.ProductID).pipe(takeUntil(this.ngUnsubscription$))
+    .subscribe(
+      res => {
+        if (res.Code === 200) {
+          this.notiService.onSuccess("Xóa sản phẩm thành công");
+          this.fetchData();
+        } else {
+          this.notiService.onError("Xóa sản phẩm thất bại");
+          console.log('error');
+        }
+        this.isDeletePopupOpened = false;
+      }
+    )
+  }
+  
 
   public pageChange(state: PageChangeEvent): void {
     console.log(state);
