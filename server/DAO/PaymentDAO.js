@@ -20,7 +20,7 @@ exports.addPaymentIfNotExists = async (payment) => {
 
   let insertData = PaymentSchema.validateData(payment);
   let query = `SET IDENTITY_INSERT ${PaymentSchema.schemaName} ON insert into ${PaymentSchema.schemaName}`;
-  const {request, insertFieldNamesStr, insertValuesStr} =
+  const { request, insertFieldNamesStr, insertValuesStr } =
     dbUtils.getInsertQuery(PaymentSchema.schema, dbPool.request(), insertData);
   if (!insertFieldNamesStr || !insertValuesStr) {
     throw new Error("Invalid insert param");
@@ -66,7 +66,7 @@ exports.handlerPayment = async (TypeOfPayment, req, res) => {
     user = await UserDAO.getUserByOrderID(req.body.OrderID);
   }
   let orderID;
-  if (reqBody.DataInOrder || reqBody.DataInOrder.length > 0) {
+  if (reqBody?.DataInOrder || reqBody?.DataInOrder?.length > 0) {
     //handle cho khach hang vang lai
 
     order = reqBody.DataInOrder;
@@ -124,11 +124,9 @@ exports.handlerPayment = async (TypeOfPayment, req, res) => {
       ProductDAO.handleUpdateStock(element)
     );
     await Promise.all(updatePromises);
-    res.status(200).json({
-      Code: 200,
-      Msg: "payment with COD success",
-      Data: {result},
-    });
+    res
+      .status(200)
+      .json({ PaymentUrl: "http://localhost:3001/html/success.html" });
   } else {
     throw new Error("Invalid type of payment method");
   }

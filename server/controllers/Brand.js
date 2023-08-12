@@ -35,6 +35,8 @@ exports.getBrandById = async (req, res) => {
       Data: brand,
     });
   } catch (e) {
+    console.log(e);
+
     return res.status(500).json({
       Code: 500,
       Msg: e,

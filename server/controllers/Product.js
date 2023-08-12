@@ -200,15 +200,15 @@ exports.getFileProductImage = async (req, res) => {
 };
 
 exports.saveFileProductImage = async (req, res) => {
-  let infor = req.body;
+  let info = req.body;
   const imagePath = path.join(
     __dirname,
     "..",
     "dev-Data",
     "productImages",
-    infor.imageName
+    info.ImageName
   );
-  const buffer = Buffer.from(infor.blob, "base64");
+  const buffer = Buffer.from(info.Blob, "base64");
   fs.writeFile(imagePath, buffer, (err) => {
     if (err) {
       // console.error(err);
@@ -218,9 +218,9 @@ exports.saveFileProductImage = async (req, res) => {
       res.status(200).json({message: "File saved successfully."});
     }
   });
-  const Name = infor.imageName;
+  const Name = info.ImageName;
   img = {
-    image: Name,
+    Image: Name,
   };
-  await ProductDAO.updateProductById(infor.productID, img);
+  await ProductDAO.updateProductById(info.ProductID, img);
 };

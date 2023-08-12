@@ -78,6 +78,7 @@
 //other
 .box-price{
   display: flex;
+  align-items: center;
   justify-content: space-between;
   input{
     width: 45%;
@@ -85,6 +86,13 @@
     font-size: 1.6rem;
     padding: 5px;
     margin-top: 1rem;
+  }
+  span{
+    height: 2px;
+    width: 8px;
+    margin-top: 1rem;
+
+    background-color: black;
   }
 }
 .apply{
@@ -102,4 +110,9 @@
     color: #fff;
     text-transform: uppercase;
   }
+}
+.box-price input[type="number"]::-webkit-inner-spin-button,
+.box-price input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

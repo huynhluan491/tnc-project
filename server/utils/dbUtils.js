@@ -204,8 +204,9 @@ exports.getFilterProductsQuery = (
   const skip = (page - 1) * pageSize;
   paginationStr = "order by";
   let sort = "";
-  if (filter.sort) {
-    sort = filter.sort;
+
+  if (filter.Sort) {
+    sort = filter.Sort;
   }
   delete filter.page;
   delete filter.pageSize;
@@ -236,6 +237,7 @@ exports.getFilterProductsQuery = (
 
               if (criteriaOperator === "gte") {
                 operator = ">=";
+
                 criterialVal = filter[criteria]["gte"];
               } else if (criteriaOperator === "lt") {
                 operator = "<";
@@ -246,6 +248,9 @@ exports.getFilterProductsQuery = (
               } else if (criteriaOperator === "gt") {
                 operator = ">";
                 criterialVal = filter[criteria]["gt"];
+              } else if (criteriaOperator === "lte") {
+                operator = "<=";
+                criterialVal = filter[criteria]["lte"];
               }
 
               if (operator && criterialVal) {
@@ -290,13 +295,36 @@ exports.getFilterProductsQuery = (
             i++;
           }
         }
-        //filter category
+
         if (criteria == "CategoryID") {
-          if (schemaProp.type === "number") {
-            filterStr += "Product." + criteria + " = " + filter[criteria] + "";
+          filterStr += "(";
+          if (filter[criteria].constructor === Array) {
+            if (schemaProp.type === "number") {
+              for (let valueIdx in filter[criteria]) {
+                filterStr +=
+                  "Product." +
+                  criteria +
+                  " = " +
+                  filter[criteria][valueIdx] +
+                  "";
+                if (valueIdx * 1 === filter[criteria].length - 1) {
+                  filterStr += ")";
+                } else if (valueIdx * 1 !== filter[criteria].length - 1) {
+                  filterStr += " or ";
+                }
+              }
+            }
+            i++;
           }
-          i++;
+          if (
+            filter[criteria].constructor !== Array &&
+            schemaProp.type === "number"
+          ) {
+            filterStr += "Product." + criteria + "=" + filter[criteria] + ")";
+            i++;
+          }
         }
+
         //filter name
         if (criteria == "Name" && filter[criteria].length > 0) {
           filterStr +=
@@ -316,12 +344,15 @@ exports.getFilterProductsQuery = (
         pageSize +
         " ROWS ONLY";
     } else if (sort.length > 0) {
+      console.log(sort);
       paginationStr += ` price ${sort}`;
       paginationStr +=
         " OFFSET " + skip + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
     }
   }
   filterStr = filterStr.replace(/[\n\r]/g, "");
+  console.log(filterStr);
+
   return {filterStr, paginationStr};
 };
 

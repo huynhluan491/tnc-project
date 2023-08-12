@@ -21,6 +21,8 @@ export class dropdownFilterComponent {
   active: boolean = false;
   query: string = '';
   labelFilter: any[] = [];
+  filterPriceStart: number;
+  filterPriceEnd: number;
 
   //Subscription
   ngUnsubscribe = new Subject<void>();
@@ -33,7 +35,7 @@ export class dropdownFilterComponent {
   checkedItems: string[] = [];
 
   @Output() filterURL = new EventEmitter<string>();
-
+  @Output() filterPrice = new EventEmitter<any[]>();
   constructor(private productService: ProductAPIService) {}
 
   ngOnInit(): void {
@@ -51,11 +53,14 @@ export class dropdownFilterComponent {
       .getRemoveItem()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res) => {
-        const arrQuery = this.query.split(',');
-        console.log('resRM', res);
-        console.log('arrQuery', arrQuery);
-
-        this.checkedItems = this.checkedItems.filter((i) => i != res[0]);
+        if (res.length > 0) {
+          const arrQuery = this.query.split(',').filter(Boolean);
+          console.log('resRM', res);
+          console.log('arrQuery', arrQuery);
+          this.query = arrQuery.filter((i) => !i.includes(`:${res}`)).join(',');
+          console.log(this.query);
+          this.checkedItems = this.checkedItems.filter((i) => i != res[0]);
+        }
       });
   }
 
@@ -68,15 +73,20 @@ export class dropdownFilterComponent {
   handleCheck(event: any, item: any) {
     console.log(event.target.id);
     var ischecked = event.target.checked;
-    event.target.checked
-      ? (this.query += `${event.target.name}:${event.target.value},`)
-      : (this.query = this.query.replace(
-          `${event.target.name}:${event.target.value}`,
-          ''
-        ));
+    // event.target.checked
+    //   ? (this.query += `${event.target.name}:${event.target.value},`)
+    //   : (this.query = this.query.replace(
+    //       `${event.target.name}:${event.target.value}`,
+    //       ''
+    //     ));
 
-    this.filterURL.emit(this.query);
-    console.log(item.labelName);
+    // this.filterURL.emit(this.query);
+    ischecked
+      ? this.productService.setQueryFilter(
+          `${event.target.name}:${event.target.value},`
+        )
+      : this.productService.setRemoveItem([event.target.value]);
+    console.log('this.query dropdown', this.query);
 
     var lbName = item.labelName;
     if (ischecked) {
@@ -91,5 +101,9 @@ export class dropdownFilterComponent {
       this.labelFilter = this.labelFilter.filter((i) => i.labelName != lbName);
       this.productService.setArrlabelFilter(this.labelFilter);
     }
+  }
+  handleFilterPrice() {
+    console.log([this.filterPriceStart, this.filterPriceEnd]);
+    this.filterPrice.emit([this.filterPriceStart, this.filterPriceEnd]);
   }
 }

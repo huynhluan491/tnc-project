@@ -42,12 +42,13 @@
     <div class="price-option">
       <span>Nhập giá dưới đây</span>
       <div class="box-price">
-        <input type="text" />
-        <input type="text" />
+        <input type="number" [(ngModel)]="filterPriceStart" />
+        <span></span>
+        <input type="number" [(ngModel)]="filterPriceEnd" />
       </div>
     </div>
     <div class="apply">
-      <button>Áp dụng</button>
+      <button (click)="handleFilterPrice()">Áp dụng</button>
     </div>
   </div>
 </ng-template>

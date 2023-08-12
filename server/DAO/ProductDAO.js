@@ -107,7 +107,7 @@ exports.getAllProducts = async (reqHeader) => {
   }
 
   let filter = {};
-  const {categoryname, brandname, price, name, currentpage} = reqHeader;
+  const {categoryname, brandname, price, name, currentpage, sort} = reqHeader;
 
   if (price) {
     const priceArr = price.split(",");
@@ -118,24 +118,43 @@ exports.getAllProducts = async (reqHeader) => {
     });
   }
   if (categoryname) {
-    filter.CategoryName = categoryname;
+    if (categoryname.includes(",")) {
+      const arr = categoryname.split(",");
+
+      const cateIds = await Promise.all(
+        arr.map(async (element) => {
+          return await CategoryDAO.getCategoryIdByName(element);
+        })
+      );
+      filter.CategoryID = cateIds;
+    } else {
+      filter.CategoryID = await CategoryDAO.getCategoryIdByName(categoryname);
+    }
   }
+
   if (brandname) {
-    filter.BrandID = await BrandDAO.getBrandIDByBrandName(brandname);
+    if (brandname.includes(",")) {
+      const arr = brandname.split(",");
+      const brandIds = await Promise.all(
+        arr.map(async (element) => {
+          return await BrandDAO.getBrandIDByBrandName(element);
+        })
+      );
+      filter.BrandID = brandIds;
+    } else {
+      filter.BrandID = await BrandDAO.getBrandIDByBrandName(brandname);
+    }
   }
-  if (filter.CategoryName) {
-    const cateid = await CategoryDAO.getCategoryIdByName(
-      filter["CategoryName"]
-    );
-    filter.CategoryID = cateid;
-    delete filter.CategoryName;
-  }
+
   if (name) {
     const convertedName = decodeURI(name);
     filter.Name = convertedName;
   }
   if (currentpage) {
     filter.CurrentPage = currentpage;
+  }
+  if (sort) {
+    filter.Sort = sort;
   }
   const page = filter.CurrentPage * 1 || 1;
   let pageSize = filter.pageSize * 1 || StaticData.config.MAX_PAGE_SIZE;
@@ -169,8 +188,6 @@ exports.getAllProducts = async (reqHeader) => {
   if (paginationStr) {
     selectQuery += " " + paginationStr;
   }
-
-  // console.log("selectQuery filter product", selectQuery);
 
   const result = await dbConfig.db.pool.request().query(selectQuery);
   let countResult = await dbConfig.db.pool.request().query(countQuery);
