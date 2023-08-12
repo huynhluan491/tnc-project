@@ -201,6 +201,7 @@ exports.getFileProductImage = async (req, res) => {
 
 exports.saveFileProductImage = async (req, res) => {
   let info = req.body;
+  console.log(req);
   const imagePath = path.join(
     __dirname,
     "..",

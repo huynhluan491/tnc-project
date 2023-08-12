@@ -36,9 +36,14 @@ export class ProductService {
     );
   }
 
-  addImageProduct(img: any): Observable<DTOResponse> {
+  addImageProduct(img: File, productID: number): Observable<DTOResponse> {
+    const body = {
+      "ProductID": 74,
+      "ImageName": `Image ${productID}`
+    }
     const formData = new FormData();
     formData.append('file', img);
+    formData.append('body', JSON.stringify(body));
     return this.http.post<DTOResponse>(`${environment.apiUrl}/product/image`, formData).pipe(catchError(this.handleError));
   }
 

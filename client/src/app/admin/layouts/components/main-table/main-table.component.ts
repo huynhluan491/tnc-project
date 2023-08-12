@@ -18,6 +18,10 @@ import { BrandService } from 'src/app/p-app/p-layout/shared/services/brand.servi
 import { DTOCategory } from 'src/app/p-app/p-layout/shared/dto/DTOCategory';
 import { DTOBrand } from 'src/app/p-app/p-layout/shared/dto/DTOBrand';
 
+class ImageSnippet {
+  constructor(public src: string, public file: File) {}
+}
+
 @Component({
   selector: 'app-main-table',
   templateUrl: './main-table.component.html',
@@ -43,7 +47,7 @@ export class MainTableComponent implements OnInit {
     Stock: new FormControl(),
     Description: new FormControl(''),
     Price: new FormControl(),
-    Favorite: new FormControl(),
+    Favorite: new FormControl(0),
     CategoryID: new FormControl(),
     BrandID: new FormControl(),
     Image: new FormControl(''),
@@ -126,12 +130,15 @@ export class MainTableComponent implements OnInit {
 
   createProduct() {
     const createdInfo = this.productForm.value;
-    
+    createdInfo.Favorite = 0;
+    createdInfo.Image = "";
+
     this.productService.createData(createdInfo).pipe(
       concatMap(
         res => {
           if (res.Code === 200) {
-            return this.productService.addImageProduct(this.imgBaseName);
+            const productID = res.Data.ProductID;
+            return this.productService.addImageProduct(this.imgBaseName, productID);
           } else {
             this.notiService.onError("Đã xảy ra lỗi");
             return of();
@@ -155,11 +162,40 @@ export class MainTableComponent implements OnInit {
     )
   }
 
-  uploadFile(event: Event) {
-    const target = event.target as HTMLInputElement;
-    const files = target.files as FileList;
-    this.imgBaseName = files;
+  uploadFile(inputImg: any) {
+    const file: File = inputImg.files[0];
+    const reader = new FileReader();
+    
+    reader.addEventListener('load', (event: any) => {
+        this.imgBaseName = new ImageSnippet(event.target.result, file);
+    });
+
+    reader.readAsDataURL(file);
   }
+
+  updateImg(inputImg: any) {
+    const file: File = inputImg.files[0];
+    const reader = new FileReader();
+    
+    reader.addEventListener('load', (event: any) => {
+        this.imgBaseName = new ImageSnippet(event.target.result, file);
+        this.productService.addImageProduct(this.imgBaseName, this.selectedProduct.ProductID)
+        .pipe(takeUntil(this.ngUnsubscription$))
+        .subscribe(
+          res => {
+            if (res.Code === 200) {
+              this.notiService.onSuccess("Cập nhật ảnh sản phẩm thành công");
+            } else {
+              this.notiService.onError("Cập nhật ảnh sản phẩm thất bại");
+            }
+            this.imgBaseName = null;
+          }
+        )
+    });
+
+    reader.readAsDataURL(file);
+  }
+
 
   convertToBase64(file: File): void {
     const reader = new FileReader();
