@@ -53,9 +53,7 @@ export class PaymentService {
   }
 
   checkOut(body): Observable<any> {
-    return this.http
-      .post<any>(`/api/v1/payment/handlerPayment`, body)
-      .pipe(catchError(this.handleError));
+    return this.http.post<any>(`/api/v1/payment/handlerPayment`, body);
   }
 
   private handleError(error: any) {

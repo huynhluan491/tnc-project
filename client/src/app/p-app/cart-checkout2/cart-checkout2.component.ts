@@ -98,7 +98,7 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
       .subscribe((res) => {
         console.log(res);
 
-        window.location.href = res.PaymentUrl;
+        res.PaymentUrl && (window.location.href = res.PaymentUrl);
       });
   }
 

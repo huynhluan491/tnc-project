@@ -66,7 +66,7 @@ exports.handlerPayment = async (TypeOfPayment, req, res) => {
     user = await UserDAO.getUserByOrderID(req.body.OrderID);
   }
   let orderID;
-  if (reqBody.DataInOrder || reqBody.DataInOrder.length > 0) {
+  if (reqBody?.DataInOrder || reqBody?.DataInOrder?.length > 0) {
     //handle cho khach hang vang lai
 
     order = reqBody.DataInOrder;
@@ -124,7 +124,9 @@ exports.handlerPayment = async (TypeOfPayment, req, res) => {
       ProductDAO.handleUpdateStock(element)
     );
     await Promise.all(updatePromises);
-    res.render("../template/html/success.html");
+    res
+      .status(200)
+      .json({ PaymentUrl: "http://localhost:3001/html/success.html" });
   } else {
     throw new Error("Invalid type of payment method");
   }
