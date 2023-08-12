@@ -18,13 +18,12 @@ export class ProductService {
   getData(
     page: number,
     pageSize: number,
-    filterStr: string = ''
   ): Observable<DTOResponse> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('pageSize', pageSize.toString());
     return this.http
-      .get<DTOResponse>(`/api/v1/product/${filterStr}`, {
+      .get<DTOResponse>(`/api/v1/product/`, {
         params,
       })
       .pipe(catchError(this.handleError));

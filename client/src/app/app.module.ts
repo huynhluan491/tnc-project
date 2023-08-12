@@ -29,6 +29,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogsModule } from '@progress/kendo-angular-dialog';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './p-app/_helpers/auth_guard';
+
 @NgModule({
     declarations: [AppComponent, CartCheckoutComponent, CartCheckout2Component],
     providers: [
@@ -60,7 +61,7 @@ import { AuthGuard } from './p-app/_helpers/auth_guard';
             cookieName: 'csrf_access_token',
             headerName: 'csrf-token',
         }),
-        LoginComponent
-    ]
+        LoginComponent,
+  ],
 })
 export class AppModule {}

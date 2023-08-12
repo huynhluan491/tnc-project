@@ -7,8 +7,9 @@ import { HeaderComponent } from './layouts/components/header/header.component';
 import { MainTableComponent } from './layouts/components/main-table/main-table.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { CommonModule } from '@angular/common';
-
-
+import { GridModule } from '@progress/kendo-angular-grid';
+import { ButtonsModule } from '@progress/kendo-angular-buttons';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -20,7 +21,11 @@ import { CommonModule } from '@angular/common';
   ],
   imports: [
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    GridModule,
+    ButtonsModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     DashboardComponent,

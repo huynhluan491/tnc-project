@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
 import { Observable } from "rxjs";
 import { AuthService } from "../http-interceptors/auth.service";
+import { StorageService } from "../p-layout/shared/services/storage.service";
 
 
 @Injectable({
@@ -9,11 +10,16 @@ import { AuthService } from "../http-interceptors/auth.service";
 })
 
 export class AdminGuard implements CanActivate {
-    constructor(private authService: AuthService, private router: Router) {}
+    constructor(
+        private authService: AuthService, 
+        private router: Router,
+        private storageService: StorageService
+    ) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
-        const currentUser = this.authService.currentUserValue;
-        if (currentUser) {
+        const currentUser = this.storageService.getUser();
+
+        if (currentUser && currentUser.AuthID === 2) {
             console.log(currentUser);
             return true;
         } else {

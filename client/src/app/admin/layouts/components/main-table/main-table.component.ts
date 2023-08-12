@@ -7,7 +7,12 @@ import {
   SkipSelf,
 } from '@angular/core';
 import { DataService } from '../shared/service/data.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
+import { ProductService } from 'src/app/p-app/p-layout/shared/services/product.service';
+import { DTOProduct } from 'src/app/p-app/p-layout/shared/dto/DTOProduct';
+import { PageChangeEvent } from '@progress/kendo-angular-grid';
+import { FormControl, FormGroup } from '@angular/forms';
+import { NotificationPopupService } from 'src/app/p-app/p-layout/shared/services/notification.service';
 
 @Component({
   selector: 'app-main-table',
@@ -16,8 +21,27 @@ import { Subscription } from 'rxjs';
 })
 export class MainTableComponent implements OnInit {
   #subscription: Subscription = new Subscription();
+  productList: Subject<any> = new Subject<any>(); 
+  ngUnsubscription$ = new Subject<void>();
+  page: number = 1;
+  pageSize: number = 20;
+  skip: number = 0;
+  selectedProduct: DTOProduct;
+  isSelectedProduct: boolean = false;
 
-  constructor(@SkipSelf() private dataService: DataService) {}
+  productForm: FormGroup = new FormGroup({
+    Name: new FormControl(''),
+    Stock: new FormControl(''),
+    Description: new FormControl(''),
+    Price: new FormControl(''),
+  })
+
+
+  constructor(
+    @SkipSelf() private dataService: DataService, 
+    private productService: ProductService,
+    private notiService: NotificationPopupService
+  ) {}
 
   ngOnInit(): void {
     this.fetchData();
@@ -25,8 +49,6 @@ export class MainTableComponent implements OnInit {
 
   tableName: string = 'Table name';
   checkedList: number[] = [];
-  pageSize: number = 9;
-  page: number = 1;
   totalPages: number = 0;
   data: any = [];
   @Output() toggleSubTable: EventEmitter<void> = new EventEmitter<void>();
@@ -34,16 +56,47 @@ export class MainTableComponent implements OnInit {
 
   fetchData() {
     this.loading = true;
+    this.productService.getData(this.page, this.pageSize).pipe(takeUntil(this.ngUnsubscription$)).subscribe(
+      res => {
+        console.log(res.Data);
+        this.productList.next({
+          data: res.Data,
+          total: res.TotalProduct
+        });
+        this.loading = false;
+      }
+    )
+  }
 
-    // setTimeout(() => {
-    //   this.dataService.getData(this.page, this.pageSize).subscribe((res) => {
-    //     console.log(res);
-    //     this.data = res.data;
-    //     this.pageSize = res.pageSize;
-    //     this.totalPages = res.totalPages;
-    //     this.loading = false;
-    //   });
-    // }, 300);
+  updateProductHandle() {
+    const updatedInfo = this.productForm.value;
+    this.productService.updateData(this.selectedProduct.ProductID, updatedInfo)
+    .pipe(takeUntil(this.ngUnsubscription$))
+    .subscribe(
+      res => {
+        if (res.Code === 200) {
+          this.notiService.onSuccess("Cập nhật sản phẩm thành công");
+          this.fetchData();
+        } else {
+          this.notiService.onError("Cập nhật sản phẩm thất bại");
+          console.log('error');
+          
+        }
+      }
+    )
+  }
+
+  public pageChange(state: PageChangeEvent): void {
+    console.log(state);
+    this.page = state.skip / this.pageSize + 1;
+    this.skip = state.skip;
+    this.fetchData();
+  }
+
+  selectProduct(data: any) {
+    this.selectedProduct = data;
+    this.productForm.patchValue(data);
+    this.isSelectedProduct = true;
   }
 
   getObjectKeys(obj: any): string[] {
