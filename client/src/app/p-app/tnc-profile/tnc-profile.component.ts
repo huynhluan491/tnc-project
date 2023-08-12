@@ -57,7 +57,6 @@ export class TncProfileComponent {
 
   public onSelect(ev: DrawerSelectEvent): void {
     this.selected = ev.item.text;
-    //TODO thực hiện log out
     if (this.selected === 'Thoát tài khoản') {
       this.authService
         .logout()

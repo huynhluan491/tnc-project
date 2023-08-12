@@ -23,8 +23,8 @@ exports.handlerPayment = async (req, res) => {
       throw new Error("Invalid parameter format");
     }
     delete req.body.TypeOfPayment;
-    const result = await PaymentDAO.handlerPayment(TypeOfPayment, req);
-    res.redirect("http://localhost:3001");
+    const result = await PaymentDAO.handlerPayment(TypeOfPayment, req, res);
+    // res.redirect("http://localhost:3001");
   } catch (e) {
     res.status(500).json({
       Code: 500,

@@ -14,7 +14,7 @@
           </div>
         </div>
         <div
-          *ngIf="productList == 0; else product"
+          *ngIf="products.length == 0; else product"
           class="cart-item-sub-wrapper"
         >
           <p class="cart-item-placeholder">
@@ -100,11 +100,13 @@
               <div class="cart-item-title">HÌNH THỨC THANH TOÁN</div>
               <div class="cart-item-input">
                 <input
-                  formControlName="payment_method1"
+                  required
+                  formControlName="payment_method"
                   class="cart-item-radio"
                   type="radio"
                   id="cod"
                   name="payment_method"
+                  value="cod"
                 />
                 <label class="cart-item-label" for="cod"
                   >Thanh toán tại nơi giao hàng</label
@@ -112,11 +114,13 @@
               </div>
               <div class="cart-item-input">
                 <input
-                  formControlName="payment_method2"
+                  required
+                  formControlName="payment_method"
                   class="cart-item-radio"
                   type="radio"
                   id="vnpay"
                   name="payment_method"
+                  value="vnpay"
                 />
                 <label class="cart-item-label" for="vnpay"
                   >Thanh toán với ví VNPAY</label
@@ -139,15 +143,20 @@
             <p class="cart-info-total-no">{{ total | number : "1.0-0" }} đ</p>
           </div>
           <p class="cart-info-tax">Đã bao gồm VAT (nếu có)</p>
-          <!-- <div class="cart-info-product">
+          <div *ngFor="let product of products" class="cart-info-product">
             <div class="line"></div>
             <div class="cart-info-product-name">
-              CPU Intel Core i3-12100F 4C/8T (3.3 Ghz up to 4.3GHz, 12MB,
-              LGA1700, Alder Lake) Hàng NK
+              {{ product.Name }}
             </div>
-            <div class="cart-info-product-price">1.234.567 đ</div>
-          </div> -->
-          <div class="checkout-btn-wrapper" routerLink="checkout">
+            <div class="cart-info-product-price">
+              {{ product.Price | vnCurrency }}đ
+            </div>
+          </div>
+          <div
+            (click)="checkOut()"
+            class="checkout-btn-wrapper"
+            routerLink="checkout"
+          >
             <p class="checkout-btn-txt">XÁC NHẬN ĐƠN HÀNG</p>
           </div>
         </div>

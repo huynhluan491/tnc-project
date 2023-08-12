@@ -49,20 +49,26 @@ exports.createNewOrder = async (userID) => {
   if (!dbPool) {
     throw new Error("Not connected to db");
   }
-  let order = {
-    UserID: userID,
-  };
-
+  let order = {};
+  if (userID != null) {
+    order.UserID = userID;
+  }
+  const ms = DateTimeUtils.convertDateTimeToMilliseconds(Date.now());
+  const now = DateTimeUtils.convertMillisecondsToDateTimeSQL(ms);
+  order.CreatedAt = now;
   let insertData = OrdersSchema.validateData(order);
   const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(OrdersSchema.schema, dbPool.request(), insertData);
   if (!insertFieldNamesStr || !insertValuesStr) {
     throw new Error("Invalid insert param");
   }
-  const query = `insert into ${OrdersSchema.schemaName} ( ${insertFieldNamesStr} ) select ${insertValuesStr}`;
+  const query = `insert into ${OrdersSchema.schemaName} ( ${insertFieldNamesStr} ) select ${insertValuesStr}
+    select OrderID from ${OrdersSchema.schemaName} where CreatedAt = @CreatedAt
+  `;
+  console.log(query);
   let result = await request.query(query);
   // console.log(result);
-  return result;
+  return result.recordset[0].OrderID;
 };
 
 exports.addOrder_DetailsIfNotExisted = async (order_details) => {
@@ -336,7 +342,6 @@ exports.updateStatusPayment = async (updateInfo) => {
     .query(query);
   console.log(result);
 };
-
 exports.getOrderById = async (id) => {
   if (!dbConfig.db.pool) {
     throw new Error("Not connected to db");
@@ -408,7 +413,9 @@ exports.deleteOrder = async (id) => {
       id
     )
     .query(queryDeleteOrder);
-  await this.createNewOrder(order.UserID);
+  if (order.UserID != null) {
+    await this.createNewOrder(order.UserID);
+  }
 };
 
 exports.clearAllOrder_Details = async () => {

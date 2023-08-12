@@ -1,10 +1,14 @@
 const PaymentSchema = require("../model/Payment");
 const dbConfig = require("../database/dbconfig");
+
 const dbUtils = require("../utils/dbUtils");
 const DateTimeUtils = require("../utils/DateTimeUtils");
+const discountUtils = require("../utils/discountUtils");
 
 const vnPayController = require("../controllers/vnPay");
 const OrderDAO = require("../DAO/OrderDAO");
+const UserDAO = require("../DAO/UserDAO");
+const ProductDAO = require("../DAO/ProductDAO");
 
 exports.addPaymentIfNotExists = async (payment) => {
   const dbPool = dbConfig.db.pool;
@@ -50,11 +54,56 @@ exports.clearAll = async () => {
   return result.recordsets;
 };
 
-exports.handlerPayment = async (TypeOfPayment, req) => {
+exports.handlerPayment = async (TypeOfPayment, req, res) => {
+  const reqBody = req.body;
+  if (!reqBody) {
+    throw new Error("Invalid parameter format");
+  }
+  let order;
+  let user;
+  if (reqBody.OrderID) {
+    order = await OrderDAO.getOrderById(req.body.OrderID);
+    user = await UserDAO.getUserByOrderID(req.body.OrderID);
+  }
+  let orderID;
+  if (reqBody.DataInOrder || reqBody.DataInOrder.length > 0) {
+    //handle cho khach hang vang lai
+
+    order = reqBody.DataInOrder;
+    user = reqBody.UserInfor;
+    orderID = await OrderDAO.createNewOrder(null);
+    //insert order detail
+    for (let i = 0; i < order.length; i++) {
+      const orderDetail = {
+        OrderID: orderID,
+        ProductID: order[i].ProductID,
+        Amount: order[i].Amount,
+        Price: order[i].Price,
+      };
+      await OrderDAO.addOrder_DetailsIfNotExisted(orderDetail);
+    }
+  }
+
+  const totalPrice = order.reduce(
+    (accumulator, product) => accumulator + product.Price * product.Amount,
+    0
+  );
+  if (reqBody.UserPoint && reqBody.OrderID) {
+    //update point for user
+    const updateInfor = {
+      UserID: user.UserID,
+      Point: discountUtils.getPoint(totalPrice),
+    };
+    await UserDAO.updateUserById(user.UserID, updateInfor);
+    //handle giam gia cho khach hang
+    totalPrice -= discountUtils.getDiscount(user.Point);
+  }
+
+  req.body.TotalPrice = totalPrice;
+  req.body.OrderID = orderID;
   if (TypeOfPayment === "VNPAY") {
-    vnPayController.create_payment_url(req);
+    vnPayController.create_payment_url(req, res);
   } else if (TypeOfPayment === "COD") {
-    // const order = await OrderDAO.getOrderById(req.body.OrderID);
     const updateInfor = {
       OrderID: req.body.OrderID,
       PaymentID: 1,
@@ -67,7 +116,19 @@ exports.handlerPayment = async (TypeOfPayment, req) => {
       ),
     };
     const result = await OrderDAO.updateStatusPayment(updateInfor);
-    return result;
+    //update stock
+
+    const result2 = await OrderDAO.getOrderById(req.body.OrderID);
+
+    const updatePromises = result2.map((element) =>
+      ProductDAO.handleUpdateStock(element)
+    );
+    await Promise.all(updatePromises);
+    res.status(200).json({
+      Code: 200,
+      Msg: "payment with COD success",
+      Data: {result},
+    });
   } else {
     throw new Error("Invalid type of payment method");
   }

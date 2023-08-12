@@ -52,6 +52,12 @@ export class PaymentService {
       .pipe(catchError(this.handleError));
   }
 
+  checkOut(body): Observable<any> {
+    return this.http
+      .post<any>(`/api/v1/payment/handlerPayment`, body)
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: any) {
     console.error('An error occurred:', error);
     return throwError(

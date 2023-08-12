@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, SkipSelf } from '@angular/core';
 import { StorageService } from '../p-layout/shared/services/storage.service';
 import { Subject, takeUntil } from 'rxjs';
+import { VnCurrencyPipe } from '../p-layout/shared/pipe/vn-currency.pipe';
 import {
   FormBuilder,
   FormControl,
@@ -8,6 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { DTOUser } from '../_models/DTOUser';
+import { PaymentService } from '../p-layout/shared/services/payment.service';
 
 @Component({
   selector: 'app-cart-checkout2',
@@ -17,6 +19,7 @@ import { DTOUser } from '../_models/DTOUser';
 export class CartCheckout2Component implements OnInit, OnDestroy {
   constructor(
     @SkipSelf() private storageService: StorageService,
+    @SkipSelf() private paymentService: PaymentService,
     private formBuilder: FormBuilder
   ) {}
 
@@ -28,6 +31,7 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
   isBindUserInfo: FormControl = new FormControl(false);
   ngUnsubscribe$ = new Subject<void>();
   amount = 0;
+  products = [];
   onSubmit() {}
 
   ngOnInit() {
@@ -35,6 +39,7 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
     this.currentUser = this.storageService.getUser();
 
     const orders = this.storageService.getOrders().orders;
+    orders && (this.products = orders);
     orders?.forEach((product) => {
       this.total += product.Price * product.Amount;
     });
@@ -56,14 +61,32 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
       });
   }
 
+  checkOut() {
+    const body = {
+      TypeOfPayment: 'VNPAY',
+      DataInOrder: [
+        {
+          ProductID: 3,
+          Price: 12440000,
+          Amount: 1,
+        },
+      ],
+    };
+    this.paymentService
+      .checkOut(body)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((res) => {
+        window.location.href = res.PaymentUrl;
+      });
+  }
+
   loadDeliverForm() {
     this.deliverForm = this.formBuilder.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required]],
       number: ['', [Validators.required]],
       address: ['', [Validators.required]],
-      payment_method1: ['', [Validators.required]],
-      payment_method2: ['', [Validators.required]],
+      payment_method: ['cod'],
     });
   }
 

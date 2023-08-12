@@ -48,9 +48,9 @@ export class ProductService {
       .pipe(catchError(this.handleError));
   }
 
-  getDataById(id: number): Observable<DTOResponse> {
+  getDataById(id: number): Observable<any> {
     return this.http
-      .get<DTOResponse>(`/api/v1/product/${id}`)
+      .get<any>(`/api/v1/product/${id}`)
       .pipe(catchError(this.handleError));
   }
 

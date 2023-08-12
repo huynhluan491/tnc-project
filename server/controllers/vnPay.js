@@ -1,8 +1,11 @@
 const StaticData = require("../utils/StaticData");
 const dateFormat = require("dateformat");
 const config = StaticData.configApiVnPay;
-const OrderDAO = require("../DAO/OrderDAO");
 const dateTimeUtils = require("../Utils/DateTimeUtils");
+
+const ProductDAO = require("../DAO/ProductDAO");
+const OrderDAO = require("../DAO/OrderDAO");
+const UserDAO = require("../DAO/UserDAO");
 
 const sortObject = (obj) => {
   let sorted = {};
@@ -20,13 +23,13 @@ const sortObject = (obj) => {
   return sorted;
 };
 
-exports.create_payment_url = async (req, res, next) => {
+exports.create_payment_url = async (req, res) => {
   var ipAddr =
     req.headers["x-forwarded-for"] ||
     req.connection.remoteAddress ||
     req.socket.remoteAddress ||
     req.connection.socket.remoteAddress;
-
+  // req.DataInfor = req.body;
   var tmnCode = config.vnp_TmnCode;
   var secretKey = config.vnp_HashSecret;
   var vnpUrl = config.vnp_Url;
@@ -34,7 +37,6 @@ exports.create_payment_url = async (req, res, next) => {
 
   var date = new Date();
   const reqBody = req.body;
-  console.log(reqBody);
 
   var createDate = dateFormat(date, "yyyymmddHHmmss");
   date.setTime(date.getTime() + 15 * 60 * 1000);
@@ -42,13 +44,13 @@ exports.create_payment_url = async (req, res, next) => {
 
   var bankCode = reqBody.bankCode || "";
 
-  const orderId = reqBody.OrderID || 2; //testing
+  const orderId = reqBody.OrderID || createDate; //neu order id is null -> khach vang lai
 
   if (!orderId) {
-    res.status(400).json({code: 400, message: "Missing orderId parameter"});
+    // res.status(400).json({code: 400, message: "Missing orderId parameter"});
   }
-  var amount = reqBody.Amount || 100000; // lay amount trong db
-  var orderInfo = reqBody.OrderDescription || "Hai dzai";
+  var amount = reqBody.TotalPrice || 100000; // lay amount trong db
+  var orderInfo = reqBody.OrderInfor || {};
   var orderType = reqBody.OrderType || "billpayment";
   var locale = reqBody.Language || "vn";
 
@@ -76,18 +78,19 @@ exports.create_payment_url = async (req, res, next) => {
 
   vnp_Params = sortObject(vnp_Params);
   var querystring = require("qs");
-  var signData = querystring.stringify(vnp_Params, {encode: false});
+  var signData = querystring.stringify(vnp_Params, { encode: false });
   var crypto = require("crypto");
   var hmac = crypto.createHmac("sha512", secretKey);
   var signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
   vnp_Params["vnp_SecureHash"] = signed;
-  vnpUrl += "?" + querystring.stringify(vnp_Params, {encode: false});
-  res.status(200).json({code: 200, data: vnpUrl});
+
+  vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: false });
+
   console.log(vnpUrl);
-  // res.redirect(vnpUrl);
+  res.status(200).json({ code: 200, Msg: "success", PaymentUrl: vnpUrl });
 };
 
-exports.vnpay_return = (req, res, next) => {
+exports.vnpay_return = async (req, res, next) => {
   var vnp_Params = req.query;
 
   var secureHash = vnp_Params["vnp_SecureHash"];
@@ -101,16 +104,22 @@ exports.vnpay_return = (req, res, next) => {
   var secretKey = config.vnp_HashSecret;
 
   var querystring = require("qs");
-  var signData = querystring.stringify(vnp_Params, {encode: false});
+  var signData = querystring.stringify(vnp_Params, { encode: false });
   var crypto = require("crypto");
   var hmac = crypto.createHmac("sha512", secretKey);
   var signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
-  console.log("vnp_Params return", vnp_Params);
+  const orderId = vnp_Params["vnp_TxnRef"];
+  const u = await UserDAO.getUserByOrderID(orderId);
+
   if (secureHash === signed && vnp_Params["vnp_TransactionStatus"] === "00") {
     //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-    // res.json({code: 200, Msg: "success"});
     // handle success here
-    const orderId = vnp_Params["vnp_TxnRef"];
+    //handle cho don hang khach vang lai
+    // await OrderDAO.createNewOrder(null,)
+    const updatePromises = result2.map((element) =>
+      ProductDAO.handleUpdateStock(element)
+    );
+    await Promise.all(updatePromises);
     const updateInfor = {
       OrderID: orderId,
       PaymentID: 1,
@@ -122,14 +131,24 @@ exports.vnpay_return = (req, res, next) => {
         true
       ),
     };
-    const result = OrderDAO.updateStatusPayment(updateInfor);
+    await OrderDAO.updateStatusPayment(updateInfor);
+
     console.log("success");
-    res.redirect("http://localhost:3001");
+    // res.redirect(StaticData.configApiVnPay.home_Url);
+    // res.json({code: 200, Msg: "success"});
+    // res.render("success.ejs", { code: "97" });
+    res.redirect("/html/success.html");
   } else {
-    res.json({code: 404, Msg: "fail"});
+    if (!u) {
+      await OrderDAO.deleteOrder(orderId);
+    }
+    // res.json({code: 402, Msg: "fail"});
+    // res.render("fail.ejs", { code: "97" });
+    res.redirect("/html/fail.html");
   }
 };
 
+//chua hoan thanh
 exports.vnpay_ipn = (req, res, next) => {
   var vnp_Params = req.query;
   var secureHash = vnp_Params["vnp_SecureHash"];
@@ -140,7 +159,7 @@ exports.vnpay_ipn = (req, res, next) => {
   vnp_Params = sortObject(vnp_Params);
   var secretKey = config.vnp_HashSecret;
   var querystring = require("qs");
-  var signData = querystring.stringify(vnp_Params, {encode: false});
+  var signData = querystring.stringify(vnp_Params, { encode: false });
   var crypto = require("crypto");
   var hmac = crypto.createHmac("sha512", secretKey);
   var signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
@@ -148,8 +167,8 @@ exports.vnpay_ipn = (req, res, next) => {
     var orderId = vnp_Params["vnp_TxnRef"];
     var rspCode = vnp_Params["vnp_ResponseCode"];
     //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
-    res.status(200).json({RspCode: "00", Message: "success"});
+    res.status(200).json({ RspCode: "00", Message: "success" });
   } else {
-    res.status(200).json({RspCode: "97", Message: "Fail checksum"});
+    res.status(200).json({ RspCode: "97", Message: "Fail checksum" });
   }
 };

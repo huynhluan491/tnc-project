@@ -46,8 +46,8 @@ import { StarRatingModule } from 'angular-star-rating';
     PercentagePipe,
     CartComponent,
     RegisterComponent,
-    VnCurrencyPipe,
     SalePricePipe,
+    VnCurrencyPipe,
   ],
   imports: [
     CommonModule,
@@ -64,10 +64,10 @@ import { StarRatingModule } from 'angular-star-rating';
     NgxPaginationModule,
     IndicatorsModule,
     StarRatingModule.forRoot(),
-    
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   exports: [
+    VnCurrencyPipe,
     LayoutDefault,
     HeaderComponent,
     TitleComponent,
