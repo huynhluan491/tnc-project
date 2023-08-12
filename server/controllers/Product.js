@@ -29,8 +29,8 @@ exports.getProducts = async (req, res) => {
 
 exports.getProductById = async (req, res) => {
   // console.log("req.params", req.params);
-  const id = req.params.id * 1;
   try {
+    const id = req.params.id * 1;
     const product = await ProductDAO.getProductById(id);
     if (!product) {
       return res
@@ -49,7 +49,7 @@ exports.getProductById = async (req, res) => {
     console.log(e);
     return res.status(500).json({
       Code: 500,
-      Msg: e,
+      Msg: e.toString(),
     });
   }
 };
@@ -80,14 +80,14 @@ exports.createNewProduct = async (req, res) => {
     console.log(e);
     res.status(500).json({
       Code: 500,
-      Msg: `Product create failed`,
+      Msg: `Product create failed ${e.toString()}`,
     });
   }
 };
 
 exports.deleteById = async (req, res) => {
-  const id = req.params.id * 1;
   try {
+    const id = req.params.id * 1;
     const product = await ProductDAO.getProductById(id);
     if (!product) {
       return res
@@ -106,7 +106,7 @@ exports.deleteById = async (req, res) => {
     console.log(e);
     return res.status(500).json({
       Code: 500,
-      Msg: e,
+      Msg: e.toString(),
     });
   }
 };
@@ -129,7 +129,7 @@ exports.deleteMultipleProductById = async (req, res) => {
     console.log(e);
     return res.status(500).json({
       Code: 500,
-      Msg: `Delete products with id ${idList} failed!`,
+      Msg: `Delete products with id ${idList} failed! ${e.toString()}`,
     });
   }
 };
@@ -154,15 +154,15 @@ exports.getProductNonPaginate = async (req, res) => {
     console.log(e);
     return res.status(500).json({
       Code: 500,
-      Msg: e,
+      Msg: e.toString(),
     });
   }
 };
 
 exports.updateProductById = async (req, res) => {
   // console.log("Id update", req.params.id);
-  const id = req.params.id * 1;
   try {
+    const id = req.params.id * 1;
     const updateInfo = req.body;
     let product = await ProductDAO.getProductById(id);
     if (!product) {
@@ -182,7 +182,7 @@ exports.updateProductById = async (req, res) => {
     console.log(e);
     res.status(500).json({
       Code: 500,
-      Msg: `Update product with id: ${id} failed!`,
+      Msg: `Update product with id: ${id} failed! ${e.toString()}`,
     });
   }
 };
@@ -206,15 +206,18 @@ exports.saveFileProductImage = async (req, res) => {
     "..",
     "dev-Data",
     "productImages",
-    info.ImageName
+    info.ImageName + ".jpg"
   );
-  const buffer = Buffer.from(info.Blob, "base64");
+  const file = req.file;
+  const imageBuffer = await fs.promises.readFile(file.path);
+  const base64Image = imageBuffer.toString("base64");
+  const buffer = Buffer.from(base64Image, "base64");
   fs.writeFile(imagePath, buffer, (err) => {
     if (err) {
       // console.error(err);
       res.status(500).json({error: "Failed to save the file."});
     } else {
-      // console.log("File saved successfully.");
+      console.log("File saved successfully.");
       res.status(200).json({message: "File saved successfully."});
     }
   });

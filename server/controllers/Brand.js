@@ -39,7 +39,7 @@ exports.getBrandById = async (req, res) => {
 
     return res.status(500).json({
       Code: 500,
-      Msg: e,
+      Msg: e.toString(),
     });
   }
 };

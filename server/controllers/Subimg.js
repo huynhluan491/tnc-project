@@ -31,7 +31,7 @@ exports.getSubImages = async (req, res) => {
     console.log(e);
     return res.status(500).json({
       Code: 500,
-      Msg: e,
+      Msg: e.toString(),
     });
   }
 };
@@ -58,7 +58,7 @@ exports.getSubImgById = async (req, res) => {
     console.log(e);
     return res.status(500).json({
       Code: 500,
-      Msg: e,
+      Msg: e.toString(),
     });
   }
 };
@@ -103,7 +103,7 @@ exports.deleteSubImgById = async (req, res) => {
     console.log(e);
     res.status(500).json({
       Code: 500,
-      Msg: e,
+      Msg: e.toString(),
     });
   }
 };

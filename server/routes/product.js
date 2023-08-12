@@ -3,7 +3,7 @@ const productController = require("../Controllers/Product");
 const authController = require("../Controllers/auth");
 const StaticData = require("../utils/StaticData");
 const router = express.Router();
-
+const multer = require("multer");
 router
   .route("/")
   .get(productController.getProducts)
@@ -35,12 +35,13 @@ router
     authController.restrictTo(StaticData.AUTH.Role.admin),
     productController.updateProductById
   );
-
+const upload = multer({dest: "../dev-data/productImages"});
 router
   .route("/image")
   .post(
     authController.protect,
     authController.restrictTo(StaticData.AUTH.Role.admin),
+    upload.single("file"),
     productController.saveFileProductImage
   );
 router.route("/image/:imageName").get(productController.getFileProductImage);
