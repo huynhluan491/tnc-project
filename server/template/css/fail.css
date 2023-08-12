@@ -10,6 +10,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100%;
+  color: #ffffff;
 }
 div {
   display: flex;
@@ -19,9 +20,15 @@ div {
   border: 10px solid #3f85e8;
   padding: 100px;
 }
-h1 {
+button {
+  margin-top: 100px;
+  padding: 10px 50px;
+  background-color: #3f85e8;
+  border: none;
+  font-size: 20px;
+  font-family: sans-serif;
   color: #ffffff;
 }
-h2 {
-  color: #ffffff;
+button:hover {
+  opacity: 0.8;
 }
