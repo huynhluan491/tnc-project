@@ -336,10 +336,12 @@ exports.getProductsNotPagination = async () => {
   return dtos;
 };
 
-exports.handleUpdateStock = async (element) => {
+exports.handleUpdateStock = async (element, reverse = false) => {
   const product = await this.getProductById(element.ProductID);
   console.log(product);
   await this.updateProductById(element.ProductID, {
-    Stock: product.Stock - element.Amount,
+    Stock: reverse
+      ? product.Stock + element.Amount
+      : product.Stock - element.Amount,
   });
 };

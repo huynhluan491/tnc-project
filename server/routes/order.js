@@ -25,4 +25,11 @@ router.route("/user/:UserID").get(orderController.getOrderByUserID);
 
 router.route("/test").post(orderController.updateStatusPayment);
 
+router
+  .route("/cancelorder/:id")
+  .patch(
+    authController.protect,
+    authController.restrictTo(StaticData.AUTH.Role.user),
+    orderController.cancelOrder
+  );
 module.exports = router;

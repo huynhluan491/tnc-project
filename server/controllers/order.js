@@ -163,3 +163,19 @@ exports.deleteOrder = async (req, res) => {
     });
   }
 };
+
+exports.cancelOrder = async (req, res) => {
+  const id = req.params.id * 1;
+  try {
+    let result = await OrderDAO.cancelOrder(id);
+    res.status(200).json({
+      Code: 200,
+      Msg: null,
+    });
+  } catch (error) {
+    res.status(404).json({
+      Code: 404,
+      Msg: error.toString(),
+    });
+  }
+};

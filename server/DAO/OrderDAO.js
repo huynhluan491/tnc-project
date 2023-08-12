@@ -16,6 +16,8 @@ const DTOOrderDetails = require("../DTO/Default/DTOOrderDetails");
 const DTOOrderCustomize = require("../DTO/Customize/DTOOrderCustomize");
 const DTOOrderDetailsProductCustomize = require("../DTO/Customize/DTOOrderDetailsCustomize");
 
+const ProductDAO = require("../DAO/ProductDAO");
+
 exports.addOrder = async (order) => {
   const dbPool = dbConfig.db.pool;
   if (!dbPool) {
@@ -427,4 +429,35 @@ exports.clearAllOrder = async () => {
   query = `delete ${OrdersSchema.schemaName}  DBCC CHECKIDENT ('[${OrdersSchema.schemaName} ]', RESEED, 1);`;
   let result = await dbConfig.db.pool.request().query(query);
   return result.recordsets;
+};
+
+exports.cancelOrder = async (id) => {
+  if (!dbConfig.db.pool) {
+    throw new Error("Not connected to db");
+  }
+  const updateInfo = {
+    OrderID: id,
+    StatusID: 5,
+  };
+  const resultQueryOrder = await dbConfig.db.pool
+    .request()
+    .input(
+      OrdersSchema.schema.OrderID.name,
+      OrdersSchema.schema.OrderID.sqlType,
+      id
+    )
+    .query(`select * from ${OrdersSchema.schemaName} where OrderID = @OrderID`);
+  if (resultQueryOrder.recordset.length == 0) {
+    throw new Error("Order not found");
+  }
+  if (resultQueryOrder.recordset[0].StatusID != 2) {
+    throw new Error("Order can't cancel ");
+  }
+  await this.updateStatusPayment(updateInfo);
+  //hupdate stok
+  const orderDetails = await this.getOrderById(id);
+  const updatePromises = orderDetails.map((element) =>
+    ProductDAO.handleUpdateStock(element, true)
+  );
+  await Promise.all(updatePromises);
 };

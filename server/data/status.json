@@ -25,30 +25,36 @@
     },
     {
         "StatusID": 5,
+        "StatusName": "đã hủy",
+        "TypeStatus": 2,
+        "Mark": "đơn hàng"
+    },
+    {
+        "StatusID": 6,
         "StatusName": "đang soạn thảo",
         "TypeStatus": 1,
         "Mark": "sản phẩm"
     },
     {
-        "StatusID": 6,
+        "StatusID": 7,
         "StatusName": "đã duyệt",
         "TypeStatus": 1,
         "Mark": "sản phẩm"
     },
     {
-        "StatusID": 7,
+        "StatusID": 8,
         "StatusName": "ngưng hiển thị",
         "TypeStatus": 1,
         "Mark": "sản phẩm"
     },
     {
-        "StatusID": 8,
+        "StatusID": 9,
         "StatusName": "trả về",
         "TypeStatus": 1,
         "Mark": "sản phẩm"
     },
     {
-        "StatusID": 9,
+        "StatusID": 10,
         "StatusName": "ngừng kinh doanh",
         "TypeStatus": 1,
         "Mark": "sản phẩm"
