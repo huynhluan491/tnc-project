@@ -9,6 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { DTOUser } from '../_models/DTOUser';
+import { PaymentService } from '../p-layout/shared/services/payment.service';
 
 @Component({
   selector: 'app-cart-checkout2',
@@ -18,6 +19,7 @@ import { DTOUser } from '../_models/DTOUser';
 export class CartCheckout2Component implements OnInit, OnDestroy {
   constructor(
     @SkipSelf() private storageService: StorageService,
+    @SkipSelf() private paymentService: PaymentService,
     private formBuilder: FormBuilder
   ) {}
 
@@ -56,6 +58,25 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
         } else {
           this.deliverForm.reset();
         }
+      });
+  }
+
+  checkOut() {
+    const body = {
+      TypeOfPayment: 'VNPAY',
+      DataInOrder: [
+        {
+          ProductID: 3,
+          Price: 12440000,
+          Amount: 1,
+        },
+      ],
+    };
+    this.paymentService
+      .checkOut(body)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((res) => {
+        window.location.href = res.PaymentUrl;
       });
   }
 

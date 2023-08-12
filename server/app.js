@@ -3,10 +3,12 @@ const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const path = require("path");
+
 const app = express();
 //The order of middleware in stack is defined by the order they are defined in the code
-app.use(bodyParser.json({limit: "40mb"}));
-app.use(bodyParser.urlencoded({extended: true, limit: "40mb"}));
+app.use(bodyParser.json({ limit: "40mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "40mb" }));
 const corsOptions = {
   origin: "http://localhost:4200",
   credentials: true, //access-control-allow-credentials:true
@@ -25,6 +27,9 @@ app.use((req, res, next) => {
   // console.log("request Time:", req.requestTime);
   next();
 });
+// app.set("view engine", "ejs");
+// app.set("views", path.join(__dirname, "template"));
+app.use(express.static("template"));
 
 //method 3: mouting the router on a route
 const productRouter = require("./routes/product");

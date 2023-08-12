@@ -23,7 +23,8 @@ export class OrderHistoryComponent implements OnInit {
     private orderService: OrderService,
     private storageService: StorageService,
     private notiService: NotificationPopupService,
-    private productAPIService: ProductService
+    private productAPIService: ProductService,
+    private notificationService: NotificationPopupService
   ) {}
   fullName: String = 'NAME';
   orderDetailProductList = [];
@@ -39,6 +40,13 @@ export class OrderHistoryComponent implements OnInit {
     userData.FullName && (this.fullName = userData.FullName);
   }
 
+  deleteOrder(id: number): void {
+    this.orderService.deleteDataById(id).subscribe((res) => {
+      this.notificationService.onSuccess('Xóa đơn hàng thành công!');
+    });
+    this.getPersonalOrders();
+  }
+
   getPersonalOrders() {
     this.orderService
       .getDataById(this.userID)
@@ -49,60 +57,58 @@ export class OrderHistoryComponent implements OnInit {
           this.orderGridView.next({
             data: res.Data.Data,
             total: res.Data.TotalOrder,
-        });
-        let paid = 0;
-        res.Data.Data.forEach((order) => {
-          paid += order.TotalPrice;
-        })
-        this.totalPay = paid;
-        console.log(this.totalPay);
-        
-      }
-    });
+          });
+          let paid = 0;
+          res.Data.Data.forEach((order) => {
+            order.StatusID != 1 && (paid += order.TotalPrice);
+          });
+          this.totalPay = paid;
+          console.log(this.totalPay);
+        }
+      });
   }
 
   getOrderDetail(orderID: number) {
     this.orderService
-    .getOrderDetail(orderID, this.userID)
-    .pipe(
-      takeUntil(this.ngUnsubscribe$),
-      switchMap((res) => {
-        if (Ps_UtilObjectService.hasListValue(res.Data)) {
-          this.orderDetailProductList = [...res.Data];
+      .getOrderDetail(orderID, this.userID)
+      .pipe(
+        takeUntil(this.ngUnsubscribe$),
+        switchMap((res) => {
+          if (Ps_UtilObjectService.hasListValue(res.Data)) {
+            this.orderDetailProductList = [...res.Data];
+            console.log(this.orderDetailProductList);
+
+            // Create an array of observables to fetch product details by name
+            const observables = this.orderDetailProductList.map((product) =>
+              this.productAPIService.getProductImage(product.Image)
+            );
+
+            // Combine observables using forkJoin to get all responses together
+            return forkJoin(observables);
+          } else {
+            this.notiService.onError('Lỗi khi tìm sản phẩm');
+            return [];
+          }
+        })
+      )
+      .subscribe(
+        (responses) => {
+          // Assuming the response structure matches your expectations
+          this.orderDetailProductList.forEach((product, index) => {
+            console.log(responses);
+            product.ImgSrc = responses[index]?.Data.Base64 || ''; // Update ImgSrc
+          });
           console.log(this.orderDetailProductList);
-
-          // Create an array of observables to fetch product details by name
-          const observables = this.orderDetailProductList.map((product) =>
-            this.productAPIService.getProductImage(product.Image)
-          );
-
-          // Combine observables using forkJoin to get all responses together
-          return forkJoin(observables);
-        } else {
-          this.notiService.onError('Lỗi khi tìm sản phẩm');
-          return [];
+        },
+        (error) => {
+          console.error('Error:', error);
         }
-      })
-    )
-    .subscribe(
-      (responses) => {
-        // Assuming the response structure matches your expectations
-        this.orderDetailProductList.forEach((product, index) => {
-          console.log(responses);
-          product.ImgSrc = responses[index]?.Data.Base64 || ''; // Update ImgSrc
-        });
-        console.log(this.orderDetailProductList);
-        
-      },
-      (error) => {
-        console.error('Error:', error);
-      }
-    );
+      );
     this.toggleProductPopup(true);
   }
 
   toggleProductPopup(value: boolean) {
-    this.isDetailProductPopupOpened = value; 
+    this.isDetailProductPopupOpened = value;
   }
 
   public close(status: string): void {
