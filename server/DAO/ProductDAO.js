@@ -318,3 +318,11 @@ exports.getProductsNotPagination = async () => {
   let dtos = result.recordsets[0].map((x) => new DTOProduct(x));
   return dtos;
 };
+
+exports.handleUpdateStock = async (element) => {
+  const product = await this.getProductById(element.ProductID);
+  console.log(product);
+  await this.updateProductById(element.ProductID, {
+    Stock: product.Stock - element.Amount,
+  });
+};
