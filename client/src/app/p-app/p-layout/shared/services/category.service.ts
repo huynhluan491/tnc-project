@@ -28,6 +28,13 @@ export class CategoryService {
       .pipe(catchError(this.handleError));
   }
 
+  getListCategory(): Observable<DTOResponse> {
+    return this.http
+      .get<DTOResponse>(`/api/v1/category/`)
+      .pipe(catchError(this.handleError));
+  }
+
+
   getDataById(id: number): Observable<DTOResponse> {
     return this.http
       .get<DTOResponse>(`/api/v1/category/${id}`)

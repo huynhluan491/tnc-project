@@ -7,12 +7,16 @@ import {
   SkipSelf,
 } from '@angular/core';
 import { DataService } from '../shared/service/data.service';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, concatMap, of, takeUntil } from 'rxjs';
 import { ProductService } from 'src/app/p-app/p-layout/shared/services/product.service';
 import { DTOProduct } from 'src/app/p-app/p-layout/shared/dto/DTOProduct';
 import { PageChangeEvent } from '@progress/kendo-angular-grid';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NotificationPopupService } from 'src/app/p-app/p-layout/shared/services/notification.service';
+import { CategoryService } from 'src/app/p-app/p-layout/shared/services/category.service';
+import { BrandService } from 'src/app/p-app/p-layout/shared/services/brand.service';
+import { DTOCategory } from 'src/app/p-app/p-layout/shared/dto/DTOCategory';
+import { DTOBrand } from 'src/app/p-app/p-layout/shared/dto/DTOBrand';
 
 @Component({
   selector: 'app-main-table',
@@ -29,19 +33,29 @@ export class MainTableComponent implements OnInit {
   selectedProduct: DTOProduct;
   isSelectedProduct: boolean = false;
   isDeletePopupOpened: boolean = false;
+  isCreatePopupOpened: boolean = false;
+  listCategory = new Subject<any>();
+  listBrand = new Subject<any>();
+  imgBaseName: any;
 
   productForm: FormGroup = new FormGroup({
     Name: new FormControl(''),
-    Stock: new FormControl(''),
+    Stock: new FormControl(),
     Description: new FormControl(''),
-    Price: new FormControl(''),
+    Price: new FormControl(),
+    Favorite: new FormControl(),
+    CategoryID: new FormControl(),
+    BrandID: new FormControl(),
+    Image: new FormControl(''),
+    Sale: new FormControl<number>(0)
   })
-
 
   constructor(
     @SkipSelf() private dataService: DataService, 
     private productService: ProductService,
-    private notiService: NotificationPopupService
+    private notiService: NotificationPopupService,
+    private cateService: CategoryService,
+    private brandService: BrandService
   ) {}
 
   ngOnInit(): void {
@@ -98,6 +112,85 @@ export class MainTableComponent implements OnInit {
           console.log('error');
         }
         this.isDeletePopupOpened = false;
+        this.isSelectedProduct = false;
+      }
+    )
+  }
+
+  openCreateForm() {
+    this.productForm.reset();
+    this.isCreatePopupOpened = true;
+    this.getBrands();
+    this.getCategories();
+  }
+
+  createProduct() {
+    const createdInfo = this.productForm.value;
+    
+    this.productService.createData(createdInfo).pipe(
+      concatMap(
+        res => {
+          if (res.Code === 200) {
+            return this.productService.addImageProduct(this.imgBaseName);
+          } else {
+            this.notiService.onError("Đã xảy ra lỗi");
+            return of();
+          }
+        }
+      ),
+      takeUntil(this.ngUnsubscription$)
+    )
+    .subscribe(
+      res => {
+        if (res.Code === 200) {
+          this.notiService.onSuccess("Thêm mới sản phẩm thành công");
+          this.productForm.reset();
+          this.fetchData();
+        } else {
+          this.notiService.onError("Thêm mới sản phẩm thất bại");
+          console.log('error');
+        }
+        this.isCreatePopupOpened = false;
+      }
+    )
+  }
+
+  uploadFile(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const files = target.files as FileList;
+    this.imgBaseName = files;
+  }
+
+  convertToBase64(file: File): void {
+    const reader = new FileReader();
+
+    reader.onload = (event: any) => {
+      const string = event.target.result;
+      const base64String = string.split(',')[1];
+      console.log(base64String); // Here's your base64 encoded image
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  getCategories() {
+    this.cateService.getListCategory().pipe(takeUntil(this.ngUnsubscription$))
+    .subscribe(
+      res => {
+        if (res.Code === 200) {
+          this.listCategory.next(res.Data);
+        }
+      }
+    )
+  }
+
+  getBrands() {
+    this.brandService.getListBrand().pipe(takeUntil(this.ngUnsubscription$))
+    .subscribe(
+      res => {
+        if (res.Code === 200) {
+          this.listBrand.next(res.Data);
+        }
       }
     )
   }
@@ -112,7 +205,10 @@ export class MainTableComponent implements OnInit {
 
   selectProduct(data: any) {
     this.selectedProduct = data;
+    this.selectedProduct.Sale = data.Sale * 1;
     this.productForm.patchValue(data);
+    console.log(this.productForm.value);
+    
     this.isSelectedProduct = true;
   }
 
