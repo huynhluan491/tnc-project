@@ -8,6 +8,7 @@ const discountUtils = require("../utils/discountUtils");
 const vnPayController = require("../controllers/vnPay");
 const OrderDAO = require("../DAO/OrderDAO");
 const UserDAO = require("../DAO/UserDAO");
+const ProductDAO = require("../DAO/ProductDAO");
 
 exports.addPaymentIfNotExists = async (payment) => {
   const dbPool = dbConfig.db.pool;
@@ -115,7 +116,19 @@ exports.handlerPayment = async (TypeOfPayment, req, res) => {
       ),
     };
     const result = await OrderDAO.updateStatusPayment(updateInfor);
-    return result;
+    //update stock
+
+    const result2 = await OrderDAO.getOrderById(req.body.OrderID);
+
+    const updatePromises = result2.map((element) =>
+      ProductDAO.handleUpdateStock(element)
+    );
+    await Promise.all(updatePromises);
+    res.status(200).json({
+      Code: 200,
+      Msg: "payment with COD success",
+      Data: {result},
+    });
   } else {
     throw new Error("Invalid type of payment method");
   }

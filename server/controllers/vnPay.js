@@ -1,9 +1,11 @@
 const StaticData = require("../utils/StaticData");
 const dateFormat = require("dateformat");
 const config = StaticData.configApiVnPay;
+const dateTimeUtils = require("../Utils/DateTimeUtils");
+
+const ProductDAO = require("../DAO/ProductDAO");
 const OrderDAO = require("../DAO/OrderDAO");
 const UserDAO = require("../DAO/UserDAO");
-const dateTimeUtils = require("../Utils/DateTimeUtils");
 
 const sortObject = (obj) => {
   let sorted = {};
@@ -114,7 +116,10 @@ exports.vnpay_return = async (req, res, next) => {
     // handle success here
     //handle cho don hang khach vang lai
     // await OrderDAO.createNewOrder(null,)
-
+    const updatePromises = result2.map((element) =>
+      ProductDAO.handleUpdateStock(element)
+    );
+    await Promise.all(updatePromises);
     const updateInfor = {
       OrderID: orderId,
       PaymentID: 1,
