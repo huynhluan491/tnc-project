@@ -11,7 +11,7 @@ exports.getAllBrands = async (req, res) => {
   } catch (error) {
     res.status(404).json({
       Code: 404,
-      Msg: error,
+      Msg: error.toString().toString(),
     });
   }
 };
@@ -39,7 +39,7 @@ exports.getBrandById = async (req, res) => {
 
     return res.status(500).json({
       Code: 500,
-      Msg: e,
+      Msg: e.toString(),
     });
   }
 };

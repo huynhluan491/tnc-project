@@ -11,7 +11,7 @@ exports.getAllCategories = async (req, res) => {
   } catch (error) {
     res.status(404).json({
       Code: 404,
-      Msg: error,
+      Msg: error.toString(),
     });
   }
 };
@@ -38,7 +38,7 @@ exports.getCateIdByName = async (req, res) => {
     console.log(e);
     return res.status(500).json({
       Code: 500,
-      Msg: e,
+      Msg: e.toString(),
     });
   }
 };

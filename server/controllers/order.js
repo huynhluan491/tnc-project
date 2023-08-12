@@ -19,7 +19,7 @@ exports.getProductInOrderByUSerID = async (req, res) => {
   } catch (error) {
     res.status(404).json({
       Code: 404,
-      Msg: error,
+      Msg: error.toString(),
     });
   }
 };
@@ -36,7 +36,7 @@ exports.getOrderDetailsByOrderIDUserID = async (req, res) => {
   } catch (error) {
     res.status(404).json({
       Code: 404,
-      Msg: error,
+      Msg: error.toString(),
     });
   }
 };
@@ -72,7 +72,7 @@ exports.insertProductToOrder = async (req, res) => {
   } catch (error) {
     res.status(404).json({
       Code: 404,
-      Msg: error,
+      Msg: error.toString(),
     });
   }
 };
@@ -91,7 +91,7 @@ exports.updateProductInOrder = async (req, res) => {
   } catch (error) {
     res.status(404).json({
       Code: 404,
-      Msg: error,
+      Msg: error.toString(),
     });
   }
 };
@@ -127,7 +127,7 @@ exports.getOrderByUserID = async (req, res) => {
   } catch (error) {
     res.status(404).json({
       Code: 404,
-      Msg: error,
+      Msg: error.toString(),
     });
   }
 };

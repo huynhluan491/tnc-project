@@ -115,7 +115,7 @@ exports.handlerPayment = async (TypeOfPayment, req, res) => {
         true
       ),
     };
-    const result = await OrderDAO.updateStatusPayment(updateInfor);
+    await OrderDAO.updateStatusPayment(updateInfor);
     //update stock
 
     const result2 = await OrderDAO.getOrderById(req.body.OrderID);
