@@ -11,8 +11,9 @@ export class ChatApiService {
 
   addChat(sessionId: string, message: string): Observable<any> {
     const body = message;
+    console.log('BODY', { msg: body });
 
-    return this.http.post('/api/v1/chat/' + sessionId, body);
+    return this.http.post('/api/v1/chatbot/chat/1', { msg: body });
   }
 
   getImage(imageName: string): Observable<any> {

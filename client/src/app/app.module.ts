@@ -29,6 +29,7 @@ import { DialogsModule } from '@progress/kendo-angular-dialog';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './p-app/_helpers/auth_guard';
 import { ChatModule } from './chat-gpt/chat.module';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [AppComponent, CartCheckoutComponent, CartCheckout2Component],
@@ -40,6 +41,7 @@ import { ChatModule } from './chat-gpt/chat.module';
   ],
   bootstrap: [AppComponent],
   imports: [
+    MarkdownModule.forRoot(),
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
