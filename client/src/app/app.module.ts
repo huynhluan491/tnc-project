@@ -28,6 +28,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogsModule } from '@progress/kendo-angular-dialog';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './p-app/_helpers/auth_guard';
+import { ChatModule } from './chat-gpt/chat.module';
 
 @NgModule({
   declarations: [AppComponent, CartCheckoutComponent, CartCheckout2Component],
@@ -56,6 +57,7 @@ import { AuthGuard } from './p-app/_helpers/auth_guard';
     FormsModule,
     ReactiveFormsModule,
     DialogsModule,
+    ChatModule,
     HttpClientXsrfModule.withOptions({
       cookieName: 'csrf-token',
       headerName: 'csrf-token',

@@ -36,7 +36,7 @@ exports.addChat = async (req, res) => {
     const sid = req.params.id * 1;
     const reqBody = req.body;
     const response = await axios.post(
-      "https://http://127.0.0.1:5000/api/v1/chat/" + sid,
+      "http://127.0.0.1:5000/api/v1/chat/" + sid,
       reqBody
     );
 
@@ -55,7 +55,7 @@ exports.getImage = async (req, res) => {
   try {
     const imageName = req.params.imageName;
     const response = await axios.get(
-      "https://http://127.0.0.1:5000/api/v1/chat/image/" + imageName,
+      "http://127.0.0.1:5000/api/v1/chat/image/" + imageName,
       {
         responseType: "blob",
       }

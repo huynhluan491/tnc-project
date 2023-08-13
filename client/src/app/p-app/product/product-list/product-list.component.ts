@@ -58,15 +58,16 @@ export class ProductListComponent implements OnInit {
     this.getProducts();
     this.handleGetFilter();
     this.productService
-      .getQueryFilter()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((res) => {
-        this.query = res;
-        console.log('this.query obssss', this.query);
-        if (this.query.length > 0) {
-          this.handleQuery(this.sortQuey);
-        }
-      });
+    .getQueryFilter()
+    .pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((res) => {
+      this.query = res;
+      console.log('this.query obssss', this.query);
+      if (this.query.length > 0) {
+        this.handleQuery(this.sortQuey);
+      }
+    });
+    console.log(this.categoryName);
   }
 
   getProducts(

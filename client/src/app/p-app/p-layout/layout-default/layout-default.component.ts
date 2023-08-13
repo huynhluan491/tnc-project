@@ -33,6 +33,25 @@ export class LayoutDefault implements OnInit, OnDestroy {
       });
   }
 
+  loggedIn: boolean = true;
+  showLogin: boolean = true;
+  showChat: boolean = true;
+
+  toggleShowChat() {
+    this.showChat = !this.showChat;
+  }
+
+  toggleShowLogin() {
+    this.loggedIn
+      ? (this.showLogin = false)
+      : (this.showLogin = !this.showLogin);
+  }
+
+  handleLoginSuccess() {
+    this.loggedIn = true;
+    this.toggleShowLogin();
+  }
+
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
