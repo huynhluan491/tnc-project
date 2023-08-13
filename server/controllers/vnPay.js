@@ -78,16 +78,16 @@ exports.create_payment_url = async (req, res) => {
 
   vnp_Params = sortObject(vnp_Params);
   var querystring = require("qs");
-  var signData = querystring.stringify(vnp_Params, { encode: false });
+  var signData = querystring.stringify(vnp_Params, {encode: false});
   var crypto = require("crypto");
   var hmac = crypto.createHmac("sha512", secretKey);
   var signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
   vnp_Params["vnp_SecureHash"] = signed;
 
-  vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: false });
+  vnpUrl += "?" + querystring.stringify(vnp_Params, {encode: false});
 
   console.log(vnpUrl);
-  res.status(200).json({ code: 200, Msg: "success", PaymentUrl: vnpUrl });
+  res.status(200).json({code: 200, Msg: "success", PaymentUrl: vnpUrl});
 };
 
 exports.vnpay_return = async (req, res, next) => {
@@ -104,7 +104,7 @@ exports.vnpay_return = async (req, res, next) => {
   var secretKey = config.vnp_HashSecret;
 
   var querystring = require("qs");
-  var signData = querystring.stringify(vnp_Params, { encode: false });
+  var signData = querystring.stringify(vnp_Params, {encode: false});
   var crypto = require("crypto");
   var hmac = crypto.createHmac("sha512", secretKey);
   var signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
@@ -132,7 +132,9 @@ exports.vnpay_return = async (req, res, next) => {
       ),
     };
     await OrderDAO.updateStatusPayment(updateInfor);
-
+    if (u) {
+      await OrderDAO.createNewOrder(u.UserID);
+    }
     console.log("success");
     // res.redirect(StaticData.configApiVnPay.home_Url);
     // res.json({code: 200, Msg: "success"});
@@ -159,7 +161,7 @@ exports.vnpay_ipn = (req, res, next) => {
   vnp_Params = sortObject(vnp_Params);
   var secretKey = config.vnp_HashSecret;
   var querystring = require("qs");
-  var signData = querystring.stringify(vnp_Params, { encode: false });
+  var signData = querystring.stringify(vnp_Params, {encode: false});
   var crypto = require("crypto");
   var hmac = crypto.createHmac("sha512", secretKey);
   var signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
@@ -167,8 +169,8 @@ exports.vnpay_ipn = (req, res, next) => {
     var orderId = vnp_Params["vnp_TxnRef"];
     var rspCode = vnp_Params["vnp_ResponseCode"];
     //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
-    res.status(200).json({ RspCode: "00", Message: "success" });
+    res.status(200).json({RspCode: "00", Message: "success"});
   } else {
-    res.status(200).json({ RspCode: "97", Message: "Fail checksum" });
+    res.status(200).json({RspCode: "97", Message: "Fail checksum"});
   }
 };
