@@ -351,7 +351,6 @@ exports.getFilterProductsQuery = (
     }
   }
   filterStr = filterStr.replace(/[\n\r]/g, "");
-  console.log(filterStr);
 
   return {filterStr, paginationStr};
 };

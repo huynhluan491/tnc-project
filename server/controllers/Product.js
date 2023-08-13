@@ -7,9 +7,14 @@ const fs = require("fs");
 const DTOProduct = require("../DTO/Default/DTOProduct");
 exports.getProducts = async (req, res) => {
   let reqHeader = req.headers;
-
   try {
     const products = await ProductDAO.getAllProducts(reqHeader);
+    if (products.TotalProduct == 0) {
+      return res.status(404).json({
+        Code: 404,
+        Msg: `Products list not found!`,
+      });
+    }
     res.status(200).json({
       Code: 200,
       Msg: null,
