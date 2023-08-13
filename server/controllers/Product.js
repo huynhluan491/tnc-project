@@ -10,20 +10,21 @@ exports.getProducts = async (req, res) => {
   try {
     const products = await ProductDAO.getAllProducts(reqHeader);
     if (products.TotalProduct == 0) {
-      return res.status(404).json({
-        Code: 404,
-        Msg: `Products list not found!`,
+      res.status(500).json({
+        Code: 500,
+        Msg: `Product not found !!!`,
+      });
+    } else {
+      res.status(200).json({
+        Code: 200,
+        Msg: null,
+        Page: products.Page,
+        PageSize: products.PageSize,
+        TotalPage: products.TotalPage,
+        TotalProduct: products.TotalProduct,
+        Data: products.DataProducts,
       });
     }
-    res.status(200).json({
-      Code: 200,
-      Msg: null,
-      Page: products.Page,
-      PageSize: products.PageSize,
-      TotalPage: products.TotalPage,
-      TotalProduct: products.TotalProduct,
-      Data: products.DataProducts,
-    });
   } catch (err) {
     res.status(500).json({
       Code: 500,
