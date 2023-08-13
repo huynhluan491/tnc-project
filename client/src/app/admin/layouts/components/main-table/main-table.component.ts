@@ -190,6 +190,7 @@ export class MainTableComponent implements OnInit {
               this.fetchData();
             } else {
               this.notiService.onError("Cập nhật ảnh sản phẩm thất bại");
+              this.fetchData();
             }
             this.imgBaseName = null;
           }

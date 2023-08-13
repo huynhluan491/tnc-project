@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'app-main-layout',
+  templateUrl: './main-layout.component.html',
+  styleUrls: ['./main-layout.component.scss'],
 })
-export class AppComponent {
-  title = 'tnc-project';
-
+export class MainLayoutComponent {
   loggedIn: boolean = true;
   showLogin: boolean = true;
   showChat: boolean = true;

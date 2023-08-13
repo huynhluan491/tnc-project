@@ -48,19 +48,27 @@ export class ProductListComponent implements OnInit {
     this.route.params.pipe(
       pluck('categoryname'),
       tap((value) => (this.categoryName = value))
-    );
+    ).subscribe(
+      res => {
+        console.log(this.categoryName);
+        
+        
+      }
+    )
+    
     this.getProducts();
     this.handleGetFilter();
     this.productService
-      .getQueryFilter()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((res) => {
-        this.query = res;
-        console.log('this.query obssss', this.query);
-        if (this.query.length > 0) {
-          this.handleQuery(this.sortQuey);
-        }
-      });
+    .getQueryFilter()
+    .pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((res) => {
+      this.query = res;
+      console.log('this.query obssss', this.query);
+      if (this.query.length > 0) {
+        this.handleQuery(this.sortQuey);
+      }
+    });
+    console.log(this.categoryName);
   }
 
   getProducts(headers = new HttpHeaders({}), url = '/api/v1/product') {

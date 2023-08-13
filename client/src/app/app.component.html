@@ -1,2 +1,11 @@
 <router-outlet></router-outlet>
 <!-- <app-login></app-login> -->
+
+<div class="container">
+    <app-minimized-bar (showChat)="toggleShowChat()"></app-minimized-bar>
+    <app-chat
+      (exit)="toggleShowChat()"
+      class="chat"
+      *ngIf="showChat"
+    ></app-chat>
+</div>

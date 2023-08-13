@@ -94,7 +94,7 @@
           </ng-template>
         </kendo-grid-column>
         <kendo-grid-column [width]="80">
-          <ng-template kendoGridCellTemplate>
+          <ng-template kendoGridCellTemplate let-dataItem>
             <button class="cancel-order" (click)="open()" kendoButton [themeColor]="'error'">
               Hủy
             </button>
