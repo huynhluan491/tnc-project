@@ -1,13 +1,15 @@
-<div  class="register-container"  *ngIf="!isRegister">
-  <form class="register-form" (ngSubmit)="onSubmit($event)" [formGroup]="loginForm">
+<div class="register-container" *ngIf="!isRegister">
+  <form
+    class="register-form"
+    (ngSubmit)="onSubmit($event)"
+    [formGroup]="loginForm"
+  >
     <div (click)="toggleShowRegister()" class="register-exit">
       <img src="assets/icon/xmark-solid.svg" />
     </div>
     <div class="register-title">Đăng nhập</div>
     <div class="register-option">
-      <div class="register-question">
-        Chưa có tài khoản?
-      </div>
+      <div class="register-question">Chưa có tài khoản?</div>
       <input
         (change)="toggleRegister()"
         class="register-checkbox"
@@ -22,9 +24,14 @@
         type="text"
         #userName
         formControlName="UserName"
-        />
-      <div *ngIf="submitted && _loginForm['UserName'].errors" class="invalid-feedback">
-        <div *ngIf="_loginForm['UserName'].errors['required']">Vui lòng nhập tên tài khoản</div>
+      />
+      <div
+        *ngIf="submitted && _loginForm['UserName'].errors"
+        class="invalid-feedback"
+      >
+        <div *ngIf="_loginForm['UserName'].errors['required']">
+          Vui lòng nhập tên tài khoản
+        </div>
       </div>
     </div>
     <div class="register-input">
@@ -36,27 +43,36 @@
         type="password"
         #password
       />
-      <div *ngIf="submitted && _loginForm['Password'].errors" class="invalid-feedback">
-        <div *ngIf="_loginForm['Password'].errors['required']">Vui lòng nhập mật khẩu</div>
+      <div
+        *ngIf="submitted && _loginForm['Password'].errors"
+        class="invalid-feedback"
+      >
+        <div *ngIf="_loginForm['Password'].errors['required']">
+          Vui lòng nhập mật khẩu
+        </div>
       </div>
     </div>
-    <div class="submit-btn"><button kendoButton (click)="onSubmit($event)">Đăng nhập</button></div>
+    <div class="submit-btn">
+      <button kendoButton (click)="onSubmit($event)">Đăng nhập</button>
+    </div>
   </form>
 
-  <pre>{{registerForm.value | json}}</pre>
-  <pre>{{loginForm.value | json}}</pre>
+  <!-- <pre>{{registerForm.value | json}}</pre>
+  <pre>{{loginForm.value | json}}</pre> -->
 </div>
 
 <div class="register-container" *ngIf="isRegister">
-  <form class="register-form" (ngSubmit)="onSubmit($event)" [formGroup]="registerForm">
+  <form
+    class="register-form"
+    (ngSubmit)="onSubmit($event)"
+    [formGroup]="registerForm"
+  >
     <div (click)="toggleShowRegister()" class="register-exit">
       <img src="assets/icon/xmark-solid.svg" />
     </div>
     <div class="register-title">Đăng kí</div>
     <div class="register-option">
-      <div class="register-question">
-        Đã có tài khoản?
-      </div>
+      <div class="register-question">Đã có tài khoản?</div>
       <input
         (change)="toggleRegister()"
         class="register-checkbox"
@@ -66,18 +82,23 @@
     <div class="register-input">
       <label class="register-label" for="userNameSign"> Tên đăng nhập </label>
       <input
-      required
-      class="register-text"
-      type="text"
-      #userNameSign
-      formControlName="UserName"
+        required
+        class="register-text"
+        type="text"
+        #userNameSign
+        formControlName="UserName"
       />
-      <div *ngIf="submitted && _registerForm['SignupName'].errors" class="invalid-feedback">
-        <div *ngIf="_registerForm['SignupName'].errors['required']">Vui lòng nhập tên tài khoản</div>
+      <div
+        *ngIf="submitted && _registerForm['SignupName'].errors"
+        class="invalid-feedback"
+      >
+        <div *ngIf="_registerForm['SignupName'].errors['required']">
+          Vui lòng nhập tên tài khoản
+        </div>
       </div>
     </div>
     <div class="register-input">
-      <label class="register-label" [for]=" "> Mật khẩu </label>
+      <label class="register-label" [for]=""> Mật khẩu </label>
       <input
         formControlName="Password"
         required
@@ -85,35 +106,52 @@
         type="password"
         #SignupPassword
       />
-      <div *ngIf="submitted && _registerForm['Password'].errors" class="invalid-feedback">
-        <div *ngIf="_registerForm['Password'].errors['required']">Vui lòng nhập mật khẩu</div>
-      </div> 
-    </div>
-      <div class="register-input">
-        <label class="register-label" [for]="confirmPassword"> Nhập lại mật khẩu </label>
-        <input
-          formControlName="ConfirmPassword"
-          required
-          class="register-text"
-          type="password"
-          #confirmPassword
-        />
-        <div *ngIf="!registerForm['errors']?.['notmatched'] && (registerForm.touched || registerForm.dirty)">Mật khẩu không trùng khớp</div>
-      </div>
-      <div class="register-input">
-        <label class="register-label" for="email"> Email </label>
-        <input
-          formControlName="Email"
-          required
-          class="register-text"
-          type="email"
-          #email
-        />
-        <div *ngIf="submitted && _registerForm['Email'].errors" class="invalid-feedback">
-          <div *ngIf="_registerForm['Email'].errors['required']">Vui lòng nhập mật khẩu</div>
+      <div
+        *ngIf="submitted && _registerForm['Password'].errors"
+        class="invalid-feedback"
+      >
+        <div *ngIf="_registerForm['Password'].errors['required']">
+          Vui lòng nhập mật khẩu
         </div>
       </div>
-    <div class="submit-btn"><button kendoButton (click)="onSubmit($event)">Đăng kí</button></div>
-    </form>
+    </div>
+    <div class="register-input">
+      <label class="register-label" [for]="confirmPassword">
+        Nhập lại mật khẩu
+      </label>
+      <input
+        formControlName="ConfirmPassword"
+        required
+        class="register-text"
+        type="password"
+        #confirmPassword
+      />
+      <div
+        *ngIf="!registerForm['errors']?.['notmatched'] && (registerForm.touched || registerForm.dirty)"
+      >
+        Mật khẩu không trùng khớp
+      </div>
+    </div>
+    <div class="register-input">
+      <label class="register-label" for="email"> Email </label>
+      <input
+        formControlName="Email"
+        required
+        class="register-text"
+        type="email"
+        #email
+      />
+      <div
+        *ngIf="submitted && _registerForm['Email'].errors"
+        class="invalid-feedback"
+      >
+        <div *ngIf="_registerForm['Email'].errors['required']">
+          Vui lòng nhập mật khẩu
+        </div>
+      </div>
+    </div>
+    <div class="submit-btn">
+      <button kendoButton (click)="onSubmit($event)">Đăng kí</button>
+    </div>
+  </form>
 </div>
-  
