@@ -20,7 +20,7 @@ exports.addPaymentIfNotExists = async (payment) => {
 
   let insertData = PaymentSchema.validateData(payment);
   let query = `SET IDENTITY_INSERT ${PaymentSchema.schemaName} ON insert into ${PaymentSchema.schemaName}`;
-  const { request, insertFieldNamesStr, insertValuesStr } =
+  const {request, insertFieldNamesStr, insertValuesStr} =
     dbUtils.getInsertQuery(PaymentSchema.schema, dbPool.request(), insertData);
   if (!insertFieldNamesStr || !insertValuesStr) {
     throw new Error("Invalid insert param");
@@ -100,7 +100,7 @@ exports.handlerPayment = async (TypeOfPayment, req, res) => {
   }
 
   req.body.TotalPrice = totalPrice;
-  req.body.OrderID = orderID;
+  req.body.OrderID = orderID || req.body.OrderID;
   if (TypeOfPayment === "VNPAY") {
     vnPayController.create_payment_url(req, res);
   } else if (TypeOfPayment === "COD") {
@@ -126,7 +126,7 @@ exports.handlerPayment = async (TypeOfPayment, req, res) => {
     await Promise.all(updatePromises);
     res
       .status(200)
-      .json({ PaymentUrl: "http://localhost:3001/html/success.html" });
+      .json({PaymentUrl: "http://localhost:3001/html/success.html"});
   } else {
     throw new Error("Invalid type of payment method");
   }
