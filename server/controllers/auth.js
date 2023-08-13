@@ -123,7 +123,7 @@ exports.protect = async (req, res, next) => {
     res.cookie("ruser", newToken.RefreshToken || req.cookies.ruser, {
       httpOnly: true,
     });
-    res.cookie("csrf-token", newToken.CSRFToken);
+    res.cookie("csrf-token", newToken.CSRFToken || req.cookies["csrf-token"]);
   } catch (e) {
     console.log(e);
 
