@@ -5,8 +5,8 @@
   position: fixed;
   top: 0;
   right: 0;
-  width: 25%;
-  height: 100%;
+  width: 17%;
+  height: 80%;
   display: flex;
   flex-direction: column;
   background-color: #dde1fc;
@@ -14,6 +14,7 @@
   border-left: 3px #c7ccf0 solid;
   animation: slideIn 0.2s ease-in-out forwards;
   overflow: hidden;
+  z-index: 10000000000000;
 
   .chat-session {
     background-color: v.$secondaryColor;
@@ -60,7 +61,7 @@
 
     .chat-input-wrapper {
       width: 90%;
-      height: 100%;
+      height: 90%;
       background-color: #ffffff;
       display: flex;
       justify-content: center;
