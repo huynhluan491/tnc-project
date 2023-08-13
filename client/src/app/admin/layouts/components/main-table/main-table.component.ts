@@ -179,6 +179,8 @@ export class MainTableComponent implements OnInit {
     
     reader.addEventListener('load', (event: any) => {
         this.imgBaseName = new ImageSnippet(event.target.result, file);
+        console.log(this.imgBaseName);
+        
         this.productService.addImageProduct(this.imgBaseName, this.selectedProduct.ProductID)
         .pipe(takeUntil(this.ngUnsubscription$))
         .subscribe(

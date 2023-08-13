@@ -57,7 +57,7 @@
 
   <div class="product-form-wrapper" *ngIf="isSelectedProduct">
     <div class="close-btn" (click)="isSelectedProduct = false">X</div>
-    <form class="product-form" [formGroup]="productForm">
+    <form class="product-form" [formGroup]="productForm" enctype="multipart/form-data">
       <img
       class="product-img"
       [src]="'data:image/jpeg;base64,' + selectedProduct?.Base64Image"
