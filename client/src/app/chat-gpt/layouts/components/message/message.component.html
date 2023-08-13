@@ -19,9 +19,9 @@
       role == 'user' ? 'message_wrapper_user' : 'message_wrapper_assistant'
     "
   >
-    <p *ngIf="role == 'function'; else imgMsg">
+    <div markdown="1" *ngIf="role == 'function'; else imgMsg">
       <img [src]="imageSrc" alt="response-img" />
-    </p>
+    </div>
 
     <ng-template #imgMsg> {{ message }} </ng-template>
   </div>

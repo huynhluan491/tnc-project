@@ -35,8 +35,10 @@ export class ChatComponent implements OnInit {
       this.chatService
         .addChat('647f3c5170b47d535c175512', this.inputRef.nativeElement.value)
         .subscribe((res) => {
+          console.log('CCCCCCCCC', this.inputRef.nativeElement.value);
+
           console.log(res);
-          for (let message of res.data) {
+          for (let message of res.data.message) {
             if (
               (message.role == 'user' ||
                 message.role == 'assistant' ||
@@ -46,9 +48,9 @@ export class ChatComponent implements OnInit {
               this.messageList.push(message);
           }
           this.loading = false;
+          this.inputRef.nativeElement.value = '';
         });
     }
-    this.inputRef.nativeElement.value = '';
   }
 
   getMessages(sessionId: string) {

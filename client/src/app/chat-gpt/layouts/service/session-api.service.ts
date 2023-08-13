@@ -14,9 +14,7 @@ export class SessionApiService {
   }
 
   getSessionById(id: string): Observable<any> {
-    return this.http
-      .get('/api/v1/session/' + id)
-      .pipe(catchError(this.handleError));
+    return this.http.get('api/v1/chatbot/1').pipe(catchError(this.handleError));
   }
 
   private handleError(e: any) {
