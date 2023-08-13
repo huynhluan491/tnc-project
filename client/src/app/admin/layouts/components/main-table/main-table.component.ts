@@ -167,7 +167,7 @@ export class MainTableComponent implements OnInit {
     const reader = new FileReader();
     
     reader.addEventListener('load', (event: any) => {
-        this.imgBaseName = new ImageSnippet(event.target.result, file);
+        this.imgBaseName = file;
     });
 
     reader.readAsDataURL(file);
@@ -187,6 +187,7 @@ export class MainTableComponent implements OnInit {
           res => {
             if (res.Code === 200) {
               this.notiService.onSuccess("Cập nhật ảnh sản phẩm thành công");
+              this.fetchData();
             } else {
               this.notiService.onError("Cập nhật ảnh sản phẩm thất bại");
             }
