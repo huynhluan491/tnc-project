@@ -178,7 +178,7 @@ export class MainTableComponent implements OnInit {
     const reader = new FileReader();
     
     reader.addEventListener('load', (event: any) => {
-        this.imgBaseName = new ImageSnippet(event.target.result, file);
+        this.imgBaseName = file;
         console.log(this.imgBaseName);
         
         this.productService.addImageProduct(this.imgBaseName, this.selectedProduct.ProductID)

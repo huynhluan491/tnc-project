@@ -41,10 +41,15 @@ export class ProductService {
       "ProductID": 74,
       "ImageName": `Image ${productID}`
     }
+
     const formData = new FormData();
     formData.append('file', img);
+
+    const headers = new HttpHeaders();
+    headers.append('enctype', 'multipart/form-data');
+    // Combine form data and JSON body
     formData.append('body', JSON.stringify(body));
-    return this.http.post<DTOResponse>(`${environment.apiUrl}/product/image`, formData).pipe(catchError(this.handleError));
+    return this.http.post<DTOResponse>(`${environment.apiUrl}/product/image`, formData, {headers}).pipe(catchError(this.handleError));
   }
 
   getListProduct(

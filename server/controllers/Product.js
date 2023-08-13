@@ -200,9 +200,8 @@ exports.getFileProductImage = async (req, res) => {
 };
 
 exports.saveFileProductImage = async (req, res) => {
-  console.log(req);
   try {
-    let info = req.body;
+    let info = JSON.parse(req.body.body);
     const imagePath = path.join(
       __dirname,
       "..",
@@ -212,6 +211,7 @@ exports.saveFileProductImage = async (req, res) => {
     );
     const file = req.file;
     console.log(file);
+    console.log(imagePath);
 
     const imageBuffer = await fs.promises.readFile(file.path);
     const base64Image = imageBuffer.toString("base64");
@@ -226,6 +226,7 @@ exports.saveFileProductImage = async (req, res) => {
       }
     });
     const Name = info.ImageName;
+    console.log('name', Name);
     img = {
       Image: Name,
     };
