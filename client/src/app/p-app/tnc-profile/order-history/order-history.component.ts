@@ -32,7 +32,7 @@ export class OrderHistoryComponent implements OnInit {
   isCanceled: boolean = false;
   orderTotal: number = 0;
   totalPay: number = 0;
-
+  selectedOrderForCancellation: any;
   ngOnInit(): void {
     this.userID = this.storageService.getUser().UserID;
     this.getPersonalOrders();
@@ -41,7 +41,7 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   deleteOrder(id: number): void {
-    this.orderService.deleteDataById(id).subscribe((res) => {
+    this.orderService.cancelOrder(id).subscribe((res) => {
       this.notificationService.onSuccess('Xóa đơn hàng thành công!');
     });
     this.getPersonalOrders();
@@ -60,7 +60,7 @@ export class OrderHistoryComponent implements OnInit {
           });
           let paid = 0;
           res.Data.Data.forEach((order) => {
-            order.StatusID != 1 && (paid += order.TotalPrice);
+            order.StatusID == 2 && (paid += order.TotalPrice);
           });
           this.totalPay = paid;
           console.log(this.totalPay);
@@ -111,8 +111,11 @@ export class OrderHistoryComponent implements OnInit {
     this.isDetailProductPopupOpened = value;
   }
 
-  public close(status: string): void {
+  public close(status: string, orderid: any): void {
     console.log(`Dialog result: ${status}`);
+    if ((status = 'yes')) {
+      this.deleteOrder(orderid);
+    }
     this.isCanceled = false;
   }
 

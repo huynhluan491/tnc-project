@@ -76,6 +76,12 @@ export class OrderService {
       .pipe(catchError(this.handleError));
   }
 
+  cancelOrder(id: number): Observable<DTOResponse> {
+    return this.http
+      .patch<DTOResponse>(`/api/v1/order/cancelorder/${id}`, {})
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: any) {
     console.error('An error occurred:', error);
     return throwError(
