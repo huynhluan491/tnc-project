@@ -265,6 +265,29 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "cancel order",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/order/cancelorder/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"order",
+								"cancelorder",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -532,6 +555,48 @@
 								"v1",
 								"product",
 								"productnonpagination"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add img",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/ADMIN/Pictures/Screenshot 2023-07-06 112709.png"
+								},
+								{
+									"key": "ImageName",
+									"value": "Image product 73",
+									"type": "text"
+								},
+								{
+									"key": "ProductID",
+									"value": "73",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/v1/product/image",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"image"
 							]
 						}
 					},
@@ -1133,7 +1198,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"OrderID\":4,\r\n    \"TypeOfPayment\" : \"COD\"\r\n}",
+							"raw": "{\r\n    // \"OrderID\":4,\r\n    \"TypeOfPayment\" : \"VNPAY\",\r\n    // \"UserPoint\" : \"true\",\r\n    \"DataInOrder\" :[\r\n        //truong hop danh cho khach vang lai khong co orderid\r\n        {\r\n             \"ProductID\": 3,\r\n             \"Price\": 12440000,\r\n             \"Amount\": 1\r\n        }\r\n    ]\r\n    // \"OrderInfor\" : {\r\n    //     //phone , mail .....\r\n    // }\r\n\r\n    \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

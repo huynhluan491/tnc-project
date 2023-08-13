@@ -237,6 +237,7 @@ exports.protect = async (req) => {
     }
     if (!pCSRF) {
       msgXSRF = "CSRF Token";
+      throw new Error(`Invalid authentication ${msgXSRF}`);
     }
     payload = this.verificationToken(token, process.env.JWT_SECRET);
     const currentUser = await UserDAO.getUserById(payload.UserID);
