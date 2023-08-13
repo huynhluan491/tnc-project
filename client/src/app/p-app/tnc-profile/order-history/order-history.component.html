@@ -10,11 +10,11 @@
   </div>
   <div class="user-history-info">
     <div class="info-box">
-      <p class="quantity">{{orderTotal}}</p>
+      <p class="quantity">{{ orderTotal }}</p>
       <p class="topic-name">đơn hàng</p>
     </div>
     <div class="info-box">
-      <p class="quantity">{{totalPay | number: "1.0-0"}} VND</p>
+      <p class="quantity">{{ totalPay | number : "1.0-0" }} VND</p>
       <p class="topic-name">Tổng tiền tích lũy</p>
     </div>
   </div>
@@ -60,7 +60,7 @@
             let-dataItem
             let-rowIndex="rowIndex"
           >
-            <span>{{ dataItem.TotalPrice | number : "1.0-0"}} VND</span>
+            <span>{{ dataItem.TotalPrice | number : "1.0-0" }} VND</span>
           </ng-template>
         </kendo-grid-column>
         <kendo-grid-column field="StatusName" title="Trạng thái">
@@ -95,7 +95,13 @@
         </kendo-grid-column>
         <kendo-grid-column [width]="80">
           <ng-template kendoGridCellTemplate let-dataItem>
-            <button class="cancel-order" (click)="open()" kendoButton [themeColor]="'error'">
+            <button
+              *ngIf="dataItem.StatusID == 2"
+              (click)="selectedOrderForCancellation = dataItem; open()"
+              class="cancel-order"
+              kendoButton
+              [themeColor]="'error'"
+            >
               Hủy
             </button>
           </ng-template>
@@ -104,7 +110,11 @@
     </div>
   </div>
 
-  <div #searchContainer class="search-products-wrapper" *ngIf="isDetailProductPopupOpened">
+  <div
+    #searchContainer
+    class="search-products-wrapper"
+    *ngIf="isDetailProductPopupOpened"
+  >
     <div class="close-icon" (click)="toggleProductPopup(false)">X</div>
     <div class="product-item" *ngFor="let data of orderDetailProductList">
       <img
@@ -113,22 +123,27 @@
         [alt]="data.Image"
       />
       <div class="product-info">
-        <p class="name">{{data.Name}}</p>
-        <p class="price">{{data.Price}}</p>
+        <p class="name">{{ data.Name }}</p>
+        <p class="price">{{ data.Price }}</p>
       </div>
     </div>
   </div>
 
   <div class="cancel-popup" *ngIf="isCanceled">
-    <div class="title">
-      Hủy đơn hàng
-    </div>
-    <div class="content">
-      Bạn có chắc muốn hủy đơn hàng?
-    </div>
+    <div class="title">Hủy đơn hàng</div>
+    <div class="content">Bạn có chắc muốn hủy đơn hàng?</div>
     <div class="btn-group">
-      <button kendoButton (click)="close('no')">No</button>
-      <button kendoButton (click)="close('yes')" themeColor="primary">
+      <button
+        kendoButton
+        (click)="close('no', selectedOrderForCancellation.OrderID)"
+      >
+        No
+      </button>
+      <button
+        kendoButton
+        (click)="close('yes', selectedOrderForCancellation.OrderID)"
+        themeColor="primary"
+      >
         Yes
       </button>
     </div>

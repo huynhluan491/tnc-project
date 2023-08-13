@@ -7,8 +7,8 @@ const path = require("path");
 
 const app = express();
 //The order of middleware in stack is defined by the order they are defined in the code
-app.use(bodyParser.json({ limit: "40mb" }));
-app.use(bodyParser.urlencoded({ extended: true, limit: "40mb" }));
+app.use(bodyParser.json({limit: "40mb"}));
+app.use(bodyParser.urlencoded({extended: true, limit: "40mb"}));
 const corsOptions = {
   origin: "http://localhost:4200",
   credentials: true, //access-control-allow-credentials:true
@@ -43,7 +43,7 @@ const categoryRouter = require("./routes/category");
 const userRouter = require("./routes/user");
 const paymentRouter = require("./routes/payment");
 const tokenRouter = require("./routes/token");
-
+const chatbotRouter = require("./routes/chatbot");
 app.use("/api/v1/product", productRouter);
 app.use("/api/v1/order", orderRouter);
 app.use("/api/v1/rating", ratingRouter);
@@ -54,6 +54,7 @@ app.use("/api/v1/brand", brandRouter);
 app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/payment", paymentRouter);
 app.use("/api/v1/token", tokenRouter);
+app.use("/api/v1/chatbot", chatbotRouter);
 
 // app.use("/api/v1/upload", uploadRouter);
 

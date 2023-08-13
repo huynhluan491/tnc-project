@@ -45,17 +45,16 @@ export class ProductListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.params.pipe(
-      pluck('categoryname'),
-      tap((value) => (this.categoryName = value))
-    ).subscribe(
-      res => {
-        console.log(this.categoryName);
-        
-        
-      }
-    )
-    
+    this.route.params
+      .pipe(
+        pluck('categoryname'),
+        tap((value) => (this.categoryName = value))
+      )
+      .subscribe((res) => {
+        console.log('this.categoryName', res);
+        this.getProducts();
+      });
+
     this.getProducts();
     this.handleGetFilter();
     this.productService
@@ -71,7 +70,10 @@ export class ProductListComponent implements OnInit {
     console.log(this.categoryName);
   }
 
-  getProducts(headers = new HttpHeaders({}), url = '/api/v1/product') {
+  getProducts(
+    headers = new HttpHeaders({ CategoryName: `${this.categoryName}` }),
+    url = '/api/v1/product'
+  ) {
     this.isLoading = true;
     let totalProduct = 0;
     this.getListProduct_sst = this.layoutAPIService

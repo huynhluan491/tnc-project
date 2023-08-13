@@ -13,6 +13,10 @@ export class StorageService {
     window.sessionStorage.clear();
   }
 
+  cleanOrder(): void {
+    window.sessionStorage.removeItem('orders');
+  }
+
   public saveUser(user: DTOLocalUser): void {
     window.sessionStorage.removeItem(USER_KEY);
     window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));

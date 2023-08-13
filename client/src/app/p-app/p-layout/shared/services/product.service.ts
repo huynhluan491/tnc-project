@@ -15,10 +15,7 @@ export class ProductService {
     console.log('product service started');
   }
 
-  getData(
-    page: number,
-    pageSize: number,
-  ): Observable<DTOResponse> {
+  getData(page: number, pageSize: number): Observable<DTOResponse> {
     const params = new HttpParams()
       .set('CurrentPage', page.toString())
       .set('pageSize', pageSize.toString());
@@ -38,9 +35,9 @@ export class ProductService {
 
   addImageProduct(img: File, productID: number): Observable<DTOResponse> {
     const body = {
-      "ProductID": 74,
-      "ImageName": `Image ${productID}`
-    }
+      ProductID: productID,
+      ImageName: `Image ${productID}`,
+    };
 
     const formData = new FormData();
     formData.append('file', img);
@@ -49,16 +46,17 @@ export class ProductService {
     headers.append('enctype', 'multipart/form-data');
     // Combine form data and JSON body
     formData.append('body', JSON.stringify(body));
-    return this.http.post<DTOResponse>(`${environment.apiUrl}/product/image`, formData, {headers}).pipe(catchError(this.handleError));
+    return this.http
+      .post<DTOResponse>(`${environment.apiUrl}/product/image`, formData, {
+        headers,
+      })
+      .pipe(catchError(this.handleError));
   }
 
-  getListProduct(
-    page: number,
-    pageSize: number,
-  ): Observable<DTOResponse> {
+  getListProduct(page: number, pageSize: number): Observable<DTOResponse> {
     const headers = new HttpHeaders({
       CurrentPage: page,
-      PageSize: pageSize
+      PageSize: pageSize,
     });
     return this.http
       .get<DTOResponse>(`${environment.apiUrl}/product`, { headers })

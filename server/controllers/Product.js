@@ -219,18 +219,17 @@ exports.saveFileProductImage = async (req, res) => {
     fs.writeFile(imagePath, buffer, (err) => {
       if (err) {
         // console.error(err);
-        res.status(500).json({error: "Failed to save the file."});
-      } else {
-        console.log("File saved successfully.");
-        res.status(200).json({message: "File saved successfully."});
+        res.status(500).json({Code: 500, Msg: "Failed to save the file."});
       }
     });
     const Name = info.ImageName;
-    console.log('name', Name);
+    console.log("name", Name);
     img = {
       Image: Name,
     };
     await ProductDAO.updateProductById(info.ProductID, img);
+    console.log("File saved successfully.");
+    res.status(200).json({Code: 200, Msg: "File saved successfully."});
   } catch (e) {
     console.log(e);
     res.status(500).json({error: `Failed to save the file. ${e.toString()}`});

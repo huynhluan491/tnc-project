@@ -7,7 +7,14 @@ import {
   SkipSelf,
 } from '@angular/core';
 import { DataService } from '../shared/service/data.service';
-import { Observable, Subject, Subscription, concatMap, of, takeUntil } from 'rxjs';
+import {
+  Observable,
+  Subject,
+  Subscription,
+  concatMap,
+  of,
+  takeUntil,
+} from 'rxjs';
 import { ProductService } from 'src/app/p-app/p-layout/shared/services/product.service';
 import { DTOProduct } from 'src/app/p-app/p-layout/shared/dto/DTOProduct';
 import { PageChangeEvent } from '@progress/kendo-angular-grid';
@@ -29,7 +36,7 @@ class ImageSnippet {
 })
 export class MainTableComponent implements OnInit {
   #subscription: Subscription = new Subscription();
-  productList: Subject<any> = new Subject<any>(); 
+  productList: Subject<any> = new Subject<any>();
   ngUnsubscription$ = new Subject<void>();
   page: number = 1;
   pageSize: number = 20;
@@ -51,11 +58,11 @@ export class MainTableComponent implements OnInit {
     CategoryID: new FormControl(),
     BrandID: new FormControl(),
     Image: new FormControl(''),
-    Sale: new FormControl<number>(0)
-  })
+    Sale: new FormControl<number>(0),
+  });
 
   constructor(
-    @SkipSelf() private dataService: DataService, 
+    @SkipSelf() private dataService: DataService,
     private productService: ProductService,
     private notiService: NotificationPopupService,
     private cateService: CategoryService,
@@ -75,50 +82,50 @@ export class MainTableComponent implements OnInit {
 
   fetchData() {
     this.loading = true;
-    this.productService.getListProduct(this.page, this.pageSize).pipe(takeUntil(this.ngUnsubscription$)).subscribe(
-      res => {
+    this.productService
+      .getListProduct(this.page, this.pageSize)
+      .pipe(takeUntil(this.ngUnsubscription$))
+      .subscribe((res) => {
         console.log(res.Data);
         this.productList.next({
           data: res.Data,
-          total: res.TotalProduct
+          total: res.TotalProduct,
         });
         this.loading = false;
-      }
-    )
+      });
   }
 
   updateProductHandle() {
     const updatedInfo = this.productForm.value;
-    this.productService.updateData(this.selectedProduct.ProductID, updatedInfo)
-    .pipe(takeUntil(this.ngUnsubscription$))
-    .subscribe(
-      res => {
+    this.productService
+      .updateData(this.selectedProduct.ProductID, updatedInfo)
+      .pipe(takeUntil(this.ngUnsubscription$))
+      .subscribe((res) => {
         if (res.Code === 200) {
-          this.notiService.onSuccess("Cập nhật sản phẩm thành công");
+          this.notiService.onSuccess('Cập nhật sản phẩm thành công');
           this.fetchData();
         } else {
-          this.notiService.onError("Cập nhật sản phẩm thất bại");
+          this.notiService.onError('Cập nhật sản phẩm thất bại');
           console.log('error');
         }
-      }
-    )
+      });
   }
 
   deleteProduct() {
-    this.productService.deleteDataById(this.selectedProduct.ProductID).pipe(takeUntil(this.ngUnsubscription$))
-    .subscribe(
-      res => {
+    this.productService
+      .deleteDataById(this.selectedProduct.ProductID)
+      .pipe(takeUntil(this.ngUnsubscription$))
+      .subscribe((res) => {
         if (res.Code === 200) {
-          this.notiService.onSuccess("Xóa sản phẩm thành công");
+          this.notiService.onSuccess('Xóa sản phẩm thành công');
           this.fetchData();
         } else {
-          this.notiService.onError("Xóa sản phẩm thất bại");
+          this.notiService.onError('Xóa sản phẩm thất bại');
           console.log('error');
         }
         this.isDeletePopupOpened = false;
         this.isSelectedProduct = false;
-      }
-    )
+      });
   }
 
   openCreateForm() {
@@ -131,75 +138,75 @@ export class MainTableComponent implements OnInit {
   createProduct() {
     const createdInfo = this.productForm.value;
     createdInfo.Favorite = 0;
-    createdInfo.Image = "";
+    createdInfo.Image = '';
 
-    this.productService.createData(createdInfo).pipe(
-      concatMap(
-        res => {
+    this.productService
+      .createData(createdInfo)
+      .pipe(
+        concatMap((res) => {
           if (res.Code === 200) {
             const productID = res.Data.ProductID;
-            return this.productService.addImageProduct(this.imgBaseName, productID);
+            return this.productService.addImageProduct(
+              this.imgBaseName,
+              productID
+            );
           } else {
-            this.notiService.onError("Đã xảy ra lỗi");
+            this.notiService.onError('Đã xảy ra lỗi');
             return of();
           }
-        }
-      ),
-      takeUntil(this.ngUnsubscription$)
-    )
-    .subscribe(
-      res => {
+        }),
+        takeUntil(this.ngUnsubscription$)
+      )
+      .subscribe((res) => {
         if (res.Code === 200) {
-          this.notiService.onSuccess("Thêm mới sản phẩm thành công");
+          this.notiService.onSuccess('Thêm mới sản phẩm thành công');
           this.productForm.reset();
           this.fetchData();
         } else {
-          this.notiService.onError("Thêm mới sản phẩm thất bại");
+          this.notiService.onError('Thêm mới sản phẩm thất bại');
           console.log('error');
         }
         this.isCreatePopupOpened = false;
-      }
-    )
+      });
   }
 
   uploadFile(inputImg: any) {
     const file: File = inputImg.files[0];
     const reader = new FileReader();
-    
+
     reader.addEventListener('load', (event: any) => {
-        this.imgBaseName = file;
+      this.imgBaseName = file;
     });
 
     reader.readAsDataURL(file);
   }
 
   updateImg(inputImg: any) {
+    console.log('this.selectedProduct vvvvvvvvvvvv', this.selectedProduct);
+
     const file: File = inputImg.files[0];
     const reader = new FileReader();
-    
+
     reader.addEventListener('load', (event: any) => {
-        this.imgBaseName = file;
-        console.log(this.imgBaseName);
-        
-        this.productService.addImageProduct(this.imgBaseName, this.selectedProduct.ProductID)
+      this.imgBaseName = file;
+      console.log(this.imgBaseName);
+
+      this.productService
+        .addImageProduct(this.imgBaseName, this.selectedProduct.ProductID)
         .pipe(takeUntil(this.ngUnsubscription$))
-        .subscribe(
-          res => {
-            if (res.Code === 200) {
-              this.notiService.onSuccess("Cập nhật ảnh sản phẩm thành công");
-              this.fetchData();
-            } else {
-              this.notiService.onError("Cập nhật ảnh sản phẩm thất bại");
-              this.fetchData();
-            }
-            this.imgBaseName = null;
+        .subscribe((res) => {
+          if (res.Code === 200) {
+            this.notiService.onSuccess('Cập nhật ảnh sản phẩm thành công');
+            this.fetchData();
+          } else {
+            this.notiService.onError('Cập nhật ảnh sản phẩm thất bại');
           }
-        )
+          this.imgBaseName = null;
+        });
     });
 
     reader.readAsDataURL(file);
   }
-
 
   convertToBase64(file: File): void {
     const reader = new FileReader();
@@ -214,27 +221,26 @@ export class MainTableComponent implements OnInit {
   }
 
   getCategories() {
-    this.cateService.getListCategory().pipe(takeUntil(this.ngUnsubscription$))
-    .subscribe(
-      res => {
+    this.cateService
+      .getListCategory()
+      .pipe(takeUntil(this.ngUnsubscription$))
+      .subscribe((res) => {
         if (res.Code === 200) {
           this.listCategory.next(res.Data);
         }
-      }
-    )
+      });
   }
 
   getBrands() {
-    this.brandService.getListBrand().pipe(takeUntil(this.ngUnsubscription$))
-    .subscribe(
-      res => {
+    this.brandService
+      .getListBrand()
+      .pipe(takeUntil(this.ngUnsubscription$))
+      .subscribe((res) => {
         if (res.Code === 200) {
           this.listBrand.next(res.Data);
         }
-      }
-    )
+      });
   }
-  
 
   public pageChange(state: PageChangeEvent): void {
     console.log(state);
@@ -248,7 +254,7 @@ export class MainTableComponent implements OnInit {
     this.selectedProduct.Sale = data.Sale * 1;
     this.productForm.patchValue(data);
     console.log(this.productForm.value);
-    
+
     this.isSelectedProduct = true;
   }
 

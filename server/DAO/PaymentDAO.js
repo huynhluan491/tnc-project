@@ -124,6 +124,9 @@ exports.handlerPayment = async (TypeOfPayment, req, res) => {
       ProductDAO.handleUpdateStock(element)
     );
     await Promise.all(updatePromises);
+    if (user) {
+      await OrderDAO.createNewOrder(user.UserID);
+    }
     res
       .status(200)
       .json({PaymentUrl: "http://localhost:3001/html/success.html"});
