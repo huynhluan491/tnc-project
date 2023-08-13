@@ -10,7 +10,7 @@ export class AppComponent {
 
   loggedIn: boolean = true;
   showLogin: boolean = true;
-  showChat: boolean = true;
+  showChat: boolean = false;
 
   toggleShowChat() {
     this.showChat = !this.showChat;
@@ -26,4 +26,6 @@ export class AppComponent {
     this.loggedIn = true;
     this.toggleShowLogin();
   }
+
+  
 }
