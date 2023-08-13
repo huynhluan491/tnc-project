@@ -1,9 +1,7 @@
 const axios = require("axios");
 exports.getSession = async (req, res) => {
   try {
-    const response = await axios.get(
-      "https://http://127.0.0.1:5000/api/v1/session"
-    );
+    const response = await axios.get("http://127.0.0.1:5000/api/v1/session");
 
     const data = response;
 
@@ -20,7 +18,7 @@ exports.getSessionID = async (req, res) => {
   try {
     const id = req.params.id * 1;
     const response = await axios.get(
-      "https://http://127.0.0.1:5000/api/v1/session" + id
+      "http://127.0.0.1:5000/api/v1/session" + id
     );
 
     const data = response;
@@ -39,7 +37,7 @@ exports.addChat = async (req, res) => {
     const sid = req.params.id * 1;
     const reqBody = req.body;
     const response = await axios.post(
-      "https://http://127.0.0.1:5000/api/v1/chat/" + sid,
+      "http://127.0.0.1:5000/api/v1/chat/" + sid,
       reqBody
     );
 
@@ -58,7 +56,7 @@ exports.getImage = async (req, res) => {
   try {
     const imageName = req.params.imageName;
     const response = await axios.get(
-      "https://http://127.0.0.1:5000/api/v1/chat/image/" + imageName,
+      "http://127.0.0.1:5000/api/v1/chat/image/" + imageName,
       {
         responseType: "blob",
       }
