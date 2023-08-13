@@ -57,7 +57,7 @@ import { AuthGuard } from './p-app/_helpers/auth_guard';
     ReactiveFormsModule,
     DialogsModule,
     HttpClientXsrfModule.withOptions({
-      cookieName: 'csrf_access_token',
+      cookieName: 'csrf-token',
       headerName: 'csrf-token',
     }),
     LoginComponent,
