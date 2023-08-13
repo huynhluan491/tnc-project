@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { DTOUser } from '../_models/DTOUser';
 import { PaymentService } from '../p-layout/shared/services/payment.service';
+import { OrderService } from '../p-layout/shared/services/order.service';
 
 @Component({
   selector: 'app-cart-checkout2',
@@ -19,6 +20,7 @@ import { PaymentService } from '../p-layout/shared/services/payment.service';
 export class CartCheckout2Component implements OnInit, OnDestroy {
   constructor(
     @SkipSelf() private storageService: StorageService,
+    @SkipSelf() private orderService: OrderService,
     @SkipSelf() private paymentService: PaymentService,
     private formBuilder: FormBuilder
   ) {}
@@ -90,14 +92,13 @@ export class CartCheckout2Component implements OnInit, OnDestroy {
         UserPoint: this.deliverForm.get('usePoint').value,
       };
     }
-    console.log(body);
-
     this.paymentService
       .checkOut(body)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((res) => {
-        console.log(res);
-
+        // console.log(res);
+        // this.orderService.getData().subscribe((res) => {})
+        this.storageService.cleanOrder();
         res.PaymentUrl && (window.location.href = res.PaymentUrl);
       });
   }
