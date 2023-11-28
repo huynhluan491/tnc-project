@@ -23,10 +23,10 @@ app.use(cookieParser());
 //using express.json middleware -> stand between req and response
 app.use(express.json());
 app.use((req, res, next) => {
-  req.requestTime = new Date().toISOString();
-  // console.log("request Time:", req.requestTime);
-  next();
-});
+  console.log(`${new Date().toISOString()} - ${req.method} request to ${req.url}`);
+    next();
+})
+
 // app.set("view engine", "ejs");
 // app.set("views", path.join(__dirname, "template"));
 app.use(express.static("template"));
