@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.json({limit: "40mb"}));
 app.use(bodyParser.urlencoded({extended: true, limit: "40mb"}));
 const corsOptions = {
-  origin: "http://localhost:4200",
+  origin: ["http://localhost:4200","*"],
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
